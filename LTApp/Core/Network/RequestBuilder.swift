@@ -1,0 +1,75 @@
+//
+//  LTApp, This code is protected by intellectual property rights.
+//
+
+import Foundation
+
+public class RequestBuilder {
+    private let request: any Request
+    
+    init(request: any Request) {
+        self.request = request
+    }
+    
+    func build(_ environment: Environment) -> URLRequest {
+        let url = request.endPoint.absoluteUrl(environment)
+        var urlRequest =  URLRequest(url: url)
+        urlRequest.httpMethod = request.method.rawValue
+        var header: [String: Any] = [:]
+        switch request.payload {
+        case .json(let body, let urlParameters):
+            header["Content-Type"] = "application/json"
+            urlRequest.httpBody = encodeJson(parameters: body)
+            if let urlParameters {
+                var urlComponents = URLComponents(string: url.absoluteString)
+                urlComponents?.queryItems = urlParameters.map { URLQueryItem(name: $0.0, value: $0.1)}
+                urlRequest.url = url
+            }
+            return urlRequest
+        case .urlEncoding(let values):
+            if [.get, .delete].contains(request.method) {
+                var urlComponents = URLComponents(string: url.absoluteString)
+                urlComponents?.queryItems = values.map { URLQueryItem(name: $0.0, value: $0.1) }
+                urlRequest.url = urlComponents?.url
+            } else {
+                header["Content-Type"] = "application/x-www-form-urlencoded"
+                var parameters = [String: Any]()
+                values.forEach { parameters[$0.key] = $0.value }
+                urlRequest.httpBody = encodeUrlParameter(parameters: parameters).data(using: .utf8, allowLossyConversion: false)
+            }
+            return urlRequest
+        }
+    }
+    
+    private func encodeJson(parameters: [String: Any]) -> Data? {
+        let json = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+        return json
+    }
+    
+    private func encodeUrlParameter(parameters: [String: Any]) -> String {
+        let urlEncodedParameters = parameters.map { key, value -> String in
+            let escapedKey = escape(key)
+            guard let value = value as? String else {
+                fatalError("Not implemented yet")
+            }
+            
+            let escapedValue = escape(value)
+            return "\(escapedKey)=\(escapedValue)"
+        }
+        .sorted()
+        .joined(separator: "&")
+        
+        return urlEncodedParameters
+    }
+    
+    private func escape(_ string: String) -> String {
+        let generalDelimitersToEncode = ":#[]@"
+        let subDelimitersToEncode = "!$&'()*+,;="
+        
+        var allowedCharacterSet = CharacterSet.urlQueryAllowed
+        allowedCharacterSet.remove(charactersIn: "\(generalDelimitersToEncode)\(subDelimitersToEncode)")
+        
+        let escaped = string.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) ?? string
+        return escaped
+    }
+}

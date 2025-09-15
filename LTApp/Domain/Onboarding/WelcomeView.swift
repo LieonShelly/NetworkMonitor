@@ -1,0 +1,87 @@
+//
+//  LTApp, This code is protected by intellectual property rights.
+//
+
+import SwiftUI
+
+struct WelcomeView: View {
+    enum CurrentPage {
+        case first
+        case second
+    }
+    
+    @State var currentPage: CurrentPage = .first
+    @State var showPage: Bool = false
+    @State var showSecondPageText: Bool = false
+    @EnvironmentObject var coordinator: AppCoordinator
+    
+    var body: some View {
+        VStack {
+            if showPage {
+                VStack {
+                    switch currentPage {
+                    case .first:
+                        firstTextView
+                    case .second:
+                        secondTextView
+                    }
+                }
+                .defaultBackground()
+                .toolbarVisibility(.hidden, for: .navigationBar)
+                .transition(.opacity)
+            }
+        }
+        .task {
+            try? await Task.sleep(for: .seconds(0.25))
+            withAnimation(.easeInOut) {
+                showPage = true
+            }
+        }
+       
+    }
+    
+    var firstTextView: some View {
+        AnimatedMultilineText(
+            text: "welcome",
+            font: AppFont.feltTipSenior(size: 32),
+            width: 305,
+            animationCompleted: {
+                withAnimation(.easeInOut) {
+                    currentPage = .second
+                }
+                Task {
+                    try? await Task.sleep(for: .seconds(0.25))
+                    showSecondPageText = true
+                }
+            }
+        )
+            .frame(width: 305)
+            .transition(.asymmetric(insertion: .identity, removal: .move(edge: .leading)))
+    }
+    
+    var secondTextView: some View {
+        VStack {
+            Spacer()
+            if showSecondPageText {
+                AnimatedMultilineText(
+                    text: "answer your first question to get started",
+                    font: AppFont.feltTipSenior(size: 32),
+                    width: 305
+                )
+                    .frame(width: 305)
+            }
+                
+            Spacer()
+            DefaultAppButton(title: "start") {
+                coordinator.push(AppRoute.firstQuestion)
+            }
+            .padding(.horizontal, 24)
+        }
+        .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .identity))
+       
+    }
+}
+
+#Preview {
+    WelcomeView()
+}
