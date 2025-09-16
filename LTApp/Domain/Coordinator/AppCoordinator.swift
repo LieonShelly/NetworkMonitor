@@ -34,8 +34,8 @@ final class AppCoordinator: ObservableObject, Coordinator, @unchecked Sendable {
         case .firstQuestion:
             return AnyView(FirstQuestionView())
         case .home:
-            let viewModel = AppTabbarExampleViewModel()
-            return AnyView(AppTabbarExampleView(viewModel: viewModel))
+            let viewModel = AppHomeViewModel()
+            return AnyView(AppHomeView(viewModel: viewModel))
         }
     }
     

@@ -15,19 +15,12 @@ struct CalendarView: View {
     
     var body: some View {
         VStack(spacing: .zero) {
-            titleView
             calendarContentView
             Spacer()
         }
-        .defaultBackground()
-        
+        .defaultBackground() 
     }
     
-    var titleView: some View {
-        Text("The Little Things")
-            .textStyle(size: 36)
-            .padding(.top, 35)
-    }
     
     var mothTitleView: some View {
         Text("September")

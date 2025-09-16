@@ -54,7 +54,3 @@ struct AppTabbar: View {
             .frame(height: 64)
     }
 }
-
-#Preview {
-    AppTabbarExampleView()
-}

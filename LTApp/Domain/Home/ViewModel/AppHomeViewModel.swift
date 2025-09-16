@@ -1,3 +1,9 @@
+//
+//  LTApp, This code is protected by intellectual property rights.
+//
+
+import Combine
+import SwiftUI
 
 @MainActor
 class AppHomeViewModel: ObservableObject {

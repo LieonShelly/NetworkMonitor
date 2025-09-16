@@ -28,7 +28,6 @@ struct AppScrollContentView: View {
             .animation(.easeInOut, value: viewModel.scrollPosition)
             .scrollTargetBehavior(.paging)
             .onScrollGeometryChange(for: CGPoint.self, of: { $0.contentOffset }) { oldValue, newValue in
-                print(newValue)
                 let progress = newValue.x / proxy.size.width
                 viewModel.updateScrollProgress(progress)
             }
@@ -39,7 +38,6 @@ struct AppScrollContentView: View {
                 default: break
                 }
             }
-        
         }
        
     }
