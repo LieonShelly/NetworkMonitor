@@ -67,6 +67,6 @@ class AppTabbarViewModel: ObservableObject {
         guard index < items.count else { return }
         selectedIndex = index
         let item = items[selectedIndex]
-        didTapTabrItem(item)
+        didTapTabrItem(item, needNotify: false)
     }
 }

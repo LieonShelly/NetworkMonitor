@@ -4,6 +4,7 @@
 
 import SwiftUI
 
+@MainActor
 class AppTabbarExampleViewModel: ObservableObject {
      var tabbarViewModel = AppTabbarViewModel(
         items: [
