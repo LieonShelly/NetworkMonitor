@@ -15,14 +15,13 @@ struct AppScrollContentView: View {
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(0)
                     
-                    Rectangle()
-                        .fill(.blue)
+                    ThreadView()
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(1)
                 }
-                .overlay {
-                    horizontalLine
-                }
+//                .overlay {
+//                    horizontalLine
+//                }
             }
             .scrollPosition($viewModel.scrollPosition)
             .animation(.easeInOut, value: viewModel.scrollPosition)

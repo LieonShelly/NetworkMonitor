@@ -23,6 +23,7 @@ struct AppHomeView: View {
                 .transition(.opacity)
             }
         }
+        .defaultBackground()
         .task {
             withAnimation(.easeInOut) {
                 showPage = true

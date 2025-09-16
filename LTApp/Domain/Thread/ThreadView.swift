@@ -19,7 +19,7 @@ struct ThreadView: View {
                         answerRow("")
                         Spacer()
                     }
-                    .frame(height: 120)
+                    .frame(height: 100)
                     .padding(.top, 10)
                 }
                 .overlay(alignment: .leading) {
@@ -35,7 +35,7 @@ struct ThreadView: View {
                         answerRow("")
                         Spacer()
                     }
-                    .frame(height: 120)
+                    .frame(height: 100)
                     .padding(.top, 10)
                 }
                 .overlay(alignment: .leading) {
@@ -52,7 +52,7 @@ struct ThreadView: View {
                         answerRow("")
                         Spacer()
                     }
-                    .frame(height: 120)
+                    .frame(height: 100)
                     .padding(.top, 10)
                 }
                 .overlay(alignment: .leading) {
@@ -61,12 +61,13 @@ struct ThreadView: View {
                 
                 Rectangle()
                     .fill(Color.clear)
-                    .frame(height: 100)
+                    .frame(height: 80)
                     .overlay(alignment: .leading) {
-                        line(true)
+                        line(true, segmentCount: 10, seed: 40)
                     }
                 
             }
+            .padding(.top, 60)
            
         }
         .padding(.leading, 40)
@@ -106,9 +107,9 @@ struct ThreadView: View {
         .padding(.leading, 51)
     }
     
-    func line(_ showball: Bool = false) -> some View {
+    func line(_ showball: Bool = false, segmentCount: Int = 40, seed: Int = 100) -> some View {
         VStack(alignment: .leading, spacing: .zero) {
-            WavyLine(segmentCount: 40, seed: 100)
+            WavyLine(segmentCount: segmentCount, seed: seed)
                 .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round))
                 .foregroundColor(AppColor.color(hex: 0x000000))
                 .frame(width: 2)
@@ -118,7 +119,6 @@ struct ThreadView: View {
                     .padding(.leading, 30)
                     .offset(y: -14)
             }
-            
         }
       
     }
