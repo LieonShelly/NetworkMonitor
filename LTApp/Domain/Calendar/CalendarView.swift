@@ -7,41 +7,67 @@ import SwiftUI
 struct CalendarView: View {
     enum Constants {
         static let itemSize: CGSize = .init(width: 30, height: 30)
-        static let spacing: CGFloat = 10
         static let maxRowCount: CGFloat = 7
         static let cornorRadius: CGFloat = 4
+        static let weekDayBottom: CGFloat = 70
     }
     @StateObject var viewModel: CalendarViewModel = .init()
     
     var body: some View {
+        VStack(spacing: .zero) {
+            titleView
+            calendarContentView
+            Spacer()
+        }
+        .defaultBackground()
+        
+    }
+    
+    var titleView: some View {
+        Text("The Little Things")
+            .textStyle(size: 36)
+            .padding(.top, 35)
+    }
+    
+    var mothTitleView: some View {
+        Text("September")
+            .textStyle(size: 18, fontFamily: .sfProMedium)
+            .padding(.bottom, 26)
+            .padding(.leading, Constants.itemSize.width * 0.3)
+        
+    }
+    
+    var calendarContentView: some View {
         GeometryReader { proxy in
-            VStack(spacing: Constants.spacing) {
-               weekDay()
-                    .frame(width: proxy.size.width, height: Constants.itemSize.height)
+            let itemSpacing = (proxy.size.width - 7 * Constants.itemSize.width) / 8.0
+            VStack(spacing: .zero) {
+                weekDay(spacing: itemSpacing)
+                .frame(width: proxy.size.width)
+                .padding(.bottom, Constants.weekDayBottom)
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: .zero) {
                         ForEach(viewModel.monthList, id: \.id) { month in
-                            moth(days: month.days)
+                            monthView(days: month.days, spacing: itemSpacing)
                                 .frame(width: proxy.size.width)
                         }
                     }
                 }
                 .scrollTargetBehavior(.paging)
+                
+                .frame(height: Constants.itemSize.height * 6 + itemSpacing * 5)
             }
-            .frame(height: Constants.maxRowCount * Constants.itemSize.height + (Constants.maxRowCount) * Constants.spacing)
-            
         }
-        
+            .padding(.top, 65)
     }
     
     @ViewBuilder
-    func moth(days: [CalendarDay]) -> some View {
+    func monthView(days: [CalendarDay], spacing: CGFloat) -> some View {
         let itemWidth: CGFloat = Constants.itemSize.width
-        let columns = Array(repeating: GridItem(.fixed(itemWidth), spacing: Constants.spacing), count: 7)
+        let columns = Array(repeating: GridItem(.fixed(itemWidth), spacing: spacing), count: 7)
         LazyVGrid(
             columns: columns,
-            spacing: Constants.spacing,
+            spacing: spacing,
             content: {
                 ForEach(days) { day in
                     Rectangle()
@@ -68,23 +94,24 @@ struct CalendarView: View {
       
     }
     
-   @ViewBuilder func weekDay() -> some View {
+    @ViewBuilder func weekDay(spacing: CGFloat) -> some View {
        let itemW: CGFloat = Constants.itemSize.width
-        let spacing = Constants.spacing
-        HStack(spacing: spacing) {
-            ForEach(viewModel.weekdays, id: \.self) { day in
-                Text(day)
-                    .textStyle(size: 14, color: AppColor.color(hex: 0x323232), fontFamily: .sfProRegular)
-                    .frame(width: itemW, height: itemW)
-            }
-        }
-        .frame(height: Constants.itemSize.height)
+       VStack(alignment: .leading) {
+           mothTitleView
+           HStack(spacing: spacing) {
+               ForEach(viewModel.weekdays, id: \.self) { day in
+                   Text(day)
+                       .textStyle(size: 14, color: AppColor.color(hex: 0x323232), fontFamily: .sfProRegular)
+                       .frame(width: itemW, height: itemW)
+               }
+           }
+           .frame(height: Constants.itemSize.height)
+       }
+    
+      
     }
 }
 
 #Preview(body: {
-    HStack {
-        CalendarView()
-    }
-    .padding()
+    CalendarView()
 })

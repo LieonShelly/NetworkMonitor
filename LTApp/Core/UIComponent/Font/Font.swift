@@ -10,18 +10,19 @@ public class AppFont {
         switch fontWeight {
         case .regular:
             return Font.custom(AppFontType.feltTipSeniorRegular.fontName, size: size)
-        case .bold:
+        case .medium, .bold:
             return Font.custom(AppFontType.feltTipSeniorRegular.fontName, size: size)
         case .heavy:
             return Font.custom(AppFontType.feltTipSeniorRegular.fontName, size: size)
         }
     }
     
+    
     public static func feltTipSenior(size: CGFloat, fontWeight: AppFontWeight = .regular) -> UIFont {
         switch fontWeight {
         case .regular:
             return UIFont(descriptor: .init(name: AppFontType.feltTipSeniorRegular.fontName, size: size), size: size)
-        case .bold:
+        case .medium, .bold:
             return UIFont(descriptor: .init(name: AppFontType.feltTipSeniorRegular.fontName, size: size), size: size)
         case .heavy:
             return UIFont(descriptor: .init(name: AppFontType.feltTipSeniorRegular.fontName, size: size), size: size)
@@ -32,7 +33,7 @@ public class AppFont {
         switch fontWeight {
         case .regular:
             return Font.custom(AppFontType.poppinsRegular.fontName, size: size)
-        case .bold:
+        case .medium, .bold:
             return Font.custom(AppFontType.poppinsRegular.fontName, size: size)
         case .heavy:
             return Font.custom(AppFontType.poppinsRegular.fontName, size: size)
@@ -43,6 +44,8 @@ public class AppFont {
         switch fontWeight {
         case .regular:
             return Font.custom(AppFontType.sfProRegular.fontName, size: size)
+        case .medium:
+            return Font.custom(AppFontType.sfProMedium.fontName, size: size)
         case .bold:
             return Font.custom(AppFontType.sfProBold.fontName, size: size)
         case .heavy:

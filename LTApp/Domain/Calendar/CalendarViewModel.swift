@@ -62,7 +62,7 @@ class CalendarViewModel: ObservableObject {
     let itemSize: CGSize = .init(width: 30, height: 30)
     
     init() {
-        monthList = generateMothList(for: 2025)
+        monthList = generateMothList(for: 2025)// generateOneMoth(for: 9)
     }
     
     func generateDays(for moth: Date) -> [CalendarDay] {
@@ -118,6 +118,18 @@ class CalendarViewModel: ObservableObject {
             component.year = year
             component.month = month
             guard let date = calendar.date(from: component) else { continue }
+            monthList.append(CalendarMonth(date: date, days: generateDays(for: date)))
+        }
+        return monthList
+    }
+    
+    func generateOneMoth(for month: Int) -> [CalendarMonth] {
+        let calendar = Calendar.current
+        var monthList: [CalendarMonth] = []
+        var component = DateComponents()
+        component.year = 2025
+        component.month = month
+        if let date = calendar.date(from: component) {
             monthList.append(CalendarMonth(date: date, days: generateDays(for: date)))
         }
         return monthList

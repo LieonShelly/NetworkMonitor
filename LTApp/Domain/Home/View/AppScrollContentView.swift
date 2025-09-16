@@ -11,8 +11,7 @@ struct AppScrollContentView: View {
         GeometryReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: .zero) {
-                    Rectangle()
-                        .fill(.red)
+                    CalendarView()
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(0)
                     

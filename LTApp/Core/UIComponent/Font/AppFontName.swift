@@ -6,6 +6,7 @@ import Foundation
 
 public enum AppFontWeight {
     case regular
+    case medium
     case bold
     case heavy
 }
@@ -14,6 +15,7 @@ public enum AppFontType: String, CaseIterable {
     case poppinsRegular
     case feltTipSeniorRegular
     case sfProRegular
+    case sfProMedium
     case sfProBold
     
     var fileName: String {
@@ -24,6 +26,8 @@ public enum AppFontType: String, CaseIterable {
             "FeltTipSeniorRegular"
         case .sfProRegular:
             "SFPRODISPLAYREGULAR"
+        case .sfProMedium:
+            "SFPRODISPLAYMEDIUM"
         case .sfProBold:
             "SFPRODISPLAYBOLD"
         }
@@ -33,7 +37,7 @@ public enum AppFontType: String, CaseIterable {
         switch self {
         case .poppinsRegular, .feltTipSeniorRegular:
             return "ttf"
-        case .sfProRegular, .sfProBold:
+        case .sfProRegular, .sfProBold, .sfProMedium:
             return "OTF"
         }
     }
@@ -48,6 +52,8 @@ public enum AppFontType: String, CaseIterable {
             "SFProDisplay-Regular"
         case .sfProBold:
             "SFProDisplay-Bold"
+        case .sfProMedium:
+            "SFProDisplay-Medium"
         }
     }
 }

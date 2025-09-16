@@ -24,6 +24,9 @@ public extension View {
         case .sfProBold:
             return self.foregroundStyle(color)
                 .font(AppFont.sfPro(size: size, fontWeight: .bold))
+        case .sfProMedium:
+            return self.foregroundStyle(color)
+                .font(AppFont.sfPro(size: size, fontWeight: .medium))
         }
     }
 }
