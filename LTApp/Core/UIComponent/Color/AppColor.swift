@@ -24,3 +24,13 @@ public extension UIColor {
                   alpha: alpha)
     }
 }
+
+
+
+
+public extension Color {
+   static var random: Color {
+        Color(red: Double.random(in: 0 ... 255) / 255.0, green: Double.random(in: 0 ... 255) / 255.0, blue: Double.random(in: 0 ... 255) / 255.0)
+    }
+}
+
