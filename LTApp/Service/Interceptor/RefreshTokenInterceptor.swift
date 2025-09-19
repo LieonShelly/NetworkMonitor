@@ -7,6 +7,7 @@ import Foundation
 actor RefreshTokenInterceptor: NetworkInterceptor, @unchecked Sendable {
     private weak var tokenProvider: TokenProvider?
     private let service: any AppDataWithoutAuthorizationServicefull
+    private var requestsPool: [URLRequest] = []
     
     init(tokenProvider: TokenProvider?, service: any AppDataWithoutAuthorizationServicefull) {
         self.tokenProvider = tokenProvider
@@ -21,8 +22,16 @@ actor RefreshTokenInterceptor: NetworkInterceptor, @unchecked Sendable {
         guard let response = response as? HTTPURLResponse, response.statusCode == 401 else {
             return false
         }
-        try await refreshTokenIfNeeded()
-        return true
+        guard !requestsPool.contains(request) else {
+            return false
+        }
+        do {
+            requestsPool.append(request)
+            try await refreshTokenIfNeeded()
+            return true
+        } catch {
+            return false
+        }
     }
     
     private func refreshTokenIfNeeded() async throws {
