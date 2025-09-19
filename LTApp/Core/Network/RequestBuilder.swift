@@ -15,7 +15,7 @@ public class RequestBuilder {
         let url = request.endPoint.absoluteUrl(environment)
         var urlRequest =  URLRequest(url: url)
         urlRequest.httpMethod = request.method.rawValue
-        var header: [String: Any] = [:]
+        var header: [String: String] = [:]
         switch request.payload {
         case .json(let body, let urlParameters):
             header["Content-Type"] = "application/json"
@@ -25,6 +25,7 @@ public class RequestBuilder {
                 urlComponents?.queryItems = urlParameters.map { URLQueryItem(name: $0.0, value: $0.1)}
                 urlRequest.url = url
             }
+            urlRequest.allHTTPHeaderFields = header
             return urlRequest
         case .urlEncoding(let values):
             if [.get, .delete].contains(request.method) {
@@ -37,6 +38,7 @@ public class RequestBuilder {
                 values.forEach { parameters[$0.key] = $0.value }
                 urlRequest.httpBody = encodeUrlParameter(parameters: parameters).data(using: .utf8, allowLossyConversion: false)
             }
+            urlRequest.allHTTPHeaderFields = header
             return urlRequest
         }
     }

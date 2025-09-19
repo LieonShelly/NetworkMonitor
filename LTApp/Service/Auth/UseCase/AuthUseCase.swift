@@ -5,17 +5,18 @@
 import Foundation
 
 public protocol AuthUseCaseType {
-    func execute(appleId: String, authToken: String) async throws -> User
+    func execute(authorizationCode: String, identityToken: String) async throws -> User
 }
 
 public final class AuthUseCase: AuthUseCaseType {
     private let repository: AuthRepositoryType
     
-    init(repository: AuthRepositoryType) {
+    public init(repository: AuthRepositoryType) {
         self.repository = repository
     }
     
-    public func execute(appleId: String, authToken: String) async throws -> User {
-       try await repository.login(appleId: appleId, authToken: authToken)
+    public func execute(authorizationCode: String, identityToken: String) async throws -> User {
+       try await repository.login(authorizationCode: authorizationCode, identityToken: identityToken)
     }
 }
+

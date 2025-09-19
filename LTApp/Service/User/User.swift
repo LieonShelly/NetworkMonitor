@@ -5,8 +5,7 @@
 import Foundation
 
 public struct User {
-    let userId: String
-    let fullName: String
+    let id: String
     let email: String
 
 }

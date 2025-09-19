@@ -26,4 +26,5 @@ public enum HttpMethod: String, Sendable {
 public enum HttpPayload: Sendable {
     case json(body: [String: any Sendable], urlParameter: [(key: String, value: String)]? = nil)
     case urlEncoding([(key: String, value: String)])
+    case empty
 }

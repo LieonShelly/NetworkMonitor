@@ -5,7 +5,8 @@
 import Foundation
 
 public protocol AppDataServiceful {
-    var authUseCasse: AuthUseCaseType { get }
+    var authUseCasse: any AuthUseCaseType { get }
+    var refreshTokenUseCase: any RefreshTokenUseCaseType { get }
 }
 
 public final class AppDataService: AppDataServiceful, @unchecked Sendable {
@@ -17,5 +18,9 @@ public final class AppDataService: AppDataServiceful, @unchecked Sendable {
     
     public lazy var authUseCasse: any AuthUseCaseType = {
         AuthUseCase(repository: authRepository)
+    }()
+    
+    public lazy var refreshTokenUseCase: any RefreshTokenUseCaseType {
+        RefreshTokenUseCase(repository: authRepository)
     }()
 }

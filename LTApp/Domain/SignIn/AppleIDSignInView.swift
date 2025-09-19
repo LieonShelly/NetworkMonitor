@@ -48,15 +48,12 @@ struct AppleIDSignInView: View {
                 guard let idToken = credential.identityToken, let idTokenStr = String(data: idToken, encoding: .utf8) else {
                     return
                 }
-                let userId = credential.user
-                let email = credential.email
-                let fullname = credential.fullName
-                
-                print("User ID: \(userId)")
-                print("Email: \(email ?? "nil")")
-                print("Full Name: \(fullname?.givenName ?? "")")
+                var authorizationCode = ""
+                if let authorizationCodeData = credential.authorizationCode, let code = String(data: authorizationCodeData, encoding: .utf8) {
+                    authorizationCode = code
+                }
                 Task.detached {
-                   await viewModel.login(appleId: userId, authToken: idTokenStr)
+                    await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
                 }
             case .failure(let error):
                 break

@@ -5,28 +5,28 @@
 import Foundation
 
 public struct UniversalResponse<T: Decodable>: Decodable, UniversalResponseType {
-    public let code: String
+    public let success: Bool
     public let message: String
     public let data: T
     
-    public init(code: String, message: String, data: T) {
-        self.code = code
+    public init(success: Bool, message: String, data: T) {
+        self.success = success
         self.message = message
         self.data = data
     }
 }
 
 public struct UniversalEmptyResponse: Decodable {
-    public let code: String
+    public let success: Bool
     public let message: String
-    public init(code: String, message: String) {
-        self.code = code
+    public init(message: String, success: Bool) {
+        self.success = success
         self.message = message
     }
 }
 
 public struct UniversalListResponse<T: Decodable>: Decodable, UniversalResponseType {
-    let code: String
+    let success: Bool
     let message: String
     let data: [T]?
     
@@ -68,7 +68,7 @@ public struct MultipageModel: Decodable {
 
 protocol UniversalResponseType: Decodable {
     associatedtype T: Decodable 
-    var code: String { get }
+    var success: Bool { get }
     var message: String { get }
     var data: T { get }
 }

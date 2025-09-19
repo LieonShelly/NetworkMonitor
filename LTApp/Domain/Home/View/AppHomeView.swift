@@ -23,6 +23,7 @@ struct AppHomeView: View {
                 .transition(.opacity)
             }
         }
+        .toolbarVisibility(.hidden, for: .navigationBar)
         .defaultBackground()
         .task {
             withAnimation(.easeInOut) {

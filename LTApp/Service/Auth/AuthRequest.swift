@@ -5,13 +5,16 @@
 import Foundation
 
 enum AuthRequest: Request {
-    case login(appleId: String, authToken: String)
+    case login(authorizationCode: String, identityToken: String)
+    case refreshToken(_ refreshToken: String)
     
     var endPoint: any EndPoint {
         var path: String = ""
         switch self {
         case .login:
             path += "/api/auth/login"
+        case .refreshToken:
+            path += "/api/auth/refresh"
         }
         return DefaultEndPoint.baseURL(path: path)
     }
@@ -22,8 +25,10 @@ enum AuthRequest: Request {
     
     var payload: HttpPayload {
         switch self {
-        case let .login(appleId, authToken):
-            return .json(body: ["appleId": appleId, "authToken": authToken], urlParameter: nil)
+        case let .login(authorizationCode, identityToken):
+            return .json(body: ["authorizationCode": authorizationCode, "identityToken": identityToken])
+        case let .refreshToken(value):
+            return .json(body: ["refresh_token": value])
         }
     }
 }

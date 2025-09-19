@@ -5,18 +5,26 @@
 import Foundation
 
 public struct UserDTO: Decodable {
-    let userId: String
-    let displayName: String
-    let token: String
+    let accessToken: String
     let refreshToken: String
-    let expiresAt: TimeInterval
+    let userInfo: UserInfoDTO
+    
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+        case refreshToken = "refresh_token"
+        case userInfo = "user"
+    }
+}
+
+public struct UserInfoDTO: Decodable {
+    let id: String
+    let email: String
 }
 
 public extension UserDTO {
     func toDomain() -> User {
         return User(
-            userId: userId,
-            fullName: displayName,
+            id: userInfo.id,
             email: ""
         )
     }

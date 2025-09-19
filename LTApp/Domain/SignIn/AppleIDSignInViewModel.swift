@@ -11,9 +11,9 @@ class AppleIDSignInViewModel: ObservableObject, @unchecked Sendable {
         self.service = service
     }
     
-    func login(appleId: String, authToken: String) async {
+    func login(authorizationCode: String, identityToken: String) async {
         do {
-           let user = try await service.authUseCasse.execute(appleId: appleId, authToken: authToken)
+           let user = try await service.authUseCasse.execute(authorizationCode: authorizationCode, identityToken: identityToken)
             print(user)
         } catch {
             print("error:\(error)")
