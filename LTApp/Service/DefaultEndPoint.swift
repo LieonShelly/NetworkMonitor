@@ -12,7 +12,7 @@ enum DefaultEndPoint: EndPoint {
         case .baseURL(let path):
             var components = URLComponents(string: path)
             components?.scheme = "https"
-            components?.host = "baidu.com/api"
+            components?.host = "baidu.com"
             return components!.url!
         }
     }

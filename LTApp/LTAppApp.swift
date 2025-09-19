@@ -38,7 +38,11 @@ struct LTAppApp: App {
             apiClient: apiClient,
             authTokenProvider: sessionManager
         )
-        let appDataWithAuthorizationService = AppDataWithAuthorizationService(authRepository: authRepository)
+        let reflectionRepository = ReflectionRepository(apiClient: apiClient)
+        let appDataWithAuthorizationService = AppDataWithAuthorizationService(
+            authRepository: authRepository,
+            reflectionRepository: reflectionRepository
+        )
         _coordinator = StateObject(
             wrappedValue: AppCoordinator(
                 appDataService: appDataWithAuthorizationService

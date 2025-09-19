@@ -12,25 +12,35 @@ struct SplashView: View {
     }
     @EnvironmentObject var coordinator: AppCoordinator
     @State var currentPage: CurrentPage = .first
+    @ObservedObject var viewModel: SplashViewModel
+    
+    init(viewModel: SplashViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         VStack {
-            switch currentPage {
-            case .first:
-                firstScreen
-            case .second:
-                secondScreen
-            case .third:
-                thirdSceen
+            if viewModel.sentence != nil {
+                switch currentPage {
+                case .first:
+                    firstScreen
+                case .second:
+                    secondScreen
+                case .third:
+                    thirdSceen
+                }
             }
         }
             .defaultBackground()
             .toolbarVisibility(.hidden, for: .navigationBar)
+            .task {
+                await viewModel.fetchData()
+            }
     }
     
     var firstScreen: some View {
         AnimatedMultilineText(
-            text: "big thoughts, tiny moments.",
+            text: viewModel.sentence?.page1st ?? "big thoughts, tiny moments.",
             font: AppFont.feltTipSenior(size: 32, fontWeight: .regular),
             width: 188) {
                 currentPage = .second
@@ -39,7 +49,7 @@ struct SplashView: View {
     
     
     var secondScreen: some View {
-        AnimatedMultilineText(text: "grow your reflections into insights with guided questions", font: AppFont.feltTipSenior(size: 32, fontWeight: .regular), width: 307) {
+        AnimatedMultilineText(text:  viewModel.sentence?.page2st ?? "grow your reflections into insights with guided questions", font: AppFont.feltTipSenior(size: 32, fontWeight: .regular), width: 307) {
             withAnimation(.easeInOut(duration: 1)) {
                 currentPage = .third
             }
@@ -55,7 +65,7 @@ struct SplashView: View {
     @State var visibleIcons: Int = 0
     var thirdSceen: some View {
         VStack(spacing: .zero) {
-            Text("each answer will generate a unique icon of your own ")
+            Text(viewModel.sentence?.page3st ?? "each answer will generate a unique icon of your own ")
                 .multilineTextAlignment(.leading)
                 .lineLimit(2)
                 .frame(width: 335)

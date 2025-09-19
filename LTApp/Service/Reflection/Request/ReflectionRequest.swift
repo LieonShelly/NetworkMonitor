@@ -11,7 +11,7 @@ enum ReflectionRequest: Request {
     case answerQuestion(_ param: AnswerParam)
     
     var endPoint: any EndPoint {
-        var path: String = ""
+        var path: String = "/api"
         switch self {
         case .onboardingSentences:
             path += "/onboard"
@@ -19,7 +19,7 @@ enum ReflectionRequest: Request {
             path += "/categories"
         case let .headQuestion(categortId):
             path += "/categories/\(categortId)/head"
-        case let .answerQuestion(param):
+        case .answerQuestion:
             path += "/answers"
         }
         return DefaultEndPoint.baseURL(path: path)

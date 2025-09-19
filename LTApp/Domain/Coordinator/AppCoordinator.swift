@@ -7,9 +7,9 @@ import SwiftUI
 @MainActor
 final class AppCoordinator: ObservableObject, Coordinator, @unchecked Sendable {
     @Published var path: NavigationPath = .init()
-    private let appDataService: any AppDataWithAuthorizationServicefull
+    private let appDataService: any AppDataWithAuthorizationServiceful
     
-    init(appDataService: any AppDataWithAuthorizationServicefull) {
+    init(appDataService: any AppDataWithAuthorizationServiceful) {
         self.appDataService = appDataService
     }
     
@@ -26,7 +26,8 @@ final class AppCoordinator: ObservableObject, Coordinator, @unchecked Sendable {
             let viewModel = AppleIDSignInViewModel(service: appDataService)
             return AnyView(AppleIDSignInView(viewModel: viewModel))
         case .splash:
-            return AnyView(SplashView())
+            let viewModel = SplashViewModel(service: appDataService)
+            return AnyView(SplashView(viewModel: viewModel))
         case .onborading:
             return AnyView(OnboardingView())
         case .welcome:

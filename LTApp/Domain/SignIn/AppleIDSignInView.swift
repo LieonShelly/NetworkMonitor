@@ -64,11 +64,17 @@ struct AppleIDSignInView: View {
         .padding(.horizontal, 30)
         .padding(.bottom, 168)
         .onTapGesture {
-//            coordinator.goToHome()
             // for test
             Task.detached {
                 await viewModel.login(authorizationCode: "authorizationCode", identityToken: "idTokenStr")
+                await gotoSplash()
             }
+            
         }
+    }
+    
+    @MainActor
+    func gotoSplash() {
+        coordinator.push(AppRoute.splash)
     }
 }

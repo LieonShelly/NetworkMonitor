@@ -9,7 +9,7 @@ enum AuthRequest: Request {
     case refreshToken(_ refreshToken: String)
     
     var endPoint: any EndPoint {
-        var path: String = ""
+        var path: String = "/api"
         switch self {
         case .login:
             path += "/auth/login"
