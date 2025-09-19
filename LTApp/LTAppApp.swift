@@ -10,13 +10,37 @@ struct LTAppApp: App {
     
     init() {
         try! AppFont.registerFonts()
-        let apiClient = ApiClient(environment: .dev)
-        let authRepository = AuthRepository(apiClient: apiClient)
+        let enviroment = Environment.dev
+        let interceptorClient = ApiClient(
+            environment: enviroment,
+            interceptors: []
+        )
+        let sessionManager = SessionMangaer()
+        let sessionRepository = SessionDataRepository(
+            apiClient: interceptorClient,
+            authTokenProvider: sessionManager
+        )
+        let appDataWithoutAuthorizationService = AppDataWithoutAuthorizationService(
+            sessionDataRepository: sessionRepository
+        )
+        let tokenInterceptor = AuthInterceptor(tokenProvider: sessionManager)
+        let refreshTokenInterceptor = RefreshTokenInterceptor(
+            tokenProvider: sessionManager,
+            service: appDataWithoutAuthorizationService)
+        let apiClient = ApiClient(
+            environment: enviroment,
+            interceptors: [
+                tokenInterceptor,
+                refreshTokenInterceptor
+            ])
+        let authRepository = AuthRepository(
+            apiClient: apiClient,
+            authTokenProvider: sessionManager
+        )
+        let appDataWithAuthorizationService = AppDataWithAuthorizationService(authRepository: authRepository)
         _coordinator = StateObject(
             wrappedValue: AppCoordinator(
-                appDataService: AppDataService(
-                    authRepository: authRepository
-                )
+                appDataService: appDataWithAuthorizationService
             )
         )
     }

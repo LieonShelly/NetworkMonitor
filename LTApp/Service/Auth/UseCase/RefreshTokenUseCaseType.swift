@@ -4,14 +4,14 @@
 
 import Foundation
 
-public protocol RefreshTokenUseCaseType {
+public protocol RefreshTokenUseCaseType: Sendable {
     func execute() async throws
 }
 
-public final class RefreshTokenUseCase: RefreshTokenUseCaseType {
-    private let repository: AuthRepositoryType
+public final class RefreshTokenUseCase: RefreshTokenUseCaseType, @unchecked Sendable {
+    private let repository: SessionDataRepositoryType
     
-    public init(repository: AuthRepositoryType) {
+    public init(repository: SessionDataRepositoryType) {
         self.repository = repository
     }
     

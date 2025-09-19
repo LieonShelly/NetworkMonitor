@@ -4,7 +4,7 @@
 
 import Foundation
 
-public protocol NetworkInterceptor {
+public protocol NetworkInterceptor: Sendable {
     func adapt(_ request: URLRequest) async throws -> URLRequest
     
     func shouldRetry(_ request: URLRequest, response: URLResponse?) async throws -> Bool

@@ -40,6 +40,8 @@ public class RequestBuilder {
             }
             urlRequest.allHTTPHeaderFields = header
             return urlRequest
+        case .empty:
+            return urlRequest
         }
     }
     

@@ -5,14 +5,14 @@
 
 import Foundation
 
-actor AuthInterceptor: NetworkInterceptor {
+public actor AuthInterceptor: NetworkInterceptor, @unchecked Sendable {
     private weak var tokenProvider: TokenProvider?
     
     init(tokenProvider: TokenProvider? = nil) {
         self.tokenProvider = tokenProvider
     }
     
-    func adapt(_ request: URLRequest) async throws -> URLRequest {
+    public func adapt(_ request: URLRequest) async throws -> URLRequest {
         var request = request
         if let token = tokenProvider?.accessToken {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -20,7 +20,7 @@ actor AuthInterceptor: NetworkInterceptor {
         return request
     }
     
-    func shouldRetry(_ request: URLRequest, data: Data?, response: URLResponse?, error: (any Error)?) async throws -> Bool {
+    public func shouldRetry(_ request: URLRequest, response: URLResponse?) async throws -> Bool {
         return false
     }
 }

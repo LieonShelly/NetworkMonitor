@@ -6,7 +6,7 @@
 import Foundation
 import Combine
 
-class SessionMangaer: ObservableObject, TokenProvider {
+class SessionMangaer: ObservableObject, TokenProvider, @unchecked Sendable {
     
     @Published var accessToken: String? = nil
     var refreshToken: String? = nil

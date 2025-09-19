@@ -7,9 +7,9 @@ import SwiftUI
 @MainActor
 final class AppCoordinator: ObservableObject, Coordinator, @unchecked Sendable {
     @Published var path: NavigationPath = .init()
-    private let appDataService: any AppDataServiceful
+    private let appDataService: any AppDataWithAuthorizationServicefull
     
-    init(appDataService: any AppDataServiceful) {
+    init(appDataService: any AppDataWithAuthorizationServicefull) {
         self.appDataService = appDataService
     }
     

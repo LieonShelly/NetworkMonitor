@@ -4,13 +4,13 @@
 
 import Foundation
 
-actor RefreshTokenInterceptor: NetworkInterceptor {
+actor RefreshTokenInterceptor: NetworkInterceptor, @unchecked Sendable {
     private weak var tokenProvider: TokenProvider?
-    private let service: any AppDataServiceful
+    private let service: any AppDataWithoutAuthorizationServicefull
     
-    init(tokenProvider: TokenProvider?, service: any AppDataServiceful) {
+    init(tokenProvider: TokenProvider?, service: any AppDataWithoutAuthorizationServicefull) {
         self.tokenProvider = tokenProvider
-        self.service =  service
+        self.service = service
     }
     
     func adapt(_ request: URLRequest) async throws -> URLRequest {

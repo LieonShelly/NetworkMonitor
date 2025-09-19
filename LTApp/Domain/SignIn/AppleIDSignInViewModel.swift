@@ -5,9 +5,9 @@
 import Combine
 
 class AppleIDSignInViewModel: ObservableObject, @unchecked Sendable {
-    private let service: any AppDataServiceful
+    private let service: any AppDataWithAuthorizationServicefull
     
-    init(service: any AppDataServiceful) {
+    init(service: any AppDataWithAuthorizationServicefull) {
         self.service = service
     }
     
