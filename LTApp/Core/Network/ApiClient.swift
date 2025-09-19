@@ -13,7 +13,11 @@ public class ApiClient: ApiClientType {
     private let environment: Environment
     private let interceptors: [NetworkInterceptor]
     
-    public init(configuration: URLSessionConfiguration = .default, environment: Environment, interceptors: [NetworkInterceptor]) {
+    public init(
+        configuration: URLSessionConfiguration = .default,
+        environment: Environment,
+        interceptors: [NetworkInterceptor]
+    ) {
         self.session = URLSession(configuration: configuration)
         self.environment = environment
         self.interceptors = interceptors
@@ -44,8 +48,8 @@ public class ApiClient: ApiClientType {
             }
         default:
             throw AppNetworkError.httpError(
-            statusCode: .init(rawValue: statusCode) ??  HttpErrorCode.badRequest,
-            body: responseData.0)
+                statusCode: .init(rawValue: statusCode) ??  HttpErrorCode.badRequest,
+                body: responseData.0)
         }
         throw AppNetworkError.dataError(debugDescription: "Data error")
     }

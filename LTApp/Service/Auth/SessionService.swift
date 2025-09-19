@@ -2,12 +2,10 @@
 //  LTApp, This code is protected by intellectual property rights.
 //
 
-
 import Foundation
 import Combine
 
-class SessionMangaer: ObservableObject, TokenProvider, @unchecked Sendable {
-    
+class SessionService: ObservableObject, TokenProvider, @unchecked Sendable {
     @Published var accessToken: String? = nil
     var refreshToken: String? = nil
     
@@ -19,6 +17,6 @@ class SessionMangaer: ObservableObject, TokenProvider, @unchecked Sendable {
     func clear() {
         accessToken = nil
         refreshToken = nil
-        
     }
 }
+

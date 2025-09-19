@@ -15,7 +15,7 @@ struct LTAppApp: App {
             environment: enviroment,
             interceptors: []
         )
-        let sessionManager = SessionMangaer()
+        let sessionManager = SessionService()
         let sessionRepository = SessionDataRepository(
             apiClient: interceptorClient,
             authTokenProvider: sessionManager
