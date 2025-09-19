@@ -2,29 +2,7 @@
 //  LTApp, This code is protected by intellectual property rights.
 //
 
-
 import Foundation
-
-struct AnswerParam: Encodable {
-    let questionId: String
-    let content: String
-    
-    enum CodingKeys: String, CodingKey {
-        case questionId = "question_id"
-        case content = "content"
-    }
-}
-
-extension Encodable {
-    func json() -> [String: any Sendable] {
-        let encoder = JSONEncoder()
-        guard let data = try? encoder.encode(self),
-              let dict = try? JSONSerialization.jsonObject(with: data) as? [String: any Sendable] else {
-            return [:]
-        }
-        return dict
-    }
-}
 
 enum ReflectionRequest: Request {
     case onboardingSentences
@@ -69,4 +47,3 @@ enum ReflectionRequest: Request {
         }
     }
 }
-
