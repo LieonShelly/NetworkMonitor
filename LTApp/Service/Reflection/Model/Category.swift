@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct Category {
+public struct Category: Sendable {
     var id: String
     var title: String
     

@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct Answer: Decodable {
+public struct Answer: Sendable {
     let id: String
     let content: String
 }

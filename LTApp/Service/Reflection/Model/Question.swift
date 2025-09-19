@@ -6,7 +6,7 @@
 
 import Foundation
 
-public struct Question {
+public struct Question: Sendable {
     var id: String
     var title: String
     
