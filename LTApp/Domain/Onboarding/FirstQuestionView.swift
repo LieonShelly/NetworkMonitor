@@ -5,11 +5,18 @@
 import SwiftUI
 
 struct FirstQuestionView: View {
-    @State var answerText: String = ""
+    @ObservedObject var viewModel: FirstQuestionViewModel
+    
+    init(viewModel: FirstQuestionViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         answerForm.defaultBackground()
             .toolbarVisibility(.hidden, for: .navigationBar)
+            .task {
+                await viewModel.fetchData()
+            }
     }
     
     var topicTitleView: some View {
@@ -29,7 +36,7 @@ struct FirstQuestionView: View {
     
     var questionView: some View {
         HStack {
-            Text("What is one little thing that made you happy today?")
+            Text(viewModel.question?.title ?? "")
                 .textStyle(size: 32)
                 .lineLimit(4)
             Spacer()
@@ -40,7 +47,7 @@ struct FirstQuestionView: View {
   
     var answerInputView: some View {
         AnswerInputView(
-            text: $answerText,
+            text: $viewModel.answerText,
             placeholder: "Write anything...."
         )
             .padding(.horizontal, 24)
@@ -51,11 +58,11 @@ struct FirstQuestionView: View {
     }
     
     var okBtn: some View {
-        AppButton(isEnabled: !answerText.isEmpty, title: "oK") {
-            
-        }
-        .frame(height: 62)
-        .padding(.horizontal, 32)
+        AppButton(isEnabled: !viewModel.answerText.isEmpty, title: "oK") {
+                
+            }
+            .frame(height: 62)
+            .padding(.horizontal, 32)
     }
     
     var answerForm: some View {
@@ -78,7 +85,7 @@ struct FirstQuestionView: View {
                 .padding(.top, 100)
             
             HStack {
-                Text("What is one little thing that made you happy today?")
+                Text("\(viewModel.question?.title ?? "")")
                     .textStyle(size: 24)
                     .lineLimit(10)
                 Spacer()
@@ -87,7 +94,7 @@ struct FirstQuestionView: View {
             .padding(.top, 59)
             
             HStack {
-                Text("High school friend brought me a new coffee dripper from California, and I’m so happy to continue my morning coffee routine with that.")
+                Text(viewModel.answerText)
                     .textStyle(size: 12, fontFamily: .poppinsRegular)
                     .padding(.init(top: 18, leading: 22, bottom: 18, trailing: 18))
                 Spacer()
@@ -106,9 +113,7 @@ struct FirstQuestionView: View {
                 Spacer()
             }
             .padding(.horizontal, 24)
-            
             Spacer()
-            
         }
     }
 }

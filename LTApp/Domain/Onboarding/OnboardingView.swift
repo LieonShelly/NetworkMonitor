@@ -9,10 +9,15 @@ struct OnboardingView: View {
         case onboarding
         case welcome
     }
-    let topics: [String] = ["Daily life", "Career growth", "Relationship"]
-   @State var selectedTopic: String? = nil
+    
+    @State var selectedCategory: Category? = nil
     @EnvironmentObject var coordinator: AppCoordinator
     @State var currentPage: PageState = .onboarding
+    @ObservedObject var viewModel: OnboardingViewModel
+    
+    init(viewModel: OnboardingViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         VStack(spacing: .zero) {
@@ -20,12 +25,14 @@ struct OnboardingView: View {
             case .onboarding:
                 onboardingContent
             case .welcome:
-                coordinator.build(AppRoute.welcome)
+                coordinator.build(AppRoute.welcome(selectedCategory?.id ?? ""))
             }
         }
         .defaultBackground()
         .toolbarVisibility(.hidden, for: .navigationBar)
-        
+        .task {
+            await viewModel.fetchData()
+        }
     }
     
     var onboardingContent: some View {
@@ -37,7 +44,7 @@ struct OnboardingView: View {
         }
         .transition(.asymmetric(insertion: .identity, removal: .opacity))
     }
-
+    
     var title: some View {
         HStack {
             Text("Which aspect do you want to focus on?")
@@ -46,37 +53,35 @@ struct OnboardingView: View {
                 .foregroundStyle(AppColor.textPrimary)
             Spacer()
         }
-            .padding(.top, 70)
-            .padding(.horizontal, 32)
+        .padding(.top, 70)
+        .padding(.horizontal, 32)
     }
     
     var topicList: some View {
         VStack(spacing: 16) {
-            ForEach(topics, id: \.self) { topic in
-                DashLineButton(text: topic, isSelected: selectedTopic == topic) {
-                    selectedTopic = topic
+            ForEach(viewModel.list, id: \.id) { category in
+                DashLineButton(
+                    text: selectedCategory?.title ?? "" ,
+                    isSelected: selectedCategory == category) {
+                    selectedCategory = category
                 }
                 .frame(height: 112)
             }
         }
         .padding(.horizontal, 32)
         .padding(.top, 61)
-       
+        
     }
     
     var bottomBtn: some View {
         DefaultAppButton(
-            isEnabled: selectedTopic != nil,
+            isEnabled: selectedCategory != nil,
             title: "Next") {
                 withAnimation(.easeInOut(duration: 0.25)) {
                     currentPage = .welcome
                 }
             }
-        .padding(.horizontal, 32)
+            .padding(.horizontal, 32)
     }
 }
 
-
-#Preview {
-    OnboardingView()
-}

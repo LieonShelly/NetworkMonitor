@@ -14,6 +14,11 @@ struct WelcomeView: View {
     @State var showPage: Bool = false
     @State var showSecondPageText: Bool = false
     @EnvironmentObject var coordinator: AppCoordinator
+    @ObservedObject var viewModel: WelcomeViewModel
+    
+    init(viewModel: WelcomeViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         VStack {
@@ -73,15 +78,11 @@ struct WelcomeView: View {
                 
             Spacer()
             DefaultAppButton(title: "start") {
-                coordinator.push(AppRoute.firstQuestion)
+                coordinator.push(AppRoute.firstQuestion(viewModel.categoryId))
             }
             .padding(.horizontal, 24)
         }
         .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .identity))
        
     }
-}
-
-#Preview {
-    WelcomeView()
 }

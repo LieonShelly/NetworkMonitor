@@ -29,7 +29,8 @@ final class AppCoordinator: ObservableObject, Coordinator, @unchecked Sendable {
             let viewModel = SplashViewModel(service: appDataService)
             return AnyView(SplashView(viewModel: viewModel))
         case .onborading:
-            return AnyView(OnboardingView())
+            let viewModel = OnboardingViewModel(service: appDataService)
+            return AnyView(OnboardingView(viewModel: viewModel))
         case .welcome:
             return AnyView(WelcomeView())
         case .firstQuestion:
@@ -63,7 +64,7 @@ enum AppRoute: Route {
     case login
     case splash
     case onborading
-    case welcome
-    case firstQuestion
+    case welcome(_ categoryId: String)
+    case firstQuestion(_ categoryId: String)
     case home
 }
