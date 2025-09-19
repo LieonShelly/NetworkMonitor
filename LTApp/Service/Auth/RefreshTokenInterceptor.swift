@@ -26,11 +26,6 @@ actor RefreshTokenInterceptor: NetworkInterceptor, @unchecked Sendable {
     }
     
     private func refreshTokenIfNeeded() async throws {
-        guard let refreshToken = tokenProvider?.refreshToken,
-              let token = tokenProvider?.accessToken else {
-            tokenProvider?.clear()
-            throw AppNetworkError.httpError(statusCode: .unauthorized, body: nil)
-        }
         try await service.refreshTokenUseCase.execute()
     }
 }

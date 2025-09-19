@@ -8,6 +8,7 @@ public protocol TokenProvider: AnyObject {
     var accessToken: String? { get }
     var refreshToken: String? { get }
     
-    func updateTokens(accessToken: String, refreshToken: String)
+    func updateTokens(accessToken: String, refreshToken: String) throws
+    
     func clear()
 }

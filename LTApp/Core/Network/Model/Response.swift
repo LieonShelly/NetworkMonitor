@@ -24,7 +24,6 @@ public extension JSONDecoder {
     static func parseJson<T: Decodable>(_ data: Data, with dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .deferredToDate) throws -> T {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = dateDecodingStrategy
-        let confidentialCodable = try? decoder.decode(T.self, from: data)
         return try decoder.decode(T.self, from: data)
     }
 }

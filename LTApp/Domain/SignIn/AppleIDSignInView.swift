@@ -64,7 +64,11 @@ struct AppleIDSignInView: View {
         .padding(.horizontal, 30)
         .padding(.bottom, 168)
         .onTapGesture {
-            coordinator.goToHome()
+//            coordinator.goToHome()
+            // for test
+            Task.detached {
+                await viewModel.login(authorizationCode: "authorizationCode", identityToken: "idTokenStr")
+            }
         }
     }
 }

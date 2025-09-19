@@ -4,11 +4,12 @@
 
 import Foundation
 
-public protocol AuthRepositoryType {
-    func login(authorizationCode: String, identityToken: String) async throws -> User
+public protocol SessionDataRepositoryType {
+    func refreshToken() async throws
+
 }
 
-public final class AuthRepository: AuthRepositoryType {
+public final class SessionDataRepository: SessionDataRepositoryType {
     private let apiClient: ApiClient
     private let authTokenProvider: any TokenProvider
     
@@ -17,15 +18,16 @@ public final class AuthRepository: AuthRepositoryType {
         self.authTokenProvider = authTokenProvider
     }
     
-    public func login(authorizationCode: String, identityToken: String) async throws -> User {
-        let request = AuthRequest.login(authorizationCode: authorizationCode, identityToken: identityToken)
+    public func refreshToken() async throws {
+        guard let refreshToken = authTokenProvider.refreshToken else {
+            throw AppNetworkError.httpError(statusCode: .unauthorized, body: nil)
+        }
+        let request = AuthRequest.refreshToken(refreshToken)
         let response = try await apiClient.sendRequest(request)
         let userDto: UniversalResponse<UserDTO> = try response.parseJson()
         try authTokenProvider.updateTokens(
             accessToken: userDto.data.accessToken,
             refreshToken: userDto.data.refreshToken
         )
-        return userDto.data.toDomain()
     }
-    
 }
