@@ -12,9 +12,9 @@ enum AuthRequest: Request {
         var path: String = ""
         switch self {
         case .login:
-            path += "/api/auth/login"
+            path += "/auth/login"
         case .refreshToken:
-            path += "/api/auth/refresh"
+            path += "/auth/refresh"
         }
         return DefaultEndPoint.baseURL(path: path)
     }
