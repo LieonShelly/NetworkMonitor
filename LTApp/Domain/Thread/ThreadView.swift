@@ -5,6 +5,9 @@
 import SwiftUI
 
 struct ThreadView: View {
+    @EnvironmentObject var homeCoordinator: HomeCoordinator
+    @EnvironmentObject var appCoordinator: AppCoordinator
+    
     var body: some View {
         ScrollView {
             LazyVStack(spacing: .zero) {
@@ -94,6 +97,9 @@ struct ThreadView: View {
                 .lineLimit(1)
                 .textStyle(size: 12, color: AppColor.color(hex: 0x6f6f6f), fontFamily: .poppinsRegular)
             Spacer()
+        }
+        .onTapGesture {
+            appCoordinator.changeRoot(.preHome)
         }
     }
     

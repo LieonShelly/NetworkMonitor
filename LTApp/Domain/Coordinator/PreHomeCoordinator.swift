@@ -22,8 +22,6 @@ final class PreHomeCoordinator: ObservableObject, Coordinator, @unchecked Sendab
     
     init(appDataService: any AppDataWithAuthorizationServiceful) {
         self.appDataService = appDataService
-        let homeCoordinator = HomeCoordinator()
-        addChild(homeCoordinator)
     }
     
     func start() {

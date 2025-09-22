@@ -15,6 +15,9 @@ struct AppHomeRootView: View {
                 .navigationDestination(for: HomeRoute.self) { path in
                     coordinator.build(path)
                 }
+                .navigationDestination(for: PreHomeRoute.self) { path  in
+                    coordinator.build(path)
+                }
         }
         .onAppear {
             coordinator.start()

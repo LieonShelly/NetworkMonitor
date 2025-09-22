@@ -6,7 +6,7 @@ import SwiftUI
 
 @MainActor
 final class AppCoordinator: ObservableObject, @unchecked Sendable {
-    @Published var root: AppRootType = .preHome
+    @Published private(set) var root: AppRootType = .preHome
     
     private let appDataService: any AppDataWithAuthorizationServiceful
     

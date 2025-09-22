@@ -8,6 +8,13 @@ import SwiftUI
 final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
     @Published var path: NavigationPath = .init()
     var children: [any Coordinator] = []
+    private let appDataService: any AppDataWithAuthorizationServiceful
+    
+    init(appDataService: any AppDataWithAuthorizationServiceful) {
+        self.appDataService = appDataService
+        let historyCoordinator = PreHomeCoordinator(appDataService: appDataService)
+        addChild(historyCoordinator, isSameStack: true)
+    }
     
     func build(_ route: any Route) -> AnyView? {
         guard let route = route as? HomeRoute else {
@@ -30,3 +37,7 @@ enum HomeRoute: Route {
     case home
 }
 
+
+enum HistoryRoute: Route {
+    case list
+}

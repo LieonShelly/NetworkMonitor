@@ -50,7 +50,7 @@ struct LTAppApp: App {
                 appDataService: appDataWithAuthorizationService
             )
         )
-        _homeCoordinator = StateObject(wrappedValue: HomeCoordinator())
+        _homeCoordinator = StateObject(wrappedValue: HomeCoordinator(appDataService: appDataWithAuthorizationService))
         
         _preHomeCoordinator = StateObject(wrappedValue: PreHomeCoordinator(appDataService: appDataWithAuthorizationService))
     }
