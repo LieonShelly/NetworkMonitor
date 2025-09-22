@@ -26,8 +26,8 @@ actor RefreshTokenInterceptor: NetworkInterceptor, @unchecked Sendable {
             return false
         }
         do {
-            requestsPool.append(request)
             try await refreshTokenIfNeeded()
+            requestsPool.append(request)
             return true
         } catch {
             return false
