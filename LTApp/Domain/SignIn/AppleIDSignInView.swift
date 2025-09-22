@@ -8,6 +8,7 @@ import AuthenticationServices
 struct AppleIDSignInView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     @ObservedObject var viewModel: AppleIDSignInViewModel
+    @State var showError: Bool = false
     
     var body: some View {
         VStack(spacing: .zero) {
@@ -53,9 +54,9 @@ struct AppleIDSignInView: View {
                     authorizationCode = code
                 }
                 Task.detached {
-                    await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
+                    try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
                 }
-            case .failure(let error):
+            case .failure:
                 break
             }
         }
@@ -64,12 +65,17 @@ struct AppleIDSignInView: View {
         .padding(.horizontal, 30)
         .padding(.bottom, 168)
         .onTapGesture {
-            // for test
             Task.detached {
-                await viewModel.login(authorizationCode: "authorizationCode", identityToken: "idTokenStr")
-                await gotoSplash()
+                do {
+                    try await viewModel.login(authorizationCode: "authorizationCode", identityToken: "idTokenStr")
+                    await gotoSplash()
+
+                } catch {
+                  await MainActor.run {
+                        showError = true
+                    }
+                }
             }
-            
         }
     }
     

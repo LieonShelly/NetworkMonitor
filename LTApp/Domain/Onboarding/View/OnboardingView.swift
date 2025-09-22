@@ -25,7 +25,9 @@ struct OnboardingView: View {
             case .onboarding:
                 onboardingContent
             case .welcome:
-                coordinator.build(AppRoute.welcome(selectedCategory?.id ?? ""))
+                if let selectedCategory {
+                    coordinator.build(AppRoute.welcome(selectedCategory))
+                }
             }
         }
         .defaultBackground()
@@ -61,7 +63,7 @@ struct OnboardingView: View {
         VStack(spacing: 16) {
             ForEach(viewModel.list, id: \.id) { category in
                 DashLineButton(
-                    text: selectedCategory?.title ?? "" ,
+                    text: category.name ,
                     isSelected: selectedCategory == category) {
                     selectedCategory = category
                 }

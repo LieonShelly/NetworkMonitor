@@ -6,17 +6,18 @@ import Combine
 
 final class FirstQuestionViewModel: ObservableObject, @unchecked Sendable {
     private let service: any AppDataWithAuthorizationServiceful
-    private(set) var categoryId: String
+    @Published  private(set) var category: Category
     @MainActor @Published var question: Question?
     @MainActor @Published var answerText: String = ""
     
-    init(categoryId: String, service: any AppDataWithAuthorizationServiceful) {
-        self.categoryId = categoryId
+    init(category: Category, service: any AppDataWithAuthorizationServiceful) {
+        self.category = category
         self.service = service
     }
     
     func fetchData() async {
         do {
+            let categoryId = category.id
             let question =  try await service.fetchHeadQuestionUseCase.execute(categoryId)
             await MainActor.run {
                 self.question = question
@@ -27,18 +28,14 @@ final class FirstQuestionViewModel: ObservableObject, @unchecked Sendable {
     }
     
     
-    func submit() async {
-        do {
-            guard let question = await question else { return }
-            let _ = try await service.submitAnswerUseCase.execute(
-                .init(
-                    questionId: question.id,
-                    content: answerText
-                )
+    func submit() async throws {
+        guard let question = await question else { return }
+        let _ = try await service.submitAnswerUseCase.execute(
+            .init(
+                questionId: question.id,
+                content: answerText
             )
-        } catch {
-            print(error)
-        }
+        )
     }
     
 }

@@ -5,6 +5,8 @@
 import SwiftUI
 
 struct FirstQuestionView: View {
+    @EnvironmentObject var coordinaor: AppCoordinator
+    
     @ObservedObject var viewModel: FirstQuestionViewModel
     
     init(viewModel: FirstQuestionViewModel) {
@@ -21,7 +23,7 @@ struct FirstQuestionView: View {
     
     var topicTitleView: some View {
         HStack(spacing: 6) {
-            Text("daily life")
+            Text(viewModel.category.name)
                 .textStyle(size: 14, color: .white, fontFamily: .sfProBold)
             Image(.downArrow)
                 .resizable()
@@ -38,7 +40,6 @@ struct FirstQuestionView: View {
         HStack {
             Text(viewModel.question?.title ?? "")
                 .textStyle(size: 32)
-                .lineLimit(4)
             Spacer()
         }
         .padding(.horizontal, 24)
@@ -59,7 +60,15 @@ struct FirstQuestionView: View {
     
     var okBtn: some View {
         AppButton(isEnabled: !viewModel.answerText.isEmpty, title: "oK") {
-                
+                Task.detached {
+                    do {
+                       try await viewModel.submit()
+                       await coordinaor.goToHome()
+                    } catch {
+                        print(error)
+                    }
+                   
+                }
             }
             .frame(height: 62)
             .padding(.horizontal, 32)

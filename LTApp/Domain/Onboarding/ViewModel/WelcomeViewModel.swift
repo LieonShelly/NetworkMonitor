@@ -6,10 +6,10 @@ import Combine
 
 final class WelcomeViewModel: ObservableObject, @unchecked Sendable {
     
-    private(set) var categoryId: String
+    private(set) var category: Category
     
-    init(categoryId: String) {
-        self.categoryId = categoryId
+    init(category: Category) {
+        self.category = category
     }
     
 }

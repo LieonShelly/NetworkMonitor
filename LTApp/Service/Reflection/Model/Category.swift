@@ -4,17 +4,22 @@
 
 import Foundation
 
-public struct Category: Sendable, Identifiable, Equatable {
+public struct Category: Sendable, Identifiable, Equatable, Hashable {
     public var id: String
-    public var title: String
+    public var name: String
     
-    public  init(id: String, title: String) {
+    public  init(id: String, name: String) {
         self.id = id
-        self.title = title
+        self.name = name
     }
     
-    static func == (lhs: Category, rhs: Category) -> Bool {
+    public static func == (lhs: Category, rhs: Category) -> Bool {
         return lhs.id == rhs.id
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(name)
     }
 }
 

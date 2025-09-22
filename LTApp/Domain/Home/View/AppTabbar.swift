@@ -41,7 +41,7 @@ struct AppTabbar: View {
     var addBtn: some View {
         Button {
         } label: {
-            Image(.add)
+            Image(.addAnswer)
                 .resizable()
         }
         .frame(width: 60, height: 60)

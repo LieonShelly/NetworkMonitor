@@ -78,7 +78,7 @@ struct WelcomeView: View {
                 
             Spacer()
             DefaultAppButton(title: "start") {
-                coordinator.push(AppRoute.firstQuestion(viewModel.categoryId))
+                coordinator.push(AppRoute.firstQuestion(viewModel.category))
             }
             .padding(.horizontal, 24)
         }

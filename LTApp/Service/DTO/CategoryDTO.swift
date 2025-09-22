@@ -7,11 +7,11 @@ import Foundation
 
 struct CategoryDTO: Decodable {
     var id: String
-    var title: String
+    var name: String
 }
 
 extension CategoryDTO {
     func toDomain() -> Category {
-        return Category(id: id, title: title)
+        return Category(id: id, name: name)
     }
 }

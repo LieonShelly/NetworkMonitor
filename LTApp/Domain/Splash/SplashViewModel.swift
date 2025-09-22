@@ -6,7 +6,7 @@
 import Combine
 
 final class SplashViewModel: ObservableObject, @unchecked Sendable {
-  @MainActor  @Published var sentence: OnboardingSentence?
+    @MainActor  @Published var sentence: OnboardingSentence?
     private let service: any AppDataWithAuthorizationServiceful
     
     init(service: any AppDataWithAuthorizationServiceful) {
@@ -16,7 +16,7 @@ final class SplashViewModel: ObservableObject, @unchecked Sendable {
     func fetchData() async {
         do {
             let sentence =  try await service.fetchOnboardingSentenceUseCase.execute()
-           await MainActor.run {
+            await MainActor.run {
                 self.sentence = sentence
             }
         } catch {
