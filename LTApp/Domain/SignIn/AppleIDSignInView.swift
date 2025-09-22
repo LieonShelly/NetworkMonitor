@@ -66,18 +66,17 @@ struct AppleIDSignInView: View {
         .padding(.horizontal, 30)
         .padding(.bottom, 168)
         .onTapGesture {
-            appCoordinator.changeRoot(.home)
-//            Task.detached {
-//                do {
-//                    try await viewModel.login(authorizationCode: "authorizationCode", identityToken: "idTokenStr")
-//                    await gotoSplash()
-//
-//                } catch {
-//                  await MainActor.run {
-//                        showError = true
-//                    }
-//                }
-//            }
+            Task.detached {
+                do {
+                    try await viewModel.login(authorizationCode: "authorizationCode", identityToken: "idTokenStr")
+                    await gotoSplash()
+
+                } catch {
+                  await MainActor.run {
+                        showError = true
+                    }
+                }
+            }
         }
     }
     

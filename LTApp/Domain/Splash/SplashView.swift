@@ -67,7 +67,7 @@ struct SplashView: View {
         VStack(spacing: .zero) {
             Text(viewModel.sentence?.page3st ?? "each answer will generate a unique icon of your own ")
                 .multilineTextAlignment(.leading)
-                .lineLimit(2)
+                .lineLimit(10)
                 .frame(width: 335)
                 .font(AppFont.feltTipSenior(size: 32, fontWeight: .regular))
                 .foregroundStyle(AppColor.textPrimary)

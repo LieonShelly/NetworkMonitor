@@ -5,7 +5,7 @@
 import SwiftUI
 
 struct FirstQuestionView: View {
-    @EnvironmentObject var coordinaor: PreHomeCoordinator
+    @EnvironmentObject var coordinaor: AppCoordinator
     
     @ObservedObject var viewModel: FirstQuestionViewModel
     
@@ -63,7 +63,7 @@ struct FirstQuestionView: View {
                 Task.detached {
                     do {
                        try await viewModel.submit()
-                        await coordinaor.push(HomeRoute.home)
+                        await coordinaor.changeRoot(.home)
                     } catch {
                         print(error)
                     }
