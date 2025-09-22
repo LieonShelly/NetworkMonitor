@@ -7,6 +7,8 @@ import SwiftUI
 @main
 struct LTAppApp: App {
     @StateObject var coordinator: AppCoordinator
+    @StateObject var homeCoordinator: HomeCoordinator
+    @StateObject var preHomeCoordinator: PreHomeCoordinator
     
     init() {
         try! AppFont.registerFonts()
@@ -48,12 +50,22 @@ struct LTAppApp: App {
                 appDataService: appDataWithAuthorizationService
             )
         )
+        _homeCoordinator = StateObject(wrappedValue: HomeCoordinator())
+        
+        _preHomeCoordinator = StateObject(wrappedValue: PreHomeCoordinator(appDataService: appDataWithAuthorizationService))
     }
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            switch coordinator.root {
+            case .preHome:
+                coordinator.rootView(.preHome)
+            case .home:
+                coordinator.rootView(.home)
+            }
         }
+        .environmentObject(homeCoordinator)
         .environmentObject(coordinator)
+        .environmentObject(preHomeCoordinator)
     }
 }

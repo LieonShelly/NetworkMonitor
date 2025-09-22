@@ -10,7 +10,7 @@ struct SplashView: View {
         case second
         case third
     }
-    @EnvironmentObject var coordinator: AppCoordinator
+    @EnvironmentObject var coordinator: PreHomeCoordinator
     @State var currentPage: CurrentPage = .first
     @ObservedObject var viewModel: SplashViewModel
     
@@ -98,7 +98,7 @@ struct SplashView: View {
             visibleIcons = icons.count
             let totalDuraion = delayDuration(iconIndex: icons.count - 1)
             try? await Task.sleep(for: .seconds(totalDuraion))
-            coordinator.push(AppRoute.onborading)
+            coordinator.push(PreHomeRoute.onborading)
         }
     }
     

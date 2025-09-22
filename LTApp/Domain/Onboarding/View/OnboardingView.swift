@@ -11,7 +11,7 @@ struct OnboardingView: View {
     }
     
     @State var selectedCategory: Category? = nil
-    @EnvironmentObject var coordinator: AppCoordinator
+    @EnvironmentObject var coordinator: PreHomeCoordinator
     @State var currentPage: PageState = .onboarding
     @ObservedObject var viewModel: OnboardingViewModel
     
@@ -26,7 +26,7 @@ struct OnboardingView: View {
                 onboardingContent
             case .welcome:
                 if let selectedCategory {
-                    coordinator.build(AppRoute.welcome(selectedCategory))
+                    coordinator.build(PreHomeRoute.welcome(selectedCategory))
                 }
             }
         }

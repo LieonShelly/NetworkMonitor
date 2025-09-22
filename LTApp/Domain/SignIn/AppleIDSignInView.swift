@@ -6,7 +6,8 @@ import SwiftUI
 import AuthenticationServices
 
 struct AppleIDSignInView: View {
-    @EnvironmentObject var coordinator: AppCoordinator
+    @EnvironmentObject var coordinator: PreHomeCoordinator
+    @EnvironmentObject var appCoordinator: AppCoordinator
     @ObservedObject var viewModel: AppleIDSignInViewModel
     @State var showError: Bool = false
     
@@ -65,22 +66,23 @@ struct AppleIDSignInView: View {
         .padding(.horizontal, 30)
         .padding(.bottom, 168)
         .onTapGesture {
-            Task.detached {
-                do {
-                    try await viewModel.login(authorizationCode: "authorizationCode", identityToken: "idTokenStr")
-                    await gotoSplash()
-
-                } catch {
-                  await MainActor.run {
-                        showError = true
-                    }
-                }
-            }
+            appCoordinator.root = .home
+//            Task.detached {
+//                do {
+//                    try await viewModel.login(authorizationCode: "authorizationCode", identityToken: "idTokenStr")
+//                    await gotoSplash()
+//
+//                } catch {
+//                  await MainActor.run {
+//                        showError = true
+//                    }
+//                }
+//            }
         }
     }
     
     @MainActor
     func gotoSplash() {
-        coordinator.push(AppRoute.splash)
+        coordinator.push(PreHomeRoute.splash)
     }
 }

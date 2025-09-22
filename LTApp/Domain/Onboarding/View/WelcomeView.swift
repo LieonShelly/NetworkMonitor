@@ -13,7 +13,7 @@ struct WelcomeView: View {
     @State var currentPage: CurrentPage = .first
     @State var showPage: Bool = false
     @State var showSecondPageText: Bool = false
-    @EnvironmentObject var coordinator: AppCoordinator
+    @EnvironmentObject var coordinator: PreHomeCoordinator
     @ObservedObject var viewModel: WelcomeViewModel
     
     init(viewModel: WelcomeViewModel) {
@@ -78,7 +78,7 @@ struct WelcomeView: View {
                 
             Spacer()
             DefaultAppButton(title: "start") {
-                coordinator.push(AppRoute.firstQuestion(viewModel.category))
+                coordinator.push(PreHomeRoute.firstQuestion(viewModel.category))
             }
             .padding(.horizontal, 24)
         }
