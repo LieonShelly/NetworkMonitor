@@ -7,8 +7,6 @@ import SwiftUI
 @MainActor
 final class AppCoordinator: ObservableObject, @unchecked Sendable {
     @Published var root: AppRootType = .preHome
-
-    var children: [any Coordinator] = []
     
     private let appDataService: any AppDataWithAuthorizationServiceful
     
@@ -20,7 +18,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
         root = type
     }
     
-    func rootView(_ type: AppRootType) -> AnyView {
+    func rootView() -> AnyView {
         switch root {
         case .preHome:
             return AnyView(PreHomeContentView())
@@ -30,12 +28,14 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
     }
 }
 
-enum AppRoute: Route {
-    
-}
-
 
 enum AppRootType {
     case preHome
     case home
+}
+
+
+
+enum AppRoute: Route {
+    
 }

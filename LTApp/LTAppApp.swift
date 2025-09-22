@@ -57,12 +57,7 @@ struct LTAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            switch coordinator.root {
-            case .preHome:
-                coordinator.rootView(.preHome)
-            case .home:
-                coordinator.rootView(.home)
-            }
+            coordinator.rootView()
         }
         .environmentObject(homeCoordinator)
         .environmentObject(coordinator)
