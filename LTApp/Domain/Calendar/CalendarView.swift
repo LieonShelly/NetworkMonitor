@@ -89,26 +89,38 @@ struct CalendarView: View {
         let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: .zero, alignment: .center)
         }
         ScrollView(showsIndicators: false) {
-         
             LazyVGrid(columns: columnsG, alignment: .center, spacing: .zero) {
                 ForEach(viewModel.days, id: \.id) { day in
                     HStack {
-                        Text("\(Calendar.current.component(.day, from: day.date))")
-                            .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
-                           
+                        if day.date.isSameMonth(viewModel.currentMonth ?? Date()) {
+                            Text("\(Calendar.current.component(.day, from: day.date))")
+                                .textStyle(size: 12, color: AppColor.color(hex: 0x000000), fontFamily: .sfProRegular)
+                        } else {
+                            Text("\(Calendar.current.component(.day, from: day.date))")
+                                .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
+                        }
                     }
                     .id(day.id)
                     .frame(width: columnW, height: columnW)
                     .overlay {
                         if day.date.isTheFirstDayInMonth {
-                            Text("\(day.date.monthDesc())")
-                                .textStyle(size: 12, color: Color.red, fontFamily: .sfProRegular)
-                                .offset(y: -columnW * 0.35)
+                            if day.date.isSameMonth(viewModel.currentMonth ?? Date()) {
+                                Text("\(day.date.monthDesc())")
+                                    .textStyle(size: 12, color: AppColor.color(hex: 0x000000), fontFamily: .sfProRegular)
+                                    .offset(y: -columnW * 0.35)
+                            } else {
+                                Text("\(day.date.monthDesc())")
+                                    .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
+                                    .offset(y: -columnW * 0.35)
+                            }
+                          
                         }
                     }
                 }
             }
-            Spacer()
+            Rectangle()
+                .fill(Color.clear)
+                .frame(height: 200)
         }
         .scrollPosition(id: $scrollPostion)
         .onScrollGeometryChange(for: CGPoint.self, of: { $0.contentOffset }, action: { oldValue, newValue in

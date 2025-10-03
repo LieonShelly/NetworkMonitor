@@ -40,4 +40,11 @@ extension Date {
         let isFirstDay = calendar.isDate(date, inSameDayAs: firstDay)
         return isFirstDay
     }
+    
+    func isSameMonth(_ date: Date) -> Bool {
+        let calendar = Calendar.current
+        let component1 = calendar.dateComponents([.year, .month], from: self)
+        let component2 = calendar.dateComponents([.year, .month], from: date)
+        return component1.year == component2.year && component1.month == component2.month
+    }
 }

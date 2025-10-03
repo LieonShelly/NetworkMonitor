@@ -65,8 +65,5 @@ class CalendarViewModel: ObservableObject {
         self.days.append(contentsOf: days)
     }
     
-    func onScroll(_ offsetY: CGFloat) {
-        
-    }
 }
     
