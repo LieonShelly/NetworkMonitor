@@ -60,18 +60,20 @@ struct OnboardingView: View {
     }
     
     var topicList: some View {
-        VStack(spacing: 16) {
-            ForEach(viewModel.list, id: \.id) { category in
-                DashLineButton(
-                    text: category.name ,
-                    isSelected: selectedCategory == category) {
-                    selectedCategory = category
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 16) {
+                ForEach(viewModel.list, id: \.id) { category in
+                    DashLineButton(
+                        text: category.name ,
+                        isSelected: selectedCategory == category) {
+                        selectedCategory = category
+                    }
+                    .frame(height: 112)
                 }
-                .frame(height: 112)
             }
         }
         .padding(.horizontal, 32)
-        .padding(.top, 61)
+        .padding(.vertical, 61)
         
     }
     

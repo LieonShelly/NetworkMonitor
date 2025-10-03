@@ -37,7 +37,7 @@ public class ApiClient: ApiClientType {
         }
         let statusCode = response.statusCode
         switch statusCode {
-        case 200:
+        case 200 ..< 300:
             return Response(statusCode: statusCode, data: responseData.0)
         case 401:
             for interceptor in interceptors {

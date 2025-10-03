@@ -54,11 +54,19 @@ struct AppleIDSignInView: View {
                 if let authorizationCodeData = credential.authorizationCode, let code = String(data: authorizationCodeData, encoding: .utf8) {
                     authorizationCode = code
                 }
-                Task.detached {
-                    try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
-                }
-            case .failure:
-                break
+                print("authorizationCode:\(authorizationCode)")
+                print("idTokenStr:\(idTokenStr)")
+//                Task.detached {
+//                    do {
+//                        try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
+//                        await gotoSplash()
+//                    } catch {
+//                        
+//                    }
+//                   
+//                }
+            case let .failure(error):
+                print(error)
             }
         }
         .signInWithAppleButtonStyle(.black)
@@ -68,7 +76,7 @@ struct AppleIDSignInView: View {
         .onTapGesture {
             Task.detached {
                 do {
-                    try await viewModel.login(authorizationCode: "authorizationCode", identityToken: "idTokenStr")
+                    try await viewModel.login(authorizationCode: "c86413f37df9f420485c7431ec78b727e.0.rrxxu.Q54tqIH36av8xNmRMnuZKw", identityToken: "eyJraWQiOiJiRnd6bGVSOHRmIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmxpdHRsZS50aGluZ3MiLCJleHAiOjE3NTk1NjkwNDcsImlhdCI6MTc1OTQ4MjY0Nywic3ViIjoiMDAxNzc0LmZiNmI2MWIyOTkyZTQ2ODM4YmVlMzRlNzgxYTZhMTE0LjEwMjEiLCJjX2hhc2giOiJDYzZWQ2lQZk9pWWwzUnNheW1yM0hnIiwiZW1haWwiOiJieGJiZGR4eW40QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc19wcml2YXRlX2VtYWlsIjp0cnVlLCJhdXRoX3RpbWUiOjE3NTk0ODI2NDcsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.TjMlzGTbhW4z_hhOOFgDYNQS4iSS0xd0GXf4cHvEdHCtbi-z8hQAxV4TmjzRHO86kxndArnYVJwtLXdAMh-Jg6EnwKXq_U6l-sXS3IKsyWn6zPvwVeNDtqYgcTFPRyCnodAZ4ukJv3FbF4yzlPqOFNXC5Q-bnlqwLIP74Yy4bIWV1gjwJuXr5246fDrUFBe61XAwJfHazyuljiiXJZzdWWJjScIQQMpeNXuyCTJqr6px1xl5egwfmIrLyvKt53KSoBYELu7NzPTg1zk3qUmIlGLAScpsKUjhaI2q7lw-q3Ku08HZk17ckHhf2noEsIiLjSptSsvujHJ2il2YjTWyew")
                     await gotoSplash()
 
                 } catch {

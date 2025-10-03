@@ -12,7 +12,7 @@ enum AuthRequest: Request {
         var path: String = "/api"
         switch self {
         case .login:
-            path += "/auth/login"
+            path += "/auth/apple"
         case .refreshToken:
             path += "/auth/refresh"
         }
