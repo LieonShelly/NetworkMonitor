@@ -29,4 +29,3 @@ class SessionService: ObservableObject, TokenProvider, @unchecked Sendable {
         storage.delete(StorageKey.refreshToken)
     }
 }
-
