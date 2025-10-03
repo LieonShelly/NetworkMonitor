@@ -7,6 +7,7 @@ import Foundation
 class CalendarViewModel: ObservableObject {
     @Published var days: [CalendarDay] = []
     @Published var weekdays: [String] = ["S", "M", "T", "W", "T", "F", "S"]
+    @Published var currentMonth: Date?
     let itemSize: CGSize = .init(width: 30, height: 30)
     
     init() {
@@ -19,6 +20,7 @@ class CalendarViewModel: ObservableObject {
         component.year = year
         component.month = 1
         if let date = calendar.date(from: component) {
+            self.currentMonth = date
             generateDays(for: date, needWeekdayOffset: true)
         }
         
@@ -63,6 +65,8 @@ class CalendarViewModel: ObservableObject {
         self.days.append(contentsOf: days)
     }
     
-    
+    func onScroll(_ offsetY: CGFloat) {
+        
+    }
 }
     
