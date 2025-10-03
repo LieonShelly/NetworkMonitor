@@ -14,44 +14,16 @@ struct CalendarView: View {
     @StateObject var viewModel: CalendarViewModel = .init()
     
     var body: some View {
-        VStack(spacing: .zero) {
-            calendarContentView
-            Spacer()
-        }
-        .defaultBackground() 
-    }
-    
-    
-    var mothTitleView: some View {
-        Text("September")
-            .textStyle(size: 18, fontFamily: .sfProMedium)
-            .padding(.bottom, 26)
-            .padding(.leading, Constants.itemSize.width * 0.3)
-        
-    }
-    
-    var calendarContentView: some View {
         GeometryReader { proxy in
-            let itemSpacing = (proxy.size.width - 7 * Constants.itemSize.width) / 8.0
             VStack(spacing: .zero) {
-                weekDay(spacing: itemSpacing)
-                .frame(width: proxy.size.width)
-                .padding(.bottom, Constants.weekDayBottom)
-                
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: .zero) {
-                        ForEach(viewModel.monthList, id: \.id) { month in
-                            monthView(days: month.days, spacing: itemSpacing)
-                                .frame(width: proxy.size.width)
-                        }
-                    }
-                }
-                .scrollTargetBehavior(.paging)
-                
-                .frame(height: Constants.itemSize.height * 6 + itemSpacing * 5)
+                weekDay(spacing: .zero, proxy: proxy)
+                gridView(proxy: proxy)
+                Spacer()
             }
         }
-            .padding(.top, 65)
+        .padding(.horizontal, 10)
+        .padding(.top, 65)
+        .defaultBackground()
     }
     
     @ViewBuilder
@@ -87,21 +59,53 @@ struct CalendarView: View {
       
     }
     
-    @ViewBuilder func weekDay(spacing: CGFloat) -> some View {
-       let itemW: CGFloat = Constants.itemSize.width
-       VStack(alignment: .leading) {
-           mothTitleView
-           HStack(spacing: spacing) {
-               ForEach(viewModel.weekdays, id: \.self) { day in
-                   Text(day)
-                       .textStyle(size: 14, color: AppColor.color(hex: 0x323232), fontFamily: .sfProRegular)
-                       .frame(width: itemW, height: itemW)
-               }
-           }
-           .frame(height: Constants.itemSize.height)
-       }
-    
+    @ViewBuilder func weekDay(spacing: CGFloat, proxy: GeometryProxy) -> some View {
+        let count: CGFloat = 7
+        let itemW = proxy.size.width / count
+        VStack(alignment: .leading, spacing: .zero) {
+            Text("September")
+                .textStyle(size: 18, fontFamily: .sfProMedium)
+                .padding(.leading, itemW * 0.35)
+                .padding(.bottom, itemW * 0.35)
+            
+            HStack(spacing: spacing) {
+                ForEach(viewModel.weekdays, id: \.self) { day in
+                    Text(day)
+                        .textStyle(size: 14, color: AppColor.color(hex: 0x323232), fontFamily: .sfProRegular)
+                        .frame(width: itemW, height: itemW)
+                }
+            }
+        }
       
+    }
+    
+    @ViewBuilder
+    func gridView(proxy: GeometryProxy) -> some View {
+        ScrollView(showsIndicators: false) {
+            let columns: Int = 7
+            let columnW: CGFloat = proxy.size.width / CGFloat(columns)
+            let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: .zero, alignment: .center)
+            }
+            LazyVGrid(columns: columnsG, alignment: .center, spacing: .zero) {
+                ForEach(viewModel.days, id: \.id) { day in
+                    HStack {
+                        Text("\(Calendar.current.component(.day, from: day.date))")
+                            .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
+                           
+                    }
+                    .frame(width: columnW, height: columnW)
+                    .overlay {
+                        if day.date.isTheFirstDayInMonth {
+                            Text("\(day.date.monthDesc())")
+                                .textStyle(size: 12, color: Color.red, fontFamily: .sfProRegular)
+                                .offset(y: -columnW * 0.35)
+                        }
+                    }
+                }
+            }
+            Spacer()
+        }
+       
     }
 }
 

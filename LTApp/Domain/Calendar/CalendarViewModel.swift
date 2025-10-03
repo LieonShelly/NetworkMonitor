@@ -4,68 +4,33 @@
 
 import Foundation
 
-enum DayType {
-    case past
-    case today
-    case future
-}
-
-struct CalendarDay: Identifiable {
-    let id = UUID()
-    let date: Date
-    let isCurrentMonth: Bool
-    let isToday: Bool
-    
-    var dayType: DayType {
-        let today = Date()
-        if date.startOfDay() < today.startOfDay() {
-            return .past
-        } else if date.startOfDay() == today.startOfDay() {
-            return .today
-        } else {
-            return .future
-        }
-    }
-}
-
-extension Date {
-    
-    func endOfDay() -> Date {
-        let calendar = Calendar.current
-        guard let nextDay = calendar.date(byAdding: .day, value: 1, to: startOfDay()),
-              let endOfDay = calendar.date(byAdding: .second, value: -1, to: nextDay) else {
-            return Date()
-        }
-        return endOfDay
-    }
-    
-    func startOfMonth() -> Date {
-        return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: self))) ?? Date()
-    }
-    
-    func startOfDay() -> Date {
-        return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day],
-                                                                           from: Calendar.current.startOfDay(for: self))) ?? Date()
-    }
-}
-
-struct CalendarMonth: Identifiable {
-    let id = UUID()
-    let date: Date
-    let days: [CalendarDay]
-}
-
 class CalendarViewModel: ObservableObject {
     @Published var days: [CalendarDay] = []
     @Published var weekdays: [String] = ["S", "M", "T", "W", "T", "F", "S"]
-    @Published var monthList: [CalendarMonth] = []
     let itemSize: CGSize = .init(width: 30, height: 30)
     
     init() {
-        monthList = generateMothList(for: 2025)// generateOneMoth(for: 9)
+        generateDaysForYear(2025)
     }
     
-    func generateDays(for moth: Date) -> [CalendarDay] {
+    func generateDaysForYear(_ year: Int) {
+        let calendar = Calendar.current
+        var component = DateComponents()
+        component.year = year
+        component.month = 1
+        if let date = calendar.date(from: component) {
+            generateDays(for: date, needWeekdayOffset: true)
+        }
+        
+        for month in 2...12 {
+            component.year = year
+            component.month = month
+            guard let date = calendar.date(from: component) else { continue }
+            generateDays(for: date, needWeekdayOffset: false)
+        }
+    }
+    
+    func generateDays(for moth: Date, needWeekdayOffset: Bool = true) {
         let calendar = Calendar.current
         let range = calendar.range(of: .day, in: .month, for: moth)!
         let components = calendar.dateComponents([.year, .month], from: moth)
@@ -73,15 +38,16 @@ class CalendarViewModel: ObservableObject {
         var days: [CalendarDay] = []
         let weekdayOffset = calendar.component(.weekday, from: firstDay) - calendar.firstWeekday
         let totalDays = range.count
-        
-        for i in 0 ..< weekdayOffset {
-            days.append(
-                CalendarDay(
-                    date: calendar.date(byAdding: .day, value: -weekdayOffset + i, to: firstDay)!,
-                    isCurrentMonth: false,
-                    isToday: false
+        if needWeekdayOffset {
+            for i in 0 ..< weekdayOffset {
+                days.append(
+                    CalendarDay(
+                        date: calendar.date(byAdding: .day, value: -weekdayOffset + i, to: firstDay)!,
+                        isCurrentMonth: false,
+                        isToday: false
+                    )
                 )
-            )
+            }
         }
         
         for day in 1...totalDays {
@@ -94,46 +60,9 @@ class CalendarViewModel: ObservableObject {
                 )
             )
         }
-        
-        let maxCounts: Int = 42
-        while days.count - maxCounts != 0 {
-            let date = calendar.date(byAdding: .day, value: 1, to: days.last!.date)!
-            days.append(
-                CalendarDay(
-                    date: date,
-                    isCurrentMonth: false,
-                    isToday: false
-                )
-            )
-        }
-        return days
+        self.days.append(contentsOf: days)
     }
     
-    
-    func generateMothList(for year: Int) -> [CalendarMonth] {
-        let calendar = Calendar.current
-        var monthList: [CalendarMonth] = []
-        for month in 1...12 {
-            var component = DateComponents()
-            component.year = year
-            component.month = month
-            guard let date = calendar.date(from: component) else { continue }
-            monthList.append(CalendarMonth(date: date, days: generateDays(for: date)))
-        }
-        return monthList
-    }
-    
-    func generateOneMoth(for month: Int) -> [CalendarMonth] {
-        let calendar = Calendar.current
-        var monthList: [CalendarMonth] = []
-        var component = DateComponents()
-        component.year = 2025
-        component.month = month
-        if let date = calendar.date(from: component) {
-            monthList.append(CalendarMonth(date: date, days: generateDays(for: date)))
-        }
-        return monthList
-    }
     
 }
     
