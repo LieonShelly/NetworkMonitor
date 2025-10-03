@@ -13,6 +13,7 @@ struct CalendarView: View {
     }
     @StateObject var viewModel: CalendarViewModel = .init()
     @State var scrollPostion: UUID? = nil
+    @Namespace var animationSpace
     
     var body: some View {
         GeometryReader { proxy in
@@ -95,9 +96,11 @@ struct CalendarView: View {
                         if day.date.isSameMonth(viewModel.currentMonth ?? Date()) {
                             Text("\(Calendar.current.component(.day, from: day.date))")
                                 .textStyle(size: 12, color: AppColor.color(hex: 0x000000), fontFamily: .sfProRegular)
+                                .matchedGeometryEffect(id: day.id, in: animationSpace)
                         } else {
                             Text("\(Calendar.current.component(.day, from: day.date))")
                                 .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
+                                .matchedGeometryEffect(id: day.id, in: animationSpace)
                         }
                     }
                     .id(day.id)
@@ -130,6 +133,7 @@ struct CalendarView: View {
             let currentDate = viewModel.days[min(lastDayIndex, viewModel.days.count - 1)]
             viewModel.currentMonth = currentDate.date
         })
+        .animation(.easeInOut, value: viewModel.currentMonth)
        
     }
 }
