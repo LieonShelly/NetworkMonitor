@@ -32,6 +32,12 @@ extension Date {
         return month
     }
     
+    func dayDesc() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd"
+        return formatter.string(from: self)
+    }
+    
     func yearDesc() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy"
@@ -52,5 +58,16 @@ extension Date {
         let component1 = calendar.dateComponents([.year, .month], from: self)
         let component2 = calendar.dateComponents([.year, .month], from: date)
         return component1.year == component2.year && component1.month == component2.month
+    }
+    
+    func isPreviousMonth(_ date: Date) -> Bool {
+        let calendar = Calendar.current
+        let component1 = calendar.dateComponents([.year, .month], from: self)
+        let component2 = calendar.dateComponents([.year, .month], from: date)
+        return component1.year == component2.year && component1.month! < component2.month! || component1.year! < component2.year!
+    }
+    
+    func isNextMonth(_ date: Date) -> Bool {
+        !isPreviousMonth(date)
     }
 }

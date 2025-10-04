@@ -49,33 +49,35 @@ struct CalendarView: View {
             LazyVGrid(columns: columnsG, alignment: .center, spacing: .zero) {
                 ForEach(viewModel.days, id: \.id) { day in
                     HStack {
-                        switch day.dayType {
-                        case .future:
-                            Circle()
-                                .fill(AppColor.color(hex: 0xCDCDCD))
-                                .frame(width: 8, height: 8)
-                        case .today:
-                            Image(.calendarDripper)
-                                .resizable()
-                                .frame(width: 21, height: 26)
-                        case .past:
-                            Circle()
-                                .fill(AppColor.color(hex: 0x000000))
-                                .frame(width: 8, height: 8)
+                        if let currentMonth = viewModel.currentMonth {
+                            if day.date.isSameMonth(currentMonth) {
+                                Circle()
+                                    .fill(AppColor.color(hex: 0x000000))
+                                    .frame(width: 8, height: 8)
+                            } else if day.date.isPreviousMonth(currentMonth) {
+                                Text("\(day.date.dayDesc())")
+                                    .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
+                            } else {
+                                Circle()
+                                    .fill(AppColor.color(hex: 0xCDCDCD))
+                                    .frame(width: 8, height: 8)
+                            }
+                        } else {
+                            Text("\(day.date.dayDesc())")
+                                .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
                         }
                     }
                     .id(day.id)
                     .frame(width: columnW, height: columnW)
                     .overlay {
                         if day.date.isTheFirstDayInMonth {
-                            switch day.dayType {
-                            case .future:
-                                Text("\(day.date.monthDesc())")
-                                    .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
-                                    .offset(y: -columnW * 0.35)
-                            case .past, .today:
+                            if let currentMonth = viewModel.currentMonth, day.date.isSameMonth(currentMonth) {
                                 Text("\(day.date.monthDesc())")
                                     .textStyle(size: 12, color: AppColor.color(hex: 0x000000), fontFamily: .sfProRegular)
+                                    .offset(y: -columnW * 0.35)
+                            } else {
+                                Text("\(day.date.monthDesc())")
+                                    .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
                                     .offset(y: -columnW * 0.35)
                             }
                         }

@@ -9,72 +9,76 @@ struct ThreadView: View {
     @EnvironmentObject var appCoordinator: AppCoordinator
     
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: .zero) {
-                VStack(spacing: .zero) {
-                    questionRow("lil things that make you happy")
-                    
+        VStack(spacing: .zero) {
+            titleView
+            ScrollView {
+                LazyVStack(spacing: .zero) {
                     VStack(spacing: .zero) {
-                        answerRow("High school friend brought me a new coffee dripper from California, and I’m so happy to continue my morning coffee routine with that.", icon: .calendarDripper)
+                        questionRow("lil things that make you happy")
                         
-                        answerRow("")
-                        answerRow("")
-                        answerRow("")
-                        Spacer()
+                        VStack(spacing: .zero) {
+                            answerRow("High school friend brought me a new coffee dripper from California, and I’m so happy to continue my morning coffee routine with that.", icon: .calendarDripper)
+                            
+                            answerRow("")
+                            answerRow("")
+                            answerRow("")
+                            Spacer()
+                        }
+                        .frame(height: 100)
+                        .padding(.top, 10)
                     }
-                    .frame(height: 100)
-                    .padding(.top, 10)
-                }
-                .overlay(alignment: .leading) {
-                    line()
-                }
-                VStack(spacing: .zero) {
-                    questionRow("lil things that make you proud")
-                    
-                    VStack(spacing: .zero) {
-                        answerRow("High school friend brought me a new coffee dripper from California, and I’m so happy to continue my morning coffee routine with that.")
-                        answerRow("")
-                        answerRow("")
-                        answerRow("")
-                        Spacer()
-                    }
-                    .frame(height: 100)
-                    .padding(.top, 10)
-                }
-                .overlay(alignment: .leading) {
-                    line()
-                }
-                
-                VStack(spacing: .zero) {
-                    questionRow("Did you spend enough time with your SO this week?")
-                    
-                    VStack(spacing: .zero) {
-                        answerRow("High school friend brought me a new coffee dripper from California, and I’m so happy to continue my morning coffee routine with that.")
-                        answerRow("")
-                        answerRow("")
-                        answerRow("")
-                        Spacer()
-                    }
-                    .frame(height: 100)
-                    .padding(.top, 10)
-                }
-                .overlay(alignment: .leading) {
-                    line()
-                }
-                
-                Rectangle()
-                    .fill(Color.clear)
-                    .frame(height: 80)
                     .overlay(alignment: .leading) {
-                        line(true, segmentCount: 10, seed: 40)
+                        line()
                     }
-                
+                    VStack(spacing: .zero) {
+                        questionRow("lil things that make you proud")
+                        
+                        VStack(spacing: .zero) {
+                            answerRow("High school friend brought me a new coffee dripper from California, and I’m so happy to continue my morning coffee routine with that.")
+                            answerRow("")
+                            answerRow("")
+                            answerRow("")
+                            Spacer()
+                        }
+                        .frame(height: 100)
+                        .padding(.top, 10)
+                    }
+                    .overlay(alignment: .leading) {
+                        line()
+                    }
+                    
+                    VStack(spacing: .zero) {
+                        questionRow("Did you spend enough time with your SO this week?")
+                        
+                        VStack(spacing: .zero) {
+                            answerRow("High school friend brought me a new coffee dripper from California, and I’m so happy to continue my morning coffee routine with that.")
+                            answerRow("")
+                            answerRow("")
+                            answerRow("")
+                            Spacer()
+                        }
+                        .frame(height: 100)
+                        .padding(.top, 10)
+                    }
+                    .overlay(alignment: .leading) {
+                        line()
+                    }
+                    
+                    Rectangle()
+                        .fill(Color.clear)
+                        .frame(height: 80)
+                        .overlay(alignment: .leading) {
+                            line(true, segmentCount: 10, seed: 40)
+                        }
+                    
+                }
+                .padding(.top, 60)
+               
             }
-            .padding(.top, 60)
-           
+            .padding(.leading, 40)
+            .padding(.trailing, 20)
         }
-        .padding(.leading, 40)
-        .padding(.trailing, 20)
+      
     }
     
     func answerRow(_ value: String, icon: ImageResource? = nil) -> some View {
@@ -127,6 +131,24 @@ struct ThreadView: View {
             }
         }
       
+    }
+    
+    var titleView: some View {
+        HStack(spacing: .zero) {
+            Button {
+                homeCoordinator.push(HomeRoute.questionLib)
+            } label: {
+                Rectangle()
+                    .fill(Color.red)
+                    .frame(width: 40, height: 40)
+            }
+            Spacer()
+            Text("The Little Things")
+                .textStyle(size: 36)
+            Spacer()
+
+        }
+        .padding(.leading, 24)
     }
 }
 

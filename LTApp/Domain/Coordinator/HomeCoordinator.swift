@@ -24,6 +24,8 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
         case .home:
             let viewModel = AppHomeViewModel()
             return AnyView(AppHomeView(viewModel: viewModel))
+        case .questionLib:
+            return AnyView(QuestionLibView())
         }
     }
     
@@ -35,6 +37,7 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
 
 enum HomeRoute: Route {
     case home
+    case questionLib
 }
 
 

@@ -12,6 +12,10 @@ class AppScrollContentViewModel: ObservableObject {
     var didEndScroll: ((Int) -> Void)?
     @Published var preProgress: CGFloat = 0
     @Published var isTapping: Bool = false
+    init() {
+        print("AppScrollContentViewModel-init")
+    }
+    
     deinit {
         print("AppScrollContentViewModel-deinit")
     }
