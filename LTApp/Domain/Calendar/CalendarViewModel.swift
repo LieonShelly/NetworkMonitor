@@ -3,15 +3,20 @@
 //
 
 import Foundation
+import SwiftUI
 
 class CalendarViewModel: ObservableObject {
     @Published var days: [CalendarDay] = []
     @Published var weekdays: [String] = ["S", "M", "T", "W", "T", "F", "S"]
     @Published var currentMonth: Date?
+    @Published var scrollPostion: UUID? = nil
+    
     let itemSize: CGSize = .init(width: 30, height: 30)
     
     init() {
         generateDaysForYear(2025)
+        generateDaysForYear(2026)
+        generateDaysForYear(2027)
     }
     
     func generateDaysForYear(_ year: Int) {
@@ -63,6 +68,31 @@ class CalendarViewModel: ObservableObject {
             )
         }
         self.days.append(contentsOf: days)
+    }
+    
+    func goNextMonth() {
+        guard let currentMonth else { return }
+        let calendar = Calendar.current
+        if let nextMonth = calendar.date(byAdding: .month, value: 1, to: currentMonth) {
+           if let day = days.first(where: { $0.date.isSameMonth(nextMonth)}) {
+               withAnimation(.easeInOut) {
+                   self.scrollPostion = day.id
+               }
+           }
+        }
+    }
+    
+    func goPreviousMonth() {
+        guard let currentMonth else { return }
+        let calendar = Calendar.current
+        if let nextMonth = calendar.date(byAdding: .month, value: -1, to: currentMonth) {
+           if let day = days.first(where: { $0.date.isSameMonth(nextMonth)}) {
+               withAnimation(.easeInOut) {
+                   self.scrollPostion = day.id
+               }
+              
+            }
+        }
     }
     
 }

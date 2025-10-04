@@ -12,7 +12,6 @@ struct CalendarView: View {
         static let weekDayBottom: CGFloat = 70
     }
     @StateObject var viewModel: CalendarViewModel = .init()
-    @State var scrollPostion: UUID? = nil
     @Namespace var animationSpace
     
     var body: some View {
@@ -74,10 +73,6 @@ struct CalendarView: View {
                                 Text("\(day.date.monthDesc())")
                                     .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
                                     .offset(y: -columnW * 0.35)
-                            case .today:
-                                Image(.calendarDripper)
-                                    .resizable()
-                                    .frame(width: 21, height: 26)
                             case .past, .today:
                                 Text("\(day.date.monthDesc())")
                                     .textStyle(size: 12, color: AppColor.color(hex: 0x000000), fontFamily: .sfProRegular)
@@ -91,24 +86,26 @@ struct CalendarView: View {
                 .fill(Color.clear)
                 .frame(height: 200)
         }
-        .scrollPosition(id: $scrollPostion)
+        .scrollPosition(id: $viewModel.scrollPostion, anchor: .top)
         .onScrollGeometryChange(for: CGPoint.self, of: { $0.contentOffset }, action: { oldValue, newValue in
             let rowIndex = Int(newValue.y / columnW)
             guard rowIndex >= 0 else { return }
-            let lastDayIndex = rowIndex * columns + (columns - 1)
+            let lastDayIndex = (rowIndex + 1) * columns + (columns - 1)
             let currentDate = viewModel.days[min(lastDayIndex, viewModel.days.count - 1)]
-            viewModel.currentMonth = currentDate.date
+            withAnimation(.easeIn(duration: 0.25)) {
+                viewModel.currentMonth = currentDate.date
+            }
         })
-        .animation(.easeInOut, value: viewModel.currentMonth)
-        
     }
     
-    @ViewBuilder  func headerView(_ proxy: GeometryProxy) -> some View {
+    @ViewBuilder func headerView(_ proxy: GeometryProxy) -> some View {
         let count: CGFloat = 7
         let itemW = proxy.size.width / count
         let btnW: CGFloat = 30
         HStack(spacing: .zero) {
-            Button(action: {}) {
+            Button(action: {
+                viewModel.goPreviousMonth()
+            }) {
                 Image(.leftPoly)
                 Spacer()
             }
@@ -116,15 +113,20 @@ struct CalendarView: View {
             .frame(width: btnW, height: btnW)
             Spacer()
             VStack(spacing: 10) {
-                Text(viewModel.currentMonth?.monthDesc(isShort: false) ?? "")
-                    .textStyle(size: 36)
-                
-                Text(viewModel.currentMonth?.yearDesc() ?? "")
-                    .textStyle(size: 24)
-                
+                if let currentMonth = viewModel.currentMonth {
+                    Text(currentMonth.monthDesc(isShort: false))
+                        .textStyle(size: 36)
+                        .transition(.opacity)
+                    
+                    Text(currentMonth.yearDesc())
+                        .textStyle(size: 24)
+                        .transition(.opacity)
+                }
             }
             Spacer()
-            Button(action: {}) {
+            Button(action: {
+                viewModel.goNextMonth()
+            }) {
                 Spacer()
                 Image(.rightPloly)
             }
@@ -134,6 +136,7 @@ struct CalendarView: View {
         .padding(.horizontal, itemW * 0.35)
         .padding(.top, 30)
         .padding(.bottom, 30)
+        .animation(.easeInOut, value: viewModel.scrollPostion)
     }
 }
 
