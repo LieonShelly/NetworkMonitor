@@ -34,7 +34,6 @@ struct AppHomeView: View {
         VStack {
             if showPage {
                 VStack(spacing: .zero) {
-                    titleView
                     AppScrollContentView(viewModel: viewModel.contentViewModel)
                     
                     AppTabbar(viewModel: viewModel.tabbarViewModel)

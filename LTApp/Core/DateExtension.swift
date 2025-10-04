@@ -24,12 +24,18 @@ extension Date {
                                                                            from: Calendar.current.startOfDay(for: self))) ?? Date()
     }
     
-    func monthDesc() -> String {
+    func monthDesc(isShort: Bool = true) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM"
+        formatter.dateFormat = isShort ? "MMM" : "MMMM"
         formatter.locale = Locale.current
         let month = formatter.string(from: self)
         return month
+    }
+    
+    func yearDesc() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy"
+        return formatter.string(from: self)
     }
     
     var isTheFirstDayInMonth: Bool {

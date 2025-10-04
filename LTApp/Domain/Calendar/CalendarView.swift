@@ -18,69 +18,26 @@ struct CalendarView: View {
     var body: some View {
         GeometryReader { proxy in
             VStack(spacing: .zero) {
+                headerView(proxy)
                 weekDay(spacing: .zero, proxy: proxy)
                 gridView(proxy: proxy)
                 Spacer()
             }
         }
         .padding(.horizontal, 10)
-        .padding(.top, 65)
         .defaultBackground()
-    }
-    
-    @ViewBuilder
-    func monthView(days: [CalendarDay], spacing: CGFloat) -> some View {
-        let itemWidth: CGFloat = Constants.itemSize.width
-        let columns = Array(repeating: GridItem(.fixed(itemWidth), spacing: spacing), count: 7)
-        LazyVGrid(
-            columns: columns,
-            spacing: spacing,
-            content: {
-                ForEach(days) { day in
-                    Rectangle()
-                        .fill(Color.clear)
-                        .frame(width: itemWidth, height: itemWidth)
-                        .overlay {
-                            switch day.dayType {
-                            case .future:
-                                Circle()
-                                    .fill(AppColor.color(hex: 0xCDCDCD))
-                                    .frame(width: 8, height: 8)
-                            case .today:
-                                Image(.calendarDripper)
-                                    .resizable()
-                                    .frame(width: 21, height: 26)
-                            case .past:
-                             
-                                Text("\(Calendar.current.component(.day, from: day.date))")
-                                    .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
-                            }
-                        }
-                }
-            })
-      
     }
     
     @ViewBuilder func weekDay(spacing: CGFloat, proxy: GeometryProxy) -> some View {
         let count: CGFloat = 7
         let itemW = proxy.size.width / count
-        VStack(alignment: .leading, spacing: .zero) {
-            if let currentMonth = viewModel.currentMonth {
-                Text(currentMonth.monthDesc())
-                    .textStyle(size: 18, fontFamily: .sfProMedium)
-                    .padding(.leading, itemW * 0.35)
-                    .padding(.bottom, itemW * 0.35)
-            }
-        
-            HStack(spacing: spacing) {
-                ForEach(viewModel.weekdays, id: \.self) { day in
-                    Text(day)
-                        .textStyle(size: 14, color: AppColor.color(hex: 0x323232), fontFamily: .sfProRegular)
-                        .frame(width: itemW, height: itemW)
-                }
+        HStack(spacing: spacing) {
+            ForEach(viewModel.weekdays, id: \.self) { day in
+                Text(day)
+                    .textStyle(size: 14, color: AppColor.color(hex: 0x323232), fontFamily: .sfProRegular)
+                    .frame(width: itemW, height: itemW)
             }
         }
-      
     }
     
     @ViewBuilder
@@ -93,30 +50,39 @@ struct CalendarView: View {
             LazyVGrid(columns: columnsG, alignment: .center, spacing: .zero) {
                 ForEach(viewModel.days, id: \.id) { day in
                     HStack {
-                        if day.date.isSameMonth(viewModel.currentMonth ?? Date()) {
-                            Text("\(Calendar.current.component(.day, from: day.date))")
-                                .textStyle(size: 12, color: AppColor.color(hex: 0x000000), fontFamily: .sfProRegular)
-                                .matchedGeometryEffect(id: day.id, in: animationSpace)
-                        } else {
-                            Text("\(Calendar.current.component(.day, from: day.date))")
-                                .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
-                                .matchedGeometryEffect(id: day.id, in: animationSpace)
+                        switch day.dayType {
+                        case .future:
+                            Circle()
+                                .fill(AppColor.color(hex: 0xCDCDCD))
+                                .frame(width: 8, height: 8)
+                        case .today:
+                            Image(.calendarDripper)
+                                .resizable()
+                                .frame(width: 21, height: 26)
+                        case .past:
+                            Circle()
+                                .fill(AppColor.color(hex: 0x000000))
+                                .frame(width: 8, height: 8)
                         }
                     }
                     .id(day.id)
                     .frame(width: columnW, height: columnW)
                     .overlay {
                         if day.date.isTheFirstDayInMonth {
-                            if day.date.isSameMonth(viewModel.currentMonth ?? Date()) {
-                                Text("\(day.date.monthDesc())")
-                                    .textStyle(size: 12, color: AppColor.color(hex: 0x000000), fontFamily: .sfProRegular)
-                                    .offset(y: -columnW * 0.35)
-                            } else {
+                            switch day.dayType {
+                            case .future:
                                 Text("\(day.date.monthDesc())")
                                     .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
                                     .offset(y: -columnW * 0.35)
+                            case .today:
+                                Image(.calendarDripper)
+                                    .resizable()
+                                    .frame(width: 21, height: 26)
+                            case .past, .today:
+                                Text("\(day.date.monthDesc())")
+                                    .textStyle(size: 12, color: AppColor.color(hex: 0x000000), fontFamily: .sfProRegular)
+                                    .offset(y: -columnW * 0.35)
                             }
-                          
                         }
                     }
                 }
@@ -134,7 +100,40 @@ struct CalendarView: View {
             viewModel.currentMonth = currentDate.date
         })
         .animation(.easeInOut, value: viewModel.currentMonth)
-       
+        
+    }
+    
+    @ViewBuilder  func headerView(_ proxy: GeometryProxy) -> some View {
+        let count: CGFloat = 7
+        let itemW = proxy.size.width / count
+        let btnW: CGFloat = 30
+        HStack(spacing: .zero) {
+            Button(action: {}) {
+                Image(.leftPoly)
+                Spacer()
+            }
+            .contentShape(.rect)
+            .frame(width: btnW, height: btnW)
+            Spacer()
+            VStack(spacing: 10) {
+                Text(viewModel.currentMonth?.monthDesc(isShort: false) ?? "")
+                    .textStyle(size: 36)
+                
+                Text(viewModel.currentMonth?.yearDesc() ?? "")
+                    .textStyle(size: 24)
+                
+            }
+            Spacer()
+            Button(action: {}) {
+                Spacer()
+                Image(.rightPloly)
+            }
+            .contentShape(.rect)
+            .frame(width: btnW, height: btnW)
+        }
+        .padding(.horizontal, itemW * 0.35)
+        .padding(.top, 30)
+        .padding(.bottom, 30)
     }
 }
 
