@@ -51,7 +51,7 @@ struct QestionRow: View {
                         }
                     })
                     .onEnded({ value in
-                        if currentOffsetX != 0 {
+                        if currentOffsetX + updatingOffsetX != 0 {
                             currentOffsetX = 0
                             contentTrailling = 42
                         } else if value.velocity.width < 0 {
