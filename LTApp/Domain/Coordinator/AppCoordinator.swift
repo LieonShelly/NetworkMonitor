@@ -56,8 +56,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
         case .preHome:
             return AnyView(PreHomeContentView())
         case .home:
-            return AnyView(QuestionLibView())
-            //return AnyView(AppHomeRootView())
+            return AnyView(AppHomeRootView())
         }
     }
 }

@@ -47,6 +47,6 @@ struct QuestionLibView: View {
                 .textStyle(size: 24)
             Spacer()
         }
-        .padding(.leading, 3)
+        .padding(.leading, 42)
     }
 }

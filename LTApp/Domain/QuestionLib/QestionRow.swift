@@ -14,6 +14,7 @@ struct QestionRow: View {
     
     var body: some View {
         row(text)
+            .coordinateSpace(.named("rowNameSpace"))
             .animation(.spring(duration: 0.25), value: currentOffsetX)
             .animation(.easeInOut(duration: 0.25), value: updatingOffsetX)
     }
@@ -41,7 +42,7 @@ struct QestionRow: View {
             }
             .offset(x: currentOffsetX + updatingOffsetX)
             .gesture(
-                DragGesture()
+                DragGesture(minimumDistance: 20, coordinateSpace: .named("rowNameSpace"))
                     .updating($updatingOffsetX, body: { currentState, gestureState, transcation in
                         if currentState.velocity.width < 0 {
                             gestureState = currentState.translation.width
