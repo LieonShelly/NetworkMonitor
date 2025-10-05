@@ -6,7 +6,6 @@ import SwiftUI
 
 struct QestionRow: View {
     let text: String
-    
     @State private var currentOffsetX: CGFloat = .zero
     @State private var contentTrailling: CGFloat = 42
     @GestureState private var updatingOffsetX: CGFloat = .zero
