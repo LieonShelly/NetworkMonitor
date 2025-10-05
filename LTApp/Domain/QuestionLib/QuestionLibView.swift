@@ -15,26 +15,24 @@ struct QuestionLibView: View {
             
             VStack(spacing: .zero) {
                 sectionHeader("Simple Joys")
-                row("What is one little thing that made you happy today?")
-                row("What is one little thing that made you happy today?")
-                row("What is one little thing that made you happy today?")
-                row("What is one little thing that made you happy today?")
-                row("What is one little thing that made you happy today?")
-                row("What is one little thing that made you happy today?")
+                QestionRow(text: "What is one little thing that made you happy today?")
+                QestionRow(text: "What is one little thing that made you happy today?")
+                QestionRow(text: "What is one little thing that made you happy today?")
+                QestionRow(text: "What is one little thing that made you happy today?")
+                QestionRow(text: "What is one little thing that made you happy today?")
+                QestionRow(text: "What is one little thing that made you happy today?")
             }
-            .padding(.horizontal, 40)
             .padding(.bottom, 36)
             
             VStack(spacing: .zero) {
                 sectionHeader("Simple Joys")
-                row("What is one little thing that made you happy today?")
-                row("What is one little thing that made you happy today?")
-                row("What is one little thing that made you happy today?")
-                row("What is one little thing that made you happy today?")
-                row("What is one little thing that made you happy today?")
-                row("What is one little thing that made you happy today?")
+                QestionRow(text: "What is one little thing that made you happy today?")
+                QestionRow(text: "What is one little thing that made you happy today?")
+                QestionRow(text: "What is one little thing that made you happy today?")
+                QestionRow(text: "What is one little thing that made you happy today?")
+                QestionRow(text: "What is one little thing that made you happy today?")
+                QestionRow(text: "What is one little thing that made you happy today?")
             }
-            .padding(.horizontal, 40)
             .padding(.bottom, 36)
         }
         .defaultBackground()
@@ -50,20 +48,5 @@ struct QuestionLibView: View {
             Spacer()
         }
         .padding(.leading, 3)
-    }
-    
-    func row(_ text: String) -> some View {
-        VStack(spacing: .zero) {
-            HStack {
-                Text(text)
-                    .textStyle(size: 14, fontFamily: .poppinsRegular)
-                Spacer()
-            }
-            .padding(.vertical, 12)
-            
-            Rectangle()
-                .fill(AppColor.color(hex: 0xCDCDCD))
-                .frame(height: 0.5)
-        }
     }
 }
