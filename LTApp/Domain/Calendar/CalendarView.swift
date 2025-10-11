@@ -11,8 +11,12 @@ struct CalendarView: View {
         static let cornorRadius: CGFloat = 4
         static let weekDayBottom: CGFloat = 70
     }
-    @StateObject var viewModel: CalendarViewModel = .init()
+    @ObservedObject var viewModel: CalendarViewModel
     @Namespace var animationSpace
+    
+    init(viewModel: CalendarViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         GeometryReader { proxy in
@@ -25,6 +29,13 @@ struct CalendarView: View {
         }
         .padding(.horizontal, 10)
         .defaultBackground()
+        .task {
+            do {
+                try await viewModel.fetchData()
+            } catch {
+                
+            }
+        }
     }
     
     @ViewBuilder func weekDay(spacing: CGFloat, proxy: GeometryProxy) -> some View {

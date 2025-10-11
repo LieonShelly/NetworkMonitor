@@ -1,33 +1,11 @@
 //
 //  LTApp, This code is protected by intellectual property rights.
 //
-
 import SwiftUI
 
-
-struct AppHomeRootView: View {
-    @EnvironmentObject var coordinator: HomeCoordinator
-    
-    var body: some View {
-        NavigationStack(path: $coordinator.path) {
-            EmptyView()
-                .toolbarVisibility(.hidden, for: .navigationBar)
-                .navigationDestination(for: HomeRoute.self) { path in
-                    coordinator.build(path)
-                }
-                .navigationDestination(for: PreHomeRoute.self) { path  in
-                    coordinator.build(path)
-                }
-        }
-        .onAppear {
-            coordinator.start()
-        }
-    }
-}
-
-
 struct AppHomeView: View {
-    @StateObject var viewModel = AppHomeViewModel()
+    @ObservedObject var viewModel: AppHomeViewModel
+    
     @State var showPage: Bool = false
     
     var body: some View {
@@ -60,9 +38,4 @@ struct AppHomeView: View {
             .textStyle(size: 36)
             .padding(.top, 35)
     }
-}
-
-
-#Preview {
-    AppHomeView()
 }

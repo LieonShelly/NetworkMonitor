@@ -22,10 +22,11 @@ class AppHomeViewModel: ObservableObject {
             selectedOpacity: 0
         )
     ])
-     var contentViewModel = AppScrollContentViewModel()
+    let contentViewModel: AppScrollContentViewModel
     
-
-    init() {
+    init(service: any AppDataWithAuthorizationServiceful) {
+        contentViewModel = AppScrollContentViewModel(service: service)
+        
         contentViewModel.didScroll = { [weak self] progress, isToRight in
             guard let self else { return }
             self.tabbarViewModel.updateOpacity(progress, isToRight: isToRight)

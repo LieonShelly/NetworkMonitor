@@ -11,7 +11,7 @@ struct AppScrollContentView: View {
         GeometryReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: .zero) {
-                    CalendarView()
+                    CalendarView(viewModel: viewModel.calendarViewModel)
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(0)
                     
@@ -47,11 +47,4 @@ struct AppScrollContentView: View {
             .frame(width: 200, height: 10)
             .rotationEffect(.degrees(90 * viewModel.preProgress), anchor: .init(x: 1, y: 0.5))
     }
-}
-
-
-
-
-#Preview {
-    AppScrollContentView(viewModel: .init())
 }

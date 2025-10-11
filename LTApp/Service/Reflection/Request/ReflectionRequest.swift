@@ -9,6 +9,7 @@ enum ReflectionRequest: Request {
     case categories
     case headQuestion(_ categoryId: String)
     case answerQuestion(_ param: AnswerParam)
+    case calendar(startDate: String, endDate: String)
     
     var endPoint: any EndPoint {
         var path: String = "/api"
@@ -21,17 +22,18 @@ enum ReflectionRequest: Request {
             path += "/categories/\(categortId)/head"
         case .answerQuestion:
             path += "/answers"
+        case .calendar:
+            path += "/calendar-view"
         }
         return DefaultEndPoint.baseURL(path: path)
     }
     
     var method: HttpMethod {
         switch self {
-        case .onboardingSentences:
-                .get
-        case .categories:
-                .get
-        case .headQuestion:
+        case .onboardingSentences,
+                .categories,
+                .headQuestion,
+                .calendar:
                 .get
         case .answerQuestion:
                 .post
@@ -42,6 +44,11 @@ enum ReflectionRequest: Request {
         switch self {
         case let .answerQuestion(param):
             return .json(body: param.json(), urlParameter: nil)
+        case let .calendar(startDate: startDate, endDate: endDate):
+            return .urlEncoding([
+                ("start", startDate),
+                ("end", endDate)
+            ])
         default:
             return .empty
         }

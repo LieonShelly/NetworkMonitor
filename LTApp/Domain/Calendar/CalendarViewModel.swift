@@ -5,15 +5,18 @@
 import Foundation
 import SwiftUI
 
-class CalendarViewModel: ObservableObject {
+final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     @Published var days: [CalendarDay] = []
     @Published var weekdays: [String] = ["S", "M", "T", "W", "T", "F", "S"]
     @Published var currentMonth: Date?
     @Published var scrollPostion: UUID? = nil
-    
+
     let itemSize: CGSize = .init(width: 30, height: 30)
     
-    init() {
+    private let service: any AppDataWithAuthorizationServiceful
+    
+    init(service: any AppDataWithAuthorizationServiceful) {
+        self.service = service
         generateDaysForYear(2025)
         generateDaysForYear(2026)
         generateDaysForYear(2027)
@@ -94,6 +97,16 @@ class CalendarViewModel: ObservableObject {
             }
         }
     }
-    
 }
-    
+
+extension CalendarViewModel {
+    func fetchData() async throws {
+        let endMonth = Date()
+        let startMonth = Date.January
+        let reflections = try await service.calendarReflectionsUseCase.execute(
+            startMonth: startMonth,
+            endMonth: endMonth
+        )
+        print(reflections)
+    }
+}

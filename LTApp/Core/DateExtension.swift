@@ -70,4 +70,13 @@ extension Date {
     func isNextMonth(_ date: Date) -> Bool {
         !isPreviousMonth(date)
     }
+    
+    static var January: Date {
+        let calendar = Calendar.current
+        let currentYear = Date()
+        var component = calendar.dateComponents([.year], from: currentYear)
+        component.month = 1
+        component.day = 1
+        return calendar.date(from: component) ?? currentYear
+    }
 }

@@ -6,10 +6,11 @@ import Foundation
 
 public protocol AppDataWithAuthorizationServiceful {
     var authUseCasse: any AuthUseCaseType { get }
-    var submitAnswerUseCase: any SubmitAnswerUseType { get }
+    var submitAnswerUseCase: any SubmitAnswerUseCaseType { get }
     var fetchCategoriesUseCase: any FetchCategoriesUseCaseType { get }
     var fetchHeadQuestionUseCase: any FetchHeadQuestionUseCaseType { get }
     var fetchOnboardingSentenceUseCase: any FetchOnboardingSentenceUseCaseType { get }
+    var calendarReflectionsUseCase: any CalendarReflectionsUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
@@ -26,7 +27,7 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
         AuthUseCase(repository: authRepository)
     }()
     
-    public lazy var submitAnswerUseCase: any SubmitAnswerUseType = {
+    public lazy var submitAnswerUseCase: any SubmitAnswerUseCaseType = {
         SubmitAnswerUseCase(repository: reflectionRepository)
     }()
     
@@ -40,5 +41,9 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var fetchOnboardingSentenceUseCase: any FetchOnboardingSentenceUseCaseType = {
         FetchOnboardingSentenceUseCase(repository: reflectionRepository)
+    }()
+    
+    public lazy var calendarReflectionsUseCase: any CalendarReflectionsUseCaseType = {
+        CalendarReflectionsUseCase(repository: reflectionRepository)
     }()
 }

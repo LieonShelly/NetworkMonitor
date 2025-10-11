@@ -4,19 +4,19 @@
 
 import Foundation
 
-public protocol SubmitAnswerUseType: Sendable {
+public protocol SubmitAnswerUseCaseType: Sendable {
     func execute(_ param: AnswerParam) async throws -> Answer
 }
 
 
-public class SubmitAnswerUseCase: SubmitAnswerUseType, @unchecked Sendable {
+public class SubmitAnswerUseCase: SubmitAnswerUseCaseType, @unchecked Sendable {
     private let repository: any ReflectionRepositoryType
     
-    init(repository: any ReflectionRepositoryType) {
+    public init(repository: any ReflectionRepositoryType) {
         self.repository = repository
     }
     
     public func execute(_ param: AnswerParam) async throws -> Answer {
-      try await repository.submitAnswer(param)
+        try await repository.submitAnswer(param)
     }
 }

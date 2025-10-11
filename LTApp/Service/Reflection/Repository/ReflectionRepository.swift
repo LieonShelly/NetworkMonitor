@@ -12,6 +12,8 @@ public protocol ReflectionRepositoryType {
     func fetchHeadQuestion(_ categorId: String) async throws -> Question
     
     func submitAnswer(_ param: AnswerParam) async throws -> Answer
+    
+    func fetchCalendarReflections(startMonth: Date, endMonth: Date) async throws -> [DayReflections]
 }
 
 public final class ReflectionRepository: ReflectionRepositoryType {
@@ -42,11 +44,25 @@ public final class ReflectionRepository: ReflectionRepositoryType {
         return dto.data.toDomain()
     }
     
-    public func submitAnswer(_ param: AnswerParam) async throws -> Answer{
+    public func submitAnswer(_ param: AnswerParam) async throws -> Answer {
         let request = ReflectionRequest.answerQuestion(param)
         let response = try await apiClient.sendRequest(request)
         let dto: UniversalResponse<AnswerDTO> = try response.parseJson()
         return dto.data.toDomain()
+    }
+    
+    public func fetchCalendarReflections(startMonth: Date, endMonth: Date) async throws -> [DayReflections] {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYY-MM-DD"
+        formatter.timeZone = .current
+        
+        let request = ReflectionRequest.calendar(
+            startDate: formatter.string(from: startMonth),
+            endDate: formatter.string(from: endMonth)
+        )
+        let response = try await apiClient.sendRequest(request)
+        let dto: UniversalResponse<[DayReflectionsDTO]> = try response.parseJson()
+        return dto.data.map { $0.toDomain() }
     }
 }
 

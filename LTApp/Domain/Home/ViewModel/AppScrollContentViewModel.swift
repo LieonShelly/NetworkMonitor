@@ -12,8 +12,10 @@ class AppScrollContentViewModel: ObservableObject {
     var didEndScroll: ((Int) -> Void)?
     @Published var preProgress: CGFloat = 0
     @Published var isTapping: Bool = false
-    init() {
-        print("AppScrollContentViewModel-init")
+    let calendarViewModel: CalendarViewModel
+    
+    init(service: any AppDataWithAuthorizationServiceful) {
+        calendarViewModel = CalendarViewModel(service: service)
     }
     
     deinit {
