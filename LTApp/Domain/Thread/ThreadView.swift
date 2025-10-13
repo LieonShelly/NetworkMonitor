@@ -16,18 +16,25 @@ struct ThreadView: View {
     var body: some View {
         VStack(spacing: .zero) {
             titleView
-            ScrollView {
-                LazyVStack(spacing: .zero) {
+            ScrollView(showsIndicators: false) {
+                LazyVStack(alignment: .leading, spacing: .zero) {
                     ForEach(viewModel.questionList, id: \.id) { question in
-                        VStack(spacing: .zero) {
+                        VStack(alignment: .leading, spacing: .zero) {
                             questionRow(question.title)
-                            VStack(spacing: .zero) {
-                                ForEach(question.answers, id: \.id) { answer in
-                                    answerRow(answer.content, icon: .calendarDripper)
+                            VStack(alignment: .leading, spacing: .zero) {
+                                ForEach(0 ..< 3) { index in
+                                    if index < question.answers.count {
+                                        let answer = question.answers[index]
+                                        answerRow(answer.content, icon: .calendarDripper)
+                                    }
+                                }
+                                if question.answers.count >= 3 {
+                                    moreBtn
+                                } else {
+                                    addNewBtn(answerCount: question.answers.count)
                                 }
                                 Spacer()
                             }
-                            .frame(height: 100)
                             .padding(.top, 10)
                         }
                         .overlay(alignment: .leading) {
@@ -35,13 +42,7 @@ struct ThreadView: View {
                         }
                     }
                     
-                    Rectangle()
-                        .fill(Color.clear)
-                        .frame(height: 80)
-                        .overlay(alignment: .leading) {
-                            line(true, segmentCount: 10, seed: 40)
-                        }
-                    
+                 footer
                 }
                 .padding(.top, 60)
                
@@ -127,5 +128,53 @@ struct ThreadView: View {
 
         }
         .padding(.leading, 24)
+    }
+    
+    var footer: some View {
+        Rectangle()
+            .fill(Color.clear)
+            .frame(height: 80)
+            .overlay(alignment: .leading) {
+                line(true, segmentCount: 10, seed: 40)
+            }
+    }
+    
+    var moreBtn: some View {
+        Button {
+            
+        } label: {
+            Text("more")
+                .textStyle(size: 12, color: AppColor.color(hex: 0x7F7F7F), fontFamily: .poppinsRegular)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 4)
+                .background {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.clear)
+                        .stroke(AppColor.color(hex: 0x7F7F7F), style: .init(lineWidth: 1))
+                }
+        }
+        .padding(.top, 5)
+        .padding(.leading, 54)
+        .padding(.bottom, 24)
+
+    }
+    
+    func addNewBtn(answerCount: Int) -> some View {
+        Button {
+            
+        } label: {
+            Text("+ add new")
+                .textStyle(size: 12, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 4)
+                .background {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(AppColor.color(hex: 0x000000))
+                }
+        }
+        .padding(.top, 5)
+        .padding(.bottom, 76 / CGFloat(answerCount))
+        .padding(.leading, 54)
+
     }
 }
