@@ -6,6 +6,11 @@ import SwiftUI
 
 struct QuestionLibView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
+    @StateObject var viewModel: QuestionLibViewModel
+    
+    init(viewModel: QuestionLibViewModel) {
+        self._viewModel = .init(wrappedValue: viewModel)
+    }
     
     var body: some View {
         ScrollView {
@@ -23,6 +28,9 @@ struct QuestionLibView: View {
                 QestionRow(text: "What is one little thing that made you happy today?")
             }
             .padding(.bottom, 36)
+            .onTapGesture {
+                homeCoordinator.push(HomeRoute.questioDetail)
+            }
             
             VStack(spacing: .zero) {
                 sectionHeader("Simple Joys")
@@ -48,5 +56,16 @@ struct QuestionLibView: View {
             Spacer()
         }
         .padding(.leading, 42)
+    }
+}
+
+
+
+import Combine
+
+final class QuestionLibViewModel: ObservableObject {
+    
+    deinit {
+        print("deinit-QuestionLibViewModel")
     }
 }

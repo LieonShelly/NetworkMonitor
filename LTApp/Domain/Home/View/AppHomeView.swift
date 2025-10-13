@@ -4,9 +4,13 @@
 import SwiftUI
 
 struct AppHomeView: View {
-    @ObservedObject var viewModel: AppHomeViewModel
+    @StateObject var viewModel: AppHomeViewModel
     
     @State var showPage: Bool = false
+    
+    init(service: any AppDataWithAuthorizationServiceful) {
+        self._viewModel = StateObject(wrappedValue: AppHomeViewModel(service: service))
+    }
     
     var body: some View {
         VStack {

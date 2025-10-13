@@ -22,10 +22,11 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
         }
         switch route {
         case .home:
-            let viewModel = AppHomeViewModel(service: appDataService)
-            return AnyView(AppHomeView(viewModel: viewModel))
+            return AnyView(AppHomeView(service: appDataService))
         case .questionLib:
-            return AnyView(QuestionLibView())
+            return AnyView(QuestionLibView(viewModel: QuestionLibViewModel()))
+        case .questioDetail:
+            return AnyView(QuestionLibView(viewModel: QuestionLibViewModel()))
         }
     }
     
@@ -38,6 +39,7 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
 enum HomeRoute: Route {
     case home
     case questionLib
+    case questioDetail
 }
 
 

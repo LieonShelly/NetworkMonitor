@@ -56,15 +56,15 @@ struct AppleIDSignInView: View {
                 }
                 print("authorizationCode:\(authorizationCode)")
                 print("idTokenStr:\(idTokenStr)")
-//                Task.detached {
-//                    do {
-//                        try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
-//                        await gotoSplash()
-//                    } catch {
-//                        
-//                    }
-//                   
-//                }
+                Task.detached {
+                    do {
+                        try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
+                        await gotoSplash()
+                    } catch {
+                        
+                    }
+                   
+                }
             case let .failure(error):
                 print(error)
             }

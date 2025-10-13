@@ -19,7 +19,7 @@ struct AppHomeRootView: View {
                     coordinator.build(path)
                 }
         }
-        .onAppear {
+        .task {
             coordinator.start()
         }
     }

@@ -24,6 +24,10 @@ class AppHomeViewModel: ObservableObject {
     ])
     let contentViewModel: AppScrollContentViewModel
     
+    deinit {
+        print("AppHomeViewModel-deinit")
+    }
+    
     init(service: any AppDataWithAuthorizationServiceful) {
         contentViewModel = AppScrollContentViewModel(service: service)
         
