@@ -7,61 +7,32 @@ import SwiftUI
 struct ThreadView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @EnvironmentObject var appCoordinator: AppCoordinator
+    @ObservedObject var viewModel: ThreadViewModel
+    
+    init(viewModel: ThreadViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         VStack(spacing: .zero) {
             titleView
             ScrollView {
                 LazyVStack(spacing: .zero) {
-                    VStack(spacing: .zero) {
-                        questionRow("lil things that make you happy")
-                        
+                    ForEach(viewModel.questionList, id: \.id) { question in
                         VStack(spacing: .zero) {
-                            answerRow("High school friend brought me a new coffee dripper from California, and I’m so happy to continue my morning coffee routine with that.", icon: .calendarDripper)
-                            
-                            answerRow("")
-                            answerRow("")
-                            answerRow("")
-                            Spacer()
+                            questionRow(question.title)
+                            VStack(spacing: .zero) {
+                                ForEach(question.answers, id: \.id) { answer in
+                                    answerRow(answer.content, icon: .calendarDripper)
+                                }
+                                Spacer()
+                            }
+                            .frame(height: 100)
+                            .padding(.top, 10)
                         }
-                        .frame(height: 100)
-                        .padding(.top, 10)
-                    }
-                    .overlay(alignment: .leading) {
-                        line()
-                    }
-                    VStack(spacing: .zero) {
-                        questionRow("lil things that make you proud")
-                        
-                        VStack(spacing: .zero) {
-                            answerRow("High school friend brought me a new coffee dripper from California, and I’m so happy to continue my morning coffee routine with that.")
-                            answerRow("")
-                            answerRow("")
-                            answerRow("")
-                            Spacer()
+                        .overlay(alignment: .leading) {
+                            line()
                         }
-                        .frame(height: 100)
-                        .padding(.top, 10)
-                    }
-                    .overlay(alignment: .leading) {
-                        line()
-                    }
-                    
-                    VStack(spacing: .zero) {
-                        questionRow("Did you spend enough time with your SO this week?")
-                        
-                        VStack(spacing: .zero) {
-                            answerRow("High school friend brought me a new coffee dripper from California, and I’m so happy to continue my morning coffee routine with that.")
-                            answerRow("")
-                            answerRow("")
-                            answerRow("")
-                            Spacer()
-                        }
-                        .frame(height: 100)
-                        .padding(.top, 10)
-                    }
-                    .overlay(alignment: .leading) {
-                        line()
                     }
                     
                     Rectangle()
@@ -77,6 +48,13 @@ struct ThreadView: View {
             }
             .padding(.leading, 40)
             .padding(.trailing, 20)
+        }
+        .task {
+            do {
+                try await viewModel.fetchData()
+            } catch {
+                
+            }
         }
       
     }
@@ -151,9 +129,3 @@ struct ThreadView: View {
         .padding(.leading, 24)
     }
 }
-
-
-#Preview {
-    ThreadView()
-}
-

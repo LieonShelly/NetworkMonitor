@@ -13,9 +13,11 @@ class AppScrollContentViewModel: ObservableObject {
     @Published var preProgress: CGFloat = 0
     @Published var isTapping: Bool = false
     let calendarViewModel: CalendarViewModel
+    let threadViewModel: ThreadViewModel
     
     init(service: any AppDataWithAuthorizationServiceful) {
         calendarViewModel = CalendarViewModel(service: service)
+        threadViewModel = ThreadViewModel(service: service)
     }
     
     deinit {

@@ -15,7 +15,7 @@ struct AppScrollContentView: View {
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(0)
                     
-                    ThreadView()
+                    ThreadView(viewModel: viewModel.threadViewModel)
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(1)
                 }
