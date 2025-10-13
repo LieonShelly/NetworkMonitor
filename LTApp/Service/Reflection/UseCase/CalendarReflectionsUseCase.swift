@@ -19,4 +19,3 @@ public class CalendarReflectionsUseCase: CalendarReflectionsUseCaseType, @unchec
         try await repository.fetchCalendarReflections(startMonth: startMonth, endMonth: endMonth)
     }
 }
-

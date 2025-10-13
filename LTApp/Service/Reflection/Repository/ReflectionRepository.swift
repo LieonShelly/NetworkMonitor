@@ -14,6 +14,8 @@ public protocol ReflectionRepositoryType {
     func submitAnswer(_ param: AnswerParam) async throws -> Answer
     
     func fetchCalendarReflections(startMonth: Date, endMonth: Date) async throws -> [DayReflections]
+    
+    func fetchThreadPinnedQuestions() async throws -> [ThreadQuestion]
 }
 
 public final class ReflectionRepository: ReflectionRepositoryType {
@@ -58,6 +60,13 @@ public final class ReflectionRepository: ReflectionRepositoryType {
         )
         let response = try await apiClient.sendRequest(request)
         let dto: UniversalResponse<[DayReflectionsDTO]> = try response.parseJson()
+        return dto.data.map { $0.toDomain() }
+    }
+    
+    public func fetchThreadPinnedQuestions() async throws -> [ThreadQuestion] {
+        let request = ReflectionRequest.thread
+        let response = try await apiClient.sendRequest(request)
+        let dto: UniversalResponse<[ThreadQuestionDTO]> = try response.parseJson()
         return dto.data.map { $0.toDomain() }
     }
 }

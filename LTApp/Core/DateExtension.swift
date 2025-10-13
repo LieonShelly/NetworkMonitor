@@ -102,3 +102,13 @@ extension Date {
         return formatter.string(from: self)
     }
 }
+
+struct AppDateFormatter {
+   static var yyyymmdd: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.timeZone = .current
+        formatter.dateFormat = "YYYY-MM-dd"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }
+}

@@ -9,8 +9,13 @@ public struct Answer: Sendable {
     let content: String
 }
 
-
 public struct DayReflections: Sendable {
     let day: Date
     let reflections: [Answer]
+}
+
+public struct ThreadQuestion: Sendable {
+    let id: String
+    let title: String
+    let answers: [Answer]
 }
