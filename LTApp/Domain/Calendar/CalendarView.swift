@@ -31,6 +31,7 @@ struct CalendarView: View {
         .defaultBackground()
         .task {
             do {
+               await viewModel.generateDay()
                 try await viewModel.fetchData()
             } catch {
                 
@@ -62,9 +63,16 @@ struct CalendarView: View {
                     HStack {
                         if let currentMonth = viewModel.currentMonth {
                             if day.date.isSameMonth(currentMonth) {
-                                Circle()
-                                    .fill(AppColor.color(hex: 0x000000))
-                                    .frame(width: 8, height: 8)
+                                if let reflections = day.reflections {
+                                    Image(.mail)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 24, height: 24)
+                                } else {
+                                    Circle()
+                                        .fill(AppColor.color(hex: 0x000000))
+                                        .frame(width: 8, height: 8)
+                                }
                             } else if day.date.isPreviousMonth(currentMonth) {
                                 Text("\(day.date.dayDesc())")
                                     .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
@@ -102,7 +110,7 @@ struct CalendarView: View {
         .scrollPosition(id: $viewModel.scrollPostion, anchor: .top)
         .onScrollGeometryChange(for: CGPoint.self, of: { $0.contentOffset }, action: { oldValue, newValue in
             let rowIndex = Int(newValue.y / columnW)
-            guard rowIndex >= 0 else { return }
+            guard rowIndex >= 0, !viewModel.days.isEmpty else { return }
             let lastDayIndex = (rowIndex + 1) * columns + (columns - 1)
             let currentDate = viewModel.days[min(lastDayIndex, viewModel.days.count - 1)]
             withAnimation(.easeIn(duration: 0.25)) {

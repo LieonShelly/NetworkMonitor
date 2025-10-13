@@ -60,6 +60,13 @@ extension Date {
         return component1.year == component2.year && component1.month == component2.month
     }
     
+    func isSameDay(_ date: Date) -> Bool {
+        let calendar = Calendar.current
+        let component1 = calendar.dateComponents([.year, .month, .day], from: self)
+        let component2 = calendar.dateComponents([.year, .month, .day], from: date)
+        return component1.year == component2.year && component1.month == component2.month && component1.day == component2.day
+    }
+    
     func isPreviousMonth(_ date: Date) -> Bool {
         let calendar = Calendar.current
         let component1 = calendar.dateComponents([.year, .month], from: self)

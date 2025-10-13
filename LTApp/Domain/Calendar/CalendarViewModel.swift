@@ -6,10 +6,10 @@ import Foundation
 import SwiftUI
 
 final class CalendarViewModel: ObservableObject, @unchecked Sendable {
-    @Published var days: [CalendarDay] = []
-    @Published var weekdays: [String] = ["S", "M", "T", "W", "T", "F", "S"]
-    @Published var currentMonth: Date?
-    @Published var scrollPostion: UUID? = nil
+    @MainActor @Published var days: [CalendarDay] = []
+    @MainActor @Published var weekdays: [String] = ["S", "M", "T", "W", "T", "F", "S"]
+    @MainActor @Published var currentMonth: Date?
+    @MainActor @Published var scrollPostion: UUID? = nil
 
     let itemSize: CGSize = .init(width: 30, height: 30)
     
@@ -17,30 +17,26 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     
     init(service: any AppDataWithAuthorizationServiceful) {
         self.service = service
-        generateDaysForYear(2025)
-        generateDaysForYear(2026)
-        generateDaysForYear(2027)
     }
     
-    func generateDaysForYear(_ year: Int) {
+    func generateDaysForYear(_ year: Int) async {
         let calendar = Calendar.current
         var component = DateComponents()
         component.year = year
         component.month = 1
         if let date = calendar.date(from: component) {
-            self.currentMonth = date
-            generateDays(for: date, needWeekdayOffset: true)
+          await  generateDays(for: date, needWeekdayOffset: true)
         }
         
         for month in 2...12 {
             component.year = year
             component.month = month
             guard let date = calendar.date(from: component) else { continue }
-            generateDays(for: date, needWeekdayOffset: false)
+           await generateDays(for: date, needWeekdayOffset: false)
         }
     }
     
-    func generateDays(for moth: Date, needWeekdayOffset: Bool = true) {
+    func generateDays(for moth: Date, needWeekdayOffset: Bool = true) async {
         let calendar = Calendar.current
         let range = calendar.range(of: .day, in: .month, for: moth)!
         let components = calendar.dateComponents([.year, .month], from: moth)
@@ -70,9 +66,12 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
                 )
             )
         }
-        self.days.append(contentsOf: days)
+        await MainActor.run {
+            self.days.append(contentsOf: days)
+        }
     }
     
+    @MainActor
     func goNextMonth() {
         guard let currentMonth else { return }
         let calendar = Calendar.current
@@ -85,6 +84,7 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         }
     }
     
+    @MainActor
     func goPreviousMonth() {
         guard let currentMonth else { return }
         let calendar = Calendar.current
@@ -100,6 +100,12 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
 }
 
 extension CalendarViewModel {
+    func generateDay() async {
+        for year in 2023 ... 2030 {
+           await generateDaysForYear(year)
+        }
+    }
+    
     func fetchData() async throws {
         let endMonth = Date()
         let startMonth = Date.January
@@ -107,6 +113,19 @@ extension CalendarViewModel {
             startMonth: startMonth,
             endMonth: endMonth
         )
-        print(reflections)
+       await MainActor.run {
+            for reflection in reflections {
+                guard let index = days.firstIndex(where: { $0.date.isSameDay(reflection.day)}) else { continue }
+                let newDay = days[index].copyWith(reflection)
+                days[index] = newDay
+            }
+           
+           if let day = days.first(where: { $0.date.isSameMonth(endMonth)}) {
+               currentMonth = endMonth
+               withAnimation(.easeInOut) {
+                   self.scrollPostion = day.id
+               }
+           }
+        }
     }
 }
