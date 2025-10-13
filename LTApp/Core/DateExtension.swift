@@ -79,11 +79,26 @@ extension Date {
     }
     
     static var January: Date {
-        let calendar = Calendar.current
+        var calendar = Calendar.current
+        calendar.timeZone = .current
+        calendar.locale = Locale(identifier: "en_US_POSIX")
         let currentYear = Date()
         var component = calendar.dateComponents([.year], from: currentYear)
+        var firstDayComponent = DateComponents()
+        firstDayComponent.year = component.year
         component.month = 1
         component.day = 1
-        return calendar.date(from: component) ?? currentYear
+        component.hour = 0
+        component.minute = 0
+        component.second = 0 
+        return calendar.date(from: firstDayComponent) ?? currentYear
+    }
+    
+    var yyyymmdd: String {
+        let formatter = DateFormatter()
+        formatter.timeZone = .current
+        formatter.dateFormat = "YYYY-MM-dd"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter.string(from: self)
     }
 }
