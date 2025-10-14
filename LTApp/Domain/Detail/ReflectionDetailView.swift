@@ -5,6 +5,13 @@
 import SwiftUI
 
 struct ReflectionDetailView: View {
+    @StateObject var viewModel: ReflectionDetailViewModel
+    @EnvironmentObject var homeCoordinator: HomeCoordinator
+    
+    init(viewModel: ReflectionDetailViewModel) {
+        self._viewModel = .init(wrappedValue: viewModel)
+    }
+    
     var body: some View {
         ScrollView {
             LazyVStack(spacing: .zero) {
@@ -19,31 +26,43 @@ struct ReflectionDetailView: View {
             }
         }
         .defaultBackground()
-        .defaultNavigationBar("")
+        .defaultNavigationBar("") {
+            homeCoordinator.pop()
+        }
+        .task {
+            do {
+                try await viewModel.fetchData()
+            } catch {
+                
+            }
+        }
     }
     
     var titleView: some View {
-        Text("One little things that make you happy today.")
+        Text(viewModel.title)
             .textStyle(size: 32)
             .padding(.horizontal, 42)
             .padding(.top, 10)
     }
     
-    var totalView: some View {
-        Button {
-            
-        } label: {
-            Text("5 answers, 789 days ")
-                .textStyle(size: 10, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(AppColor.color(hex: 0x000000))
-                }
+    @ViewBuilder var totalView: some View {
+        if let sumary = viewModel.sumary {
+            Button {
+                
+            } label: {
+                Text("\(sumary.totalAnswers) answers, \(sumary.daysOver) days ")
+                    .textStyle(size: 10, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background {
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(AppColor.color(hex: 0x000000))
+                    }
+            }
+            .padding(.top, 27)
+            .padding(.bottom, 24)
         }
-        .padding(.top, 27)
-        .padding(.bottom, 24)
+        
     }
 }
 
@@ -93,6 +112,45 @@ struct DetailAnswerRow: View {
             .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round))
             .foregroundColor(AppColor.color(hex: 0x000000))
             .frame(width: 2)
-      
+        
     }
+}
+
+
+import Combine
+
+final class ReflectionDetailViewModel: ObservableObject, @unchecked Sendable {
+    
+    @MainActor @Published var history: History?
+    @MainActor @Published var sumary: ReflectionSummary?
+    @MainActor @Published var answers: [Answer] = []
+    @MainActor @Published var title: String = ""
+    
+    private let service: any AppDataWithAuthorizationServiceful
+    private let questionId: String
+    
+    @MainActor
+    init(
+        service: any AppDataWithAuthorizationServiceful,
+        questionId: String,
+        title: String
+    ) {
+        self.service = service
+        self.questionId = questionId
+        self.title = title
+    }
+    
+    func fetchData() async throws {
+        let history = try await service.fetchHistoryAnswersUseCase.execute(
+            questionId: questionId,
+            limit: nil,
+            cursor: nil
+        )
+        await MainActor.run {
+            self.history = history
+            self.answers = history.answers
+            self.sumary = history.summary
+        }
+    }
+    
 }

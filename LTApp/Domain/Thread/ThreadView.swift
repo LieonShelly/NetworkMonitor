@@ -27,7 +27,12 @@ struct ThreadView: View {
                                         let answer = question.answers[index]
                                         answerRow(answer.content, icon: .calendarDripper)
                                             .onTapGesture {
-                                                homeCoordinator.push(HomeRoute.reflectionDetail)
+                                                homeCoordinator.push(
+                                                    HomeRoute.reflectionDetail(
+                                                        questionId: question.id,
+                                                        title: question.title
+                                                    )
+                                                )
                                             }
                                     }
                                 }

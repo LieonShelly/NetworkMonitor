@@ -34,7 +34,7 @@ struct CalendarView: View {
                await viewModel.generateDay()
                 try await viewModel.fetchData()
             } catch {
-                
+                print(error)
             }
         }
     }

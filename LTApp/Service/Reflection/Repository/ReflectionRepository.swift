@@ -20,6 +20,8 @@ public protocol ReflectionRepositoryType {
     func fetchQuestionsWithCategory() async throws -> [Category]
     
     func pinQuestion(questionId: String, pinned: Bool) async throws
+    
+    func fetchHistory(questionId: String, limit: Int?, cursor: Int?) async throws -> History
 }
 
 public final class ReflectionRepository: ReflectionRepositoryType {
@@ -84,8 +86,15 @@ public final class ReflectionRepository: ReflectionRepositoryType {
     public func pinQuestion(questionId: String, pinned: Bool) async throws {
         let request = ReflectionRequest.pinQuestion(id: questionId, pinned: pinned)
         let response = try await apiClient.sendRequest(request)
-        let dto: UniversalEmptyResponse = try response.parseJson()
+        let _: UniversalEmptyResponse = try response.parseJson()
         return ()
+    }
+    
+    public func fetchHistory(questionId: String, limit: Int? = nil, cursor: Int? = nil) async throws -> History {
+        let request = ReflectionRequest.answers(questionId: questionId, limit: limit, cursor: cursor)
+        let response = try await apiClient.sendRequest(request)
+        let dto: UniversalResponse<HistoryDTO> = try response.parseJson()
+        return dto.data.toDomain()
     }
 }
 

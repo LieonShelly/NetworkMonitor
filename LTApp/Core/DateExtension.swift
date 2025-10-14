@@ -111,4 +111,12 @@ struct AppDateFormatter {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }
+    
+    static var ymdhsm: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.timeZone = .current
+        formatter.dateFormat = "YYYY-MM-dd hh:mm:ss"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }
 }
