@@ -8,8 +8,9 @@ import Foundation
 public struct Question: Sendable {
     var id: String
     var title: String
+    var pinned: Bool = false
     
-    public  init(id: String, title: String) {
+    public init(id: String, title: String, pinned: Bool = false) {
         self.id = id
         self.title = title
     }

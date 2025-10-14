@@ -59,13 +59,3 @@ struct QuestionLibView: View {
     }
 }
 
-
-
-import Combine
-
-final class QuestionLibViewModel: ObservableObject {
-    
-    deinit {
-        print("deinit-QuestionLibViewModel")
-    }
-}

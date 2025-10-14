@@ -7,10 +7,12 @@ import Foundation
 public struct Category: Sendable, Identifiable, Equatable, Hashable {
     public var id: String
     public var name: String
+    public let questions: [Question]
     
-    public  init(id: String, name: String) {
+    public init(id: String, name: String, questions: [Question]) {
         self.id = id
         self.name = name
+        self.questions = questions
     }
     
     public static func == (lhs: Category, rhs: Category) -> Bool {
