@@ -18,11 +18,11 @@ struct ReflectionDetailView: View {
                 titleView
                 totalView
                 LazyVStack(spacing: .zero) {
-                    DetailAnswerRow()
-                    DetailAnswerRow()
-                    DetailAnswerRow()
+                    ForEach(viewModel.answers, id: \.id) { answer in
+                        DetailAnswerRow(answer: answer)
+                    }
                 }
-                .padding(.horizontal, 42)
+                .padding(.horizontal, 32)
             }
         }
         .defaultBackground()
@@ -67,6 +67,8 @@ struct ReflectionDetailView: View {
 }
 
 struct DetailAnswerRow: View {
+    let answer: Answer
+    
     var body: some View {
         HStack(alignment: .top, spacing: .zero) {
             dateView
@@ -76,14 +78,15 @@ struct DetailAnswerRow: View {
     }
     
     var dateView: some View {
-        VStack(spacing: .zero) {
-            Text("oct")
+        VStack(alignment: .trailing, spacing: .zero) {
+            Text(answer.createAt?.monthDesc(isShort: true) ?? "")
                 .textStyle(size: 20, color: AppColor.color(hex: 0x000000), fontFamily: .feltTipSeniorRegular)
             
-            Text("29")
+            Text(answer.createAt?.dayDesc() ?? "")
                 .textStyle(size: 20, color: AppColor.color(hex: 0x000000), fontFamily: .feltTipSeniorRegular)
             
         }
+        .frame(width: 30)
         .padding(.top, 42)
     }
     
@@ -96,12 +99,17 @@ struct DetailAnswerRow: View {
             line()
                 .padding(.vertical, 8)
         }
+        .padding(.leading, 8)
     }
     
     var textView: some View {
-        Text("High school friend brought me a new coffee dripper from California, and I’m so happy to continue my morning coffee routine with that.")
-            .multilineTextAlignment(.leading)
-            .textStyle(size: 14, color: AppColor.color(hex: 0x6f6f6f), fontFamily: .poppinsRegular)
+        HStack {
+            Text(answer.content)
+                .multilineTextAlignment(.leading)
+                .textStyle(size: 14, color: AppColor.color(hex: 0x6f6f6f), fontFamily: .poppinsRegular)
+            Spacer()
+        }
+      
             .padding(.top, 42)
             .padding(.bottom, 14)
     }

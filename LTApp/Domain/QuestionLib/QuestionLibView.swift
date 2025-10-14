@@ -17,21 +17,23 @@ struct QuestionLibView: View {
             Rectangle()
                 .fill(Color.clear)
                 .frame(height: 36)
-            
-            ForEach(viewModel.categories, id: \.id) { category in
-                VStack(spacing: .zero) {
-                    sectionHeader(category.name)
-                    ForEach(category.questions, id: \.id) { question in
-                        QuestionRow(text: question.title, isPinned: question.pinned)
-                            .onTapGesture {
-                                Task.detached {
-                                    await viewModel.pinQuesition(question)
+            LazyVStack(spacing: .zero) {
+                ForEach(viewModel.categories, id: \.id) { category in
+                    VStack(spacing: .zero) {
+                        sectionHeader(category.name)
+                        ForEach(category.questions, id: \.id) { question in
+                            QuestionRow(text: question.title, isPinned: question.pinned)
+                                .onTapGesture {
+                                    Task.detached {
+                                        await viewModel.pinQuesition(question)
+                                    }
                                 }
-                            }
+                        }
                     }
+                    .padding(.bottom, 36)
                 }
-                .padding(.bottom, 36)
             }
+         
         }
         .defaultBackground()
         .defaultNavigationBar("Question Library") {
