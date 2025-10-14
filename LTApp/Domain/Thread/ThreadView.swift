@@ -26,6 +26,9 @@ struct ThreadView: View {
                                     if index < question.answers.count {
                                         let answer = question.answers[index]
                                         answerRow(answer.content, icon: .calendarDripper)
+                                            .onTapGesture {
+                                                homeCoordinator.push(HomeRoute.reflectionDetail)
+                                            }
                                     }
                                 }
                                 if question.answers.count >= 3 {
@@ -80,9 +83,6 @@ struct ThreadView: View {
                 .lineLimit(1)
                 .textStyle(size: 12, color: AppColor.color(hex: 0x6f6f6f), fontFamily: .poppinsRegular)
             Spacer()
-        }
-        .onTapGesture {
-            appCoordinator.changeRoot(.preHome)
         }
     }
     

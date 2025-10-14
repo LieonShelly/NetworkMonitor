@@ -27,6 +27,8 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
             return AnyView(QuestionLibView(viewModel: QuestionLibViewModel(service: appDataService)))
         case .questioDetail:
             return AnyView(QuestionLibView(viewModel: QuestionLibViewModel(service: appDataService)))
+        case .reflectionDetail:
+            return AnyView(ReflectionDetailView())
         }
     }
     
@@ -40,6 +42,7 @@ enum HomeRoute: Route {
     case home
     case questionLib
     case questioDetail
+    case reflectionDetail
 }
 
 
