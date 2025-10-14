@@ -19,4 +19,3 @@ public class FetchThreadQuestionsUseCase: FetchThreadQuestionsUseCaseType, @unch
         try await repository.fetchThreadPinnedQuestions()
     }
 }
-

@@ -18,8 +18,9 @@ public struct UniversalResponse<T: Decodable>: Decodable, UniversalResponseType 
 
 public struct UniversalEmptyResponse: Decodable {
     public let success: Bool
-    public let message: String
-    public init(message: String, success: Bool) {
+    public let message: String?
+    
+    public init(message: String?, success: Bool) {
         self.success = success
         self.message = message
     }

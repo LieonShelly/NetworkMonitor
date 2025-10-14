@@ -31,18 +31,23 @@ struct QuestionRow: View {
     
     var pinView: some View {
         HStack(spacing: .zero) {
-            Image(.star)
-            
-            Text("Star")
-                .foregroundStyle(AppColor.white)
-                .textStyle(size: 14, fontFamily: .poppinsRegular)
-                .padding(.leading, 4)
-            
+            if isPinned {
+                Image(.unset)
+                Text("Unset")
+                    .foregroundStyle(AppColor.white)
+                    .textStyle(size: 14, fontFamily: .poppinsRegular)
+                    .padding(.leading, 4)
+            } else {
+                Image(.star)
+                Text("Star")
+                    .foregroundStyle(AppColor.white)
+                    .textStyle(size: 14, fontFamily: .poppinsRegular)
+                    .padding(.leading, 4)
+            }
         }
         .frame(maxHeight: .infinity, alignment: .center)
         .padding(.leading, 16)
         .padding(.trailing, 44)
-        .background(Color.random)
     }
     
     var contentView: some View {

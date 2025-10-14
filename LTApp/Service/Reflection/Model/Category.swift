@@ -7,7 +7,7 @@ import Foundation
 public struct Category: Sendable, Identifiable, Equatable, Hashable {
     public var id: String
     public var name: String
-    public let questions: [Question]
+    public var questions: [Question]
     
     public init(id: String, name: String, questions: [Question]) {
         self.id = id

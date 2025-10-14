@@ -13,6 +13,7 @@ public protocol AppDataWithAuthorizationServiceful {
     var calendarReflectionsUseCase: any CalendarReflectionsUseCaseType { get }
     var threadQuestionsUseCase: any FetchThreadQuestionsUseCaseType { get }
     var fetchQuestionsWithCategoryUseCase: any FetchQuestionsWithCategoryUseCaseType { get }
+    var pinQuestionUseCase: any PinQuestionUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
@@ -55,5 +56,9 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var fetchQuestionsWithCategoryUseCase: any FetchQuestionsWithCategoryUseCaseType = {
         FetchQuestionsWithCategoryUseCase(repository: reflectionRepository)
+    }()
+    
+    public lazy var pinQuestionUseCase: any PinQuestionUseCaseType = {
+        PinQuestionUseCase(repository: reflectionRepository)
     }()
 }

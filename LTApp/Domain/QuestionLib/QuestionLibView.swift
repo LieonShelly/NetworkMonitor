@@ -23,6 +23,11 @@ struct QuestionLibView: View {
                     sectionHeader(category.name)
                     ForEach(category.questions, id: \.id) { question in
                         QuestionRow(text: question.title, isPinned: question.pinned)
+                            .onTapGesture {
+                                Task.detached {
+                                    await viewModel.pinQuesition(question)
+                                }
+                            }
                     }
                 }
                 .padding(.bottom, 36)
