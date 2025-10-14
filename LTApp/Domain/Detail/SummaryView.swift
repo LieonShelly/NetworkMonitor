@@ -20,12 +20,14 @@ struct SummaryView: View {
             RoundedRectangleWithCorners(radius: 20, corners: [.topLeft, .topRight])
                 .fill(AppColor.backgroundPage)
         )
+        .ignoresSafeArea(edges: .bottom)
     }
     
     var topLine: some View {
         RoundedRectangle(cornerRadius: 3)
             .fill(AppColor.color(hex: 0xD9D9D9))
             .frame(width: 60, height: 6)
+            .padding(.top, 12)
     }
     
     var text: some View {
@@ -47,7 +49,6 @@ struct SummaryView: View {
                     Image(.xmark)
                 }
         }
-        .ignoresSafeArea(edges: .bottom)
         .padding(.bottom, 45)
     }
 }
