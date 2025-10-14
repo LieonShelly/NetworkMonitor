@@ -11,6 +11,7 @@ enum ReflectionRequest: Request {
     case answerQuestion(_ param: AnswerParam)
     case calendar(startDate: String, endDate: String)
     case thread
+    case questionList
     
     var endPoint: any EndPoint {
         var path: String = "/api"
@@ -27,6 +28,8 @@ enum ReflectionRequest: Request {
             path += "/calendar-view"
         case .thread:
             path += "/thread-view"
+        case .questionList:
+            path += "/questions"
         }
         return DefaultEndPoint.baseURL(path: path)
     }
@@ -37,7 +40,8 @@ enum ReflectionRequest: Request {
                 .categories,
                 .headQuestion,
                 .calendar,
-                .thread:
+                .thread,
+                .questionList:
                 .get
         case .answerQuestion:
                 .post

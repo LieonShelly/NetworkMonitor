@@ -12,6 +12,7 @@ public protocol AppDataWithAuthorizationServiceful {
     var fetchOnboardingSentenceUseCase: any FetchOnboardingSentenceUseCaseType { get }
     var calendarReflectionsUseCase: any CalendarReflectionsUseCaseType { get }
     var threadQuestionsUseCase: any FetchThreadQuestionsUseCaseType { get }
+    var fetchQuestionsWithCategoryUseCase: any FetchQuestionsWithCategoryUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
@@ -50,5 +51,9 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var threadQuestionsUseCase: any FetchThreadQuestionsUseCaseType = {
         FetchThreadQuestionsUseCase(repository: reflectionRepository)
+    }()
+    
+    public lazy var fetchQuestionsWithCategoryUseCase: any FetchQuestionsWithCategoryUseCaseType = {
+        FetchQuestionsWithCategoryUseCase(repository: reflectionRepository)
     }()
 }

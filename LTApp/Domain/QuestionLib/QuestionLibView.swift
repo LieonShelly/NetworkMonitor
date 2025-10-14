@@ -18,34 +18,27 @@ struct QuestionLibView: View {
                 .fill(Color.clear)
                 .frame(height: 36)
             
-            VStack(spacing: .zero) {
-                sectionHeader("Simple Joys")
-                QestionRow(text: "What is one little thing that made you happy today?")
-                QestionRow(text: "What is one little thing that made you happy today?")
-                QestionRow(text: "What is one little thing that made you happy today?")
-                QestionRow(text: "What is one little thing that made you happy today?")
-                QestionRow(text: "What is one little thing that made you happy today?")
-                QestionRow(text: "What is one little thing that made you happy today?")
-            }
-            .padding(.bottom, 36)
-            .onTapGesture {
-                homeCoordinator.push(HomeRoute.questioDetail)
-            }
             
-            VStack(spacing: .zero) {
-                sectionHeader("Simple Joys")
-                QestionRow(text: "What is one little thing that made you happy today?")
-                QestionRow(text: "What is one little thing that made you happy today?")
-                QestionRow(text: "What is one little thing that made you happy today?")
-                QestionRow(text: "What is one little thing that made you happy today?")
-                QestionRow(text: "What is one little thing that made you happy today?")
-                QestionRow(text: "What is one little thing that made you happy today?")
+            ForEach(viewModel.categories, id: \.id) { category in
+                VStack(spacing: .zero) {
+                    sectionHeader(category.name)
+                    ForEach(category.questions, id: \.id) { question in
+                        QestionRow(text: question.title)
+                    }
+                }
+                .padding(.bottom, 36)
             }
-            .padding(.bottom, 36)
         }
         .defaultBackground()
         .defaultNavigationBar("Question Library") {
             homeCoordinator.pop()
+        }
+        .task {
+            do {
+                try await viewModel.fetchData()
+            } catch {
+                
+            }
         }
     }
     

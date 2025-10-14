@@ -24,9 +24,9 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
         case .home:
             return AnyView(AppHomeView(service: appDataService))
         case .questionLib:
-            return AnyView(QuestionLibView(viewModel: QuestionLibViewModel()))
+            return AnyView(QuestionLibView(viewModel: QuestionLibViewModel(service: appDataService)))
         case .questioDetail:
-            return AnyView(QuestionLibView(viewModel: QuestionLibViewModel()))
+            return AnyView(QuestionLibView(viewModel: QuestionLibViewModel(service: appDataService)))
         }
     }
     
