@@ -18,12 +18,11 @@ struct QuestionLibView: View {
                 .fill(Color.clear)
                 .frame(height: 36)
             
-            
             ForEach(viewModel.categories, id: \.id) { category in
                 VStack(spacing: .zero) {
                     sectionHeader(category.name)
                     ForEach(category.questions, id: \.id) { question in
-                        QestionRow(text: question.title)
+                        QuestionRow(text: question.title, isPinned: question.pinned)
                     }
                 }
                 .padding(.bottom, 36)

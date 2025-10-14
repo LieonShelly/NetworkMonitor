@@ -13,5 +13,6 @@ public struct Question: Sendable {
     public init(id: String, title: String, pinned: Bool = false) {
         self.id = id
         self.title = title
+        self.pinned = pinned
     }
 }
