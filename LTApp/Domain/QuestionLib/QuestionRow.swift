@@ -93,6 +93,7 @@ struct QuestionRow: View {
         Rectangle()
             .fill(AppColor.color(hex: 0xCDCDCD))
             .frame(height: 0.5)
-            .padding(.horizontal, 42)
+            .padding(.leading, 42)
+            .padding(.trailing, max(abs(currentOffsetX + updatingOffsetX), 42))
     }
 }
