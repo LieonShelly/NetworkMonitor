@@ -17,7 +17,7 @@ struct ThreadView: View {
         
         VStack(spacing: .zero) {
             titleView
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: .zero) {
                     listContent
                     if !viewModel.questionList.isEmpty {

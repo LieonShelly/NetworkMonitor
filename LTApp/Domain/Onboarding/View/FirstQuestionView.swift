@@ -82,6 +82,10 @@ struct FirstQuestionView: View {
             answerInputView
             okBtn
         }
+        .contentShape(.rect)
+        .onTapGesture {
+            hideKeyboard()
+        }
     }
     
     var submittedForm: some View {
