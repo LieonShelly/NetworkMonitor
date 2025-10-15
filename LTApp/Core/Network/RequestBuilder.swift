@@ -15,6 +15,7 @@ public class RequestBuilder {
         let url = request.endPoint.absoluteUrl(environment)
         var urlRequest =  URLRequest(url: url)
         urlRequest.httpMethod = request.method.rawValue
+        urlRequest.cachePolicy = .reloadIgnoringLocalCacheData
         var header: [String: String] = [:]
         switch request.payload {
         case .json(let body, let urlParameters):

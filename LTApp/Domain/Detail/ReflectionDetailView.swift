@@ -33,7 +33,7 @@ struct ReflectionDetailView: View {
             do {
                 try await viewModel.fetchData()
             } catch {
-                
+                print("ReflectionDetailView-error: \(error)")
             }
         }
     }

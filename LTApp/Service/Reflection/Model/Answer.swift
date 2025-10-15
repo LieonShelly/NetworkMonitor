@@ -31,8 +31,8 @@ public struct ReflectionSummary: Sendable {
 }
 
 public struct Pagination: Sendable {
-    let limit: Int
-    let hasMore: Bool
+    let limit: Int?
+    let hasMore: Bool?
     let nextCursor: Bool?
 }
 

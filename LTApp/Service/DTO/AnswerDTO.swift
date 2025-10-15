@@ -53,8 +53,8 @@ public struct ReflectionSummaryDTO: Decodable {
 }
 
 public struct PaginationDTO: Decodable {
-    let limit: Int
-    let hasMore: Bool
+    let limit: Int?
+    let hasMore: Bool?
     let nextCursor: Bool?
 }
 

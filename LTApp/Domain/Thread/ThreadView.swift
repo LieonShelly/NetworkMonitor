@@ -36,11 +36,6 @@ struct ThreadView: View {
                 print("threadView:\(error)")
             }
         }
-        .onAppear {
-            Task.detached {
-                try? await viewModel.fetchData()
-            }
-        }
     }
     
     @ViewBuilder
@@ -58,14 +53,6 @@ struct ThreadView: View {
                     if index < question.answers.count {
                         let answer = question.answers[index]
                         answerRow(answer.content, icon: .calendarDripper)
-                            .onTapGesture {
-                                homeCoordinator.push(
-                                    HomeRoute.reflectionDetail(
-                                        questionId: question.id,
-                                        title: question.title
-                                    )
-                                )
-                            }
                     }
                 }
                 if question.answers.count >= 3 {
@@ -78,6 +65,14 @@ struct ThreadView: View {
         }
         .overlay(alignment: .leading) {
             line()
+        }
+        .onTapGesture {
+            homeCoordinator.push(
+                HomeRoute.reflectionDetail(
+                    questionId: question.id,
+                    title: question.title
+                )
+            )
         }
     }
     
@@ -159,22 +154,18 @@ struct ThreadView: View {
     }
     
     var moreBtn: some View {
-        Button {
-            
-        } label: {
-            Text("more")
-                .textStyle(size: 12, color: AppColor.color(hex: 0x7F7F7F), fontFamily: .poppinsRegular)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 4)
-                .background {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.clear)
-                        .stroke(AppColor.color(hex: 0x7F7F7F), style: .init(lineWidth: 1))
-                }
-        }
-        .padding(.top, 5)
-        .padding(.leading, 54)
-        .padding(.bottom, 24)
+        Text("more")
+            .textStyle(size: 12, color: AppColor.color(hex: 0x7F7F7F), fontFamily: .poppinsRegular)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 4)
+            .background {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.clear)
+                    .stroke(AppColor.color(hex: 0x7F7F7F), style: .init(lineWidth: 1))
+            }
+            .padding(.top, 5)
+            .padding(.leading, 54)
+            .padding(.bottom, 24)
 
     }
     
