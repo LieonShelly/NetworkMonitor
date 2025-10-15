@@ -44,7 +44,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
             reflectionRepository: reflectionRepository
         )
         self.appDataService = appDataWithAuthorizationService
-        changeRoot(sessionManager.refreshToken == nil ? .preHome : .home)
+        //changeRoot(sessionManager.refreshToken == nil ? .preHome : .home)
     }
     
     func changeRoot(_ type: AppRootType) {

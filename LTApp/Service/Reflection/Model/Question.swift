@@ -5,8 +5,8 @@
 
 import Foundation
 
-public struct Question: Sendable {
-    var id: String
+public struct Question: Sendable, Equatable, Hashable {
+    public var id: String
     var title: String
     var pinned: Bool = false
     
@@ -15,4 +15,6 @@ public struct Question: Sendable {
         self.title = title
         self.pinned = pinned
     }
+    
+    
 }

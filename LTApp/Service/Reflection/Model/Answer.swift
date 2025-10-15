@@ -20,6 +20,13 @@ public struct ThreadQuestion: Sendable {
     let id: String
     let title: String
     let answers: [Answer]
+    
+}
+
+extension ThreadQuestion {
+    func toQuestion() -> Question {
+        .init(id: id, title: title, pinned: true)
+    }
 }
 
 

@@ -58,7 +58,7 @@ struct ThreadView: View {
                 if question.answers.count >= 3 {
                     moreBtn
                 } else {
-                    addNewBtn(answerCount: question.answers.count)
+                    addNewBtn(answerCount: question.answers.count, question: question)
                 }
             }
             .padding(.top, 10)
@@ -136,7 +136,7 @@ struct ThreadView: View {
                     .frame(width: 32, height: 32)
             }
             Spacer()
-            Text("The Little Things:\(viewModel.questionList.count)")
+            Text("The Little Things")
                 .textStyle(size: 36)
             Spacer()
 
@@ -169,10 +169,10 @@ struct ThreadView: View {
 
     }
     
-   @ViewBuilder func addNewBtn(answerCount: Int) -> some View {
+    @ViewBuilder func addNewBtn(answerCount: Int, question: ThreadQuestion) -> some View {
        let answerCount = max(answerCount, 1)
        Button {
-           
+           homeCoordinator.push(HomeRoute.addNewAnswer(question: question.toQuestion()))
        } label: {
            Text("+ add new")
                .textStyle(size: 12, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
