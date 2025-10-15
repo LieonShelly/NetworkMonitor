@@ -101,6 +101,37 @@ extension Date {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter.string(from: self)
     }
+    
+    func ordinalSuffix(for day: Int) -> String {
+        switch day {
+        case 1, 21, 31:
+            return "st"
+        case 2, 22:
+            return "nd"
+        case 3, 23:
+            return "rd"
+        default:
+            return "th"
+        }
+    }
+
+    func formatDateToEnglishStyle(timeZone: TimeZone = .current, locale: Locale = Locale(identifier: "en_US")) -> String {
+        let date = self
+        let monthYearFormatter = DateFormatter()
+        monthYearFormatter.dateFormat = "MMMM, yyyy"
+        monthYearFormatter.timeZone = timeZone
+        monthYearFormatter.locale = locale
+        
+        let monthYearString = monthYearFormatter.string(from: date)
+        var calendar = Calendar.current
+        calendar.timeZone = timeZone
+        calendar.locale = locale
+        let day = calendar.component(.day, from: date)
+        
+        let ordinalDay = "\(day)\(ordinalSuffix(for: day))"
+        let parts = monthYearString.components(separatedBy: ", ")
+        return "\(parts[0]) \(ordinalDay), \(parts[1])"
+    }
 }
 
 struct AppDateFormatter {
@@ -119,4 +150,5 @@ struct AppDateFormatter {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }
+    
 }

@@ -7,7 +7,8 @@ import Foundation
 public struct Answer: Sendable {
     let id: String
     let content: String
-    let createAt: Date?
+    let createTms: Date?
+    let createYmd: Date?
 }
 
 public struct DayReflections: Sendable {

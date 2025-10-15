@@ -36,6 +36,7 @@ public class ApiClient: ApiClientType {
             throw AppNetworkError.dataError(debugDescription: "Data error")
         }
         let statusCode = response.statusCode
+        print("[ApiClient]:\(request.endPoint.absoluteUrl(.dev)) - statusCode: \(statusCode)")
         switch statusCode {
         case 200 ..< 300:
             return Response(statusCode: statusCode, data: responseData.0)

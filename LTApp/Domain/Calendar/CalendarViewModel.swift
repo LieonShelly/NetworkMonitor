@@ -19,13 +19,13 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         self.service = service
     }
     
-    func generateDaysForYear(_ year: Int) async {
+    func generateDaysForYear(_ year: Int, skipHeadder: Bool = false) async {
         let calendar = Calendar.current
         var component = DateComponents()
         component.year = year
         component.month = 1
         if let date = calendar.date(from: component) {
-          await  generateDays(for: date, needWeekdayOffset: true)
+          await  generateDays(for: date, needWeekdayOffset: !skipHeadder)
         }
         
         for month in 2...12 {
@@ -101,8 +101,9 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
 
 extension CalendarViewModel {
     func generateDay() async {
-        for year in 2023 ... 2030 {
-           await generateDaysForYear(year)
+        await generateDaysForYear(2023, skipHeadder: false)
+        for year in 2024 ... 2030 {
+            await generateDaysForYear(year, skipHeadder: true)
         }
     }
     

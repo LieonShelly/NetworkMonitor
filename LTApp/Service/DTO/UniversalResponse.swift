@@ -9,6 +9,12 @@ public struct UniversalResponse<T: Decodable>: Decodable, UniversalResponseType 
     public let message: String?
     public let data: T
     
+    enum CodingKeys: String, CodingKey {
+        case success
+        case message = "msg"
+        case data
+    }
+    
     public init(success: Bool, message: String, data: T) {
         self.success = success
         self.message = message
@@ -19,6 +25,11 @@ public struct UniversalResponse<T: Decodable>: Decodable, UniversalResponseType 
 public struct UniversalEmptyResponse: Decodable {
     public let success: Bool
     public let message: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case success
+        case message = "msg"
+    }
     
     public init(message: String?, success: Bool) {
         self.success = success

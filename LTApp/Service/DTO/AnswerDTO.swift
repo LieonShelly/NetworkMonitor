@@ -7,26 +7,33 @@ import Foundation
 public struct AnswerDTO: Decodable {
     let id: String
     let content: String
-    let createAt: String?
+    let createTms: String?
+    let createdYmd: String?
     
     enum CodingKeys: String, CodingKey {
         case id
         case content
-        case createAt = "created_tms"
+        case createTms = "created_tms"
+        case createdYmd = "created_ymd"
     }
 }
 
 
 extension AnswerDTO {
     func toDomain() -> Answer {
-        var createDate: Date?
-        if let createAt {
-            createDate = AppDateFormatter.ymdhsm.date(from: createAt)
+        var createTmsDate: Date?
+        if let createTms {
+            createTmsDate = AppDateFormatter.ymdhsm.date(from: createTms)
+        }
+        var createYmdDate: Date?
+        if let createdYmd {
+            createYmdDate = AppDateFormatter.yyyymmdd.date(from: createdYmd)
         }
         return Answer(
             id: id,
             content: content,
-            createAt: createDate
+            createTms: createTmsDate,
+            createYmd: createYmdDate
         )
     }
 }

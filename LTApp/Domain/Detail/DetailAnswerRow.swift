@@ -17,10 +17,10 @@ struct DetailAnswerRow: View {
     
     var dateView: some View {
         VStack(alignment: .trailing, spacing: .zero) {
-            Text(answer.createAt?.monthDesc(isShort: true) ?? "")
+            Text(answer.createTms?.monthDesc(isShort: true) ?? "")
                 .textStyle(size: 20, color: AppColor.color(hex: 0x000000), fontFamily: .feltTipSeniorRegular)
             
-            Text(answer.createAt?.dayDesc() ?? "")
+            Text(answer.createTms?.dayDesc() ?? "")
                 .textStyle(size: 20, color: AppColor.color(hex: 0x000000), fontFamily: .feltTipSeniorRegular)
             
         }

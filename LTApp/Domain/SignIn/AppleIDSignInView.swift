@@ -54,17 +54,15 @@ struct AppleIDSignInView: View {
                 if let authorizationCodeData = credential.authorizationCode, let code = String(data: authorizationCodeData, encoding: .utf8) {
                     authorizationCode = code
                 }
-                print("authorizationCode:\(authorizationCode)")
-                print("idTokenStr:\(idTokenStr)")
-                Task.detached {
-                    do {
-                        try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
-                        await gotoSplash()
-                    } catch {
-                        
-                    }
-                   
-                }
+//                Task.detached {
+//                    do {
+//                        try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
+//                        await gotoSplash()
+//                    } catch {
+//                        
+//                    }
+//                   
+//                }
             case let .failure(error):
                 print(error)
             }
@@ -76,7 +74,7 @@ struct AppleIDSignInView: View {
         .onTapGesture {
             Task.detached {
                 do {
-                    try await viewModel.login(authorizationCode: "c86413f37df9f420485c7431ec78b727e.0.rrxxu.Q54tqIH36av8xNmRMnuZKw", identityToken: "eyJraWQiOiJiRnd6bGVSOHRmIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmxpdHRsZS50aGluZ3MiLCJleHAiOjE3NTk1NjkwNDcsImlhdCI6MTc1OTQ4MjY0Nywic3ViIjoiMDAxNzc0LmZiNmI2MWIyOTkyZTQ2ODM4YmVlMzRlNzgxYTZhMTE0LjEwMjEiLCJjX2hhc2giOiJDYzZWQ2lQZk9pWWwzUnNheW1yM0hnIiwiZW1haWwiOiJieGJiZGR4eW40QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc19wcml2YXRlX2VtYWlsIjp0cnVlLCJhdXRoX3RpbWUiOjE3NTk0ODI2NDcsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.TjMlzGTbhW4z_hhOOFgDYNQS4iSS0xd0GXf4cHvEdHCtbi-z8hQAxV4TmjzRHO86kxndArnYVJwtLXdAMh-Jg6EnwKXq_U6l-sXS3IKsyWn6zPvwVeNDtqYgcTFPRyCnodAZ4ukJv3FbF4yzlPqOFNXC5Q-bnlqwLIP74Yy4bIWV1gjwJuXr5246fDrUFBe61XAwJfHazyuljiiXJZzdWWJjScIQQMpeNXuyCTJqr6px1xl5egwfmIrLyvKt53KSoBYELu7NzPTg1zk3qUmIlGLAScpsKUjhaI2q7lw-q3Ku08HZk17ckHhf2noEsIiLjSptSsvujHJ2il2YjTWyew")
+                    try await viewModel.login(authorizationCode: "c4149da5449004dcf95084633a4c67e5d.0.srxxu.WvnVJvs8bxJo4g6MyutZLw", identityToken: "eyJraWQiOiJVYUlJRlkyZlc0IiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmxpdHRsZS50aGluZ3MiLCJleHAiOjE3NjA1OTQ0NjMsImlhdCI6MTc2MDUwODA2Mywic3ViIjoiMDAxNzc0LmZiNmI2MWIyOTkyZTQ2ODM4YmVlMzRlNzgxYTZhMTE0LjEwMjEiLCJjX2hhc2giOiJfYUt0NHdIYXd6bG14VHA2TnpoMkZBIiwiZW1haWwiOiJieGJiZGR4eW40QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc19wcml2YXRlX2VtYWlsIjp0cnVlLCJhdXRoX3RpbWUiOjE3NjA1MDgwNjMsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.gCj0FNA5chSSaBaoEtFQoEoleAe7j4EJAwLP18ap_8ypM90iASb07R33dxi-yP1y3evLbxyZuwMc582zBqe5clXPAims5aVhbVoN23kZiZa1KFmRI6EevPwct5_NcwZI7GKZZXkI4kA-_3EXVuXO7kuQP4BEj7sAklQ11zr839xM7Ag_m37ivYjMOoRkrFG1UxTOpqYTTXBASl_E7yyClCTxIbG354GDiO2eTkD8F0YiclwL_DIeLOqtv0YqasKbq7NB8Nv7C92SZkNpz3zCCRjebK8yjM1LYigoGL3oDFzUmYUJrvc0HNQaUsxqAWAGgxTpJIB2ie2REp9k3-qbHw")
                     await gotoSplash()
 
                 } catch {

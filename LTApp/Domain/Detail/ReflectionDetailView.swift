@@ -37,6 +37,7 @@ struct ReflectionDetailView: View {
         if showSummary, let sumary = viewModel.sumary {
             SummaryView(summary: sumary, isPresented: $showSummary)
                 .transition(.opacity)
+                .zIndex(3)
         }
     }
     
@@ -112,7 +113,7 @@ struct ReflectionDetailView: View {
              
              HStack(spacing: .zero) {
                  Button {
-                     
+                     homeCoordinator.pop()
                  } label: {
                      Image(.back)
                          .padding(.leading, 25)
@@ -135,7 +136,7 @@ struct ReflectionDetailView: View {
          }
          .background(AppColor.backgroundPage.opacity(navibarOpacity))
          .frame(height: Constants.navibarH + proxy.safeAreaInsets.top)
-         .zIndex(3)
+         .zIndex(2)
         
         
     }

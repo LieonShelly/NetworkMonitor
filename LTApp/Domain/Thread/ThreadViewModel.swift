@@ -17,5 +17,10 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable {
         await MainActor.run {
             self.questionList = questionList
         }
+        print(questionList)
+    }
+    
+    deinit {
+        print("ThreadViewModel-deint")
     }
 }

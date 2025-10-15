@@ -60,7 +60,7 @@ struct SummaryView: View {
     
     var text: some View {
         HStack {
-            Text("Awesome! \n\n Since October 13th, 2023, you’ve reflected on this question 5 times over 789 days. \n\nReturning to the same topic over time helps you quietly notice the little things that make you happy, see your own gentle growth, and remember moments of warmth even on rainy days. \n\nTake a deep breath, and keep going—your journey matters. ☕✨")
+            Text("Awesome! \n\n Since \(summary.firstAnswerAt.formatDateToEnglishStyle()), you’ve reflected on this question \(summary.totalAnswers) times over \(summary.daysOver) days. \n\nReturning to the same topic over time helps you quietly notice the little things that make you happy, see your own gentle growth, and remember moments of warmth even on rainy days. \n\nTake a deep breath, and keep going—your journey matters. ☕✨")
                 .textStyle(size: 14, color: AppColor.color(hex: 0x6F6F6F), fontFamily: .poppinsRegular)
             Spacer()
         }

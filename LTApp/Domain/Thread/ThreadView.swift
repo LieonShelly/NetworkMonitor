@@ -14,46 +14,17 @@ struct ThreadView: View {
     }
     
     var body: some View {
+        
         VStack(spacing: .zero) {
             titleView
-            ScrollView(showsIndicators: false) {
-                LazyVStack(alignment: .leading, spacing: .zero) {
-                    ForEach(viewModel.questionList, id: \.id) { question in
-                        VStack(alignment: .leading, spacing: .zero) {
-                            questionRow(question.title)
-                            VStack(alignment: .leading, spacing: .zero) {
-                                ForEach(0 ..< 3) { index in
-                                    if index < question.answers.count {
-                                        let answer = question.answers[index]
-                                        answerRow(answer.content, icon: .calendarDripper)
-                                            .onTapGesture {
-                                                homeCoordinator.push(
-                                                    HomeRoute.reflectionDetail(
-                                                        questionId: question.id,
-                                                        title: question.title
-                                                    )
-                                                )
-                                            }
-                                    }
-                                }
-                                if question.answers.count >= 3 {
-                                    moreBtn
-                                } else {
-                                    addNewBtn(answerCount: question.answers.count)
-                                }
-                                Spacer()
-                            }
-                            .padding(.top, 10)
-                        }
-                        .overlay(alignment: .leading) {
-                            line()
-                        }
+            ScrollView {
+                VStack(alignment: .leading, spacing: .zero) {
+                    listContent
+                    if !viewModel.questionList.isEmpty {
+                        footer
                     }
-                    
-                 footer
                 }
                 .padding(.top, 60)
-               
             }
             .padding(.leading, 40)
             .padding(.trailing, 20)
@@ -62,11 +33,54 @@ struct ThreadView: View {
             do {
                 try await viewModel.fetchData()
             } catch {
-                
+                print("threadView:\(error)")
             }
         }
-      
+        .onAppear {
+            Task.detached {
+                try? await viewModel.fetchData()
+            }
+        }
     }
+    
+    @ViewBuilder
+    var listContent: some View {
+        ForEach(viewModel.questionList, id: \.id) { question in
+          section(question)
+        }
+    }
+    
+    func section(_ question: ThreadQuestion) -> some View {
+        VStack(alignment: .leading, spacing: .zero) {
+            questionRow(question.title)
+            VStack(alignment: .leading, spacing: .zero) {
+                ForEach(0 ..< 3) { index in
+                    if index < question.answers.count {
+                        let answer = question.answers[index]
+                        answerRow(answer.content, icon: .calendarDripper)
+                            .onTapGesture {
+                                homeCoordinator.push(
+                                    HomeRoute.reflectionDetail(
+                                        questionId: question.id,
+                                        title: question.title
+                                    )
+                                )
+                            }
+                    }
+                }
+                if question.answers.count >= 3 {
+                    moreBtn
+                } else {
+                    addNewBtn(answerCount: question.answers.count)
+                }
+            }
+            .padding(.top, 10)
+        }
+        .overlay(alignment: .leading) {
+            line()
+        }
+    }
+    
     
     func answerRow(_ value: String, icon: ImageResource? = nil) -> some View {
         HStack(spacing: .zero) {
@@ -122,12 +136,12 @@ struct ThreadView: View {
             Button {
                 homeCoordinator.push(HomeRoute.questionLib)
             } label: {
-                Rectangle()
-                    .fill(Color.red)
-                    .frame(width: 40, height: 40)
+                Image(.menu)
+                    .resizable()
+                    .frame(width: 32, height: 32)
             }
             Spacer()
-            Text("The Little Things")
+            Text("The Little Things:\(viewModel.questionList.count)")
                 .textStyle(size: 36)
             Spacer()
 
@@ -164,22 +178,23 @@ struct ThreadView: View {
 
     }
     
-    func addNewBtn(answerCount: Int) -> some View {
-        Button {
-            
-        } label: {
-            Text("+ add new")
-                .textStyle(size: 12, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 4)
-                .background {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(AppColor.color(hex: 0x000000))
-                }
-        }
-        .padding(.top, 5)
-        .padding(.bottom, 76 / CGFloat(answerCount))
-        .padding(.leading, 54)
+   @ViewBuilder func addNewBtn(answerCount: Int) -> some View {
+       let answerCount = max(answerCount, 1)
+       Button {
+           
+       } label: {
+           Text("+ add new")
+               .textStyle(size: 12, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
+               .padding(.horizontal, 12)
+               .padding(.vertical, 4)
+               .background {
+                   RoundedRectangle(cornerRadius: 12)
+                       .fill(AppColor.color(hex: 0x000000))
+               }
+       }
+       .padding(.top, 5)
+       .padding(.bottom, 76 / CGFloat(answerCount))
+       .padding(.leading, 54)
 
     }
 }
