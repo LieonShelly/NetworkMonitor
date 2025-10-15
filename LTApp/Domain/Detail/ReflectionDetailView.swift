@@ -7,8 +7,6 @@ import SwiftUI
 struct ReflectionDetailView: View {
     @StateObject var viewModel: ReflectionDetailViewModel
     @EnvironmentObject var homeCoordinator: HomeCoordinator
-    @State var isPresentedDetail: Bool = false
-    @State var isPresentDetail: Bool = false
     @State var showSummary: Bool = false
     
     init(viewModel: ReflectionDetailViewModel) {
@@ -16,70 +14,41 @@ struct ReflectionDetailView: View {
     }
     
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: .zero) {
-                titleView
-                totalView
+        ZStack {
+            ScrollView {
                 LazyVStack(spacing: .zero) {
-                    ForEach(viewModel.answers, id: \.id) { answer in
-                        DetailAnswerRow(answer: answer)
+                    titleView
+                    totalView
+                    LazyVStack(spacing: .zero) {
+                        ForEach(viewModel.answers, id: \.id) { answer in
+                            DetailAnswerRow(answer: answer)
+                        }
                     }
+                    .padding(.horizontal, 32)
                 }
-                .padding(.horizontal, 32)
             }
-        }
-        .defaultBackground()
-        .defaultNavigationBar("") {
-            homeCoordinator.pop()
-        }
-        .fullScreenCover(isPresented: $isPresentedDetail, content: {
-            ZStack(alignment: .bottom) {
-                if showSummary, let sumary = viewModel.sumary {
-                    AppColor.color(hex: 0x000000).opacity(0.25)
-                        .transition(.opacity)
-                        .onTapGesture {
-                            isPresentDetail.toggle()
-                        }
+            .defaultBackground()
+            .defaultNavigationBar("") {
+                homeCoordinator.pop()
+            }
+            .task {
+                do {
+                    try await viewModel.fetchData()
+                } catch {
                     
-                    SummaryView(summary: sumary)
-                        .background(FullScreenCoverBackgroundRemovalView())
-                        .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .bottom)))
-                        .zIndex(100)
-                        .onDisappear {
-                            isPresentedDetail = false
-                        }
-                        
                 }
             }
-            .ignoresSafeArea()
-            .onAppear {
-                withAnimation(.easeInOut) {
-                    showSummary = true
-                }
-            }
-          
-        })
-        .onChange(of: isPresentDetail, { oldValue, newValue in
-            if newValue {
-                isPresentedDetail = true
-            } else {
-                withAnimation(.easeInOut) {
-                    showSummary = false
-                }
-            }
-        })
-        .transaction { transaction in
-            transaction.disablesAnimations = true
-        }
-        
-        .task {
-            do {
-                try await viewModel.fetchData()
-            } catch {
-                
+            
+            if showSummary, let sumary = viewModel.sumary {
+                SummaryView(summary: sumary, isPresented: $showSummary)
+                    .transition(.opacity)
             }
         }
-     
+        .toolbar(content: {
+            Color.red
+        })
+        .animation(.easeInOut, value: showSummary)
+
     }
     
     var titleView: some View {
@@ -92,7 +61,7 @@ struct ReflectionDetailView: View {
     @ViewBuilder var totalView: some View {
         if let sumary = viewModel.sumary {
             Button {
-                isPresentDetail.toggle()
+            showSummary.toggle()
             } label: {
                 Text("\(sumary.totalAnswers) answers, \(sumary.daysOver) days ")
                     .textStyle(size: 10, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
@@ -105,8 +74,8 @@ struct ReflectionDetailView: View {
             }
             .padding(.top, 27)
             .padding(.bottom, 24)
+           
         }
-        
     }
 }
 

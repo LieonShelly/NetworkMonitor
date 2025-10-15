@@ -6,21 +6,49 @@ import SwiftUI
 
 struct SummaryView: View {
     let summary: ReflectionSummary
+    @State var show: Bool = false
+    @Binding var isPresented: Bool
+    
+    init(summary: ReflectionSummary, isPresented: Binding<Bool>) {
+        self.summary = summary
+        self._isPresented = isPresented
+    }
     
     var body: some View {
-        VStack(spacing: .zero) {
-            topLine
-            text
-                .padding(.horizontal, 32)
-                .padding(.top, 32)
-                .padding(.bottom, 54)
-            closeBtn
+        ZStack(alignment: .bottom) {
+            if show {
+                AppColor.color(hex: 0x000000).opacity(0.25)
+                    .transition(.opacity)
+                    .onTapGesture {
+                        show.toggle()
+                    }
+                
+                  VStack(spacing: .zero) {
+                      topLine
+                      text
+                          .padding(.horizontal, 32)
+                          .padding(.top, 32)
+                          .padding(.bottom, 54)
+                      closeBtn
+                  }
+                  .background(
+                      RoundedRectangleWithCorners(radius: 20, corners: [.topLeft, .topRight])
+                          .fill(AppColor.backgroundPage)
+                  )
+                  .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .bottom)))
+                  .zIndex(100)
+                  .onDisappear {
+                      isPresented.toggle()
+                  }
+            }
+          
         }
-        .background(
-            RoundedRectangleWithCorners(radius: 20, corners: [.topLeft, .topRight])
-                .fill(AppColor.backgroundPage)
-        )
-        .ignoresSafeArea(edges: .bottom)
+        .ignoresSafeArea()
+        .animation(.easeInOut, value: show)
+        .task {
+            show.toggle()
+        }
+      
     }
     
     var topLine: some View {
@@ -40,7 +68,7 @@ struct SummaryView: View {
     
     var closeBtn: some View {
         Button {
-            
+            show.toggle()
         } label: {
             RoundedRectangle(cornerRadius: 12)
                 .fill(AppColor.color(hex: 0xD9D9D9))

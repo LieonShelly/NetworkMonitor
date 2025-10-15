@@ -11,11 +11,11 @@ struct CalendarView: View {
         static let cornorRadius: CGFloat = 4
         static let weekDayBottom: CGFloat = 70
     }
-    @ObservedObject var viewModel: CalendarViewModel
+    @StateObject var viewModel: CalendarViewModel
     @Namespace var animationSpace
     
     init(viewModel: CalendarViewModel) {
-        self.viewModel = viewModel
+        self._viewModel = .init(wrappedValue: viewModel)
     }
     
     var body: some View {

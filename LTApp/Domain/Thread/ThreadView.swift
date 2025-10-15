@@ -7,10 +7,10 @@ import SwiftUI
 struct ThreadView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @EnvironmentObject var appCoordinator: AppCoordinator
-    @ObservedObject var viewModel: ThreadViewModel
+    @StateObject var viewModel: ThreadViewModel
     
     init(viewModel: ThreadViewModel) {
-        self.viewModel = viewModel
+        self._viewModel = .init(wrappedValue: viewModel)
     }
     
     var body: some View {
