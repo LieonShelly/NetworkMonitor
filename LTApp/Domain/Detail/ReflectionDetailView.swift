@@ -28,7 +28,13 @@ struct ReflectionDetailView: View {
             .ignoresSafeArea(edges: .top)
             .toolbarVisibility(.hidden, for: .navigationBar)
             .animation(.easeInOut, value: showSummary)
-            
+        }
+        .task {
+            do {
+                try await viewModel.fetchData()
+            } catch {
+                
+            }
         }
     }
     
@@ -67,14 +73,6 @@ struct ReflectionDetailView: View {
         })
         .defaultBackground()
         .zIndex(1)
-       
-        .task {
-            do {
-                try await viewModel.fetchData()
-            } catch {
-                
-            }
-        }
     }
     
     var titleView: some View {

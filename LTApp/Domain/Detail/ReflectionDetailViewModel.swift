@@ -31,6 +31,7 @@ final class ReflectionDetailViewModel: ObservableObject, @unchecked Sendable {
             limit: nil,
             cursor: nil
         )
+        print("history:\(history)")
         await MainActor.run {
             self.history = history
             self.answers = history.answers
