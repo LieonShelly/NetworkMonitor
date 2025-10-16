@@ -11,9 +11,13 @@ struct ImageFramesAnimationView: View {
         PhaseAnimator(0 ..< aniamationData.frames.count) { phase in
             if let imagePath = aniamationData.bundle.path(forResource: aniamationData.frames[phase], ofType: "png"),
                let uiImage = UIImage(contentsOfFile: imagePath) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFit()
+                Circle()
+                    .fill(Color.clear)
+                    .overlay(content: {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    })
                     .frame(width: aniamationData.frameSize.width,
                            height: aniamationData.frameSize.height)
             }

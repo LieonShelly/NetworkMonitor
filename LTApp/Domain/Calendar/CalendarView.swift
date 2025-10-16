@@ -65,12 +65,17 @@ struct CalendarView: View {
                     HStack {
                         if let currentMonth = viewModel.currentMonth {
                             if day.date.isSameMonth(currentMonth) {
-                                if let reflections = day.reflections {
-                                    Image(.mail)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 24, height: 24)
+                                if showCalendarDripple, let reflections = day.reflections {
+                                    Circle()
+                                        .fill(Color.clear)
+                                        .overlay(content: {
+                                            Image(.calendarDripper)
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                        })
                                         .matchedGeometryEffect(id: "dripple", in: dripplens!, properties: .frame)
+                                        .frame(width: 24, height: 24)
+                                       
                                 } else {
                                     Circle()
                                         .fill(AppColor.color(hex: 0x000000))

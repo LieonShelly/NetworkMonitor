@@ -38,13 +38,17 @@ struct FirstQuestionSubmittedView: View {
         VStack(spacing: .zero) {
             topicTitleSubmittedView
             if !showCalendarDripple, let lastFrame = FramesAnimationData.dripple.lastFrame {
-                Image(uiImage: lastFrame)
-                    .resizable()
-                    .scaledToFit()
+                Circle()
+                    .fill(Color.clear)
+                    .overlay(content: {
+                        Image(uiImage: lastFrame)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    })
+                    .matchedGeometryEffect(id: "dripple", in: drippleAnimationSpace!, properties: .frame)
                     .frame(width: FramesAnimationData.dripple.frameSize.width,
                            height: FramesAnimationData.dripple.frameSize.height)
                     .padding(.top, 100)
-                    .matchedGeometryEffect(id: "dripple", in: drippleAnimationSpace!, properties: .frame)
             }
             
             HStack {
