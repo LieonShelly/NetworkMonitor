@@ -37,15 +37,21 @@ struct FirstQuestionSubmittedView: View {
     var submittedForm: some View {
         VStack(spacing: .zero) {
             topicTitleSubmittedView
-            if !showCalendarDripple, let lastFrame = FramesAnimationData.dripple.lastFrame {
-                Circle()
-                    .fill(Color.clear)
-                    .overlay(content: {
-                        Image(uiImage: lastFrame)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                    })
-                    .matchedGeometryEffect(id: "dripple", in: drippleAnimationSpace!, properties: .frame)
+            if let lastFrame = FramesAnimationData.dripple.lastFrame {
+                HStack {
+                    if !showCalendarDripple {
+                        Circle()
+                            .fill(Color.clear)
+                            .overlay(content: {
+                                Image(uiImage: lastFrame)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            })
+                            .matchedGeometryEffect(id: "dripple", in: drippleAnimationSpace!, properties: .frame)
+                    }
+                  
+                }
+              
                     .frame(width: FramesAnimationData.dripple.frameSize.width,
                            height: FramesAnimationData.dripple.frameSize.height)
                     .padding(.top, 100)
@@ -110,8 +116,7 @@ struct FirstQuestionSubmittedView: View {
         Button {
             Task {
                 dismiss = true
-                try? await Task.sleep(for: .milliseconds(600))
-                withAnimation(.easeIn(duration: 3)) {
+                withAnimation(.easeIn(duration: 0.5)) {
                     showCalendarDripple.toggle()
                 }
             }

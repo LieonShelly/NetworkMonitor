@@ -69,7 +69,7 @@ struct CalendarView: View {
                                     Circle()
                                         .fill(Color.clear)
                                         .overlay(content: {
-                                            Image(.calendarDripper)
+                                            Image(.dripple)
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fit)
                                         })
