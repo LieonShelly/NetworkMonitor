@@ -31,7 +31,7 @@ struct FirstQuestionView: View {
         }
         .animation(.easeInOut(duration: 0.5), value: submitted)
         .animation(.easeInOut(duration: 0.5), value: showFramesAniamtion)
-      
+        
     }
     
     var topicTitleView: some View {
@@ -72,40 +72,33 @@ struct FirstQuestionView: View {
         .padding(.horizontal, 24)
         .matchedGeometryEffect(id: "question", in: animation, properties: .position)
     }
-  
+    
     var answerInputView: some View {
         AnswerInputView(
             text: $viewModel.answerText,
             placeholder: "Write anything...."
         )
-            .padding(.horizontal, 24)
-            .frame(height: 286)
-            .padding(.top, 35)
-            .padding(.bottom, 76)
-            .matchedGeometryEffect(id: "answer", in: animation, properties: .position)
+        .padding(.horizontal, 24)
+        .frame(height: 286)
+        .padding(.top, 35)
+        .padding(.bottom, 76)
+        .matchedGeometryEffect(id: "answer", in: animation, properties: .position)
         
     }
     
     var okBtn: some View {
         AppButton(isEnabled: !viewModel.answerText.isEmpty, title: "oK") {
-         
-            Task {
-                submitted.toggle()
-                try await Task.sleep(for: .milliseconds(700))
-                showFramesAniamtion.toggle()
+            Task.detached {
+                do {
+                    try await viewModel.submit()
+                    try await showSubmittedForm()
+                } catch {
+                    print(error)
+                }
             }
-//                Task.detached {
-//                    do {
-//                       try await viewModel.submit()
-//                        await coordinaor.changeRoot(.home)
-//                    } catch {
-//                        print(error)
-//                    }
-//                   
-//                }
-            }
-            .frame(height: 62)
-            .padding(.horizontal, 32)
+        }
+        .frame(height: 62)
+        .padding(.horizontal, 32)
     }
     
     var answerForm: some View {
@@ -129,7 +122,7 @@ struct FirstQuestionView: View {
                 .padding(.top, 100)
                 .opacity(showFramesAniamtion ? 1 : 0)
                 .transition(.opacity)
-        
+            
             HStack {
                 Text("\(viewModel.question?.title ?? "")")
                     .textStyle(size: 24)
@@ -146,14 +139,14 @@ struct FirstQuestionView: View {
                     .padding(.init(top: 22, leading: 18, bottom: 22, trailing: 18))
                 Spacer()
             }
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(style: .init(lineWidth: 1))
-                        .foregroundStyle(AppColor.color(hex: 0xEBEBEB))
-                )
-                .padding(.horizontal, 24)
-                .padding(.vertical, 8)
-                .matchedGeometryEffect(id: "answer", in: animation, properties: .position)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(style: .init(lineWidth: 1))
+                    .foregroundStyle(AppColor.color(hex: 0xEBEBEB))
+            )
+            .padding(.horizontal, 24)
+            .padding(.vertical, 8)
+            .matchedGeometryEffect(id: "answer", in: animation, properties: .position)
             
             if submitted {
                 HStack {
@@ -166,5 +159,11 @@ struct FirstQuestionView: View {
             }
             Spacer()
         }
+    }
+    
+    func showSubmittedForm() async throws {
+        submitted.toggle()
+        try await Task.sleep(for: .milliseconds(700))
+        showFramesAniamtion.toggle()
     }
 }
