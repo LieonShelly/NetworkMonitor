@@ -6,19 +6,30 @@ import SwiftUI
 
 struct FirstQuestionView: View {
     @EnvironmentObject var coordinaor: AppCoordinator
-    
     @ObservedObject var viewModel: FirstQuestionViewModel
+    @State var submitted: Bool = false
+    @Namespace var animation
     
     init(viewModel: FirstQuestionViewModel) {
         self.viewModel = viewModel
     }
     
     var body: some View {
-        answerForm.defaultBackground()
-            .toolbarVisibility(.hidden, for: .navigationBar)
-            .task {
-                await viewModel.fetchData()
+        ZStack {
+            if submitted {
+                submittedForm.defaultBackground()
+                    .transition(.opacity)
+            } else {
+                answerForm.defaultBackground()
+                    .toolbarVisibility(.hidden, for: .navigationBar)
+                    .transition(.opacity)
+                    .task {
+                        await viewModel.fetchData()
+                    }
             }
+        }
+        .animation(.easeInOut(duration: 0.5), value: submitted)
+      
     }
     
     var topicTitleView: some View {
@@ -34,6 +45,20 @@ struct FirstQuestionView: View {
         .background(AppColor.textPrimary)
         .cornerRadius(16, corners: .allCorners)
         .padding(.top, 16)
+        .matchedGeometryEffect(id: "title", in: animation, properties: .position)
+    }
+    
+    var topicTitleSubmittedView: some View {
+        HStack(spacing: 6) {
+            Text(viewModel.category.name)
+                .textStyle(size: 14, color: .white, fontFamily: .sfProBold)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+        .background(AppColor.textPrimary)
+        .cornerRadius(16, corners: .allCorners)
+        .padding(.top, 16)
+        .matchedGeometryEffect(id: "category", in: animation, properties: .position)
     }
     
     var questionView: some View {
@@ -43,6 +68,17 @@ struct FirstQuestionView: View {
             Spacer()
         }
         .padding(.horizontal, 24)
+        .matchedGeometryEffect(id: "question", in: animation, properties: .position)
+    }
+    
+    var questionSubmittedView: some View {
+        HStack {
+            Text(viewModel.question?.title ?? "")
+                .textStyle(size: 32)
+            Spacer()
+        }
+        .padding(.horizontal, 24)
+        .matchedGeometryEffect(id: "question", in: animation, properties: .position)
     }
     
   
@@ -55,20 +91,22 @@ struct FirstQuestionView: View {
             .frame(height: 286)
             .padding(.top, 35)
             .padding(.bottom, 76)
+            .matchedGeometryEffect(id: "answer", in: animation, properties: .position)
         
     }
     
     var okBtn: some View {
         AppButton(isEnabled: !viewModel.answerText.isEmpty, title: "oK") {
-                Task.detached {
-                    do {
-                       try await viewModel.submit()
-                        await coordinaor.changeRoot(.home)
-                    } catch {
-                        print(error)
-                    }
-                   
-                }
+            submitted.toggle()
+//                Task.detached {
+//                    do {
+//                       try await viewModel.submit()
+//                        await coordinaor.changeRoot(.home)
+//                    } catch {
+//                        print(error)
+//                    }
+//                   
+//                }
             }
             .frame(height: 62)
             .padding(.horizontal, 32)
@@ -90,12 +128,16 @@ struct FirstQuestionView: View {
     
     var submittedForm: some View {
         VStack(spacing: .zero) {
-            topicTitleView
+            topicTitleSubmittedView
             
-            Image(.dripper)
-                .resizable()
-                .frame(width: 135, height: 165)
-                .padding(.top, 100)
+            if submitted {
+                Image(.dripper)
+                    .resizable()
+                    .frame(width: 135, height: 165)
+                    .padding(.top, 100)
+                    .transition(.opacity)
+            }
+        
             
             HStack {
                 Text("\(viewModel.question?.title ?? "")")
@@ -105,6 +147,7 @@ struct FirstQuestionView: View {
             }
             .padding(.horizontal, 24)
             .padding(.top, 59)
+            .matchedGeometryEffect(id: "question", in: animation, properties: .position)
             
             HStack {
                 Text(viewModel.answerText)
@@ -120,12 +163,16 @@ struct FirstQuestionView: View {
                 .padding(.horizontal, 24)
                 .padding(.vertical, 8)
             
-            HStack {
-                Text("June 16, 2025")
-                    .textStyle(size: 10, color: AppColor.color(hex: 0x9e9e9e), fontFamily: .sfProRegular)
-                Spacer()
+                .matchedGeometryEffect(id: "answer", in: animation, properties: .position)
+            if submitted {
+                HStack {
+                    Text(viewModel.createAt?.formatDateToEnglishStyle() ?? "June 16, 2025")
+                        .textStyle(size: 10, color: AppColor.color(hex: 0x9e9e9e), fontFamily: .sfProRegular)
+                    Spacer()
+                }
+                .padding(.horizontal, 24)
+                .transition(.opacity)
             }
-            .padding(.horizontal, 24)
             Spacer()
         }
     }
