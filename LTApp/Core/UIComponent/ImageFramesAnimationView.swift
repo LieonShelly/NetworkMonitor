@@ -28,8 +28,16 @@ struct FramesAnimationData {
     let bundle: Bundle
     let duration: CGFloat
     let frameSize: CGSize
+    
+    var lastFrame: UIImage? {
+        if let last = frames.last,
+           let imagePath = bundle.path(forResource: last, ofType: "png"),
+           let uiImage = UIImage(contentsOfFile: imagePath) {
+            return uiImage
+        }
+        return nil
+    }
 }
-
 
 extension FramesAnimationData {
     static var imageBundle: Bundle {

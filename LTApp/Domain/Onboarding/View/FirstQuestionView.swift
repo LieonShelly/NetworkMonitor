@@ -5,9 +5,14 @@
 import SwiftUI
 
 struct FirstQuestionView: View {
+    enum CurrentPage {
+        case submitted
+        case final
+        case answer
+    }
     @EnvironmentObject var coordinaor: AppCoordinator
     @ObservedObject var viewModel: FirstQuestionViewModel
-    @State var submitted: Bool = false
+    @State var currentPage: CurrentPage = .answer
     @State var showFramesAniamtion: Bool = false
     @Namespace var animation
     
@@ -17,21 +22,25 @@ struct FirstQuestionView: View {
     
     var body: some View {
         ZStack {
-            if submitted {
-                submittedForm.defaultBackground()
+            switch currentPage {
+            case .submitted:
+                submittedForm
+                    .defaultBackground()
                     .transition(.opacity)
-            } else {
+            case .final:
+                finalForm
+                    .defaultBackground()
+                    .transition(.opacity)
+            case .answer:
                 answerForm.defaultBackground()
-                    .toolbarVisibility(.hidden, for: .navigationBar)
                     .transition(.opacity)
                     .task {
                         await viewModel.fetchData()
                     }
             }
         }
-        .animation(.easeInOut(duration: 0.5), value: submitted)
+        .toolbarVisibility(.hidden, for: .navigationBar)
         .animation(.easeInOut(duration: 0.5), value: showFramesAniamtion)
-        
     }
     
     var topicTitleView: some View {
@@ -148,7 +157,7 @@ struct FirstQuestionView: View {
             .padding(.vertical, 8)
             .matchedGeometryEffect(id: "answer", in: animation, properties: .position)
             
-            if submitted {
+            if currentPage == .submitted {
                 HStack {
                     Text(viewModel.createAt?.formatDateToEnglishStyle() ?? "June 16, 2025")
                         .textStyle(size: 10, color: AppColor.color(hex: 0x9e9e9e), fontFamily: .sfProRegular)
@@ -161,9 +170,26 @@ struct FirstQuestionView: View {
         }
     }
     
+    @ViewBuilder
+    var finalForm: some View {
+        if currentPage == .final, let createAt = viewModel.createAt {
+            FirstQuestionSubmittedView(
+                category: viewModel.category.name,
+                question: viewModel.question?.title ?? "",
+                answerText: viewModel.answerText,
+                createAt: createAt
+            )
+            .transition(.opacity)
+        }
+    }
+    
     func showSubmittedForm() async throws {
-        submitted.toggle()
+        withAnimation(.easeInOut(duration: 0.5)) {
+            currentPage = .submitted
+        }
         try await Task.sleep(for: .milliseconds(700))
         showFramesAniamtion.toggle()
+        try await Task.sleep(for: .milliseconds(500 + 1500))
+        currentPage = .final
     }
 }
