@@ -10,12 +10,12 @@ public protocol ApiClientType {
 
 public class ApiClient: ApiClientType {
     private let session: URLSession
-    private let environment: Environment
+    private let environment: AppEnvironment
     private let interceptors: [NetworkInterceptor]
     
     public init(
         configuration: URLSessionConfiguration = .default,
-        environment: Environment,
+        environment: AppEnvironment,
         interceptors: [NetworkInterceptor]
     ) {
         self.session = URLSession(configuration: configuration)

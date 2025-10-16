@@ -11,8 +11,10 @@ struct CalendarView: View {
         static let cornorRadius: CGFloat = 4
         static let weekDayBottom: CGFloat = 70
     }
+    @Environment(\.drippleAnimationSpace) private var dripplens
+    @Environment(\.showCalendarDripple) private var showCalendarDripple
     @StateObject var viewModel: CalendarViewModel
-    @Namespace var animationSpace
+
     
     init(viewModel: CalendarViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
@@ -68,6 +70,7 @@ struct CalendarView: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: 24, height: 24)
+                                        .matchedGeometryEffect(id: "dripple", in: dripplens!, properties: .frame)
                                 } else {
                                     Circle()
                                         .fill(AppColor.color(hex: 0x000000))

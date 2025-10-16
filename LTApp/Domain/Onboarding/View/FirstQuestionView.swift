@@ -15,7 +15,7 @@ struct FirstQuestionView: View {
     @State var currentPage: CurrentPage = .answer
     @State var showFramesAniamtion: Bool = false
     @Namespace var animation
-    
+
     init(viewModel: FirstQuestionViewModel) {
         self.viewModel = viewModel
     }
@@ -28,9 +28,7 @@ struct FirstQuestionView: View {
                     .defaultBackground()
                     .transition(.opacity)
             case .final:
-                finalForm
-                    .defaultBackground()
-                    .transition(.opacity)
+                EmptyView()
             case .answer:
                 answerForm.defaultBackground()
                     .transition(.opacity)
@@ -170,18 +168,6 @@ struct FirstQuestionView: View {
         }
     }
     
-    @ViewBuilder
-    var finalForm: some View {
-        if currentPage == .final, let createAt = viewModel.createAt {
-            FirstQuestionSubmittedView(
-                category: viewModel.category.name,
-                question: viewModel.question?.title ?? "",
-                answerText: viewModel.answerText,
-                createAt: createAt
-            )
-            .transition(.opacity)
-        }
-    }
     
     func showSubmittedForm() async throws {
         withAnimation(.easeInOut(duration: 0.5)) {
@@ -190,6 +176,15 @@ struct FirstQuestionView: View {
         try await Task.sleep(for: .milliseconds(700))
         showFramesAniamtion.toggle()
         try await Task.sleep(for: .milliseconds(500 + 1500))
-        currentPage = .final
+        coordinaor.changeRoot(
+            .home(.init(
+                showOverlay: true,
+                overLayData: .init(
+                    category: viewModel.category.name,
+                    question: viewModel.question?.title ?? "",
+                    answerText: viewModel.answerText,
+                    createAt: viewModel.createAt ?? Date())
+            ))
+        )
     }
 }

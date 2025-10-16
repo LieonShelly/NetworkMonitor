@@ -4,16 +4,31 @@
 
 import SwiftUI
 
-struct FirstQuestionSubmittedView: View {
+struct FirstQuestionSubmittedData {
     let category: String
     let question: String
     let answerText: String
     let createAt: Date
+}
+
+struct FirstQuestionSubmittedView: View {
+    let data: FirstQuestionSubmittedData
+    @Binding var showCalendarDripple: Bool
+    @State var dismiss: Bool = false
     @State var showCloseBtn: Bool = false
+    @EnvironmentObject var coordinaor: AppCoordinator
+    @Environment(\.drippleAnimationSpace) var drippleAnimationSpace
     
+    init(data: FirstQuestionSubmittedData, showCalendarDripple: Binding<Bool>) {
+        self.data = data
+        self._showCalendarDripple = showCalendarDripple
+    }
+
     var body: some View {
         submittedForm
+            .defaultBackground(opacity: dismiss ? 0 : 1)
             .animation(.easeInOut(duration: 0.5), value: showCloseBtn)
+            .animation(.easeInOut(duration: 0.5), value: dismiss)
             .task {
                 showCloseBtn.toggle()
             }
@@ -22,26 +37,28 @@ struct FirstQuestionSubmittedView: View {
     var submittedForm: some View {
         VStack(spacing: .zero) {
             topicTitleSubmittedView
-            if let lastFrame = FramesAnimationData.dripple.lastFrame {
+            if !showCalendarDripple, let lastFrame = FramesAnimationData.dripple.lastFrame {
                 Image(uiImage: lastFrame)
                     .resizable()
                     .scaledToFit()
                     .frame(width: FramesAnimationData.dripple.frameSize.width,
                            height: FramesAnimationData.dripple.frameSize.height)
                     .padding(.top, 100)
+                    .matchedGeometryEffect(id: "dripple", in: drippleAnimationSpace!, properties: .frame)
             }
             
             HStack {
-                Text(question)
+                Text(data.question)
                     .textStyle(size: 24)
                     .lineLimit(10)
                 Spacer()
             }
             .padding(.horizontal, 24)
             .padding(.top, 59)
+            .opacity(dismiss ? 0 : 1)
             
             HStack {
-                Text(answerText)
+                Text(data.answerText)
                     .textStyle(size: 12, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
                     .padding(.init(top: 22, leading: 18, bottom: 22, trailing: 18))
                 Spacer()
@@ -53,14 +70,16 @@ struct FirstQuestionSubmittedView: View {
             )
             .padding(.horizontal, 24)
             .padding(.vertical, 8)
+            .opacity(dismiss ? 0 : 1)
             
             HStack {
-                Text(createAt.formatDateToEnglishStyle())
+                Text(data.createAt.formatDateToEnglishStyle())
                     .textStyle(size: 10, color: AppColor.color(hex: 0x9e9e9e), fontFamily: .sfProRegular)
                 Spacer()
             }
             .padding(.horizontal, 24)
             .transition(.opacity)
+            .opacity(dismiss ? 0 : 1)
             Spacer()
             
             if showCloseBtn {
@@ -69,21 +88,10 @@ struct FirstQuestionSubmittedView: View {
             
         }
     }
-    var topicTitleView: some View {
-        HStack(spacing: 6) {
-            Text(category)
-                .textStyle(size: 14, color: .white, fontFamily: .sfProBold)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 8)
-        .background(AppColor.textPrimary)
-        .cornerRadius(16, corners: .allCorners)
-        .padding(.top, 16)
-    }
     
     var topicTitleSubmittedView: some View {
         HStack(spacing: 6) {
-            Text(category)
+            Text(data.category)
                 .textStyle(size: 14, color: .white, fontFamily: .sfProBold)
         }
         .padding(.horizontal, 16)
@@ -91,11 +99,18 @@ struct FirstQuestionSubmittedView: View {
         .background(AppColor.textPrimary)
         .cornerRadius(16, corners: .allCorners)
         .padding(.top, 16)
+        .opacity(dismiss ? 0 : 1)
     }
     
     var closeBtn: some View {
         Button {
-            
+            Task {
+                dismiss = true
+                try? await Task.sleep(for: .milliseconds(600))
+                withAnimation(.easeIn(duration: 3)) {
+                    showCalendarDripple.toggle()
+                }
+            }
         } label: {
             RoundedRectangle(cornerRadius: 12)
                 .fill(AppColor.color(hex: 0xEBEBEBEB).opacity(0.92))
@@ -106,5 +121,6 @@ struct FirstQuestionSubmittedView: View {
         }
         .padding(.bottom, 42)
         .transition(.opacity)
+        .opacity(dismiss ? 0 : 1)
     }
 }

@@ -5,8 +5,8 @@
 import SwiftUI
 
 public extension View {
-    func defaultBackground() -> some View {
-        self.modifier(FullBackgroundModifier(backgroundColor: AppColor.backgroundPage))
+    func defaultBackground(opacity: CGFloat = 1.0) -> some View {
+        self.modifier(FullBackgroundModifier(backgroundColor: AppColor.backgroundPage.opacity(opacity)))
     }
 }
 

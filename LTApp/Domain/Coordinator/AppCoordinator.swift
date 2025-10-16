@@ -9,7 +9,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
     @Published private(set) var root: AppRootType = .preHome
     let appDataService: any AppDataWithAuthorizationServiceful
     
-    init(environment: Environment = .dev) {
+    init(environment: AppEnvironment = .dev) {
         let enviroment = environment
         let interceptorClient = ApiClient(
             environment: enviroment,
@@ -58,8 +58,8 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
             return AnyView( FirstQuestionView(viewModel: .init(category: .init(id: "sadf", name: "asdf", questions: [
                 .init(id: "asdfsf", title: "What is one little thing that made you happy today?")
             ]), service: appDataService)))
-        case .home:
-            return AnyView(AppHomeRootView())
+        case let .home(viewModel):
+            return AnyView(AppHomeRootView(viewModel: viewModel))
         }
     }
 }
@@ -67,9 +67,8 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
 
 enum AppRootType {
     case preHome
-    case home
+    case home(_ viewModel: AppHomeRootViewModel)
 }
-
 
 
 enum AppRoute: Route {

@@ -5,7 +5,7 @@
 import Foundation
 
 public protocol EndPoint {
-    func absoluteUrl(_ environment: Environment) -> URL
+    func absoluteUrl(_ environment: AppEnvironment) -> URL
 }
 
 public protocol Request {

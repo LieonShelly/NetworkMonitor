@@ -4,7 +4,7 @@
 
 import Foundation
 
-public enum Environment {
+public enum AppEnvironment {
     case dev
     case stagging
     case release

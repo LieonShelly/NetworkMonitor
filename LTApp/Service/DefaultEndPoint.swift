@@ -7,7 +7,7 @@ import Foundation
 enum DefaultEndPoint: EndPoint {
     case baseURL(path: String)
     
-    func absoluteUrl(_ environment: Environment) -> URL {
+    func absoluteUrl(_ environment: AppEnvironment) -> URL {
         switch self {
         case .baseURL(let path):
             var components = URLComponents(string: path)
