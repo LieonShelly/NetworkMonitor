@@ -16,6 +16,7 @@ struct FirstQuestionSubmittedView: View {
     @State var dismiss: Bool = false
     @EnvironmentObject var coordinaor: AppCoordinator
     @EnvironmentObject var homeCoordinaor: HomeCoordinator
+    @State var showFramesAniamtion: Bool = false
     
     init(data: FirstQuestionSubmittedData) {
         self.data = data
@@ -25,26 +26,35 @@ struct FirstQuestionSubmittedView: View {
         submittedForm
             .defaultBackground(opacity: dismiss ? 0 : 1)
             .animation(.easeInOut(duration: 0.5), value: dismiss)
+            .animation(.easeInOut(duration: 0.5), value: showFramesAniamtion)
+            .task {
+                showFramesAniamtion = true
+            }
     }
     
     var submittedForm: some View {
         VStack(spacing: .zero) {
             topicTitleSubmittedView
+            
             if let lastFrame = FramesAnimationData.dripple.lastFrame {
                 HStack {
-                    if let dripleTransitionData = homeCoordinaor.dripleTransitionData, !dripleTransitionData.showCalendarDripple {
-                        Circle()
-                            .fill(Color.clear)
-                            .overlay(content: {
-                                Image(uiImage: lastFrame)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                            })
-                            .matchedGeometryEffect(id: "dripple", in: dripleTransitionData.drippleAnimationSpace)
+                    if  let dripleTransitionData = homeCoordinaor.dripleTransitionData {
+                        if showFramesAniamtion, !dripleTransitionData.showDrippleClose {
+                            ImageFramesAnimationView(aniamationData: .dripple)
+                                .transition(.opacity)
+                        } else if !dripleTransitionData.showCalendarDripple {
+                            Circle()
+                                .fill(Color.clear)
+                                .overlay(content: {
+                                    Image(uiImage: lastFrame)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                })
+                                .transition(.opacity)
+                                .matchedGeometryEffect(id: "dripple", in: dripleTransitionData.drippleAnimationSpace)
+                        }
                     }
-                  
                 }
-              
                     .frame(width: FramesAnimationData.dripple.frameSize.width,
                            height: FramesAnimationData.dripple.frameSize.height)
                     .padding(.top, 100)

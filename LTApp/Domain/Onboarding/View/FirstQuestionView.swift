@@ -38,7 +38,6 @@ struct FirstQuestionView: View {
             }
         }
         .toolbarVisibility(.hidden, for: .navigationBar)
-        .animation(.easeInOut(duration: 0.5), value: showFramesAniamtion)
     }
     
     var topicTitleView: some View {
@@ -127,7 +126,7 @@ struct FirstQuestionView: View {
             topicTitleSubmittedView
             ImageFramesAnimationView(aniamationData: .dripple)
                 .padding(.top, 100)
-                .opacity(showFramesAniamtion ? 1 : 0)
+                .opacity(0)
                 .transition(.opacity)
             
             HStack {
@@ -174,8 +173,6 @@ struct FirstQuestionView: View {
             currentPage = .submitted
         }
         try await Task.sleep(for: .milliseconds(700))
-        showFramesAniamtion.toggle()
-        try await Task.sleep(for: .milliseconds(500 + 1500))
         coordinaor.changeRoot(
             .home(.init(
                 showOverlay: true,
