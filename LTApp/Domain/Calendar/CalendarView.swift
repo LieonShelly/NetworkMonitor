@@ -11,8 +11,7 @@ struct CalendarView: View {
         static let cornorRadius: CGFloat = 4
         static let weekDayBottom: CGFloat = 70
     }
-    @Environment(\.drippleAnimationSpace) private var dripplens
-    @Environment(\.showCalendarDripple) private var showCalendarDripple
+    @EnvironmentObject var homeCoordinator: HomeCoordinator
     @StateObject var viewModel: CalendarViewModel
 
     
@@ -65,15 +64,20 @@ struct CalendarView: View {
                     HStack {
                         if let currentMonth = viewModel.currentMonth {
                             if day.date.isSameMonth(currentMonth) {
-                                if showCalendarDripple, let reflections = day.reflections {
+                                Color.clear.onAppear {
+                                    homeCoordinator.dripleTransitionData?.showDrippleClose = true
+                                }
+                                if let dripleTransitionData = homeCoordinator.dripleTransitionData,
+                                   dripleTransitionData.showCalendarDripple == true,
+                                    let reflections = day.reflections {
                                     Circle()
                                         .fill(Color.clear)
                                         .overlay(content: {
-                                            Image(.dripple)
+                                            Image(.calendarDripper)
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fit)
                                         })
-                                        .matchedGeometryEffect(id: "dripple", in: dripplens!, properties: .frame)
+                                        .matchedGeometryEffect(id: "dripple", in: dripleTransitionData.drippleAnimationSpace)
                                         .frame(width: 24, height: 24)
                                        
                                 } else {

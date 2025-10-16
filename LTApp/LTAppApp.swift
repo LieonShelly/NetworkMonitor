@@ -9,6 +9,7 @@ struct LTAppApp: App {
     @StateObject var coordinator: AppCoordinator
     @StateObject var homeCoordinator: HomeCoordinator
     @StateObject var preHomeCoordinator: PreHomeCoordinator
+    @Namespace var dripleTransition
     
     init() {
         try! AppFont.registerFonts()

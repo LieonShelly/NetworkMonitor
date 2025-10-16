@@ -13,25 +13,18 @@ struct FirstQuestionSubmittedData {
 
 struct FirstQuestionSubmittedView: View {
     let data: FirstQuestionSubmittedData
-    @Binding var showCalendarDripple: Bool
     @State var dismiss: Bool = false
-    @State var showCloseBtn: Bool = false
     @EnvironmentObject var coordinaor: AppCoordinator
-    @Environment(\.drippleAnimationSpace) var drippleAnimationSpace
+    @EnvironmentObject var homeCoordinaor: HomeCoordinator
     
-    init(data: FirstQuestionSubmittedData, showCalendarDripple: Binding<Bool>) {
+    init(data: FirstQuestionSubmittedData) {
         self.data = data
-        self._showCalendarDripple = showCalendarDripple
     }
 
     var body: some View {
         submittedForm
             .defaultBackground(opacity: dismiss ? 0 : 1)
-            .animation(.easeInOut(duration: 0.5), value: showCloseBtn)
             .animation(.easeInOut(duration: 0.5), value: dismiss)
-            .task {
-                showCloseBtn.toggle()
-            }
     }
     
     var submittedForm: some View {
@@ -39,7 +32,7 @@ struct FirstQuestionSubmittedView: View {
             topicTitleSubmittedView
             if let lastFrame = FramesAnimationData.dripple.lastFrame {
                 HStack {
-                    if !showCalendarDripple {
+                    if let dripleTransitionData = homeCoordinaor.dripleTransitionData, !dripleTransitionData.showCalendarDripple {
                         Circle()
                             .fill(Color.clear)
                             .overlay(content: {
@@ -47,7 +40,7 @@ struct FirstQuestionSubmittedView: View {
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                             })
-                            .matchedGeometryEffect(id: "dripple", in: drippleAnimationSpace!, properties: .frame)
+                            .matchedGeometryEffect(id: "dripple", in: dripleTransitionData.drippleAnimationSpace)
                     }
                   
                 }
@@ -92,9 +85,7 @@ struct FirstQuestionSubmittedView: View {
             .opacity(dismiss ? 0 : 1)
             Spacer()
             
-            if showCloseBtn {
-                closeBtn
-            }
+            closeBtn
             
         }
     }
@@ -117,7 +108,7 @@ struct FirstQuestionSubmittedView: View {
             Task {
                 dismiss = true
                 withAnimation(.easeIn(duration: 0.5)) {
-                    showCalendarDripple.toggle()
+                    homeCoordinaor.dripleTransitionData?.showCalendarDripple = true
                 }
             }
         } label: {

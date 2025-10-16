@@ -7,6 +7,8 @@ import SwiftUI
 @MainActor
 final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
     @Published var path: NavigationPath = .init()
+    @Published var dripleTransitionData: DrippleTransitionData?
+
     var children: [any Coordinator] = []
     private let appDataService: any AppDataWithAuthorizationServiceful
     
@@ -14,6 +16,14 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
         self.appDataService = appDataService
         let historyCoordinator = PreHomeCoordinator(appDataService: appDataService)
         addChild(historyCoordinator, isSameStack: true)
+    }
+    
+    func generateDripleTransitionData(_ namespace: Namespace.ID) {
+        dripleTransitionData = .init(
+            drippleAnimationSpace: namespace,
+            showCalendarDripple: false,
+            showDrippleClose: false
+        )
     }
     
     func build(_ route: any Route) -> AnyView? {

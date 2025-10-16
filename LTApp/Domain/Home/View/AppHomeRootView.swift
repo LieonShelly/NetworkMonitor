@@ -28,38 +28,20 @@ struct AppHomeRootView: View {
         .overlay(content: {
             if viewModel.showOverlay {
                 FirstQuestionSubmittedView(
-                    data: viewModel.overLayData,
-                    showCalendarDripple: $viewModel.showCalendarDripple
+                    data: viewModel.overLayData
                 )
             }
         })
-        
-        .environment(\.drippleAnimationSpace, animationSpace)
-        .environment(\.showCalendarDripple, viewModel.showCalendarDripple)
         .task {
             coordinator.start()
+            coordinator.generateDripleTransitionData(animationSpace)
         }
     }
 }
 
-private struct DrippleNamespaceKey: EnvironmentKey {
-    static let defaultValue: Namespace.ID? = nil
+struct DrippleTransitionData {
+    var drippleAnimationSpace: Namespace.ID
+    var showCalendarDripple: Bool
+    var showDrippleClose: Bool
 }
 
-extension EnvironmentValues {
-    var drippleAnimationSpace: Namespace.ID? {
-        get { self[DrippleNamespaceKey.self] }
-        set { self[DrippleNamespaceKey.self] = newValue }
-    }
-    
-    var showCalendarDripple: Bool {
-        get { self[DrippleShowNamespaceKey.self] }
-        set { self[DrippleShowNamespaceKey.self] = newValue }
-    }
-}
-
-
-
-private struct DrippleShowNamespaceKey: EnvironmentKey {
-    static let defaultValue: Bool = false
-}
