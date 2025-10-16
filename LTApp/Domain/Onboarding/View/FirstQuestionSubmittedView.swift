@@ -29,6 +29,7 @@ struct FirstQuestionSubmittedView: View {
             .animation(.easeInOut(duration: 0.5), value: showFramesAniamtion)
             .task {
                 showFramesAniamtion = true
+                homeCoordinaor.dripleTransitionData?.date = data.createAt
             }
     }
     

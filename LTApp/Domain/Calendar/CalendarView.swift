@@ -64,38 +64,61 @@ struct CalendarView: View {
                     HStack {
                         if let currentMonth = viewModel.currentMonth {
                             if day.date.isSameMonth(currentMonth) {
-                                Color.clear.onAppear {
-                                    homeCoordinator.dripleTransitionData?.showDrippleClose = true
-                                }
-                                if let dripleTransitionData = homeCoordinator.dripleTransitionData,
-                                   dripleTransitionData.showCalendarDripple == true,
-                                    let reflections = day.reflections {
-                                    Circle()
-                                        .fill(Color.clear)
-                                        .overlay(content: {
-                                            Image(.calendarDripper)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                        })
-                                        .matchedGeometryEffect(id: "dripple", in: dripleTransitionData.drippleAnimationSpace)
-                                        .frame(width: 24, height: 24)
+                                if let dripleTransitionData = homeCoordinator.dripleTransitionData, let reflections = day.reflections {
+                                    if day.date.isSameDay(dripleTransitionData.date!) {
+                                        if dripleTransitionData.showCalendarDripple {
+                                            Circle()
+                                                .fill(Color.clear)
+                                                .overlay(content: {
+                                                    Image(.calendarDripper)
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fit)
+                                                })
+                                                .matchedGeometryEffect(id: "dripple", in: dripleTransitionData.drippleAnimationSpace)
+                                                .frame(width: 24, height: 24)
+                                        } else {
+                                            Circle()
+                                                .fill(Color.clear)
+                                                .overlay(content: {
+                                                    Image(.calendarDripper)
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fit)
+                                                })
+                                                .frame(width: 24, height: 24)
+                                        }
+                                        
+                                        Color.clear.frame(width: .zero, height: .zero)
+                                            .onAppear {
+                                                homeCoordinator.dripleTransitionData?.showDrippleClose = true
+                                            }
                                        
+                                    } else {
+                                        Circle()
+                                            .fill(Color.clear)
+                                            .overlay(content: {
+                                                Image(.calendarDripper)
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                            })
+                                            .frame(width: 24, height: 24)
+                                    }
                                 } else {
                                     Circle()
                                         .fill(AppColor.color(hex: 0x000000))
                                         .frame(width: 8, height: 8)
                                 }
                             } else if day.date.isPreviousMonth(currentMonth) {
-                                Text("\(day.date.dayDesc())")
-                                    .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
+                                   Text("\(day.date.dayDesc())")
+                                       .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
                             } else {
                                 Circle()
                                     .fill(AppColor.color(hex: 0xCDCDCD))
                                     .frame(width: 8, height: 8)
                             }
                         } else {
-                            Text("\(day.date.dayDesc())")
-                                .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
+                            Circle()
+                                .fill(AppColor.color(hex: 0xCDCDCD))
+                                .frame(width: 8, height: 8)
                         }
                     }
                     .id(day.id)

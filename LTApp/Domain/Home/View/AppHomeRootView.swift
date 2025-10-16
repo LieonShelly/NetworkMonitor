@@ -43,5 +43,6 @@ struct DrippleTransitionData {
     var drippleAnimationSpace: Namespace.ID
     var showCalendarDripple: Bool
     var showDrippleClose: Bool
+    var date: Date?
 }
 
