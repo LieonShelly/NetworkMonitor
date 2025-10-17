@@ -26,9 +26,9 @@ struct AppHomeRootView: View {
                 }
         }
         .overlay(content: {
-            if viewModel.showOverlay {
+            if let overLayData = viewModel.overLayData {
                 FirstQuestionSubmittedView(
-                    data: viewModel.overLayData
+                    data: overLayData
                 )
             }
         })
@@ -43,6 +43,6 @@ struct DrippleTransitionData {
     var drippleAnimationSpace: Namespace.ID
     var showCalendarDripple: Bool
     var showDrippleClose: Bool
-    var date: Date?
+    var date: Date
 }
 

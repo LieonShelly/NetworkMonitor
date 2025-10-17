@@ -65,7 +65,7 @@ struct CalendarView: View {
                         if let currentMonth = viewModel.currentMonth {
                             if day.date.isSameMonth(currentMonth) {
                                 if let dripleTransitionData = homeCoordinator.dripleTransitionData, let reflections = day.reflections {
-                                    if day.date.isSameDay(dripleTransitionData.date!) {
+                                    if day.date.isSameDay(dripleTransitionData.date) {
                                         if dripleTransitionData.showCalendarDripple {
                                             Circle()
                                                 .fill(Color.clear)

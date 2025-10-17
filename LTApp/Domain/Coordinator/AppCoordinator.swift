@@ -44,7 +44,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
             reflectionRepository: reflectionRepository
         )
         self.appDataService = appDataWithAuthorizationService
-        //changeRoot(sessionManager.refreshToken == nil ? .preHome : .home)
+       // changeRoot(sessionManager.refreshToken == nil ? .preHome : .home(.init(overLayData: nil)))
     }
     
     func changeRoot(_ type: AppRootType) {
@@ -54,10 +54,10 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
     func rootView() -> AnyView {
         switch root {
         case .preHome:
-//            return AnyView(PreHomeContentView())
-            return AnyView( FirstQuestionView(viewModel: .init(category: .init(id: "sadf", name: "asdf", questions: [
-                .init(id: "asdfsf", title: "What is one little thing that made you happy today?")
-            ]), service: appDataService)))
+            return AnyView(PreHomeContentView())
+//            return AnyView( FirstQuestionView(viewModel: .init(category: .init(id: "sadf", name: "asdf", questions: [
+//                .init(id: "asdfsf", title: "What is one little thing that made you happy today?")
+//            ]), service: appDataService)))
         case let .home(viewModel):
             return AnyView(AppHomeRootView(viewModel: viewModel))
         }

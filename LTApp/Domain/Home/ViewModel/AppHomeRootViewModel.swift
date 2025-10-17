@@ -5,11 +5,9 @@
 import Combine
 
 final class AppHomeRootViewModel: ObservableObject, @unchecked Sendable {
-    @Published var showOverlay: Bool = false
-    @Published var overLayData: FirstQuestionSubmittedData
+    @Published var overLayData: FirstQuestionSubmittedData?
     
-    init(showOverlay: Bool, overLayData: FirstQuestionSubmittedData) {
-        self.showOverlay = showOverlay
+    init(overLayData: FirstQuestionSubmittedData?) {
         self.overLayData = overLayData
     }
     

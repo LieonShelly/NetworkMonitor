@@ -15,7 +15,8 @@ struct FirstQuestionView: View {
     @State var currentPage: CurrentPage = .answer
     @State var showFramesAniamtion: Bool = false
     @Namespace var animation
-
+    @StateObject var keyboardObserver: KeyboardObserver = .init()
+    
     init(viewModel: FirstQuestionViewModel) {
         self.viewModel = viewModel
     }
@@ -38,6 +39,7 @@ struct FirstQuestionView: View {
             }
         }
         .toolbarVisibility(.hidden, for: .navigationBar)
+        .animation(.easeInOut(duration: 0.5), value: keyboardObserver.keyboardShown)
     }
     
     var topicTitleView: some View {
@@ -75,6 +77,8 @@ struct FirstQuestionView: View {
                 .textStyle(size: 32)
             Spacer()
         }
+        .frame(minHeight: keyboardObserver.keyboardShown ? 100 : 0)
+        .padding(.top, keyboardObserver.keyboardShown ?  20 : 158)
         .padding(.horizontal, 24)
         .matchedGeometryEffect(id: "question", in: animation, properties: .position)
     }
@@ -85,7 +89,7 @@ struct FirstQuestionView: View {
             placeholder: "Write anything...."
         )
         .padding(.horizontal, 24)
-        .frame(height: 286)
+        .frame(height: keyboardObserver.keyboardShown ? 150 : 286)
         .padding(.top, 35)
         .padding(.bottom, 76)
         .matchedGeometryEffect(id: "answer", in: animation, properties: .position)
@@ -175,7 +179,6 @@ struct FirstQuestionView: View {
         try await Task.sleep(for: .milliseconds(700))
         coordinaor.changeRoot(
             .home(.init(
-                showOverlay: true,
                 overLayData: .init(
                     category: viewModel.category.name,
                     question: viewModel.question?.title ?? "",

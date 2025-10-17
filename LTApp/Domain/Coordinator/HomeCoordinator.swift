@@ -22,7 +22,8 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
         dripleTransitionData = .init(
             drippleAnimationSpace: namespace,
             showCalendarDripple: false,
-            showDrippleClose: false
+            showDrippleClose: false,
+            date: .init()
         )
     }
     
