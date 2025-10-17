@@ -6,7 +6,7 @@ import SwiftUI
 
 struct AnwserQuestionView: View {
     @EnvironmentObject var coordinaor: HomeCoordinator
-    
+    @StateObject var keyboardObserver: KeyboardObserver = .init()
     @StateObject var viewModel: AnwserQuestionViewModel
     
     init(viewModel: AnwserQuestionViewModel) {
@@ -18,6 +18,7 @@ struct AnwserQuestionView: View {
             .defaultNavigationBar("") {
                 coordinaor.pop()
             }
+            .animation(.easeInOut(duration: 0.5), value: keyboardObserver.keyboardShown)
     }
     
     var topicTitleView: some View {
@@ -42,6 +43,7 @@ struct AnwserQuestionView: View {
                 .textStyle(size: 32)
             Spacer()
         }
+        .frame(minHeight: keyboardObserver.keyboardShown ? 200 : 0)
         .padding(.horizontal, 24)
     }
     
@@ -52,7 +54,7 @@ struct AnwserQuestionView: View {
             placeholder: "Write anything...."
         )
             .padding(.horizontal, 24)
-            .frame(height: 286)
+            .frame(height: keyboardObserver.keyboardShown ? 150 : 286)
             .padding(.top, 35)
             .padding(.bottom, 76)
         
