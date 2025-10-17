@@ -50,7 +50,6 @@ platform :ios do
     )
     upload_to_testflight(
       api_key: api_key,
-      # username: "vsvx.sh.co@outlook.com",
       app_identifier: "com.little.things",
       skip_submission: true,
       skip_waiting_for_build_processing: false,
