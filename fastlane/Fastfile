@@ -52,8 +52,9 @@ platform :ios do
       api_key: api_key,
       # username: "vsvx.sh.co@outlook.com",
       app_identifier: "com.little.things",
+      skip_submission: true,
       skip_waiting_for_build_processing: false,
-      notify_external_testers: false
+      notify_external_testers: false,
     )
 
     new_build = current_build + 1
