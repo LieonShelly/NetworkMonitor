@@ -7,7 +7,15 @@ import SwiftUI
 
 final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var days: [CalendarDay] = []
-    @MainActor @Published var weekdays: [String] = ["S", "M", "T", "W", "T", "F", "S"]
+    @MainActor @Published var weekdays: [WeekDay] = [
+        WeekDay(title: "S"),
+        WeekDay(title: "M"),
+        WeekDay(title: "T"),
+        WeekDay(title: "W"),
+        WeekDay(title: "T"),
+        WeekDay(title: "F"),
+        WeekDay(title: "S")
+    ]
     @MainActor @Published var currentMonth: Date?
     @MainActor @Published var scrollPostion: UUID? = nil
 
@@ -38,33 +46,40 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     
     func generateDays(for moth: Date, needWeekdayOffset: Bool = true) async {
         let calendar = Calendar.current
-        let range = calendar.range(of: .day, in: .month, for: moth)!
+        guard let range = calendar.range(of: .day, in: .month, for: moth) else {
+            return
+        }
         let components = calendar.dateComponents([.year, .month], from: moth)
-        let firstDay = calendar.date(from: components)!
+        guard let firstDay = calendar.date(from: components) else {
+             return
+        }
         var days: [CalendarDay] = []
         let weekdayOffset = calendar.component(.weekday, from: firstDay) - calendar.firstWeekday
         let totalDays = range.count
         if needWeekdayOffset {
             for i in 0 ..< weekdayOffset {
+                if let date = calendar.date(byAdding: .day, value: -weekdayOffset + i, to: firstDay) {
+                    days.append(
+                        CalendarDay(
+                            date: date,
+                            isCurrentMonth: false,
+                            isToday: false
+                        )
+                    )
+                }
+            }
+        }
+        guard totalDays >= 1 else { return }
+        for day in 1...totalDays {
+            if let date = calendar.date(byAdding: .day, value: day - 1, to: firstDay) {
                 days.append(
                     CalendarDay(
-                        date: calendar.date(byAdding: .day, value: -weekdayOffset + i, to: firstDay)!,
-                        isCurrentMonth: false,
-                        isToday: false
+                        date: date,
+                        isCurrentMonth: true,
+                        isToday: calendar.isDateInToday(date)
                     )
                 )
             }
-        }
-        
-        for day in 1...totalDays {
-            let date = calendar.date(byAdding: .day, value: day - 1, to: firstDay)!
-            days.append(
-                CalendarDay(
-                    date: date,
-                    isCurrentMonth: true,
-                    isToday: calendar.isDateInToday(date)
-                )
-            )
         }
         await MainActor.run {
             self.days.append(contentsOf: days)

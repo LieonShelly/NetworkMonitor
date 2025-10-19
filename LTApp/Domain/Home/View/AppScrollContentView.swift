@@ -14,12 +14,7 @@ struct AppScrollContentView: View {
                     CalendarView(viewModel: viewModel.calendarViewModel)
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(0)
-//                    
                     ThreadView(viewModel: viewModel.threadViewModel)
-                        .frame(width: proxy.size.width, height: proxy.size.height)
-                        .id(1)
-                    
-                    EmptyView()
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(1)
                 }

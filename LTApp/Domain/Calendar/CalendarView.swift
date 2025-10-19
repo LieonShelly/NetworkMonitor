@@ -44,8 +44,8 @@ struct CalendarView: View {
         let count: CGFloat = 7
         let itemW = proxy.size.width / count
         HStack(spacing: spacing) {
-            ForEach(viewModel.weekdays, id: \.self) { day in
-                Text(day)
+            ForEach(viewModel.weekdays, id: \.id) { day in
+                Text(day.title)
                     .textStyle(size: 14, color: AppColor.color(hex: 0x323232), fontFamily: .sfProRegular)
                     .frame(width: itemW, height: itemW)
             }

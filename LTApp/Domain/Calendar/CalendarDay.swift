@@ -4,6 +4,15 @@
 
 import Foundation
 
+struct WeekDay: Identifiable {
+    let id = UUID()
+    let title: String
+    
+    init(title: String) {
+        self.title = title
+    }
+}
+
 struct CalendarDay: Identifiable {
     let id = UUID()
     let date: Date
