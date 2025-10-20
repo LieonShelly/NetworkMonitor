@@ -75,10 +75,10 @@ struct FirstQuestionView: View {
         HStack {
             Text(viewModel.question?.title ?? "")
                 .textStyle(size: 32)
+                .fixedSize(horizontal: false, vertical: true)
             Spacer()
         }
-        .frame(minHeight: keyboardObserver.keyboardShown ? 100 : 0)
-        .padding(.top, keyboardObserver.keyboardShown ?  20 : 158)
+        .padding(.top, 20)
         .padding(.horizontal, 24)
         .matchedGeometryEffect(id: "question", in: animation, properties: .position)
     }
@@ -186,5 +186,46 @@ struct FirstQuestionView: View {
                     createAt: viewModel.createAt ?? Date())
             ))
         )
+    }
+}
+
+extension String {
+    func height(font: UIFont, containerW: CGFloat) -> CGFloat {
+        let attributeText = NSMutableAttributedString(string: self)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 6
+        attributeText.addAttributes([
+            .font: font,
+            .paragraphStyle: paragraphStyle
+        ], range: NSRange(location: 0, length: count)
+        )
+       return attributeText.boundingRect(
+            with: CGSize(width: containerW, height: .infinity),
+            options: .usesDeviceMetrics,
+            context: nil
+        ).height
+    }
+}
+
+
+
+private struct PositionPreferenceKey: PreferenceKey {
+    static let defaultValue: CGRect = .zero
+    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
+        value = nextValue()
+    }
+}
+
+extension View {
+    func currentRect(_ rect: Binding<CGRect>, coordinateSpace: CoordinateSpace = .global) -> some View {
+        overlay(content: {
+            GeometryReader { geometry in
+                Color.clear
+                    .preference(key: PositionPreferenceKey.self, value: geometry.frame(in: .global))
+            }
+        })
+        .onPreferenceChange(PositionPreferenceKey.self) { value in
+            rect.wrappedValue = value
+        }
     }
 }
