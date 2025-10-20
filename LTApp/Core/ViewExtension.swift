@@ -23,3 +23,25 @@ extension View {
             }
     }
 }
+
+
+private struct PositionPreferenceKey: PreferenceKey {
+    static let defaultValue: CGRect = .zero
+    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
+        value = nextValue()
+    }
+}
+
+extension View {
+    func currentRect(_ rect: Binding<CGRect>, coordinateSpace: CoordinateSpace = .global) -> some View {
+        overlay(content: {
+            GeometryReader { geometry in
+                Color.clear
+                    .preference(key: PositionPreferenceKey.self, value: geometry.frame(in: .global))
+            }
+        })
+        .onPreferenceChange(PositionPreferenceKey.self) { value in
+            rect.wrappedValue = value
+        }
+    }
+}
