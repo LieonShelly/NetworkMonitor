@@ -57,6 +57,7 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         let weekdayOffset = calendar.component(.weekday, from: firstDay) - calendar.firstWeekday
         let totalDays = range.count
         if needWeekdayOffset {
+            guard weekdayOffset >= 0 else { return }
             for i in 0 ..< weekdayOffset {
                 if let date = calendar.date(byAdding: .day, value: -weekdayOffset + i, to: firstDay) {
                     days.append(
