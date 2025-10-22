@@ -8,6 +8,10 @@ struct SummaryView: View {
     let summary: ReflectionSummary
     @State var show: Bool = false
     @Binding var isPresented: Bool
+    @State var dragOffsetY: CGFloat = 0
+    @State private var currentOffsetY: CGFloat = .zero
+    @State private var lastOffsetY: CGFloat = .zero
+    @GestureState private var updatingOffsetY: CGFloat = .zero
     
     init(summary: ReflectionSummary, isPresented: Binding<Bool>) {
         self.summary = summary
@@ -23,6 +27,10 @@ struct SummaryView: View {
                         show.toggle()
                     }
                 
+                Rectangle()
+                    .fill(AppColor.backgroundPage)
+                    .frame(height: max(0, -(currentOffsetY + updatingOffsetY)))
+                
                   VStack(spacing: .zero) {
                       topLine
                       text
@@ -35,13 +43,29 @@ struct SummaryView: View {
                       RoundedRectangleWithCorners(radius: 20, corners: [.topLeft, .topRight])
                           .fill(AppColor.backgroundPage)
                   )
+                  .offset(y: currentOffsetY + updatingOffsetY)
                   .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .move(edge: .bottom)))
                   .zIndex(100)
+                  .gesture(DragGesture()
+                    .updating($updatingOffsetY, body: { currentState, gestureState, transaction in
+                        gestureState = currentState.translation.height
+                        lastOffsetY = currentOffsetY + updatingOffsetY
+                    })
+                        .onEnded({ value in
+                            currentOffsetY = lastOffsetY
+                            if currentOffsetY < 0 {
+                                withAnimation(.easeInOut) {
+                                    currentOffsetY = .zero
+                                }
+                            } else if currentOffsetY > 0 {
+                                show.toggle()
+                            }
+                        })
+                  )
                   .onDisappear {
                       isPresented.toggle()
                   }
             }
-          
         }
         .ignoresSafeArea()
         .animation(.easeInOut, value: show)

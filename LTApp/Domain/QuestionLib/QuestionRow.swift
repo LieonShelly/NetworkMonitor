@@ -7,6 +7,8 @@ import SwiftUI
 struct QuestionRow: View {
     let text: String
     let isPinned: Bool
+    let onTap: () -> Void
+    
     @State private var currentOffsetX: CGFloat = .zero
     @State private var contentTrailling: CGFloat = 42
     @GestureState private var updatingOffsetX: CGFloat = .zero
@@ -48,6 +50,13 @@ struct QuestionRow: View {
         .frame(maxHeight: .infinity, alignment: .center)
         .padding(.leading, 16)
         .padding(.trailing, 44)
+        .onTapGesture {
+            onTap()
+            withAnimation(.easeInOut) {
+                currentOffsetX = 0
+                contentTrailling = 42
+            }
+        }
     }
     
     var contentView: some View {
