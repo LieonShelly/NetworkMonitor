@@ -61,4 +61,8 @@ platform :ios do
     sh("git reset --hard")
   end
 
+  lane :generate_project do
+    sh("xcodegen generate -s project/project.yml")
+  end
+
 end
