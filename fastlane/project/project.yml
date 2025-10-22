@@ -1,9 +1,12 @@
 name: LTApp
 options:
+  xcodeVersion: "16.0"
+  minimumXcodeGenVersion: "2.44.1"
   bundleIdPrefix: com.little.things
   deploymentTarget: 
     iOS: "18.0"
     defaultConfig: Debug
+ 
 
 targets:
  LTApp:
@@ -18,6 +21,9 @@ targets:
     - ../../LTApp/Core/UIComponent/Images.bundle
   info:
     path: ../../LTApp/Info.plist
+    properties:
+      ITSAppUsesNonExemptEncryption: NO
+      UILaunchStoryboardName: LaunchScreen
   settings:
     base:
       PRODUCT_NAME: LTApp
@@ -26,6 +32,7 @@ targets:
       DEVELOPMENT_TEAM: R7S4TKW9JF
       PRODUCT_BUNDLE_IDENTIFIER: com.little.things
       CODE_SIGN_STYLE: Manual
+      CODE_SIGN_ENTITLEMENTS: ../../LTApp/LTApp.entitlements
     configs:
       debug:
         CODE_SIGN_IDENTITY: "iPhone Developer: Tianwei LIU (MU9J2K22B8)"
