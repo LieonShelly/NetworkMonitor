@@ -1,0 +1,36 @@
+name: LTApp
+options:
+  bundleIdPrefix: com.little.things
+  deploymentTarget: 
+    iOS: "18.0"
+    defaultConfig: Debug
+
+targets:
+ LTApp:
+  type: application
+  platform: iOS
+  sources:
+    - path: ../../LTApp
+  resources:
+    - ../../LTApp/Assets.xcassets
+    - ../../LTApp/Core/UIComponent/Color/Colors.xcassets
+    - ../../LTApp/Core/UIComponent/Font/Resources/**
+    - ../../LTApp/Core/UIComponent/Images.bundle
+  info:
+    path: ../../LTApp/Info.plist
+  settings:
+    base:
+      PRODUCT_NAME: LTApp
+      SWIFT_VERSION: 6.0
+      IPHONE_DEPLOYMENT_TARGET: 18.0
+      DEVELOPMENT_TEAM: R7S4TKW9JF
+      PRODUCT_BUNDLE_IDENTIFIER: com.little.things
+      CODE_SIGN_STYLE: Manual
+    configs:
+      debug:
+        CODE_SIGN_IDENTITY: "iPhone Developer: Tianwei LIU (MU9J2K22B8)"
+        PROVISIONING_PROFILE_SPECIFIER: little.things.dev.profile 
+      release:
+        CODE_SIGN_IDENTITY: iPhone Distribution
+        PROVISIONING_PROFILE_SPECIFIER: little.things.adhoc.profile
+        
