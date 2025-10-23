@@ -68,6 +68,7 @@ struct OnboardingView: View {
                         isSelected: selectedCategory == category) {
                         selectedCategory = category
                     }
+                        .padding(2)
                     .frame(height: 112)
                 }
             }

@@ -97,19 +97,19 @@ struct SplashView: View {
             try? await Task.sleep(for: .seconds(0.8))
             visibleIcons = icons.count
             let totalDuraion = delayDuration(iconIndex: icons.count - 1)
-            try? await Task.sleep(for: .seconds(totalDuraion))
+            try? await Task.sleep(for: .seconds(totalDuraion + 0.25))
             coordinator.push(PreHomeRoute.onborading)
         }
     }
     
     
     func delayDuration(iconIndex: Int) -> Double {
-        let animationDuration = 0.25
+        let animationDuration = 0.15
         let preIconsDuration: Double = icons[0 ..< iconIndex
         ].reduce(0) { total, icon in
-            return total + animationDuration + 0.05 * Double(icons.count)
+            return total + animationDuration
         }
-        let curentIconDuration = Double(iconIndex) * 0.05
+        let curentIconDuration = Double(iconIndex) * animationDuration
         return preIconsDuration + curentIconDuration
     }
 }

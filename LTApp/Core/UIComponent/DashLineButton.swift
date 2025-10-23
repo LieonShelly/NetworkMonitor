@@ -17,7 +17,7 @@ struct DashLineButton: View {
                     .transition(.opacity)
             } else {
                 RoundedRectangle(cornerRadius: 24)
-                    .stroke(style: .init(lineWidth: 2, dash: [2, 2]))
+                    .stroke(style: .init(lineWidth: 1, lineCap: .square, dash: [2, 2]))
                     .foregroundStyle(AppColor.color(hex: 0x7F7F7F))
                     .transition(.opacity)
             }
@@ -42,4 +42,12 @@ struct DashLineButton: View {
             onTap()
         }
     }
+}
+
+
+#Preview {
+    
+    DashLineButton(text: "asdfasdfsd", isSelected: false, onTap: {})
+        .frame(height: 112)
+        .padding()
 }
