@@ -12,6 +12,7 @@ struct QuestionRow: View {
     @State private var currentOffsetX: CGFloat = .zero
     @State private var contentTrailling: CGFloat = 42
     @GestureState private var updatingOffsetX: CGFloat = .zero
+    @State private var lastOffsetX: CGFloat = .zero
     private let threshhold: CGFloat = 116
     
     var body: some View {
@@ -19,6 +20,7 @@ struct QuestionRow: View {
             .coordinateSpace(.named("rowNameSpace"))
             .animation(.spring(duration: 0.25), value: currentOffsetX)
             .animation(.easeInOut(duration: 0.25), value: updatingOffsetX)
+            .animation(.spring(duration: 0.25), value: isPinned)
     }
     
     @ViewBuilder
@@ -79,19 +81,20 @@ struct QuestionRow: View {
         .gesture(
             DragGesture(minimumDistance: 20, coordinateSpace: .named("rowNameSpace"))
                 .updating($updatingOffsetX, body: { currentState, gestureState, transcation in
-                    if currentState.velocity.width < 0 {
-                        gestureState = currentState.translation.width
-                    } else if currentState.velocity.width >= 0, (currentOffsetX + updatingOffsetX) != 0 {
-                        gestureState = currentState.translation.width
-                    }
+                    gestureState = currentState.translation.width
+                    lastOffsetX = currentOffsetX + updatingOffsetX
                 })
                 .onEnded({ value in
-                    if currentOffsetX + updatingOffsetX != 0 {
-                        currentOffsetX = 0
-                        contentTrailling = 42
-                    } else if value.velocity.width < 0 {
-                        currentOffsetX = -threshhold
-                        contentTrailling = 0
+                    if lastOffsetX > 0 {
+                        onTap()
+                    } else {
+                         if currentOffsetX + updatingOffsetX != 0 {
+                            currentOffsetX = 0
+                            contentTrailling = 42
+                        } else if value.velocity.width < 0 {
+                            currentOffsetX = -threshhold
+                            contentTrailling = 0
+                        }
                     }
                 }
                         )
