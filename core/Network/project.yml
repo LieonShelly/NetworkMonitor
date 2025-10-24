@@ -1,3 +1,7 @@
+---
+include: 
+  - ../../fastlane/project/settings.yml
+
 name: Network
 options:
   xcodeVersion: "16.0"
@@ -30,25 +34,3 @@ shemes:
         GENERATE_INFOPLIST_FILE: true
         IPHONEOS_DEPLOYMENT_TARGET: 18.0
         ENABLE_USER_SCRIPT_SANDBOXING: false
-
-
-
-SchemeTemplates:
-  DefaultSchemeTemplate:
-    templates:
-      - DefaultScheme
-    build:
-      targets:
-        ${scheme_name}: build
-  
-  DefaultScheme:
-    test:
-      targets:
-        - name: "${testTargetName}"
-          randomExecutionOrder: false
-      gatherCoverageData: true
-      language: en
-      region: US
-      coverageTargets:
-        - name: "${testTargetName}"
-

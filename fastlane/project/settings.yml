@@ -1,0 +1,20 @@
+
+SchemeTemplates:
+  DefaultSchemeTemplate:
+    templates:
+      - DefaultScheme
+    build:
+      targets:
+        ${scheme_name}: build
+  
+  DefaultScheme:
+    test:
+      targets:
+        - name: "${testTargetName}"
+          randomExecutionOrder: false
+      gatherCoverageData: true
+      language: en
+      region: US
+      coverageTargets:
+        - name: "${testTargetName}"
+
