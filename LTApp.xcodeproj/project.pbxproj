@@ -27,6 +27,7 @@
 		F80A8E742E746D2C00A20271 /* LTApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LTApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F80A8E812E746D2E00A20271 /* LTAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F80A8E8B2E746D2E00A20271 /* LTAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F86A27D02EAB334A0044F2F9 /* Network.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Network.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -101,6 +102,13 @@
 				F80A8E742E746D2C00A20271 /* LTApp.app */,
 				F80A8E812E746D2E00A20271 /* LTAppTests.xctest */,
 				F80A8E8B2E746D2E00A20271 /* LTAppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F86A27D12EAB334A0044F2F9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -211,6 +219,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F80A8E752E746D2C00A20271 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F86A27D12EAB334A0044F2F9 /* Products */;
+					ProjectRef = F86A27D02EAB334A0044F2F9 /* Network.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				F80A8E732E746D2C00A20271 /* LTApp */,

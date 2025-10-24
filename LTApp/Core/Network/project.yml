@@ -1,0 +1,15 @@
+name: Network
+options:
+  bundleIdPrefix: com.little.things
+settings:
+  GENERATE_INFOPLIST_FILE: true
+targets:
+  Network:
+    type: framework
+    platform: iOS
+    sources:
+      - Source
+    settings:
+      base:
+        SWIFT_VERSION: 6.0
+        PRODUCT_BUNDLE_IDENTIFIER: com.little.things.network

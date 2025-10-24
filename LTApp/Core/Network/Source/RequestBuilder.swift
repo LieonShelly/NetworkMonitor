@@ -7,7 +7,7 @@ import Foundation
 public class RequestBuilder {
     private let request: any Request
     
-    init(request: any Request) {
+    public init(request: any Request) {
         self.request = request
     }
     
