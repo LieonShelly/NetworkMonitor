@@ -3,15 +3,12 @@ include:
   - ../../fastlane/project/settings.yml
 
 name: Network
-options:
-  xcodeVersion: "16.0"
-  minimumXcodeGenVersion: "2.44.1"
-  bundleIdPrefix: com.little.things
-  deploymentTarget: 
-    iOS: "18.0"
-    defaultConfig: Debug
+
 settings:
+  groups:
+    - BaseProjectSetting
   GENERATE_INFOPLIST_FILE: true
+
 targets:
   LTNetwork:
     type: framework
