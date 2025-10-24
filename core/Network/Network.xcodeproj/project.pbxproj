@@ -7,21 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		18797EB3BE3C7C47A8C1081C /* AppNetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE4A363A34008F28BF45AA1 /* AppNetworkError.swift */; };
-		258BBC44F5A6F8B6120AF64A /* NetworkInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D441AFBDA9734C9E1559A54A /* NetworkInterceptor.swift */; };
-		29BDE8A5867CCDD1E1D46EDB /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E0D3B186156941F80B49FD /* Environment.swift */; };
-		45B390C679830DB2E24791EB /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F50951E33B7CF50B49D0A09 /* Response.swift */; };
-		73411BDEA0BF03C7CDE0B91F /* Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50035C6563B504C87FD60E15 /* Encoder.swift */; };
-		853D543D32E2F7BF1D348BAF /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB87B8ACEC2514948E234F6 /* RequestBuilder.swift */; };
-		88D8104E4D8F7BF9C7B26AC4 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998CB59B4E0E422E2EBB39FF /* ApiClient.swift */; };
-		8BE04C248EA45756986E4540 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D17E04324F1D6F39E40AC /* Request.swift */; };
+		1C078EDBB3E45357DCA0B642 /* NetworkInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D441AFBDA9734C9E1559A54A /* NetworkInterceptor.swift */; };
+		7A44FABDFA0407F43B7F7C58 /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB87B8ACEC2514948E234F6 /* RequestBuilder.swift */; };
+		904DBDDDE747B9E21F789509 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998CB59B4E0E422E2EBB39FF /* ApiClient.swift */; };
+		AAAAD901B263B15187DE8B27 /* AppNetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE4A363A34008F28BF45AA1 /* AppNetworkError.swift */; };
+		BC8F4DAC1D002F6D6EAB9FF5 /* Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50035C6563B504C87FD60E15 /* Encoder.swift */; };
+		D77B88C1F0AAA330F46E554C /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E0D3B186156941F80B49FD /* Environment.swift */; };
+		E3A304423FF180CB5D86ADDC /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D17E04324F1D6F39E40AC /* Request.swift */; };
+		F99461AC79E7BC1C609AE4AC /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F50951E33B7CF50B49D0A09 /* Response.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		075D17E04324F1D6F39E40AC /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		1BE4A363A34008F28BF45AA1 /* AppNetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetworkError.swift; sourceTree = "<group>"; };
+		4AB22D5290EA3B6898B01D3D /* LTNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LTNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50035C6563B504C87FD60E15 /* Encoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encoder.swift; sourceTree = "<group>"; };
-		707B49C2FD103E33218BD633 /* Network.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Network.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BB87B8ACEC2514948E234F6 /* RequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
 		8F50951E33B7CF50B49D0A09 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		998CB59B4E0E422E2EBB39FF /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
@@ -60,7 +60,7 @@
 		B02A4899222D2A1DA3F4A4FA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				707B49C2FD103E33218BD633 /* Network.framework */,
+				4AB22D5290EA3B6898B01D3D /* LTNetwork.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -80,21 +80,21 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A1AEBE67F28FC7607B2C411E /* Network */ = {
+		4414A70CCF65582EB1EB4AC0 /* LTNetwork */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AAE8D133E507755E98BE4D27 /* Build configuration list for PBXNativeTarget "Network" */;
+			buildConfigurationList = 5C494997AFFEFC0A92B8B67D /* Build configuration list for PBXNativeTarget "LTNetwork" */;
 			buildPhases = (
-				172C8586A0850CD6189763C2 /* Sources */,
+				4AB9E26746BF6520BF3C002B /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = Network;
+			name = LTNetwork;
 			packageProductDependencies = (
 			);
-			productName = Network;
-			productReference = 707B49C2FD103E33218BD633 /* Network.framework */;
+			productName = LTNetwork;
+			productReference = 4AB22D5290EA3B6898B01D3D /* LTNetwork.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -104,7 +104,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1600;
 			};
 			buildConfigurationList = EB691E6AAD04B88F092CB587 /* Build configuration list for PBXProject "Network" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -120,31 +120,31 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A1AEBE67F28FC7607B2C411E /* Network */,
+				4414A70CCF65582EB1EB4AC0 /* LTNetwork */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		172C8586A0850CD6189763C2 /* Sources */ = {
+		4AB9E26746BF6520BF3C002B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88D8104E4D8F7BF9C7B26AC4 /* ApiClient.swift in Sources */,
-				18797EB3BE3C7C47A8C1081C /* AppNetworkError.swift in Sources */,
-				73411BDEA0BF03C7CDE0B91F /* Encoder.swift in Sources */,
-				29BDE8A5867CCDD1E1D46EDB /* Environment.swift in Sources */,
-				258BBC44F5A6F8B6120AF64A /* NetworkInterceptor.swift in Sources */,
-				8BE04C248EA45756986E4540 /* Request.swift in Sources */,
-				853D543D32E2F7BF1D348BAF /* RequestBuilder.swift in Sources */,
-				45B390C679830DB2E24791EB /* Response.swift in Sources */,
+				904DBDDDE747B9E21F789509 /* ApiClient.swift in Sources */,
+				AAAAD901B263B15187DE8B27 /* AppNetworkError.swift in Sources */,
+				BC8F4DAC1D002F6D6EAB9FF5 /* Encoder.swift in Sources */,
+				D77B88C1F0AAA330F46E554C /* Environment.swift in Sources */,
+				1C078EDBB3E45357DCA0B642 /* NetworkInterceptor.swift in Sources */,
+				E3A304423FF180CB5D86ADDC /* Request.swift in Sources */,
+				7A44FABDFA0407F43B7F7C58 /* RequestBuilder.swift in Sources */,
+				F99461AC79E7BC1C609AE4AC /* Response.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		04F3E82E7E9FD1D398CED439 /* Debug */ = {
+		3A89F96220B45137E67A75E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
@@ -154,6 +154,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONE_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -167,7 +168,7 @@
 			};
 			name = Debug;
 		};
-		C0FC0233689340BAEE7828EF /* Release */ = {
+		84DDEC37BFA9015926255DFA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
@@ -177,6 +178,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONE_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -242,6 +244,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -299,6 +302,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -312,11 +316,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AAE8D133E507755E98BE4D27 /* Build configuration list for PBXNativeTarget "Network" */ = {
+		5C494997AFFEFC0A92B8B67D /* Build configuration list for PBXNativeTarget "LTNetwork" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				04F3E82E7E9FD1D398CED439 /* Debug */,
-				C0FC0233689340BAEE7828EF /* Release */,
+				3A89F96220B45137E67A75E5 /* Debug */,
+				84DDEC37BFA9015926255DFA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import LTNetwork
 
 @MainActor
 final class AppCoordinator: ObservableObject, @unchecked Sendable {

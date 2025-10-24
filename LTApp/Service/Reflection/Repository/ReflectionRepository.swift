@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import LTNetwork
 
 public protocol ReflectionRepositoryType {
     func fetchOnboardingSentence() async throws -> OnboardingSentence

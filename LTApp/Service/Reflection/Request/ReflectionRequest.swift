@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import LTNetwork
 
 enum ReflectionRequest: Request {
     case onboardingSentences

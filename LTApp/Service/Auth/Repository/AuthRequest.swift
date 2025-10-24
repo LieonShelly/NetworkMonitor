@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import LTNetwork
 
 enum AuthRequest: Request {
     case login(authorizationCode: String, identityToken: String)

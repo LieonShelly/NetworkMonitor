@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import LTNetwork
 
 public protocol AuthRepositoryType {
     func login(authorizationCode: String, identityToken: String) async throws -> User

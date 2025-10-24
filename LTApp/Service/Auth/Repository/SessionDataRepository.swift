@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import LTNetwork
 
 public protocol SessionDataRepositoryType {
     func refreshToken() async throws
