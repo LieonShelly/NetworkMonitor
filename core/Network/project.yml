@@ -1,0 +1,33 @@
+---
+include: 
+  - ../../fastlane/project/settings.yml
+
+name: Network
+
+settings:
+  groups:
+    - BaseProjectSetting
+  GENERATE_INFOPLIST_FILE: true
+
+targets:
+  LTNetwork:
+    type: framework
+    platform: iOS
+    sources:
+      - Source
+    settings:
+      base:
+        SWIFT_VERSION: 6.0
+        PRODUCT_BUNDLE_IDENTIFIER: com.little.things.network
+        IPHONE_DEPLOYMENT_TARGET: 18.0
+shemes:
+  LTNetwork:
+    templates:
+      - DefaultSchemeTemplate
+    templateArributes:
+      testTargetName: LTNetwork
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true
+        IPHONEOS_DEPLOYMENT_TARGET: 18.0
+        ENABLE_USER_SCRIPT_SANDBOXING: false
