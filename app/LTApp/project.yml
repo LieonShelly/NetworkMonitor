@@ -13,18 +13,13 @@ targets:
   type: application
   platform: iOS
   sources:
-    - path: ../../LTApp
+    - path: LTApp/Source
+    - path: LTApp/Resource
   dependencies:
     - framework: LTNetwork.framework
       implicit: true
-
-  resources:
-    - ../../LTApp/Assets.xcassets
-    - ../../LTApp/Core/UIComponent/Color/Colors.xcassets
-    - ../../LTApp/Core/UIComponent/Font/Resources/**
-    - ../../LTApp/Core/UIComponent/Images.bundle
   info:
-    path: ../../LTApp/Info.plist
+    path: LTApp/Resource/Info.plist
     properties:
       ITSAppUsesNonExemptEncryption: NO
       UILaunchStoryboardName: LaunchScreen
@@ -36,7 +31,7 @@ targets:
       DEVELOPMENT_TEAM: R7S4TKW9JF
       PRODUCT_BUNDLE_IDENTIFIER: com.little.things
       CODE_SIGN_STYLE: Manual
-      CODE_SIGN_ENTITLEMENTS: ../../LTApp/LTApp.entitlements
+      CODE_SIGN_ENTITLEMENTS: LTApp/Resource/LTApp.entitlements
     configs:
       debug:
         CODE_SIGN_IDENTITY: "iPhone Developer: Tianwei LIU (MU9J2K22B8)"
