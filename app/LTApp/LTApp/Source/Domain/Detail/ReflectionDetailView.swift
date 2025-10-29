@@ -3,6 +3,8 @@
 //
 
 import SwiftUI
+import UIComponent
+
 
 struct ReflectionDetailView: View {
     @StateObject var viewModel: ReflectionDetailViewModel

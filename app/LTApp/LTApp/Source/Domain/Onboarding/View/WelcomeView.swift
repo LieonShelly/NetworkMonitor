@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import UIComponent
 
 struct WelcomeView: View {
     enum CurrentPage {

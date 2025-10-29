@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import UIComponent
 
 extension View {
     func defaultNavigationBar(_ title: String, backBtnAction: (() -> Void)? = nil) -> some View {

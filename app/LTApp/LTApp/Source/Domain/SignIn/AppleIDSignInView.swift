@@ -4,6 +4,8 @@
 
 import SwiftUI
 import AuthenticationServices
+import UIComponent
+
 
 struct AppleIDSignInView: View {
     @EnvironmentObject var coordinator: PreHomeCoordinator

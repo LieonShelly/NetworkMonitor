@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import UIComponent
 
 struct QuestionRow: View {
     let text: String

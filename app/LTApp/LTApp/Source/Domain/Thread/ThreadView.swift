@@ -3,6 +3,8 @@
 //
 
 import SwiftUI
+import UIComponent
+
 
 struct ThreadView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator

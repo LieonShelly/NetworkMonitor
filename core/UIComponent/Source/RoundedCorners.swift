@@ -11,21 +11,31 @@ public extension View {
     }
 }
 
-struct RoundedCorners: ViewModifier {
+public struct RoundedCorners: ViewModifier {
     var radius: CGFloat
     var corners: UIRectCorner
+    
+    public init(radius: CGFloat, corners: UIRectCorner) {
+        self.radius = radius
+        self.corners = corners
+    }
 
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .clipShape(RoundedRectangleWithCorners(radius: radius, corners: corners))
     }
 }
 
-struct RoundedRectangleWithCorners: Shape {
+public struct RoundedRectangleWithCorners: Shape {
     var radius: CGFloat
     var corners: UIRectCorner
 
-    func path(in rect: CGRect) -> Path {
+    public init(radius: CGFloat, corners: UIRectCorner) {
+        self.radius = radius
+        self.corners = corners
+    }
+    
+    public  func path(in rect: CGRect) -> Path {
         let path = UIBezierPath(
             roundedRect: rect,
             byRoundingCorners: corners,

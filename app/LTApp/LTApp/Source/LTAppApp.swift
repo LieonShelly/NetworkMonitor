@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import UIComponent
 
 @main
 struct LTAppApp: App {

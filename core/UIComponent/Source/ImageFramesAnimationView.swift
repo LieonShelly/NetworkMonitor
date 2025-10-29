@@ -32,12 +32,12 @@ public struct ImageFramesAnimationView: View {
 }
 
 public struct FramesAnimationData : Sendable {
-    let frames: [String]
-    let bundle: Bundle
-    let duration: CGFloat
-    let frameSize: CGSize
+    public let frames: [String]
+    public let bundle: Bundle
+    public let duration: CGFloat
+    public let frameSize: CGSize
     
-    var lastFrame: UIImage? {
+    public var lastFrame: UIImage? {
         if let last = frames.last,
            let imagePath = bundle.path(forResource: last, ofType: "png"),
            let uiImage = UIImage(contentsOfFile: imagePath) {

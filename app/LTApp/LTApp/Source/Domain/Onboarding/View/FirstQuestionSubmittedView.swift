@@ -3,6 +3,8 @@
 //
 
 import SwiftUI
+import UIComponent
+
 
 struct FirstQuestionSubmittedData {
     let category: String

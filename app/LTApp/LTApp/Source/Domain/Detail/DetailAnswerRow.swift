@@ -3,6 +3,8 @@
 //
 
 import SwiftUI
+import UIComponent
+
 
 struct DetailAnswerRow: View {
     let answer: Answer

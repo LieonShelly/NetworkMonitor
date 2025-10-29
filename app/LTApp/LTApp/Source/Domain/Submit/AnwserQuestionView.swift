@@ -3,6 +3,7 @@
 //
 
 import SwiftUI
+import UIComponent
 
 struct AnwserQuestionView: View {
     @EnvironmentObject var coordinaor: HomeCoordinator

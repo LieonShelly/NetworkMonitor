@@ -8,6 +8,11 @@ public struct WavyLine: Shape {
     let segmentCount: Int
     let seed: Int
     
+    public init(segmentCount: Int, seed: Int) {
+        self.segmentCount = segmentCount
+        self.seed = seed
+    }
+    
     public func path(in rect: CGRect) -> Path {
         var path = Path()
         var random = SeededGenerator(seed: seed)

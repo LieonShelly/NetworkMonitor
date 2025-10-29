@@ -3,6 +3,8 @@
 //
 
 import SwiftUI
+import UIComponent
+
 
 struct AnswerInputView: View {
     @Binding var text: String

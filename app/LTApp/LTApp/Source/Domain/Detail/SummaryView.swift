@@ -3,6 +3,8 @@
 //
 
 import SwiftUI
+import UIComponent
+
 
 struct SummaryView: View {
     let summary: ReflectionSummary

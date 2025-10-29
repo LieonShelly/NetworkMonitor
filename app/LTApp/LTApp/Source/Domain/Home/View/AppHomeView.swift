@@ -2,6 +2,8 @@
 //  LTApp, This code is protected by intellectual property rights.
 //
 import SwiftUI
+import UIComponent
+
 
 struct AppHomeView: View {
     @StateObject var viewModel: AppHomeViewModel
