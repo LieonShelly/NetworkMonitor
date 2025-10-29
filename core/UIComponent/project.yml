@@ -1,0 +1,25 @@
+---
+include: 
+  - ../../fastlane/project/settings.yml
+
+name: UIComponent
+
+settings:
+  groups:
+    - BaseProjectSetting
+
+targets:
+  UIComponent:
+    type: framework
+    platform: iOS
+    sources:
+      - Source
+    settings:
+      groups:
+        - BaseTargetSetting
+shemes:
+  UIComponent:
+    templates:
+      - DefaultSchemeTemplate
+    templateArributes:
+      testTargetName: UIComponent
