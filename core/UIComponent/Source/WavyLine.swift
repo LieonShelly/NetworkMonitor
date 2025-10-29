@@ -4,11 +4,11 @@
 
 import SwiftUI
 
-struct WavyLine: Shape {
+public struct WavyLine: Shape {
     let segmentCount: Int
     let seed: Int
     
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         var path = Path()
         var random = SeededGenerator(seed: seed)
         
@@ -41,14 +41,14 @@ struct WavyLine: Shape {
     }
 }
 
-struct SeededGenerator: RandomNumberGenerator {
+public struct SeededGenerator: RandomNumberGenerator {
     private var state: UInt64
 
     init(seed: Int) {
         self.state = UInt64(seed)
     }
 
-    mutating func next() -> UInt64 {
+    mutating public func next() -> UInt64 {
         state = 6364136223846793005 &* state &+ 1
         return state
     }

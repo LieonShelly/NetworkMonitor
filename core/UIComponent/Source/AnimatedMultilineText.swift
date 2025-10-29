@@ -4,7 +4,7 @@
 
 import SwiftUI
 
-struct AnimatedMultilineText: View {
+public struct AnimatedMultilineText: View {
     let text: String
     let font: UIFont
     var textColor: Color = AppColor.textPrimary
@@ -16,7 +16,7 @@ struct AnimatedMultilineText: View {
   
     @State private var visibleLines = 0
     
-    init(text: String, font: UIFont, width: CGFloat, animationCompleted: @escaping (() -> Void) = {}) {
+    public init(text: String, font: UIFont, width: CGFloat, animationCompleted: @escaping (() -> Void) = {}) {
         self.text = text
         self.font = font
         self.width = width
@@ -24,7 +24,7 @@ struct AnimatedMultilineText: View {
         self.lines = breakTextIntoLines(text, font: font, width: width)
     }
     
-    var body: some View {
+    public var body: some View {
         VStack(spacing: .zero) {
             ForEach(Array(lines.enumerated()), id: \.offset) { index, line in
                 HStack(spacing: .zero) {

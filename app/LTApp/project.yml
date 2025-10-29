@@ -20,6 +20,8 @@ targets:
       implicit: true
     - framework: Persistence.framework
       implicit: true
+    - framework: UIComponent.framework
+      implicit: true
   info:
     path: LTApp/Resource/Info.plist
     properties:

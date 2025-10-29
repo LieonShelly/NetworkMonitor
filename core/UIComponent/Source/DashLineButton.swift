@@ -4,12 +4,18 @@
 
 import SwiftUI
 
-struct DashLineButton: View {
+public struct DashLineButton: View {
     let text: String
     let isSelected: Bool
     let onTap: (() -> Void)
     
-    var body: some View {
+    public init(text: String, isSelected: Bool, onTap: @escaping () -> Void) {
+        self.text = text
+        self.isSelected = isSelected
+        self.onTap = onTap
+    }
+    
+    public var body: some View {
         VStack {
             if isSelected {
                 RoundedRectangle(cornerRadius: 24)

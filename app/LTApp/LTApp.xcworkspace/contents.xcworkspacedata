@@ -13,6 +13,8 @@
       <FileRef
          location = "group:../../core/Persistence/Persistence.xcodeproj">
       </FileRef>
-      
+       <FileRef
+         location = "group:../../core/UIComponent/UIComponent.xcodeproj">
+      </FileRef>
    </Group>
 </Workspace>

@@ -4,12 +4,18 @@
 
 import SwiftUI
 
-struct AppButton: View {
+public struct AppButton: View {
     let isEnabled: Bool
     let title: String
     let onTap: () -> Void
     
-    var body: some View {
+    public init(isEnabled: Bool, title: String, onTap: @escaping () -> Void) {
+        self.isEnabled = isEnabled
+        self.title = title
+        self.onTap = onTap
+    }
+    
+    public var body: some View {
         Button(action: onTap) {
             RoundedRectangle(cornerRadius: 12)
                 .fill(!isEnabled ? AppColor.color(hex: 0xD9D9D9) : AppColor.textPrimary)
@@ -25,19 +31,19 @@ struct AppButton: View {
 }
 
 
-struct DefaultAppButton: View {
+public struct DefaultAppButton: View {
     let isEnabled: Bool
     let title: String
     let onTap: () -> Void
     
     
-    init(isEnabled: Bool = true, title: String, onTap: @escaping () -> Void) {
+    public init(isEnabled: Bool = true, title: String, onTap: @escaping () -> Void) {
         self.isEnabled = isEnabled
         self.title = title
         self.onTap = onTap
     }
     
-    var body: some View {
+    public var body: some View {
         AppButton(isEnabled: isEnabled, title: title, onTap: onTap)
             .frame(height: 62)
     }

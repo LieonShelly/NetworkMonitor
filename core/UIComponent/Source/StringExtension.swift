@@ -4,7 +4,7 @@
 
 import UIKit
 
-extension String {
+public extension String {
     func height(font: UIFont, containerW: CGFloat) -> CGFloat {
         let attributeText = NSMutableAttributedString(string: self)
         let paragraphStyle = NSMutableParagraphStyle()

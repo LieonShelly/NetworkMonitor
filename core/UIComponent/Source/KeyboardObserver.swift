@@ -5,15 +5,15 @@
 import Combine
 import UIKit
 
-final class KeyboardObserver: ObservableObject {
-    @Published var keyboardHeight: CGFloat = 0
-    var keyboardShown: Bool {
+public final class KeyboardObserver: ObservableObject {
+    @Published public var keyboardHeight: CGFloat = 0
+    public var keyboardShown: Bool {
         return keyboardHeight > 0
     }
     
     private var cancellables: Set<AnyCancellable> = .init()
     
-    init() {
+    public init() {
         let willShow = NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
             .compactMap { $0.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect }
             .map { $0.height }

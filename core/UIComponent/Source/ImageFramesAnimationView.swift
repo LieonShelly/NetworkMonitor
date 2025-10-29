@@ -4,10 +4,14 @@
 
 import SwiftUI
 
-struct ImageFramesAnimationView: View {
+public struct ImageFramesAnimationView: View {
     let aniamationData: FramesAnimationData
     
-    var body: some View {
+    public init(aniamationData: FramesAnimationData) {
+        self.aniamationData = aniamationData
+    }
+    
+    public var body: some View {
         PhaseAnimator(0 ..< aniamationData.frames.count) { phase in
             if let imagePath = aniamationData.bundle.path(forResource: aniamationData.frames[phase], ofType: "png"),
                let uiImage = UIImage(contentsOfFile: imagePath) {
@@ -27,7 +31,7 @@ struct ImageFramesAnimationView: View {
     }
 }
 
-struct FramesAnimationData {
+public struct FramesAnimationData : Sendable {
     let frames: [String]
     let bundle: Bundle
     let duration: CGFloat
@@ -43,7 +47,7 @@ struct FramesAnimationData {
     }
 }
 
-extension FramesAnimationData {
+public extension FramesAnimationData {
     static var imageBundle: Bundle {
         if let path = Bundle.main.path(forResource: "Images.bundle", ofType: nil) {
             return Bundle(path: path) ?? .main

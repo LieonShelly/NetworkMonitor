@@ -3,11 +3,9 @@
 //
 
 
-
-
 import SwiftUI
 
-extension View {
+public extension View {
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         self.modifier(RoundedCorners(radius: radius, corners: corners))
     }
