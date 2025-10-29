@@ -4,6 +4,7 @@
 
 import Foundation
 import Combine
+import Persistence
 
 class SessionService: ObservableObject, TokenProvider, @unchecked Sendable {
     @Published private(set) var accessToken: String? = nil

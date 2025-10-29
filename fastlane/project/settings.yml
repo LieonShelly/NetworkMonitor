@@ -13,6 +13,11 @@ options:
 settingGroups:
   BaseProjectSetting:
     CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: true
+  BaseTargetSetting:
+    base:
+      GENERATE_INFOPLIST_FILE: true
+      SWIFT_VERSION: 6.0
+      IPHONE_DEPLOYMENT_TARGET: 18.0
 
 SchemeTemplates:
   DefaultSchemeTemplate:
@@ -32,4 +37,3 @@ SchemeTemplates:
       region: US
       coverageTargets:
         - name: "${testTargetName}"
-

@@ -4,6 +4,7 @@
 
 import SwiftUI
 import LTNetwork
+import Persistence
 
 @MainActor
 final class AppCoordinator: ObservableObject, @unchecked Sendable {

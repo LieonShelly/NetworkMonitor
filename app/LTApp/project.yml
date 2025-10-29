@@ -18,6 +18,8 @@ targets:
   dependencies:
     - framework: LTNetwork.framework
       implicit: true
+    - framework: Persistence.framework
+      implicit: true
   info:
     path: LTApp/Resource/Info.plist
     properties:

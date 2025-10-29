@@ -2,14 +2,14 @@
 include: 
   - ../../fastlane/project/settings.yml
 
-name: Network
+name: Persistence
 
 settings:
   groups:
     - BaseProjectSetting
 
 targets:
-  LTNetwork:
+  Persistence:
     type: framework
     platform: iOS
     sources:
@@ -18,8 +18,8 @@ targets:
       groups:
         - BaseTargetSetting
 shemes:
-  LTNetwork:
+  Persistence:
     templates:
       - DefaultSchemeTemplate
     templateArributes:
-      testTargetName: LTNetwork
+      testTargetName: Persistence
