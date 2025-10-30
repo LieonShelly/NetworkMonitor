@@ -10,27 +10,23 @@ class AppHomeViewModel: ObservableObject {
      var tabbarViewModel = AppTabbarViewModel(
         items: [
         .init(
-            icon: Image(.calendar),
-              normalColor: .white,
-            selectedColor: .red,
+            selectedIcon: Image(.calendar),
+            deselectedIcon: Image(.deselectedCalendar),
             selectedOpacity: 0
         ),
         .init(
-            icon: Image(.threads),
-            normalColor: .white,
-            selectedColor: .red,
+            selectedIcon: Image(.threads),
+            deselectedIcon: Image(.deselectedThread),
             selectedOpacity: 0
         ),
         .init(
-            icon: Image(.calendar),
-            normalColor: .white,
-            selectedColor: .red,
+            selectedIcon: Image(.insights),
+            deselectedIcon: Image(.deselectedInsights),
             selectedOpacity: 0
         ),
         .init(
-            icon: Image(.threads),
-            normalColor: .white,
-            selectedColor: .red,
+            selectedIcon: Image(.user),
+            deselectedIcon: Image(.deselectedUser),
             selectedOpacity: 0
         )
     ])

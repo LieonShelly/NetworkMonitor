@@ -23,9 +23,8 @@ class AppTabbarViewModel: ObservableObject {
         let newItems = items.map {
             AppTabbarItem(
                 id: $0.id,
-                icon: $0.icon,
-                normalColor: $0.normalColor,
-                selectedColor: $0.selectedColor,
+                selectedIcon: $0.selectedIcon,
+                deselectedIcon: $0.deselectedIcon,
                 selectedOpacity: 0
             )}
         items = newItems
@@ -34,7 +33,6 @@ class AppTabbarViewModel: ObservableObject {
         if needNotify {
             didTap?(index)
         }
-        print("updateOpacity - selectedIndex - didTapTabrItem: \(selectedIndex)")
     }
     
     func updateOpacity(_ value: CGFloat, isToRight: Bool) {

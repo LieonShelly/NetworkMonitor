@@ -14,10 +14,7 @@ struct AppTabbar: View {
             ForEach(0 ..< viewModel.items.count, id: \.self) { index in
                 let item = viewModel.items[index]
                 AppTabbarView(
-                    icon: item.icon,
-                    normalColor: item.normalColor,
-                    selectedColor: item.selectedColor,
-                    selectedOpacity: item.selectedOpacity,
+                    item: item,
                     action: {
                         viewModel.didTapTabrItem(item)
                     }
