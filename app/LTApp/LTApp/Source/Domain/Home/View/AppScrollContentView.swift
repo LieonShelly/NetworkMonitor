@@ -17,10 +17,9 @@ struct AppScrollContentView: View {
                     ThreadView(viewModel: viewModel.threadViewModel)
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(1)
-                    ThreadView(viewModel: viewModel.threadViewModel)
-                        .frame(width: proxy.size.width, height: proxy.size.height)
+                    InsightsView()                        .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(2)
-                    CalendarView(viewModel: viewModel.calendarViewModel)
+                    UserHomeView()
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(3)
                 }

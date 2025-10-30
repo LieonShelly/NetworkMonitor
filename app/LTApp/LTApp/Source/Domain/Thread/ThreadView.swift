@@ -139,7 +139,7 @@ struct ThreadView: View {
             }
             Spacer()
             Text("The Little Things")
-                .textStyle(size: 36)
+                .textStyle(size: 32)
             Spacer()
 
         }
