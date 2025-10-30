@@ -32,11 +32,10 @@ class AppScrollContentViewModel: ObservableObject {
         let isToRight = scrollProgress > preProgress
         didScroll?(scrollProgress, isToRight)
         preProgress = scrollProgress
-      
     }
     
     func updateSelectedIndex() {
-        didEndScroll?(Int(preProgress))
+        didEndScroll?(Int(preProgress.rounded()))
     }
     
     private func updateProgress(_ value: CGFloat) {

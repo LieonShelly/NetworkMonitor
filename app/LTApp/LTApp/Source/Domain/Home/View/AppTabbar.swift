@@ -10,7 +10,7 @@ struct AppTabbar: View {
     @ObservedObject var viewModel: AppTabbarViewModel
     
     var body: some View {
-        HStack(spacing: .zero) {
+        HStack(spacing: 24) {
             ForEach(0 ..< viewModel.items.count, id: \.self) { index in
                 let item = viewModel.items[index]
                 AppTabbarView(
@@ -23,19 +23,13 @@ struct AppTabbar: View {
                     }
                 )
                 .frame(width: 40, height: 40)
-                if index != viewModel.items.count - 1 {
-                    Spacer()
-                }
             }
-            .padding(.horizontal, 24)
         }
-        .frame(height: 64)
+        .padding(.horizontal, 42)
+        .padding(.vertical, 16)
         .background(
             background
         )
-        .overlay(alignment: .top) {
-            addBtn
-        }
     }
     
     var addBtn: some View {
@@ -49,7 +43,7 @@ struct AppTabbar: View {
     }
     
     var background: some View {
-        RoundedRectangle(cornerRadius: 12)
+        RoundedRectangle(cornerRadius: 32)
             .fill(Color.black)
             .frame(height: 64)
     }

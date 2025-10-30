@@ -20,6 +20,18 @@ class AppHomeViewModel: ObservableObject {
             normalColor: .white,
             selectedColor: .red,
             selectedOpacity: 0
+        ),
+        .init(
+            icon: Image(.calendar),
+            normalColor: .white,
+            selectedColor: .red,
+            selectedOpacity: 0
+        ),
+        .init(
+            icon: Image(.threads),
+            normalColor: .white,
+            selectedColor: .red,
+            selectedOpacity: 0
         )
     ])
     let contentViewModel: AppScrollContentViewModel
@@ -33,10 +45,12 @@ class AppHomeViewModel: ObservableObject {
         
         contentViewModel.didScroll = { [weak self] progress, isToRight in
             guard let self else { return }
+            print("AppHomeViewModel-progress:\(progress)")
             self.tabbarViewModel.updateOpacity(progress, isToRight: isToRight)
         }
         contentViewModel.didEndScroll = { [weak self] index in
             guard let self else { return }
+            print("AppHomeViewModel-didEndScroll:\(index)")
             self.tabbarViewModel.updateSelectedIndex(index)
         }
         tabbarViewModel.didTap = { [weak self] index in

@@ -34,11 +34,13 @@ class AppTabbarViewModel: ObservableObject {
         if needNotify {
             didTap?(index)
         }
+        print("updateOpacity - selectedIndex - didTapTabrItem: \(selectedIndex)")
     }
     
     func updateOpacity(_ value: CGFloat, isToRight: Bool) {
-        let value = min(1, max(value, 0))
+        print("updateOpacity - selectedIndex:\(selectedIndex)")
         if isToRight {
+            let value = Math.normalize(value: value, lowerBound: CGFloat(selectedIndex), upperBound: CGFloat(selectedIndex) + 1.0)
             let currentIndex = selectedIndex
             let destIndex = currentIndex + 1
             guard destIndex < items.count else { return }
@@ -50,6 +52,7 @@ class AppTabbarViewModel: ObservableObject {
             items[currentIndex] = cureentItem
             items[destIndex] = destItem
         } else {
+            let value = Math.normalize(value: value, lowerBound: CGFloat(selectedIndex - 1), upperBound: CGFloat(selectedIndex))
             let currentIndex = selectedIndex
             let destIndex = currentIndex - 1
             guard destIndex >= 0 else { return }
@@ -64,9 +67,18 @@ class AppTabbarViewModel: ObservableObject {
     }
     
     func updateSelectedIndex(_ index: Int) {
+        print("updateOpacity - selectedIndex - final:\(index)")
         guard index < items.count else { return }
         selectedIndex = index
         let item = items[selectedIndex]
         didTapTabrItem(item, needNotify: false)
+    }
+}
+
+
+struct Math {
+    static func normalize(value: CGFloat, lowerBound: CGFloat, upperBound: CGFloat) -> CGFloat {
+        guard upperBound != lowerBound else { return 0 }
+        return (value - lowerBound) / (upperBound - lowerBound)
     }
 }
