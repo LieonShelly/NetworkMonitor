@@ -4,14 +4,16 @@ options:
   minimumXcodeGenVersion: "2.44.1"
   bundleIdPrefix: com.little.things
   deploymentTarget: 
-    iOS: "18.0"
+    iOS: 18.0
     defaultConfig: Debug
  
 
 targets:
  LTApp:
   type: application
-  platform: iOS
+  supportedDestinations: [iOS]
+  deploymentTarget:
+    iOS: 9.0
   sources:
     - path: LTApp/Source
     - path: LTApp/Resource
@@ -22,11 +24,6 @@ targets:
       implicit: true
     - framework: UIComponent.framework
       implicit: true
-  info:
-    path: LTApp/Resource/Info.plist
-    properties:
-      ITSAppUsesNonExemptEncryption: NO
-      UILaunchStoryboardName: LaunchScreen
   settings:
     base:
       PRODUCT_NAME: LTApp
@@ -36,6 +33,7 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.little.things
       CODE_SIGN_STYLE: Manual
       CODE_SIGN_ENTITLEMENTS: LTApp/Resource/LTApp.entitlements
+      INFOPLIST_FILE: LTApp/Resource/Info.plist
     configs:
       debug:
         CODE_SIGN_IDENTITY: "iPhone Developer: Tianwei LIU (MU9J2K22B8)"
