@@ -49,7 +49,7 @@ public struct FramesAnimationData : Sendable {
 
 public extension FramesAnimationData {
     static var imageBundle: Bundle {
-        if let path = Bundle.main.path(forResource: "Images.bundle", ofType: nil) {
+        if let path = UIComponentModule.bundle.path(forResource: "Images.bundle", ofType: nil) {
             return Bundle(path: path) ?? .main
         }
         return .main

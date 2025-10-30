@@ -15,21 +15,25 @@ struct AppHomeView: View {
     }
     
     var body: some View {
-        VStack {
-            if showPage {
-                VStack(spacing: .zero) {
-                    AppScrollContentView(viewModel: viewModel.contentViewModel)
-                    
-                    AppTabbar(viewModel: viewModel.tabbarViewModel)
-                        .padding(.horizontal, 50)
-                        .padding(.top, 10)
+        GeometryReader { proxy in
+            VStack {
+                if showPage {
+                    VStack(spacing: .zero) {
+                        AppScrollContentView(viewModel: viewModel.contentViewModel)
+                        
+                        AppTabbar(viewModel: viewModel.tabbarViewModel)
+                            .padding(.horizontal, 50)
+                            .padding(.top, 10)
+                    }
+                    .toolbarVisibility(.hidden, for: .navigationBar)
+                    .transition(.opacity)
                 }
-                .toolbarVisibility(.hidden, for: .navigationBar)
-                .transition(.opacity)
             }
+            .frame(width: proxy.size.width)
+            .toolbarVisibility(.hidden, for: .navigationBar)
+            .defaultBackground()
         }
-        .toolbarVisibility(.hidden, for: .navigationBar)
-        .defaultBackground()
+      
         .task {
             withAnimation(.easeInOut) {
                 showPage = true
