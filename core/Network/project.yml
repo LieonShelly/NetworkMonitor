@@ -17,6 +17,8 @@ targets:
     settings:
       groups:
         - BaseTargetSetting
+    info:
+      path: Source/Info.plist
 shemes:
   LTNetwork:
     templates:

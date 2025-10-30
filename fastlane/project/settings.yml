@@ -15,9 +15,10 @@ settingGroups:
     CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: true
   BaseTargetSetting:
     base:
-      GENERATE_INFOPLIST_FILE: true
+      INFOPLIST_FILE: Source/Info.plist
       SWIFT_VERSION: 6.0
       IPHONE_DEPLOYMENT_TARGET: 18.0
+      
 
 SchemeTemplates:
   DefaultSchemeTemplate:
