@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct UserRowItem: Identifiable {
     let id: UUID = UUID()
