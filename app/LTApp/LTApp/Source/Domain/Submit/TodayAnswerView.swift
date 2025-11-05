@@ -8,8 +8,10 @@ import UIComponent
 struct TodayAnswerView: View {
     var body: some View {
         ZStack {
-            ForEach(0 ..< 3, id: \.self) { _ in
+            ForEach(0 ..< 3, id: \.self) { index in
                 QuestionCardView()
+                    .zIndex(3 - Double(index))
+                    .rotationEffect(.degrees((2.0 ) * CGFloat(index)), anchor: .init(x: 0, y: 0.5))
             }
         }
         .padding(.horizontal, 10)
