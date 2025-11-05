@@ -7,6 +7,7 @@ import UIComponent
 
 struct AppHomeView: View {
     @StateObject var viewModel: AppHomeViewModel
+    @EnvironmentObject var homeCoordinator: HomeCoordinator
     
     @State var showPage: Bool = false
     
@@ -26,13 +27,13 @@ struct AppHomeView: View {
                                 .padding(.top, 10)
                                 
                             TodayQuestionView()
+                                .onTapGesture {
+                                    homeCoordinator.push(HomeRoute.addTodayAnswer)
+                                }
                                 .offset(y: -(40 + 16 * 2))
                                 .padding(.horizontal, 40)
                                 .padding(.bottom, 10)
-                               
                         }
-                        
-                       
                     }
                     .toolbarVisibility(.hidden, for: .navigationBar)
                     .transition(.opacity)
