@@ -20,10 +20,19 @@ struct AppHomeView: View {
                 if showPage {
                     VStack(spacing: .zero) {
                         AppScrollContentView(viewModel: viewModel.contentViewModel)
+                        ZStack(alignment: .bottom) {
+                            AppTabbar(viewModel: viewModel.tabbarViewModel)
+                                .padding(.horizontal, 50)
+                                .padding(.top, 10)
+                                
+                            TodayQuestionView()
+                                .offset(y: -(40 + 16 * 2))
+                                .padding(.horizontal, 40)
+                                .padding(.bottom, 10)
+                               
+                        }
                         
-                        AppTabbar(viewModel: viewModel.tabbarViewModel)
-                            .padding(.horizontal, 50)
-                            .padding(.top, 10)
+                       
                     }
                     .toolbarVisibility(.hidden, for: .navigationBar)
                     .transition(.opacity)
