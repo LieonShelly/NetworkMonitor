@@ -104,23 +104,28 @@ struct CalendarView: View {
                                             })
                                             .frame(width: 24, height: 24)
                                     }
-                                } else {
+                                } else if let reflections = day.reflections {
                                     Circle()
-                                        .fill(AppColor.color(hex: 0x000000))
-                                        .frame(width: 8, height: 8)
+                                        .fill(Color.clear)
+                                        .overlay(content: {
+                                            Image(.calendarDripper)
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                        })
+                                        .frame(width: 24, height: 24)
+                                } else if day.dayType == .today {
+                                    addBtn
+                                } else {
+                                    dot
                                 }
                             } else if day.date.isPreviousMonth(currentMonth) {
                                    Text("\(day.date.dayDesc())")
                                        .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
                             } else {
-                                Circle()
-                                    .fill(AppColor.color(hex: 0xCDCDCD))
-                                    .frame(width: 8, height: 8)
+                                dot
                             }
                         } else {
-                            Circle()
-                                .fill(AppColor.color(hex: 0xCDCDCD))
-                                .frame(width: 8, height: 8)
+                            dot
                         }
                     }
                     .id(day.id)
@@ -195,6 +200,37 @@ struct CalendarView: View {
         .padding(.top, 30)
         .padding(.bottom, 30)
         .animation(.easeInOut, value: viewModel.scrollPostion)
+    }
+    
+    
+    var addBtn: some View {
+        Button {
+            
+        } label: {
+            LinearGradient(
+                colors: [
+                    AppColor.color(hex: 0x040404),
+                    AppColor.color(hex: 0x656565)
+                ],
+                startPoint: .init(x: 0, y: 0),
+                endPoint: .init(x: 1, y: 0.7)
+            )
+            .cornerRadius(20, corners: .allCorners)
+            .blur(radius: 3)
+            .frame(width: 40, height: 40)
+            .overlay {
+                Image(.smallAdd)
+                    .resizable()
+                    .frame(width: 16, height: 16)
+            }
+        }
+       
+    }
+    
+    var dot: some View {
+        Circle()
+            .fill(AppColor.color(hex: 0xCDCDCD))
+            .frame(width: 8, height: 8)
     }
 }
 
