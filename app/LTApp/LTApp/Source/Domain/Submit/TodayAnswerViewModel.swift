@@ -10,6 +10,10 @@ import Combine
 
 final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var questions: [Question] = []
+    @MainActor @Published var answerText: String = ""
+    @MainActor @Published var createAt: Date?
+    var currentIndex: Int
+    
     let title: String
     private let service: any AppDataWithAuthorizationServiceful
     private let inputQuestions: [Question]
@@ -18,6 +22,7 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
         self.service = service
         self.inputQuestions = questions
         self.title = Date().monthDayDesc
+        self.currentIndex = max(questions.count - 1, 0)
     }
     
     func initializeData() async {
@@ -31,5 +36,22 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
         await MainActor.run {
             self.questions = questions
         }
+    }
+    
+    
+    func submit() async throws {
+        await MainActor.run {
+            createAt = Date()
+        }
+        guard let createAt = await createAt else { return }
+        let question = await questions[currentIndex]
+        
+        let _ = try await service.submitAnswerUseCase.execute(
+            .init(
+                questionId: question.id,
+                content: answerText,
+                createdAt: AppDateFormatter.ymdhsm.string(from: createAt)
+            )
+        )
     }
 }

@@ -7,18 +7,19 @@ import UIComponent
 
 struct TodayAnswerView: View {
     @StateObject var viewModel: TodayAnswerViewModel
-    @State var input: String = ""
     @EnvironmentObject var homeCoordinator: HomeCoordinator
-    
+   
     init(viewModel: TodayAnswerViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
     }
     
     var body: some View {
         ZStack(alignment: .top) {
-            NaviBar(titlte: "September 18") {
+            NaviBar(titlte: viewModel.title) {
                 homeCoordinator.pop()
-            }.zIndex(0)
+            }
+            .zIndex(0)
+            
             VStack(spacing: .zero) {
                 cardListView
                 refreshBtn
@@ -26,6 +27,10 @@ struct TodayAnswerView: View {
                 okBtn
             }
             .padding(.top, 44)
+            .contentShape(.rect)
+            .onTapGesture {
+                hideKeyboard()
+            }
         }
         .defaultBackground()
         .toolbarVisibility(.hidden, for: .navigationBar)
@@ -63,7 +68,7 @@ struct TodayAnswerView: View {
     
     var answerInputView: some View {
         AnswerInputView(
-            text: $input,
+            text: $viewModel.answerText,
             placeholder: "Write anything...."
         )
         .frame(maxHeight: .infinity)
@@ -74,7 +79,17 @@ struct TodayAnswerView: View {
     }
     
     var okBtn: some View {
-        AppButton(isEnabled: !input.isEmpty, title: "oK") {
+        AppButton(isEnabled: !viewModel.answerText.isEmpty, title: "oK") {
+            Task.detached {
+                do {
+                    try await viewModel.submit()
+                    await MainActor.run {
+                        homeCoordinator.pop()
+                    }
+                } catch {
+                    print(error)
+                }
+            }
         }
         .frame(height: 62)
         .padding(.horizontal, 24)
