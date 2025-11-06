@@ -44,5 +44,5 @@ struct QuestionCardView: View {
               .padding(.horizontal, 20)
 
     }
-    
+
 }

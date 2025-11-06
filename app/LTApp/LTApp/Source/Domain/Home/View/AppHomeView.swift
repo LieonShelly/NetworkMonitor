@@ -29,7 +29,7 @@ struct AppHomeView: View {
                             if let head = viewModel.todayQuestions.first {
                                 TodayQuestionView(question: head)
                                     .onTapGesture {
-                                        homeCoordinator.push(HomeRoute.addTodayAnswer(questions: viewModel.todayQuestions))
+                                        homeCoordinator.push(HomeRoute.addTodayAnswer(questions: viewModel.organize()))
                                     }
                                     .offset(y: -(40 + 16 * 2))
                                     .padding(.horizontal, 40)

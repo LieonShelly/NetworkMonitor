@@ -18,7 +18,7 @@ struct TodayAnswerView: View {
             NaviBar(titlte: viewModel.title) {
                 homeCoordinator.pop()
             }
-            .zIndex(0)
+            .zIndex(1)
             
             VStack(spacing: .zero) {
                 cardListView

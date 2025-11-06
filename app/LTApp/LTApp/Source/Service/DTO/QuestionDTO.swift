@@ -31,7 +31,8 @@ public extension QuestionDTO {
         return Question(
             id: id,
             title: title,
-            pinned: pinned ?? false
+            pinned: pinned ?? false,
+            category: category?.toDomain()
         )
     }
 }

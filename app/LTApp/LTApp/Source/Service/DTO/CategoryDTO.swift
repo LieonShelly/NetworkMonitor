@@ -18,9 +18,9 @@ struct CategoryDTO: Decodable {
     
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(String.self, forKey: .id)
+        self.id = try? container.decode(String.self, forKey: .id)
         self.name = try container.decode(String.self, forKey: .name)
-        self.questions = (try? container.decode([QuestionDTO].self, forKey: .questions)) ?? []
+        self.questions = (try? container.decode([QuestionDTO].self, forKey: .questions))
     }
 }
 

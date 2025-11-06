@@ -8,29 +8,29 @@ import SwiftUI
 final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
     @MainActor @Published var todayQuestions: [Question] = []
     
-     var tabbarViewModel = AppTabbarViewModel(
+    var tabbarViewModel = AppTabbarViewModel(
         items: [
-        .init(
-            selectedIcon: Image(.calendar),
-            deselectedIcon: Image(.deselectedCalendar),
-            selectedOpacity: 0
-        ),
-        .init(
-            selectedIcon: Image(.threads),
-            deselectedIcon: Image(.deselectedThread),
-            selectedOpacity: 0
-        ),
-        .init(
-            selectedIcon: Image(.insights),
-            deselectedIcon: Image(.deselectedInsights),
-            selectedOpacity: 0
-        ),
-        .init(
-            selectedIcon: Image(.user),
-            deselectedIcon: Image(.deselectedUser),
-            selectedOpacity: 0
-        )
-    ])
+            .init(
+                selectedIcon: Image(.calendar),
+                deselectedIcon: Image(.deselectedCalendar),
+                selectedOpacity: 0
+            ),
+            .init(
+                selectedIcon: Image(.threads),
+                deselectedIcon: Image(.deselectedThread),
+                selectedOpacity: 0
+            ),
+            .init(
+                selectedIcon: Image(.insights),
+                deselectedIcon: Image(.deselectedInsights),
+                selectedOpacity: 0
+            ),
+            .init(
+                selectedIcon: Image(.user),
+                deselectedIcon: Image(.deselectedUser),
+                selectedOpacity: 0
+            )
+        ])
     let contentViewModel: AppScrollContentViewModel
     private let service: any AppDataWithAuthorizationServiceful
     
@@ -62,5 +62,13 @@ final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
         await MainActor.run {
             self.todayQuestions = questions
         }
+    }
+    
+    @MainActor
+    func organize() -> [Question] {
+        let count = self.todayQuestions.count
+        var questions = self.todayQuestions
+        guard let head = questions.first else { return [] }
+       return [head] + questions[1 ..< count]
     }
 }
