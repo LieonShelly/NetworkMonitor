@@ -10,6 +10,7 @@ struct AppHomeView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     
     @State var showPage: Bool = false
+    @State var showTodayQuestion: Bool = true
     
     init(service: any AppDataWithAuthorizationServiceful) {
         self._viewModel = StateObject(wrappedValue: AppHomeViewModel(service: service))
@@ -26,14 +27,17 @@ struct AppHomeView: View {
                                 .padding(.horizontal, 50)
                                 .padding(.top, 10)
                                 
-                            if let head = viewModel.todayQuestions.first {
+                            if let head = viewModel.todayQuestions.first, showTodayQuestion {
                                 TodayQuestionView(question: head)
                                     .onTapGesture {
-                                        homeCoordinator.push(HomeRoute.addTodayAnswer(questions: viewModel.organize()))
+                                        homeCoordinator.push(HomeRoute.addTodayAnswer(.init(questions: viewModel.organize(), submiited: { @MainActor in
+                                            showTodayQuestion = false
+                                        })))
                                     }
                                     .offset(y: -(40 + 16 * 2))
                                     .padding(.horizontal, 40)
                                     .padding(.bottom, 10)
+                                    .transition(.opacity)
                             }
                         }
                     }

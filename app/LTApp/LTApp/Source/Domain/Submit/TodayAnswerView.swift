@@ -52,7 +52,7 @@ struct TodayAnswerView: View {
                     .rotationEffect(.degrees((2.0 ) * CGFloat(index)), anchor: .init(x: 0, y: 0.5))
             }
         }
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 20)
         .padding(.top, 20)
     }
     
@@ -71,7 +71,7 @@ struct TodayAnswerView: View {
             text: $viewModel.answerText,
             placeholder: "Write anything...."
         )
-        .frame(maxHeight: .infinity)
+        .frame(minHeight: 200, maxHeight: .infinity)
         .padding(.horizontal, 24)
         .padding(.top, 16)
         .padding(.bottom, 16)

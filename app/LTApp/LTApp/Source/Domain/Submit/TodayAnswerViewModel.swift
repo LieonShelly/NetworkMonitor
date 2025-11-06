@@ -12,17 +12,19 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var questions: [Question] = []
     @MainActor @Published var answerText: String = ""
     @MainActor @Published var createAt: Date?
+    private var submitted: (() -> Void)?
     var currentIndex: Int
     
     let title: String
     private let service: any AppDataWithAuthorizationServiceful
     private let inputQuestions: [Question]
     
-    init(service: any AppDataWithAuthorizationServiceful, questions: [Question])  {
+    init(service: any AppDataWithAuthorizationServiceful, questions: [Question], submitted: (() -> Void)?)  {
         self.service = service
         self.inputQuestions = questions
         self.title = Date().monthDayDesc
         self.currentIndex = max(questions.count - 1, 0)
+        self.submitted = submitted
     }
     
     func initializeData() async {
@@ -53,5 +55,6 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
                 createdAt: AppDateFormatter.ymdhsm.string(from: createAt)
             )
         )
+        submitted?()
     }
 }

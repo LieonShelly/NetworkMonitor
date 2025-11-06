@@ -44,8 +44,8 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
             return AnyView(
                 AnwserQuestionView(viewModel: .init(question: question, service: appDataService))
             )
-        case let .addTodayAnswer(qeustions):
-            return AnyView(TodayAnswerView(viewModel: .init(service: appDataService, questions: qeustions)))
+        case let .addTodayAnswer(param):
+            return AnyView(TodayAnswerView(viewModel: .init(service: appDataService, questions: param.questions, submitted: param.submiited)))
         }
     }
     
@@ -61,10 +61,24 @@ enum HomeRoute: Route {
     case questioDetail
     case reflectionDetail(questionId: String, title: String)
     case addNewAnswer(question: Question)
-    case addTodayAnswer(questions: [Question])
+    case addTodayAnswer(TodayAnswerPageParam)
 }
 
 
 enum HistoryRoute: Route {
     case list
+}
+
+struct TodayAnswerPageParam: Hashable, Equatable, @unchecked Sendable {
+    var id: String = UUID().uuidString
+    let questions: [Question]
+    let submiited: (() -> Void)?
+    
+    static func == (lhs: TodayAnswerPageParam, rhs: TodayAnswerPageParam) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
