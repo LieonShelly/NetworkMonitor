@@ -5,8 +5,9 @@
 import Combine
 import SwiftUI
 
-@MainActor
-class AppHomeViewModel: ObservableObject {
+final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
+    @MainActor @Published var todayQuestions: [Question] = []
+    
      var tabbarViewModel = AppTabbarViewModel(
         items: [
         .init(
@@ -31,27 +32,35 @@ class AppHomeViewModel: ObservableObject {
         )
     ])
     let contentViewModel: AppScrollContentViewModel
+    private let service: any AppDataWithAuthorizationServiceful
     
     deinit {
         print("AppHomeViewModel-deinit")
     }
     
+    @MainActor
     init(service: any AppDataWithAuthorizationServiceful) {
+        self.service = service
         contentViewModel = AppScrollContentViewModel(service: service)
         
         contentViewModel.didScroll = { [weak self] progress, isToRight in
             guard let self else { return }
-            print("AppHomeViewModel-progress:\(progress)")
             self.tabbarViewModel.updateOpacity(progress, isToRight: isToRight)
         }
         contentViewModel.didEndScroll = { [weak self] index in
             guard let self else { return }
-            print("AppHomeViewModel-didEndScroll:\(index)")
             self.tabbarViewModel.updateSelectedIndex(index)
         }
         tabbarViewModel.didTap = { [weak self] index in
             guard let self else { return }
             self.contentViewModel.scrollTo(index)
+        }
+    }
+    
+    func fetchData() async throws {
+        let questions = try await service.fetchTodayQuestionsUseCase.execute()
+        await MainActor.run {
+            self.todayQuestions = questions
         }
     }
 }

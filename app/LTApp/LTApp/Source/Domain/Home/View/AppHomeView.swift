@@ -26,13 +26,15 @@ struct AppHomeView: View {
                                 .padding(.horizontal, 50)
                                 .padding(.top, 10)
                                 
-                            TodayQuestionView()
-                                .onTapGesture {
-                                    homeCoordinator.push(HomeRoute.addTodayAnswer)
-                                }
-                                .offset(y: -(40 + 16 * 2))
-                                .padding(.horizontal, 40)
-                                .padding(.bottom, 10)
+                            if let head = viewModel.todayQuestions.first {
+                                TodayQuestionView(question: head)
+                                    .onTapGesture {
+                                        homeCoordinator.push(HomeRoute.addTodayAnswer)
+                                    }
+                                    .offset(y: -(40 + 16 * 2))
+                                    .padding(.horizontal, 40)
+                                    .padding(.bottom, 10)
+                            }
                         }
                     }
                     .toolbarVisibility(.hidden, for: .navigationBar)
@@ -48,6 +50,7 @@ struct AppHomeView: View {
             withAnimation(.easeInOut) {
                 showPage = true
             }
+           try? await viewModel.fetchData()
         }
        
     }

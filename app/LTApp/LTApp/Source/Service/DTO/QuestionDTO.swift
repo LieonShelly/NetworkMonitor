@@ -7,12 +7,14 @@ import Foundation
 public struct QuestionDTO: Decodable {
     var id: String
     var title: String
-    let pinned: Bool
+    let pinned: Bool?
+    let category: CategoryDTO?
     
     enum CodingKeys: CodingKey {
         case id
         case title
         case pinned
+        case category
     }
     
     public init(from decoder: any Decoder) throws {
@@ -20,6 +22,7 @@ public struct QuestionDTO: Decodable {
         self.id = try container.decode(String.self, forKey: .id)
         self.title = try container.decode(String.self, forKey: .title)
         self.pinned = (try? container.decode(Bool.self, forKey: .pinned)) ?? false
+        self.category = (try? container.decode(CategoryDTO.self, forKey: .category)) ?? nil
     }
 }
 
@@ -28,7 +31,7 @@ public extension QuestionDTO {
         return Question(
             id: id,
             title: title,
-            pinned: pinned
+            pinned: pinned ?? false
         )
     }
 }

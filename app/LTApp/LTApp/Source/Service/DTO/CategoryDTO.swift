@@ -6,9 +6,9 @@
 import Foundation
 
 struct CategoryDTO: Decodable {
-    var id: String
+    var id: String?
     var name: String
-    var questions: [QuestionDTO]
+    var questions: [QuestionDTO]?
     
     enum CodingKeys: CodingKey {
         case id
@@ -26,6 +26,10 @@ struct CategoryDTO: Decodable {
 
 extension CategoryDTO {
     func toDomain() -> Category {
-        return Category(id: id, name: name, questions: questions.map { $0.toDomain()})
+        return Category(
+            id: id ?? UUID().uuidString,
+            name: name,
+            questions: (questions ?? []).map { $0.toDomain() }
+        )
     }
 }

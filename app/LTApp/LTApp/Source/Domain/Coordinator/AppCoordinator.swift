@@ -58,9 +58,6 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
         switch root {
         case .preHome:
             return AnyView(PreHomeContentView())
-//            return AnyView( FirstQuestionView(viewModel: .init(category: .init(id: "sadf", name: "asdf", questions: [
-//                .init(id: "asdfsf", title: "What is one little thing that made you happy today?")
-//            ]), service: appDataService)))
         case let .home(viewModel):
             return AnyView(AppHomeRootView(viewModel: viewModel))
         }

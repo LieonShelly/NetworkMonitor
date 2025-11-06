@@ -23,6 +23,8 @@ public protocol ReflectionRepositoryType {
     func pinQuestion(questionId: String, pinned: Bool) async throws
     
     func fetchHistory(questionId: String, limit: Int?, cursor: Int?) async throws -> History
+    
+    func fetchTodayQuestions() async throws -> [Question]
 }
 
 public final class ReflectionRepository: ReflectionRepositoryType {
@@ -97,6 +99,11 @@ public final class ReflectionRepository: ReflectionRepositoryType {
         let dto: UniversalResponse<HistoryDTO> = try response.parseJson()
         return dto.data.toDomain()
     }
+    
+    public func fetchTodayQuestions() async throws -> [Question] {
+        let request = ReflectionRequest.questionsOfToday
+        let response = try await apiClient.sendRequest(request)
+        let dto: UniversalListResponse<QuestionDTO> = try response.parseJson()
+        return (dto.data ?? []).map { $0.toDomain() }
+    }
 }
-
-

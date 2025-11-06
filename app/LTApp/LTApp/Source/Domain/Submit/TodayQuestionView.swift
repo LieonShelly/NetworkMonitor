@@ -5,8 +5,9 @@
 import SwiftUI
 import UIComponent
 
-
 struct TodayQuestionView: View {
+    let question: Question
+    
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {
             titleView
@@ -29,15 +30,15 @@ struct TodayQuestionView: View {
     
     var questionView: some View {
         HStack(alignment: .center, spacing: .zero) {
-            question
+            questionRow
             Spacer()
             addBtn
         }
         .padding(.bottom, 16)
     }
     
-    var question: some View {
-        Text("What small moment of peace did you experience today?")
+    var questionRow: some View {
+        Text(question.title)
             .multilineTextAlignment(.leading)
             .fixedSize(horizontal: false, vertical: true)
             .textStyle(size: 24)

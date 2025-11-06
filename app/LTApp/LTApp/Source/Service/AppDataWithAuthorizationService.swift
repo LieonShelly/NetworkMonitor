@@ -15,6 +15,7 @@ public protocol AppDataWithAuthorizationServiceful {
     var fetchQuestionsWithCategoryUseCase: any FetchQuestionsWithCategoryUseCaseType { get }
     var pinQuestionUseCase: any PinQuestionUseCaseType { get }
     var fetchHistoryAnswersUseCase: any FetchHistoryAnswersUseCaseType { get }
+    var fetchTodayQuestionsUseCase: any FetchTodayQuestionsUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
@@ -65,5 +66,9 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var fetchHistoryAnswersUseCase: any FetchHistoryAnswersUseCaseType = {
         FetchHistoryAnswersUseCase(repository: reflectionRepository)
+    }()
+    
+    public lazy var fetchTodayQuestionsUseCase: any FetchTodayQuestionsUseCaseType = {
+        FetchTodayQuestionsUseCase(repository: reflectionRepository)
     }()
 }

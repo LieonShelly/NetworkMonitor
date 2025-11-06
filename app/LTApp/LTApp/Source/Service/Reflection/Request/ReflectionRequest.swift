@@ -15,6 +15,7 @@ enum ReflectionRequest: Request {
     case questionList
     case pinQuestion(id: String, pinned: Bool)
     case answers(questionId: String, limit: Int? = nil, cursor: Int? = nil)
+    case questionsOfToday
     
     var endPoint: any EndPoint {
         var path: String = "/api"
@@ -37,6 +38,8 @@ enum ReflectionRequest: Request {
             path += "/questions/pin"
         case .answers:
             path += "/answers"
+        case .questionsOfToday:
+            path += "/questions-of-the-day"
         }
         return DefaultEndPoint.baseURL(path: path)
     }
@@ -49,6 +52,7 @@ enum ReflectionRequest: Request {
                 .calendar,
                 .thread,
                 .questionList,
+                .questionsOfToday,
                 .answers:
                 .get
         case .answerQuestion, .pinQuestion:
