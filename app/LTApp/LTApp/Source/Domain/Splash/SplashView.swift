@@ -43,7 +43,7 @@ struct SplashView: View {
     var firstScreen: some View {
         AnimatedMultilineText(
             text: viewModel.sentence?.page1st ?? "big thoughts, tiny moments.",
-            font: AppFont.feltTipSenior(size: 32, fontWeight: .regular),
+            font: AppFont.vividly(size: 32, fontWeight: .regular),
             width: 188) {
                 currentPage = .second
             }
@@ -51,7 +51,7 @@ struct SplashView: View {
     
     
     var secondScreen: some View {
-        AnimatedMultilineText(text:  viewModel.sentence?.page2st ?? "grow your reflections into insights with guided questions", font: AppFont.feltTipSenior(size: 32, fontWeight: .regular), width: 307) {
+        AnimatedMultilineText(text:  viewModel.sentence?.page2st ?? "grow your reflections into insights with guided questions", font: AppFont.vividly(size: 32, fontWeight: .regular), width: 307) {
             withAnimation(.easeInOut(duration: 1)) {
                 currentPage = .third
             }

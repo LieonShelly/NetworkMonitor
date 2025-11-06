@@ -53,6 +53,33 @@ public class AppFont {
         }
     }
     
+    
+    public static func vividly(size: CGFloat, fontWeight: AppFontWeight = .regular) -> Font {
+        switch fontWeight {
+        case .regular:
+            return Font.custom(AppFontType.vividlyRegular.fontName, size: size)
+        case .medium:
+            return Font.custom(AppFontType.vividlyRegular.fontName, size: size)
+        case .bold:
+            return Font.custom(AppFontType.vividlyRegular.fontName, size: size)
+        case .heavy:
+            return Font.custom(AppFontType.vividlyRegular.fontName, size: size)
+        }
+    }
+    
+    
+    public static func vividly(size: CGFloat, fontWeight: AppFontWeight = .regular) -> UIFont {
+        switch fontWeight {
+        case .regular:
+            return UIFont(descriptor: .init(name: AppFontType.vividlyRegular.fontName, size: size), size: size)
+        case .medium, .bold:
+            return UIFont(descriptor: .init(name: AppFontType.vividlyRegular.fontName, size: size), size: size)
+        case .heavy:
+            return UIFont(descriptor: .init(name: AppFontType.vividlyRegular.fontName, size: size), size: size)
+        }
+    }
+    
+    
     public static func registerFonts() throws {
         try AppFontType.allCases.forEach { try UIFont.register(from: resourceUrl(fontType: $0)) }
     }

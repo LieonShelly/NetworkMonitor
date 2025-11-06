@@ -49,7 +49,7 @@ struct WelcomeView: View {
     var firstTextView: some View {
         AnimatedMultilineText(
             text: "welcome",
-            font: AppFont.feltTipSenior(size: 32),
+            font: AppFont.vividly(size: 32),
             width: 305,
             animationCompleted: {
                 withAnimation(.easeInOut) {
@@ -71,7 +71,7 @@ struct WelcomeView: View {
             if showSecondPageText {
                 AnimatedMultilineText(
                     text: "answer your first question to get started",
-                    font: AppFont.feltTipSenior(size: 32),
+                    font: AppFont.vividly(size: 32),
                     width: 305
                 )
                     .frame(width: 305)

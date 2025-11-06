@@ -9,7 +9,7 @@ public extension View {
     func textStyle(
         size: CGFloat,
         color: Color = AppColor.textPrimary,
-        fontFamily: AppFontType = .feltTipSeniorRegular
+        fontFamily: AppFontType = .vividlyRegular
     ) -> some View {
         switch fontFamily {
         case .feltTipSeniorRegular:
@@ -27,6 +27,9 @@ public extension View {
         case .sfProMedium:
             return self.foregroundStyle(color)
                 .font(AppFont.sfPro(size: size, fontWeight: .medium))
+        case .vividlyRegular:
+            return self.foregroundStyle(color)
+                .font(AppFont.vividly(size: size, fontWeight: .regular))
         }
     }
 }
