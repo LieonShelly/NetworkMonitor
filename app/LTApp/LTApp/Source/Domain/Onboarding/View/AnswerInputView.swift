@@ -21,7 +21,7 @@ struct AnswerInputView: View {
                
             if text.isEmpty {
                 Text(placeholder)
-                    .textStyle(size: 12, fontFamily: .poppinsRegular)
+                    .textStyle(size: 12, color: AppColor.color(hex: 0x6f6f6f), fontFamily: .poppinsRegular)
                     .padding(.top, 17)
                     .padding(.leading, 13)
             }

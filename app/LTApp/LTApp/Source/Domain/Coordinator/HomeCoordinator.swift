@@ -51,7 +51,7 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
     
     func start() {
         path = .init()
-        path.append(HomeRoute.home)
+        path.append(HomeRoute.addTodayAnswer)
     }
 }
 

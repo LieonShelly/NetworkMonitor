@@ -6,7 +6,19 @@ import SwiftUI
 import UIComponent
 
 struct TodayAnswerView: View {
+    @State var input: String = ""
+    
     var body: some View {
+        VStack(spacing: .zero) {
+            cardListView
+            refreshBtn
+            answerInputView
+            okBtn
+        }
+        .defaultBackground()
+    }
+    
+    var cardListView: some View {
         ZStack {
             ForEach(0 ..< 3, id: \.self) { index in
                 QuestionCardView()
@@ -15,61 +27,36 @@ struct TodayAnswerView: View {
             }
         }
         .padding(.horizontal, 10)
+        .padding(.top, 20)
     }
-}
-
-
-struct QuestionCardView: View {
-    var body: some View {
-        VStack {
-            titleView
-            questionView
+    
+    var refreshBtn: some View {
+        Button {} label: {
+            Image(.refresh)
+                .resizable()
+                .frame(width: 32, height: 32)
         }
-        .frame(maxWidth: .infinity)
-        .background(AppColor.color(hex: 0xFFFAEE))
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(AppColor.color(hex: 0x717171), lineWidth: 1)
+        .padding(.top, 8 * 3)
+    }
+    
+    
+    var answerInputView: some View {
+        AnswerInputView(
+            text: $input,
+            placeholder: "Write anything...."
         )
+        .frame(maxHeight: .infinity)
+        .padding(.horizontal, 24)
+        .padding(.top, 16)
+        .padding(.bottom, 16)
+        
     }
     
-    var titleView: some View {
-        Text("# simple joys")
-              .textStyle(size: 10, color: AppColor.color(hex: 0x000000), fontFamily: .poppinsRegular)
-              .padding(.horizontal, 10)
-              .padding(.vertical, 6)
-              .background(AppColor.color(hex: 0xFFFDF8))
-              .overlay(
-                  RoundedRectangle(cornerRadius: 16)
-                      .stroke(AppColor.color(hex: 0xEBEBEB), lineWidth: 1)
-              )
-              .padding(.top, 5)
-
+    var okBtn: some View {
+        AppButton(isEnabled: !input.isEmpty, title: "oK") {
+        }
+        .frame(height: 62)
+        .padding(.horizontal, 24)
     }
     
-    var questionView: some View {
-        Text("What small moment of peace did you experience today?")
-              .textStyle(size: 36)
-              .fixedSize(horizontal: false, vertical: true)
-              .padding(.bottom, 45)
-              .padding(.top, 12)
-              .padding(.horizontal, 20)
-
-    }
-    
-}
-
-
-extension View {
-    func roundedBorder(color: Color, cornerRadius: CGFloat, lineWidth: CGFloat = 1) -> some View {
-        self
-            .background(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(Color.clear)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(color, lineWidth: lineWidth)
-            )
-    }
 }
