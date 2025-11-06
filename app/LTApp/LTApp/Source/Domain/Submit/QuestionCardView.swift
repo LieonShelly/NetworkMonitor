@@ -6,6 +6,8 @@ import SwiftUI
 import UIComponent
 
 struct QuestionCardView: View {
+    let question: Question
+    
     var body: some View {
         VStack {
             titleView
@@ -20,7 +22,7 @@ struct QuestionCardView: View {
     }
     
     var titleView: some View {
-        Text("# simple joys")
+        Text("# \(question.category?.name ?? "")")
               .textStyle(size: 10, color: AppColor.color(hex: 0x000000), fontFamily: .poppinsRegular)
               .padding(.horizontal, 10)
               .padding(.vertical, 6)
@@ -34,7 +36,7 @@ struct QuestionCardView: View {
     }
     
     var questionView: some View {
-        Text("What small moment of peace did you experience today?")
+        Text(question.title)
               .textStyle(size: 36)
               .fixedSize(horizontal: false, vertical: true)
               .padding(.bottom, 45)

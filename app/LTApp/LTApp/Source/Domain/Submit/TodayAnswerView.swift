@@ -8,6 +8,7 @@ import UIComponent
 struct TodayAnswerView: View {
     @StateObject var viewModel: TodayAnswerViewModel
     @State var input: String = ""
+    @EnvironmentObject var homeCoordinator: HomeCoordinator
     
     init(viewModel: TodayAnswerViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
@@ -15,7 +16,9 @@ struct TodayAnswerView: View {
     
     var body: some View {
         ZStack(alignment: .top) {
-            NaviBar(titlte: "September 18").zIndex(0)
+            NaviBar(titlte: "September 18") {
+                homeCoordinator.pop()
+            }.zIndex(0)
             VStack(spacing: .zero) {
                 cardListView
                 refreshBtn
@@ -33,11 +36,14 @@ struct TodayAnswerView: View {
         }
     }
     
+    @ViewBuilder
     var cardListView: some View {
+        let count = viewModel.questions.count
         ZStack {
-            ForEach(0 ..< 3, id: \.self) { index in
-                QuestionCardView()
-                    .zIndex(3 - Double(index))
+            ForEach(0 ..< count, id: \.self) { index in
+                let realIndex = Double(count) - Double(index) - 1
+                QuestionCardView(question: viewModel.questions[Int(realIndex)])
+                    .zIndex(realIndex)
                     .rotationEffect(.degrees((2.0 ) * CGFloat(index)), anchor: .init(x: 0, y: 0.5))
             }
         }

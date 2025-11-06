@@ -10,13 +10,14 @@ import Combine
 
 final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var questions: [Question] = []
-    
+    let title: String
     private let service: any AppDataWithAuthorizationServiceful
     private let inputQuestions: [Question]
     
     init(service: any AppDataWithAuthorizationServiceful, questions: [Question])  {
         self.service = service
         self.inputQuestions = questions
+        self.title = Date().monthDayDesc
     }
     
     func initializeData() async {

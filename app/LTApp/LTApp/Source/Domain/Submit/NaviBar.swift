@@ -7,6 +7,7 @@ import UIComponent
 
 struct NaviBar: View {
     let titlte: String
+    let popback: (() -> Void)?
     
     var body: some View {
         ZStack(alignment: .leading) {
@@ -14,6 +15,9 @@ struct NaviBar: View {
                 .resizable()
                 .frame(width: 32, height: 32)
                 .padding(.leading, 24)
+                .onTapGesture {
+                    popback?()
+                }
             
             HStack {
                 Text(titlte)

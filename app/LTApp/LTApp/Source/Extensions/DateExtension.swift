@@ -44,6 +44,14 @@ extension Date {
         return formatter.string(from: self)
     }
     
+    var monthDayDesc: String {
+        let formatter = DateFormatter()
+        formatter.timeZone = .current
+        formatter.dateFormat = "MMMM d"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter.string(from: self)
+    }
+    
     var isTheFirstDayInMonth: Bool {
         let calendar = Calendar.current
         let date = self
