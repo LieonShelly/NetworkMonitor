@@ -6,7 +6,12 @@ import SwiftUI
 import UIComponent
 
 struct TodayAnswerView: View {
+    @StateObject var viewModel: TodayAnswerViewModel
     @State var input: String = ""
+    
+    init(viewModel: TodayAnswerViewModel) {
+        self._viewModel = .init(wrappedValue: viewModel)
+    }
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -21,6 +26,11 @@ struct TodayAnswerView: View {
         }
         .defaultBackground()
         .toolbarVisibility(.hidden, for: .navigationBar)
+        .task {
+            await viewModel.initializeData()
+            guard viewModel.questions.isEmpty else { return }
+            try? await viewModel.fetchData()
+        }
     }
     
     var cardListView: some View {
