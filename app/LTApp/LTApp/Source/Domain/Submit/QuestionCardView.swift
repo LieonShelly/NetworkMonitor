@@ -1,8 +1,5 @@
 //
-//  QuestionCardView.swift
-//  LTApp
-//
-//  Created by Renjun Li on 2025/11/6.
+//  LTApp, This code is protected by intellectual property rights.
 //
 
 import SwiftUI
@@ -46,19 +43,4 @@ struct QuestionCardView: View {
 
     }
     
-}
-
-
-extension View {
-    func roundedBorder(color: Color, cornerRadius: CGFloat, lineWidth: CGFloat = 1) -> some View {
-        self
-            .background(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(Color.clear)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(color, lineWidth: lineWidth)
-            )
-    }
 }

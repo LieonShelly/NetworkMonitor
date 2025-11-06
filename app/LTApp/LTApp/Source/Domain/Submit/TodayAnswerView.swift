@@ -9,13 +9,18 @@ struct TodayAnswerView: View {
     @State var input: String = ""
     
     var body: some View {
-        VStack(spacing: .zero) {
-            cardListView
-            refreshBtn
-            answerInputView
-            okBtn
+        ZStack(alignment: .top) {
+            NaviBar(titlte: "September 18").zIndex(0)
+            VStack(spacing: .zero) {
+                cardListView
+                refreshBtn
+                answerInputView
+                okBtn
+            }
+            .padding(.top, 44)
         }
         .defaultBackground()
+        .toolbarVisibility(.hidden, for: .navigationBar)
     }
     
     var cardListView: some View {
