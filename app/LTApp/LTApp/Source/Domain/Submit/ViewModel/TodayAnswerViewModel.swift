@@ -13,7 +13,9 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var cardViewModels: [QuestionCardViewModel] = []
     @MainActor @Published var answerText: String = ""
     @MainActor @Published var createAt: Date?
-    private var submitted: (() -> Void)?
+    @MainActor @Published var submitted: Bool = false
+    
+    private var submittedAction: (() -> Void)?
     let title: String
     private let service: any AppDataWithAuthorizationServiceful
     private let inputQuestions: [Question]
@@ -22,7 +24,7 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
         self.service = service
         self.inputQuestions = questions
         self.title = Date().monthDayDesc
-        self.submitted = submitted
+        self.submittedAction = submitted
     }
     
     func initializeData() async {
@@ -70,7 +72,10 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
                 createdAt: AppDateFormatter.ymdhsm.string(from: createAt)
             )
         )
-        submitted?()
+        submittedAction?()
+        await MainActor.run {
+            submitted = true
+        }
     }
     
     @MainActor func refresh() {
@@ -89,7 +94,6 @@ extension [QuestionCardViewModel] {
     
      func rotateFromLeft(by: Int) -> [QuestionCardViewModel] {
          let moveIndex = by % count
-         print("by:\(by) - moveIndex:\(moveIndex)")
          let rotatedElements = Array(self[moveIndex...]) + Array(self[0 ..< moveIndex]).reversed()
          return rotatedElements
      }

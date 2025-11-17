@@ -21,17 +21,10 @@ struct TodayAnswerView: View {
                 homeCoordinator.pop()
             }
             .zIndex(1)
-            
-            VStack(spacing: .zero) {
-                cardListView
-                refreshBtn
-                answerInputView
-                okBtn
-            }
-            .padding(.top, 44)
-            .contentShape(.rect)
-            .onTapGesture {
-                hideKeyboard()
+            if viewModel.submitted {
+                submittedForm
+            } else {
+                unsubmittedForm
             }
         }
         .defaultBackground()
@@ -43,6 +36,31 @@ struct TodayAnswerView: View {
             try? await viewModel.fetchData()
         }
     }
+    
+    var unsubmittedForm: some View {
+        VStack(spacing: .zero) {
+            cardListView
+            refreshBtn
+            answerInputView
+            okBtn
+        }
+        .padding(.top, 44)
+        .contentShape(.rect)
+        .onTapGesture {
+            hideKeyboard()
+        }
+    }
+    
+    var submittedForm: some View {
+        TodayAnswerSubmittedView(
+            quesitionText: viewModel.cardViewModels.first?.question.title ?? "",
+            answerText: viewModel.answerText
+        )
+        .padding(.top, 44)
+        .contentShape(.rect)
+        .padding(.top, 20)
+    }
+    
     @ViewBuilder
     var cardListView: some View {
         let count = viewModel.cardViewModels.count
@@ -64,7 +82,7 @@ struct TodayAnswerView: View {
     
     @ViewBuilder
     var refreshBtn: some View {
-        if keyboardObserver.keyboardHeight <= 0 || viewModel.answerText.isEmpty {
+        if keyboardObserver.keyboardHeight <= 0 || viewModel.answerText.isEmpty  {
             Button {
                 viewModel.refresh()
             } label: {
@@ -77,7 +95,6 @@ struct TodayAnswerView: View {
         }
       
     }
-    
     
     var answerInputView: some View {
         AnswerInputView(
@@ -96,9 +113,6 @@ struct TodayAnswerView: View {
             Task.detached {
                 do {
                     try await viewModel.submit()
-                    await MainActor.run {
-                        homeCoordinator.pop()
-                    }
                 } catch {
                     print(error)
                 }
@@ -110,3 +124,64 @@ struct TodayAnswerView: View {
     
 }
 
+
+struct TodayAnswerSubmittedView: View {
+    let quesitionText: String
+    let answerText: String
+    
+    var body: some View {
+        VStack(spacing: .zero) {
+            questionView
+            Spacer()
+            imageView
+            Spacer()
+            answerView
+            Spacer()
+            closeBtn
+        }
+    }
+    
+    var questionView: some View {
+        Text(quesitionText)
+            .textStyle(size: 32, fontFamily: .vividlyRegular)
+            .padding(.horizontal, 16)
+    }
+    
+    var answerView: some View {
+        HStack {
+            Text(answerText)
+                .textStyle(size: 12, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.init(top: 22, leading: 18, bottom: 22, trailing: 18))
+            Spacer()
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(style: .init(lineWidth: 1))
+                .foregroundStyle(AppColor.color(hex: 0xEBEBEB))
+        )
+        .padding(.horizontal, 24)
+    }
+    
+    var imageView: some View {
+        Image(uiImage: LocalIconLib.fallLeave)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 150)
+        
+    }
+    
+    var closeBtn: some View {
+        Button {
+            
+        } label: {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(AppColor.color(hex: 0xD9D9D9))
+                .frame(width: 48, height: 48)
+                .overlay {
+                    Image(.xmark)
+                }
+        }
+        .padding(.bottom, 45)
+    }
+}

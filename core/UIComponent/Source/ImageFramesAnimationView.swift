@@ -62,3 +62,19 @@ public extension FramesAnimationData {
         frameSize: .init(width: 135, height: 165)
     )
 }
+
+
+public struct LocalIconLib {
+    public static let fallLeave: UIImage = loadImage("fall_leaves")
+    
+    static func loadImage(_ name: String) -> UIImage {
+        if  let imagePath = FramesAnimationData.imageBundle.path(
+            forResource: name,
+            ofType: "png"
+        ), let uiImage = UIImage(contentsOfFile: imagePath) {
+            return uiImage
+        } else {
+            fatalError("image not found")
+        }
+    }
+}
