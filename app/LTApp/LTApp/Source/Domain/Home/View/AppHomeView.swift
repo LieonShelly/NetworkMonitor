@@ -31,6 +31,7 @@ struct AppHomeView: View {
                                 TodayQuestionView(question: head)
                                     .onTapGesture {
                                         homeCoordinator.push(HomeRoute.addTodayAnswer(.init(questions: viewModel.organize(), submiited: { @MainActor in
+                                            showTodayQuestion = false
                                         })))
                                     }
                                     .offset(y: -(40 + 16 * 2))
