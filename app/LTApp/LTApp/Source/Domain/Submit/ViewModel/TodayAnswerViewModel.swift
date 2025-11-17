@@ -9,9 +9,12 @@ import Foundation
 import Combine
 
 final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
-    @MainActor @Published var questions: [Question] = []
+    @MainActor @Published var questions: [QuestionCardViewModel] = []
     @MainActor @Published var answerText: String = ""
     @MainActor @Published var createAt: Date?
+    @MainActor @Published var rotation: Int = 0
+    @MainActor @Published var trigger: [Int] = []
+    
     private var submitted: (() -> Void)?
     var currentIndex: Int
     
@@ -29,14 +32,16 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
     
     func initializeData() async {
         await MainActor.run {
-            self.questions = inputQuestions
+            self.questions = inputQuestions.map { QuestionCardViewModel(question: $0) }
+            self.trigger = inputQuestions.map { _ in 0 }
         }
     }
     
     func fetchData() async throws {
         let questions = try await  service.fetchTodayQuestionsUseCase.execute()
         await MainActor.run {
-            self.questions = questions
+            self.questions = questions.map { QuestionCardViewModel(question: $0)}
+            self.trigger = inputQuestions.map { _ in 0 }
         }
     }
     
@@ -46,7 +51,7 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
             createAt = Date()
         }
         guard let createAt = await createAt else { return }
-        let question = await questions[currentIndex]
+        let question = await questions[currentIndex].question
         
         let _ = try await service.submitAnswerUseCase.execute(
             .init(
@@ -56,5 +61,12 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
             )
         )
         submitted?()
+    }
+    
+    @MainActor func refresh() {
+        let count = questions.count
+        let index =  rotation % count
+        trigger[index] = trigger[index] + 1
+        print("-----refresh")
     }
 }

@@ -8,7 +8,8 @@ import UIComponent
 struct TodayAnswerView: View {
     @StateObject var viewModel: TodayAnswerViewModel
     @EnvironmentObject var homeCoordinator: HomeCoordinator
-   
+    @State var needRefresh: Bool = false
+    
     init(viewModel: TodayAnswerViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
     }
@@ -40,24 +41,42 @@ struct TodayAnswerView: View {
             try? await viewModel.fetchData()
         }
     }
-    
     @ViewBuilder
     var cardListView: some View {
         let count = viewModel.questions.count
-        ZStack {
-            ForEach(0 ..< count, id: \.self) { index in
-                let realIndex = Double(count) - Double(index) - 1
-                QuestionCardView(question: viewModel.questions[Int(realIndex)])
-                    .zIndex(realIndex)
-                    .rotationEffect(.degrees((2.0 ) * CGFloat(index)), anchor: .init(x: 0, y: 0.5))
+        if count > 0 {
+            let cardViewModels = viewModel.questions.rotateFromLeft(by: viewModel.rotation)
+            let questions = cardViewModels.map { $0.question }
+            ZStack {
+                ForEach(questions, id: \.id) { question in
+                    let index = questions.firstIndex(where: { $0.id == question.id}) ?? 0
+                    let zIndex = Double(count - index)
+                    LoopingStackCardView(
+                        index: index,
+                        count: count,
+                        visibleCardsCount: count,
+                        maxTranslationWidth: 300,
+                        rotation: $viewModel.rotation,
+                        didRefresh: $viewModel.trigger[index],
+                    ) {
+                        let realIndex = Double(count) - Double(index) - 1
+                        QuestionCardView(question: question)
+                            .zIndex(realIndex)
+                            .rotationEffect(.degrees((2.0 ) * CGFloat(index)), anchor: .init(x: 0, y: 0.5))
+                    }
+                        .zIndex(zIndex)
+                }
             }
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 20)
+            .padding(.top, 20)
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 20)
     }
     
     var refreshBtn: some View {
-        Button {} label: {
+        Button {
+            viewModel.refresh()
+        } label: {
             Image(.refresh)
                 .resizable()
                 .frame(width: 32, height: 32)
@@ -95,4 +114,25 @@ struct TodayAnswerView: View {
         .padding(.horizontal, 24)
     }
     
+}
+
+
+
+extension [QuestionCardViewModel] {
+    
+     func rotateFromLeft(by: Int) -> [QuestionCardViewModel] {
+         let moveIndex = by % count
+         let rotatedElements = Array(self[moveIndex...]) + Array(self[0 ..< moveIndex])
+         return rotatedElements
+     }
+}
+
+
+class QuestionCardViewModel: ObservableObject, @unchecked Sendable {
+    @Published var autoFlipTrigger: Bool = false
+    let question: Question
+    
+    init(question: Question) {
+        self.question = question
+    }
 }
