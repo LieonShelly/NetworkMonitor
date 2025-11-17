@@ -3,9 +3,11 @@
 //
 
 import SwiftUI
+import UIComponent
 
 struct LoopingStackCardView: View {
     @ObservedObject var viewModel: QuestionCardViewModel
+    @StateObject var keyboardObserver: KeyboardObserver = .init()
     
     init(viewModel: QuestionCardViewModel) {
         self.viewModel = viewModel

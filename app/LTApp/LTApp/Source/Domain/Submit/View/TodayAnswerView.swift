@@ -9,6 +9,7 @@ struct TodayAnswerView: View {
     @StateObject var viewModel: TodayAnswerViewModel
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @State var needRefresh: Bool = false
+    @StateObject var keyboardObserver: KeyboardObserver = .init()
     
     init(viewModel: TodayAnswerViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
@@ -35,6 +36,7 @@ struct TodayAnswerView: View {
         }
         .defaultBackground()
         .toolbarVisibility(.hidden, for: .navigationBar)
+        .animation(.easeInOut, value: keyboardObserver.keyboardHeight)
         .task {
             await viewModel.initializeData()
             guard viewModel.cardViewModels.isEmpty else { return }
@@ -51,6 +53,7 @@ struct TodayAnswerView: View {
                     let zIndex = Double(count - index)
                     LoopingStackCardView(viewModel: cardViewModel)
                         .zIndex(zIndex)
+                        .disabled(keyboardObserver.keyboardShown)
                 }
             }
             .frame(maxWidth: .infinity)
@@ -59,15 +62,20 @@ struct TodayAnswerView: View {
         }
     }
     
+    @ViewBuilder
     var refreshBtn: some View {
-        Button {
-            viewModel.refresh()
-        } label: {
-            Image(.refresh)
-                .resizable()
-                .frame(width: 32, height: 32)
+        if keyboardObserver.keyboardHeight <= 0 || viewModel.answerText.isEmpty {
+            Button {
+                viewModel.refresh()
+            } label: {
+                Image(.refresh)
+                    .resizable()
+                    .frame(width: 32, height: 32)
+            }
+            .padding(.top, 8 * 3)
+            .transition(.opacity)
         }
-        .padding(.top, 8 * 3)
+      
     }
     
     
@@ -102,19 +110,3 @@ struct TodayAnswerView: View {
     
 }
 
-
-
-extension [QuestionCardViewModel] {
-    
-     func rotateFromLeft(by: Int) -> [QuestionCardViewModel] {
-         let moveIndex = by % count
-         print("by:\(by) - moveIndex:\(moveIndex)")
-         let rotatedElements = Array(self[moveIndex...]) + Array(self[0 ..< moveIndex]).reversed()
-         return rotatedElements
-     }
-    
-    func nextRotation() -> [QuestionCardViewModel] {
-        guard count > 1 else { return self }
-        return Array(self[1...] + self[..<1])
-    }
-}

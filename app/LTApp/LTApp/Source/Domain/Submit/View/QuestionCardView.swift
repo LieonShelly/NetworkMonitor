@@ -7,6 +7,7 @@ import UIComponent
 
 struct QuestionCardView: View {
     let question: Question
+    @StateObject var keyboardObserver: KeyboardObserver = .init()
     
     var body: some View {
         VStack {
@@ -31,16 +32,16 @@ struct QuestionCardView: View {
                   RoundedRectangle(cornerRadius: 16)
                       .stroke(AppColor.color(hex: 0xEBEBEB), lineWidth: 1)
               )
-              .padding(.top, 5)
+              .padding(.top, keyboardObserver.keyboardShown ? 0 : 5)
 
     }
     
     var questionView: some View {
         Text(question.title)
-              .textStyle(size: 36)
+            .textStyle(size: keyboardObserver.keyboardShown ? 32: 36)
               .fixedSize(horizontal: false, vertical: true)
-              .padding(.bottom, 45)
-              .padding(.top, 12)
+              .padding(.bottom, keyboardObserver.keyboardShown ? 10 : 45)
+              .padding(.top, keyboardObserver.keyboardShown ? 0 : 12)
               .padding(.horizontal, 20)
 
     }

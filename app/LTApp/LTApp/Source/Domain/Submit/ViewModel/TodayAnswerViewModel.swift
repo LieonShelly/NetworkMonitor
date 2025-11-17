@@ -84,3 +84,18 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
        }
     }
 }
+
+extension [QuestionCardViewModel] {
+    
+     func rotateFromLeft(by: Int) -> [QuestionCardViewModel] {
+         let moveIndex = by % count
+         print("by:\(by) - moveIndex:\(moveIndex)")
+         let rotatedElements = Array(self[moveIndex...]) + Array(self[0 ..< moveIndex]).reversed()
+         return rotatedElements
+     }
+    
+    func nextRotation() -> [QuestionCardViewModel] {
+        guard count > 1 else { return self }
+        return Array(self[1...] + self[..<1])
+    }
+}
