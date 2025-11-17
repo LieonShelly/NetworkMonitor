@@ -37,33 +37,19 @@ struct TodayAnswerView: View {
         .toolbarVisibility(.hidden, for: .navigationBar)
         .task {
             await viewModel.initializeData()
-            guard viewModel.questions.isEmpty else { return }
+            guard viewModel.cardViewModels.isEmpty else { return }
             try? await viewModel.fetchData()
         }
     }
     @ViewBuilder
     var cardListView: some View {
-        let count = viewModel.questions.count
+        let count = viewModel.cardViewModels.count
         if count > 0 {
-            let cardViewModels = viewModel.questions.rotateFromLeft(by: viewModel.rotation)
-            let questions = cardViewModels.map { $0.question }
             ZStack {
-                ForEach(questions, id: \.id) { question in
-                    let index = questions.firstIndex(where: { $0.id == question.id}) ?? 0
+                ForEach(viewModel.cardViewModels, id: \.id) { cardViewModel in
+                    let index = viewModel.cardViewModels.firstIndex(where: { $0.id == cardViewModel.id}) ?? 0
                     let zIndex = Double(count - index)
-                    LoopingStackCardView(
-                        index: index,
-                        count: count,
-                        visibleCardsCount: count,
-                        maxTranslationWidth: 300,
-                        rotation: $viewModel.rotation,
-                        didRefresh: $viewModel.trigger[index],
-                    ) {
-                        let realIndex = Double(count) - Double(index) - 1
-                        QuestionCardView(question: question)
-                            .zIndex(realIndex)
-                            .rotationEffect(.degrees((2.0 ) * CGFloat(index)), anchor: .init(x: 0, y: 0.5))
-                    }
+                    LoopingStackCardView(viewModel: cardViewModel)
                         .zIndex(zIndex)
                 }
             }
@@ -125,14 +111,4 @@ extension [QuestionCardViewModel] {
          let rotatedElements = Array(self[moveIndex...]) + Array(self[0 ..< moveIndex])
          return rotatedElements
      }
-}
-
-
-class QuestionCardViewModel: ObservableObject, @unchecked Sendable {
-    @Published var autoFlipTrigger: Bool = false
-    let question: Question
-    
-    init(question: Question) {
-        self.question = question
-    }
 }
