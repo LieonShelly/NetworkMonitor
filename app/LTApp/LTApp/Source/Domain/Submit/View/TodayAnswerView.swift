@@ -10,6 +10,7 @@ struct TodayAnswerView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @State var needRefresh: Bool = false
     @StateObject var keyboardObserver: KeyboardObserver = .init()
+    @Namespace var animationID
     
     init(viewModel: TodayAnswerViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
@@ -30,6 +31,7 @@ struct TodayAnswerView: View {
         .defaultBackground()
         .toolbarVisibility(.hidden, for: .navigationBar)
         .animation(.easeInOut, value: keyboardObserver.keyboardHeight)
+        .animation(.easeInOut, value: viewModel.submitted)
         .task {
             await viewModel.initializeData()
             guard viewModel.cardViewModels.isEmpty else { return }
@@ -54,11 +56,13 @@ struct TodayAnswerView: View {
     var submittedForm: some View {
         TodayAnswerSubmittedView(
             quesitionText: viewModel.cardViewModels.first?.question.title ?? "",
-            answerText: viewModel.answerText
+            answerText: viewModel.answerText,
+            animationID: animationID
         )
         .padding(.top, 44)
         .contentShape(.rect)
         .padding(.top, 20)
+       
     }
     
     @ViewBuilder
@@ -73,10 +77,12 @@ struct TodayAnswerView: View {
                         .zIndex(zIndex)
                         .disabled(keyboardObserver.keyboardShown)
                 }
+                .matchedGeometryEffect(id: "question", in: animationID)
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 20)
             .padding(.top, 20)
+            
         }
     }
     
@@ -105,6 +111,7 @@ struct TodayAnswerView: View {
         .padding(.horizontal, 24)
         .padding(.top, 16)
         .padding(.bottom, 16)
+        .matchedGeometryEffect(id: "answer", in: animationID)
         
     }
     
@@ -128,13 +135,12 @@ struct TodayAnswerView: View {
 struct TodayAnswerSubmittedView: View {
     let quesitionText: String
     let answerText: String
+    let animationID: Namespace.ID
     
     var body: some View {
         VStack(spacing: .zero) {
             questionView
-            Spacer()
             imageView
-            Spacer()
             answerView
             Spacer()
             closeBtn
@@ -145,13 +151,13 @@ struct TodayAnswerSubmittedView: View {
         Text(quesitionText)
             .textStyle(size: 32, fontFamily: .vividlyRegular)
             .padding(.horizontal, 16)
+            .matchedGeometryEffect(id: "question", in: animationID)
     }
     
     var answerView: some View {
         HStack {
             Text(answerText)
                 .textStyle(size: 12, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
-                .fixedSize(horizontal: false, vertical: true)
                 .padding(.init(top: 22, leading: 18, bottom: 22, trailing: 18))
             Spacer()
         }
@@ -160,14 +166,18 @@ struct TodayAnswerSubmittedView: View {
                 .stroke(style: .init(lineWidth: 1))
                 .foregroundStyle(AppColor.color(hex: 0xEBEBEB))
         )
+        .frame(maxHeight: 149)
         .padding(.horizontal, 24)
+        .padding(.top, 90)
+        .matchedGeometryEffect(id: "answer", in: animationID)
     }
     
     var imageView: some View {
         Image(uiImage: LocalIconLib.fallLeave)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: 150)
+            .frame(width: 150, height: 147)
+            .padding(.top, 58)
         
     }
     
