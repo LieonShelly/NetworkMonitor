@@ -12,7 +12,7 @@ final class QuestionCardViewModel: ObservableObject, @unchecked Sendable {
     var index: Int
     let count: Int
     var maxTranslationWidth: CGFloat? = nil
-    
+    var changeToNext: ((Int) -> Void)?
     @Published var rotation: Int = 0
     @Published var offset: CGFloat = .zero
     @Published var viewSize: CGSize = .zero
@@ -22,10 +22,17 @@ final class QuestionCardViewModel: ObservableObject, @unchecked Sendable {
          index: Int,
          count: Int,
          visibleCardsCount: Int = 3,
-         maxTranslationWidth: CGFloat? = nil) {
+         maxTranslationWidth: CGFloat? = nil,
+         changeToNext: ((Int) -> Void)? = nil) {
         self.question = question
         self.index = index
         self.count = count
         self.maxTranslationWidth = maxTranslationWidth
+        self.changeToNext = changeToNext
+    }
+    
+    func next() {
+        rotation += 1
+        changeToNext?(rotation)
     }
 }

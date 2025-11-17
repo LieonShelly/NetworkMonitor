@@ -34,8 +34,9 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
                 let viewModel = QuestionCardViewModel(
                     question: inputQuestions[index],
                     index: index,
-                    count: inputQuestions.count
-                )
+                    count: inputQuestions.count) {[weak self] nextIndex in
+                        self?.changeToNextCard(nextIndex)
+                    }
                 self.cardViewModels.append(viewModel)
             }
         }
@@ -49,7 +50,9 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
                     question: questions[index],
                     index: index,
                     count: questions.count
-                )
+                ) {[weak self] nextIndex in
+                    self?.changeToNextCard(nextIndex)
+                }
                 self.cardViewModels.append(viewModel)
             }
         }
@@ -76,5 +79,10 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
     @MainActor func refresh() {
         let count = cardViewModels.count
         print("-----refresh")
+    }
+    
+    
+   @MainActor func changeToNextCard(_ index: Int) {
+       cardViewModels = cardViewModels.rotateFromLeft(by: index)
     }
 }

@@ -47,8 +47,7 @@ struct LoopingStackCardView: View {
                                 viewModel.offset = .zero
                             }
                         }
-                    }),
-                isEnabled: viewModel.index == 0 && viewModel.count > 1
+                    })
             )
             .onTapGesture {
                 pushToNextCard()
@@ -60,7 +59,7 @@ struct LoopingStackCardView: View {
             viewModel.offset = -viewModel.viewSize.height
          
         } completion: {
-            viewModel.rotation += 1
+            viewModel.next()
             withAnimation(.smooth(duration: 0.25, extraBounce: 0)) {
                 viewModel.offset = .zero
             }
