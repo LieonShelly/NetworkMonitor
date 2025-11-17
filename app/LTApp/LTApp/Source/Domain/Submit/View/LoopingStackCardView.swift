@@ -28,18 +28,18 @@ struct LoopingStackCardView: View {
             .gesture(
                 DragGesture()
                     .onChanged({ value in
-                        let xOffset = -max(-value.translation.height, 0)
+                        let yOffset = -max(-value.translation.height, 0)
                         if let maxTranslationWidth = viewModel.maxTranslationWidth {
-                            let progress = -max(min(-xOffset / maxTranslationWidth, 1), 0) * viewModel.viewSize.height
+                            let progress = -max(min(-yOffset / maxTranslationWidth, 1), 0) * viewModel.viewSize.height
                             viewModel.offset = progress
                         } else {
-                            viewModel.offset = xOffset
+                            viewModel.offset = yOffset
                         }
                       
                     })
                     .onEnded({ value in
-                        let xVelocity = max(-value.velocity.height /  5, 0)
-                        if (-viewModel.offset + xVelocity) > viewModel.viewSize.height * 0.65 {
+                        let yVelocity = max(-value.velocity.height /  5, 0)
+                        if (-viewModel.offset + yVelocity) > viewModel.viewSize.height * 0.2 {
                             print("Push to next card")
                             pushToNextCard()
                         } else {
