@@ -35,13 +35,11 @@ struct LoopingStackCardView: View {
                         } else {
                             viewModel.offset = yOffset
                         }
-                      
                     })
                     .onEnded({ value in
                         let yVelocity = max(-value.velocity.height /  5, 0)
                         if (-viewModel.offset + yVelocity) > viewModel.viewSize.height * 0.2 {
-                            print("Push to next card")
-                            pushToNextCard()
+                            viewModel.pushToNextCard()
                         } else {
                             withAnimation(.smooth(duration: 0.3, extraBounce: 0)) {
                                 viewModel.offset = .zero
@@ -50,21 +48,10 @@ struct LoopingStackCardView: View {
                     })
             )
             .onTapGesture {
-                pushToNextCard()
+                viewModel.pushToNextCard()
             }
     }
     
-    private func pushToNextCard() {
-        withAnimation(.smooth(duration: 0.5, extraBounce: 0).logicallyComplete(after: 0.5), completionCriteria: .logicallyComplete) {
-            viewModel.offset = -viewModel.viewSize.height
-         
-        } completion: {
-            viewModel.next()
-            withAnimation(.smooth(duration: 0.25, extraBounce: 0)) {
-                viewModel.offset = .zero
-            }
-        }
-    }
     
     var content: some View {
         QuestionCardView(question: viewModel.question)

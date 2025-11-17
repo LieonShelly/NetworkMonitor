@@ -108,7 +108,13 @@ extension [QuestionCardViewModel] {
     
      func rotateFromLeft(by: Int) -> [QuestionCardViewModel] {
          let moveIndex = by % count
-         let rotatedElements = Array(self[moveIndex...]) + Array(self[0 ..< moveIndex])
+         print("by:\(by) - moveIndex:\(moveIndex)")
+         let rotatedElements = Array(self[moveIndex...]) + Array(self[0 ..< moveIndex]).reversed()
          return rotatedElements
      }
+    
+    func nextRotation() -> [QuestionCardViewModel] {
+        guard count > 1 else { return self }
+        return Array(self[1...] + self[..<1])
+    }
 }

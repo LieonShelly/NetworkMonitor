@@ -7,15 +7,13 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var cardViewModels: [QuestionCardViewModel] = []
     @MainActor @Published var answerText: String = ""
     @MainActor @Published var createAt: Date?
-    
     private var submitted: (() -> Void)?
-    var currentIndex: Int
-    
     let title: String
     private let service: any AppDataWithAuthorizationServiceful
     private let inputQuestions: [Question]
@@ -24,7 +22,6 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
         self.service = service
         self.inputQuestions = questions
         self.title = Date().monthDayDesc
-        self.currentIndex = max(questions.count - 1, 0)
         self.submitted = submitted
     }
     
@@ -34,8 +31,8 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
                 let viewModel = QuestionCardViewModel(
                     question: inputQuestions[index],
                     index: index,
-                    count: inputQuestions.count) {[weak self] nextIndex in
-                        self?.changeToNextCard(nextIndex)
+                    count: inputQuestions.count) {[weak self] in
+                        self?.changeToNextCard()
                     }
                 self.cardViewModels.append(viewModel)
             }
@@ -50,8 +47,8 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
                     question: questions[index],
                     index: index,
                     count: questions.count
-                ) {[weak self] nextIndex in
-                    self?.changeToNextCard(nextIndex)
+                ) {[weak self] in
+                    self?.changeToNextCard()
                 }
                 self.cardViewModels.append(viewModel)
             }
@@ -64,7 +61,7 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
             createAt = Date()
         }
         guard let createAt = await createAt else { return }
-        let question = await cardViewModels[currentIndex].question
+        guard let question = await cardViewModels.first?.question else { return }
         
         let _ = try await service.submitAnswerUseCase.execute(
             .init(
@@ -77,12 +74,13 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
     }
     
     @MainActor func refresh() {
-        let count = cardViewModels.count
-        print("-----refresh")
+        cardViewModels.first?.pushToNextCard()
     }
     
     
-   @MainActor func changeToNextCard(_ index: Int) {
-       cardViewModels = cardViewModels.rotateFromLeft(by: index)
+   @MainActor func changeToNextCard() {
+       withAnimation(.smooth(duration: 0.5, extraBounce: 0)) {
+           cardViewModels = cardViewModels.nextRotation()
+       }
     }
 }
