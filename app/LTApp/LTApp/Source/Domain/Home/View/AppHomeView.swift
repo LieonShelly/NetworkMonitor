@@ -18,13 +18,14 @@ struct AppHomeView: View {
     }
     
     var body: some View {
-        GeometryReader { proxy in
+        ZStack {
+            GeometryReader { proxy in
+                homeView(proxy)
+            }
             if showTodayAnswerView {
                 todayAnswerView
-                    .transition(
-                        .asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
-            } else {
-                homeView(proxy)
+                        .transition(
+                            .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
             }
         }
     }
@@ -67,10 +68,10 @@ struct AppHomeView: View {
         }
     }
     
-    var todayAnswerView: some View {
-        homeCoordinator.build(HomeRoute.addTodayAnswer(.init(questions: viewModel.organize(), submiited: { @MainActor in
-            //                                        showTodayQuestion = false
-                                            })))
+   @ViewBuilder var todayAnswerView: some View {
+        if let viewModel = viewModel.todayAnswerViewModel {
+            TodayAnswerView(viewModel: viewModel, presented: $showTodayAnswerView)
+        }
     }
     
     var titleView: some View {

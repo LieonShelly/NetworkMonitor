@@ -44,8 +44,6 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
             return AnyView(
                 AnwserQuestionView(viewModel: .init(question: question, service: appDataService))
             )
-        case let .addTodayAnswer(param):
-            return AnyView(TodayAnswerView(viewModel: .init(service: appDataService, questions: param.questions, submitted: param.submiited)))
         }
     }
     
@@ -61,7 +59,6 @@ enum HomeRoute: Route {
     case questioDetail
     case reflectionDetail(questionId: String, title: String)
     case addNewAnswer(question: Question)
-    case addTodayAnswer(TodayAnswerPageParam)
 }
 
 

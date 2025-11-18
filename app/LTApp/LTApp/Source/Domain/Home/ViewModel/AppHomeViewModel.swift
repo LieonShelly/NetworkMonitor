@@ -7,6 +7,7 @@ import SwiftUI
 
 final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
     @MainActor @Published var todayQuestions: [Question] = []
+    var todayAnswerViewModel: TodayAnswerViewModel?
     
     var tabbarViewModel = AppTabbarViewModel(
         items: [
@@ -62,6 +63,10 @@ final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
         await MainActor.run {
             self.todayQuestions = questions
         }
+        
+        todayAnswerViewModel = await .init(service: service, questions: todayQuestions, submitted: {
+            
+        })
     }
     
     @MainActor

@@ -7,31 +7,40 @@ import UIComponent
 
 struct TodayAnswerView: View {
     @StateObject var viewModel: TodayAnswerViewModel
-    @EnvironmentObject var homeCoordinator: HomeCoordinator
+    @Binding var presented: Bool
     @State var needRefresh: Bool = false
     @StateObject var keyboardObserver: KeyboardObserver = .init()
     @Namespace var animationID
+    @State var opacity: CGFloat = 1
     
-    init(viewModel: TodayAnswerViewModel) {
+    init(viewModel: TodayAnswerViewModel, presented: Binding<Bool>) {
         self._viewModel = .init(wrappedValue: viewModel)
+        self._presented = presented
     }
     
     var body: some View {
         ZStack(alignment: .top) {
+            AppColor.backgroundPage
+                .opacity(opacity)
             NaviBar(titlte: viewModel.title) {
-                homeCoordinator.pop()
+                withAnimation(.easeInOut) {
+                    opacity = 0
+                }
+               
             }
             .zIndex(1)
+            .opacity(opacity)
+            
             if viewModel.submitted {
                 submittedForm
             } else {
                 unsubmittedForm
             }
         }
-        .defaultBackground()
         .toolbarVisibility(.hidden, for: .navigationBar)
         .animation(.easeInOut, value: keyboardObserver.keyboardHeight)
         .animation(.easeInOut, value: viewModel.submitted)
+        .animation(.easeInOut, value: presented)
         .task {
             await viewModel.initializeData()
             guard viewModel.cardViewModels.isEmpty else { return }
@@ -57,7 +66,8 @@ struct TodayAnswerView: View {
         TodayAnswerSubmittedView(
             quesitionText: viewModel.cardViewModels.first?.question.title ?? "",
             answerText: viewModel.answerText,
-            animationID: animationID
+            animationID: animationID,
+            opacity: opacity
         )
         .padding(.top, 44)
         .contentShape(.rect)
@@ -136,6 +146,7 @@ struct TodayAnswerSubmittedView: View {
     let quesitionText: String
     let answerText: String
     let animationID: Namespace.ID
+    var opacity: CGFloat
     
     var body: some View {
         VStack(spacing: .zero) {
@@ -145,13 +156,16 @@ struct TodayAnswerSubmittedView: View {
             Spacer()
             closeBtn
         }
+        .animation(.easeInOut, value: opacity)
     }
     
     var questionView: some View {
         Text(quesitionText)
             .textStyle(size: 32, fontFamily: .vividlyRegular)
             .padding(.horizontal, 16)
+            .opacity(opacity)
             .matchedGeometryEffect(id: "question", in: animationID)
+        
     }
     
     var answerView: some View {
@@ -169,6 +183,7 @@ struct TodayAnswerSubmittedView: View {
         .frame(maxHeight: 149)
         .padding(.horizontal, 24)
         .padding(.top, 90)
+        .opacity(opacity)
         .matchedGeometryEffect(id: "answer", in: animationID)
     }
     
@@ -193,5 +208,6 @@ struct TodayAnswerSubmittedView: View {
                 }
         }
         .padding(.bottom, 45)
+        .opacity(opacity)
     }
 }
