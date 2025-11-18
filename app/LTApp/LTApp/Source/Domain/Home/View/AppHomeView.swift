@@ -21,7 +21,8 @@ struct AppHomeView: View {
         GeometryReader { proxy in
             if showTodayAnswerView {
                 todayAnswerView
-                    .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+                    .transition(
+                        .asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
             } else {
                 homeView(proxy)
             }
