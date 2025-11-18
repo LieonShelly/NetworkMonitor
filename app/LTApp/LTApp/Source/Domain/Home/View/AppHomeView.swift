@@ -26,8 +26,10 @@ struct AppHomeView: View {
                 todayAnswerView
                         .transition(
                             .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
+                     
             }
         }
+        .animation(.easeInOut, value: showTodayAnswerView)
     }
     
     func homeView(_ proxy: GeometryProxy) -> some View {
@@ -42,9 +44,7 @@ struct AppHomeView: View {
                             
                         if let head = viewModel.todayQuestions.first, showTodayQuestion {
                             TodayQuestionView(question: head) {
-                                withAnimation(.easeInOut(duration: 0.25)) {
-                                    showTodayAnswerView = true
-                                }
+                                showTodayAnswerView = true
                             }
                                 .offset(y: -(40 + 16 * 2))
                                 .padding(.horizontal, 40)
@@ -68,10 +68,10 @@ struct AppHomeView: View {
         }
     }
     
-   @ViewBuilder var todayAnswerView: some View {
-        if let viewModel = viewModel.todayAnswerViewModel {
-            TodayAnswerView(viewModel: viewModel, presented: $showTodayAnswerView)
-        }
+    @ViewBuilder var todayAnswerView: some View {
+        let viewModel = viewModel.generateTodayViewModel()
+        TodayAnswerView(viewModel: viewModel, presented: $showTodayAnswerView)
+        
     }
     
     var titleView: some View {

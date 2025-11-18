@@ -23,10 +23,11 @@ struct TodayAnswerView: View {
             AppColor.backgroundPage
                 .opacity(opacity)
             NaviBar(titlte: viewModel.title) {
-                withAnimation(.easeInOut) {
+                withAnimation(.easeInOut, completionCriteria: .logicallyComplete) {
                     opacity = 0
+                } completion: {
+                    presented.toggle()
                 }
-               
             }
             .zIndex(1)
             .opacity(opacity)
@@ -42,6 +43,7 @@ struct TodayAnswerView: View {
         .animation(.easeInOut, value: viewModel.submitted)
         .animation(.easeInOut, value: presented)
         .task {
+            viewModel.submitted = false
             await viewModel.initializeData()
             guard viewModel.cardViewModels.isEmpty else { return }
             try? await viewModel.fetchData()
@@ -57,6 +59,7 @@ struct TodayAnswerView: View {
         }
         .padding(.top, 44)
         .contentShape(.rect)
+        .opacity(opacity)
         .onTapGesture {
             hideKeyboard()
         }
@@ -66,12 +69,12 @@ struct TodayAnswerView: View {
         TodayAnswerSubmittedView(
             quesitionText: viewModel.cardViewModels.first?.question.title ?? "",
             answerText: viewModel.answerText,
-            opacity: $opacity
+            opacity: $opacity,
+            presented: $presented
         )
         .padding(.top, 44)
         .contentShape(.rect)
         .padding(.top, 20)
-       
     }
     
     @ViewBuilder
@@ -86,12 +89,12 @@ struct TodayAnswerView: View {
                         .zIndex(zIndex)
                         .disabled(keyboardObserver.keyboardShown)
                 }
-                .matchedGeometryEffect(id: "question", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 20)
             .padding(.top, 20)
-            
+            .opacity(opacity)
+            .matchedGeometryEffect(id: "question", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
         }
     }
     
@@ -145,12 +148,14 @@ struct TodayAnswerSubmittedView: View {
     let quesitionText: String
     let answerText: String
     @Binding var opacity: CGFloat
+    @Binding var presented: Bool
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     
-    init(quesitionText: String, answerText: String, opacity: Binding<CGFloat>) {
+    init(quesitionText: String, answerText: String, opacity: Binding<CGFloat>, presented: Binding<Bool>) {
         self.quesitionText = quesitionText
         self.answerText = answerText
         self._opacity = opacity
+        self._presented = presented
     }
     
     var body: some View {
@@ -209,9 +214,11 @@ struct TodayAnswerSubmittedView: View {
     
     var closeBtn: some View {
         Button {
-            withAnimation(.easeIn(duration: 0.5)) {
+            withAnimation(.easeIn(duration: 0.5), completionCriteria: .logicallyComplete) {
                 opacity = 0
                 homeCoordinator.dripleTransitionData?.showCalendarDripple = true
+            } completion: {
+                presented.toggle()
             }
             
         } label: {

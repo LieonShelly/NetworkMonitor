@@ -27,6 +27,10 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
         self.submittedAction = submitted
     }
     
+    deinit {
+        print("TodayAnswerViewModel-deinit")
+    }
+    
     func initializeData() async {
         await MainActor.run {
             for index in 0 ..< inputQuestions.count {

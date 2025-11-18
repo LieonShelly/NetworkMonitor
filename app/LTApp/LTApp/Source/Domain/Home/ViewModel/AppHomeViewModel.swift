@@ -63,10 +63,6 @@ final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
         await MainActor.run {
             self.todayQuestions = questions
         }
-        
-        todayAnswerViewModel = await .init(service: service, questions: todayQuestions, submitted: {
-            
-        })
     }
     
     @MainActor
@@ -75,5 +71,13 @@ final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
         var questions = self.todayQuestions
         guard let head = questions.first else { return [] }
        return [head] + questions[1 ..< count]
+    }
+    
+    @MainActor
+    func generateTodayViewModel() -> TodayAnswerViewModel {
+        let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: todayQuestions, submitted: {
+            
+        })
+        return todayAnswerViewModel
     }
 }
