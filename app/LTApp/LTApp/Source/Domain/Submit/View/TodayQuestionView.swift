@@ -7,7 +7,10 @@ import UIComponent
 
 struct TodayQuestionView: View {
     let question: Question
+    let addAction: () -> Void
     
+    @State private var isBreathing = false
+
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {
             titleView
@@ -47,7 +50,7 @@ struct TodayQuestionView: View {
     
     var addBtn: some View {
         Button {
-            
+            addAction()
         } label: {
             LinearGradient(
                 colors: [
@@ -65,9 +68,16 @@ struct TodayQuestionView: View {
                     .resizable()
                     .frame(width: 16, height: 16)
             }
+            .scaleEffect(isBreathing ? 1.2 : 1.0)
+            .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true),
+                       value: isBreathing
+            )
         }
         .padding(.trailing, 14)
         .padding(.top, 2)
+        .task {
+            isBreathing = true
+        }
        
     }
     

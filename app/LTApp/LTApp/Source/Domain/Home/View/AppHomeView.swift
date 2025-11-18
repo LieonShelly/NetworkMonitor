@@ -28,12 +28,11 @@ struct AppHomeView: View {
                                 .padding(.top, 10)
                                 
                             if let head = viewModel.todayQuestions.first, showTodayQuestion {
-                                TodayQuestionView(question: head)
-                                    .onTapGesture {
-                                        homeCoordinator.push(HomeRoute.addTodayAnswer(.init(questions: viewModel.organize(), submiited: { @MainActor in
-                                            showTodayQuestion = false
-                                        })))
-                                    }
+                                TodayQuestionView(question: head) {
+                                    homeCoordinator.push(HomeRoute.addTodayAnswer(.init(questions: viewModel.organize(), submiited: { @MainActor in
+//                                        showTodayQuestion = false
+                                    })))
+                                }
                                     .offset(y: -(40 + 16 * 2))
                                     .padding(.horizontal, 40)
                                     .padding(.bottom, 10)

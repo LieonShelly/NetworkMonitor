@@ -47,7 +47,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
         )
         self.appDataService = appDataWithAuthorizationService
 //        changeRoot(.preHome)
-//        changeRoot(.home(.init(overLayData: nil)))
+        changeRoot(.home(.init(overLayData: nil)))
     }
     
     func changeRoot(_ type: AppRootType) {
