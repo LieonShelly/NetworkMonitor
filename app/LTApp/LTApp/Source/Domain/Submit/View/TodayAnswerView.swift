@@ -22,11 +22,13 @@ struct TodayAnswerView: View {
         ZStack(alignment: .top) {
             AppColor.backgroundPage
                 .opacity(opacity)
-            NaviBar(titlte: viewModel.title) {
+            NaviBar(titlte: viewModel.title, hideBackBtn: viewModel.submitted) {
                 withAnimation(.easeInOut, completionCriteria: .logicallyComplete) {
                     opacity = 0
                 } completion: {
-                    presented.toggle()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+                        presented.toggle()
+                    })
                 }
             }
             .zIndex(1)
@@ -100,7 +102,7 @@ struct TodayAnswerView: View {
     
     @ViewBuilder
     var refreshBtn: some View {
-        if keyboardObserver.keyboardHeight <= 0 || viewModel.answerText.isEmpty  {
+        if keyboardObserver.keyboardHeight <= 0  {
             Button {
                 viewModel.refresh()
             } label: {
@@ -150,6 +152,7 @@ struct TodayAnswerSubmittedView: View {
     @Binding var opacity: CGFloat
     @Binding var presented: Bool
     @EnvironmentObject var homeCoordinator: HomeCoordinator
+    @State var imageViewOpacity: CGFloat = 0
     
     init(quesitionText: String, answerText: String, opacity: Binding<CGFloat>, presented: Binding<Bool>) {
         self.quesitionText = quesitionText
@@ -169,6 +172,7 @@ struct TodayAnswerSubmittedView: View {
         .animation(.easeInOut, value: opacity)
         .task {
             homeCoordinator.dripleTransitionData?.showCalendarDripple = false
+            imageViewOpacity = 1
         }
     }
     
@@ -208,6 +212,7 @@ struct TodayAnswerSubmittedView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 150, height: 147)
                 .padding(.top, 58)
+                .opacity(imageViewOpacity)
                 .matchedGeometryEffect(id: "dripple", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
         }
     }
@@ -218,7 +223,9 @@ struct TodayAnswerSubmittedView: View {
                 opacity = 0
                 homeCoordinator.dripleTransitionData?.showCalendarDripple = true
             } completion: {
-                presented.toggle()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+                    presented.toggle()
+                })
             }
             
         } label: {
