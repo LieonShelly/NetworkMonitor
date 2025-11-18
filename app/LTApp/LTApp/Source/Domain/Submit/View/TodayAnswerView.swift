@@ -10,8 +10,8 @@ struct TodayAnswerView: View {
     @Binding var presented: Bool
     @State var needRefresh: Bool = false
     @StateObject var keyboardObserver: KeyboardObserver = .init()
-    @Namespace var animationID
     @State var opacity: CGFloat = 1
+    @EnvironmentObject var homeCoordinator: HomeCoordinator
     
     init(viewModel: TodayAnswerViewModel, presented: Binding<Bool>) {
         self._viewModel = .init(wrappedValue: viewModel)
@@ -66,8 +66,7 @@ struct TodayAnswerView: View {
         TodayAnswerSubmittedView(
             quesitionText: viewModel.cardViewModels.first?.question.title ?? "",
             answerText: viewModel.answerText,
-            animationID: animationID,
-            opacity: opacity
+            opacity: $opacity
         )
         .padding(.top, 44)
         .contentShape(.rect)
@@ -87,7 +86,7 @@ struct TodayAnswerView: View {
                         .zIndex(zIndex)
                         .disabled(keyboardObserver.keyboardShown)
                 }
-                .matchedGeometryEffect(id: "question", in: animationID)
+                .matchedGeometryEffect(id: "question", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 20)
@@ -121,7 +120,7 @@ struct TodayAnswerView: View {
         .padding(.horizontal, 24)
         .padding(.top, 16)
         .padding(.bottom, 16)
-        .matchedGeometryEffect(id: "answer", in: animationID)
+        .matchedGeometryEffect(id: "answer", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
         
     }
     
@@ -145,8 +144,14 @@ struct TodayAnswerView: View {
 struct TodayAnswerSubmittedView: View {
     let quesitionText: String
     let answerText: String
-    let animationID: Namespace.ID
-    var opacity: CGFloat
+    @Binding var opacity: CGFloat
+    @EnvironmentObject var homeCoordinator: HomeCoordinator
+    
+    init(quesitionText: String, answerText: String, opacity: Binding<CGFloat>) {
+        self.quesitionText = quesitionText
+        self.answerText = answerText
+        self._opacity = opacity
+    }
     
     var body: some View {
         VStack(spacing: .zero) {
@@ -157,6 +162,9 @@ struct TodayAnswerSubmittedView: View {
             closeBtn
         }
         .animation(.easeInOut, value: opacity)
+        .task {
+            homeCoordinator.dripleTransitionData?.showCalendarDripple = false
+        }
     }
     
     var questionView: some View {
@@ -164,7 +172,7 @@ struct TodayAnswerSubmittedView: View {
             .textStyle(size: 32, fontFamily: .vividlyRegular)
             .padding(.horizontal, 16)
             .opacity(opacity)
-            .matchedGeometryEffect(id: "question", in: animationID)
+            .matchedGeometryEffect(id: "question", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
         
     }
     
@@ -184,20 +192,27 @@ struct TodayAnswerSubmittedView: View {
         .padding(.horizontal, 24)
         .padding(.top, 90)
         .opacity(opacity)
-        .matchedGeometryEffect(id: "answer", in: animationID)
+        .matchedGeometryEffect(id: "answer", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
     }
     
+    @ViewBuilder
     var imageView: some View {
-        Image(uiImage: LocalIconLib.fallLeave)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 150, height: 147)
-            .padding(.top, 58)
-        
+        if !homeCoordinator.dripleTransitionData.showCalendarDripple {
+            Image(uiImage: LocalIconLib.fallLeave)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 150, height: 147)
+                .padding(.top, 58)
+                .matchedGeometryEffect(id: "dripple", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
+        }
     }
     
     var closeBtn: some View {
         Button {
+            withAnimation(.easeIn(duration: 0.5)) {
+                opacity = 0
+                homeCoordinator.dripleTransitionData?.showCalendarDripple = true
+            }
             
         } label: {
             RoundedRectangle(cornerRadius: 12)

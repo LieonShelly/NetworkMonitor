@@ -7,7 +7,7 @@ import SwiftUI
 @MainActor
 final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
     @Published var path: NavigationPath = .init()
-    @Published var dripleTransitionData: DrippleTransitionData?
+    @Published var dripleTransitionData: DrippleTransitionData!
 
     var children: [any Coordinator] = []
     private let appDataService: any AppDataWithAuthorizationServiceful
