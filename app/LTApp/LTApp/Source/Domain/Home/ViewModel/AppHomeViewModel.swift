@@ -7,6 +7,9 @@ import SwiftUI
 
 final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
     @MainActor @Published var todayQuestions: [Question] = []
+    @MainActor @Published var showTodayQuestion: Bool = true
+    @MainActor @Published var showTodayAnswerView: Bool = false
+    
     var todayAnswerViewModel: TodayAnswerViewModel?
     
     var tabbarViewModel = AppTabbarViewModel(
@@ -75,7 +78,11 @@ final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
     
     @MainActor
     func generateTodayViewModel() -> TodayAnswerViewModel {
-        let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: todayQuestions, submitted: {
+        let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: todayQuestions, submitted: {[weak self] in
+            Task {
+               try? await self?.fetchData()
+                self?.showTodayQuestion = false
+            }
             
         })
         return todayAnswerViewModel

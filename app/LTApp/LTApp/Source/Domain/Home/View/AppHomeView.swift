@@ -10,8 +10,7 @@ struct AppHomeView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     
     @State var showPage: Bool = false
-    @State var showTodayQuestion: Bool = true
-    @State var showTodayAnswerView: Bool = false
+   
     
     init(service: any AppDataWithAuthorizationServiceful) {
         self._viewModel = StateObject(wrappedValue: AppHomeViewModel(service: service))
@@ -22,14 +21,14 @@ struct AppHomeView: View {
             GeometryReader { proxy in
                 homeView(proxy)
             }
-            if showTodayAnswerView {
+            if viewModel.showTodayAnswerView {
                 todayAnswerView
                         .transition(
                             .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
                      
             }
         }
-        .animation(.easeInOut, value: showTodayAnswerView)
+        .animation(.easeInOut, value: viewModel.showTodayAnswerView)
     }
     
     func homeView(_ proxy: GeometryProxy) -> some View {
@@ -44,7 +43,7 @@ struct AppHomeView: View {
                             .padding(.horizontal, 50)
                             .padding(.top, 10)
                             
-                        if let head = viewModel.todayQuestions.first, showTodayQuestion {
+                        if let head = viewModel.todayQuestions.first, viewModel.showTodayQuestion {
                             TodayQuestionView(question: head) {
                                 pushToAddTodayAnsnwer()
                             }
@@ -72,7 +71,7 @@ struct AppHomeView: View {
     
     @ViewBuilder var todayAnswerView: some View {
         let viewModel = viewModel.generateTodayViewModel()
-        TodayAnswerView(viewModel: viewModel, presented: $showTodayAnswerView)
+        TodayAnswerView(viewModel: viewModel, presented: $viewModel.showTodayAnswerView)
         
     }
     
@@ -83,7 +82,7 @@ struct AppHomeView: View {
     }
     
     func pushToAddTodayAnsnwer() {
-        showTodayAnswerView = true
+        viewModel.showTodayAnswerView = true
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
             self.viewModel.selected(0)
         })
