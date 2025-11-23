@@ -15,10 +15,11 @@ struct CalendarView: View {
     }
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @StateObject var viewModel: CalendarViewModel
-
+    let addAction: (() -> Void)
     
-    init(viewModel: CalendarViewModel) {
+    init(viewModel: CalendarViewModel, addAction:  @escaping (() -> Void)) {
         self._viewModel = .init(wrappedValue: viewModel)
+        self.addAction = addAction
     }
     
     var body: some View {
@@ -202,10 +203,10 @@ struct CalendarView: View {
         .animation(.easeInOut, value: viewModel.scrollPostion)
     }
     
-    
+    @State private var isBreathing = false
     var addBtn: some View {
         Button {
-            
+            addAction()
         } label: {
             LinearGradient(
                 colors: [
@@ -222,6 +223,13 @@ struct CalendarView: View {
                 Image(.smallAdd)
                     .resizable()
                     .frame(width: 16, height: 16)
+            }
+            .scaleEffect(isBreathing ? 1.2 : 1.0)
+            .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true),
+                       value: isBreathing
+            )
+            .task {
+                isBreathing = true
             }
         }
        

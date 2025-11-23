@@ -80,4 +80,8 @@ final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
         })
         return todayAnswerViewModel
     }
+    
+    @MainActor func selected(_ index: Int) {
+        contentViewModel.scrollTo(index)
+    }
 }

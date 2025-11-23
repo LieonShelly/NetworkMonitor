@@ -36,7 +36,9 @@ struct AppHomeView: View {
         VStack {
             if showPage {
                 VStack(spacing: .zero) {
-                    AppScrollContentView(viewModel: viewModel.contentViewModel)
+                    AppScrollContentView(viewModel: viewModel.contentViewModel) {
+                        pushToAddTodayAnsnwer()
+                    }
                     ZStack(alignment: .bottom) {
                         AppTabbar(viewModel: viewModel.tabbarViewModel)
                             .padding(.horizontal, 50)
@@ -44,7 +46,7 @@ struct AppHomeView: View {
                             
                         if let head = viewModel.todayQuestions.first, showTodayQuestion {
                             TodayQuestionView(question: head) {
-                                showTodayAnswerView = true
+                                pushToAddTodayAnsnwer()
                             }
                                 .offset(y: -(40 + 16 * 2))
                                 .padding(.horizontal, 40)
@@ -78,5 +80,12 @@ struct AppHomeView: View {
         Text("The Little Things")
             .textStyle(size: 36)
             .padding(.top, 35)
+    }
+    
+    func pushToAddTodayAnsnwer() {
+        showTodayAnswerView = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+            self.viewModel.selected(0)
+        })
     }
 }
