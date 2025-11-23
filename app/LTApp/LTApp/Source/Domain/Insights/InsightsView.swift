@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import UIComponent
 
 struct InsightsView: View {
     var body: some View {
         VStack(spacing: .zero) {
             titleView
             ScrollView(showsIndicators: false) {
+                LoadingView()
             }
         }
     }

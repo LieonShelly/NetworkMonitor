@@ -11,8 +11,8 @@ settings:
 
 packages:
   Lottie:
-    url: https://github.com/airbnb/lottie-spm.git
-    from: 4.5.2
+    url: https://github.com/airbnb/lottie-ios
+    exactVersion: 4.5.1
 
 targets:
   UIComponent:
@@ -24,7 +24,8 @@ targets:
       groups:
         - BaseTargetSetting
     dependencies:
-      - package: Lottie
+    - package: Lottie
+      product: Lottie
 shemes:
   UIComponent:
     templates:

@@ -48,3 +48,4 @@ public struct DefaultAppButton: View {
             .frame(height: 62)
     }
 }
+
