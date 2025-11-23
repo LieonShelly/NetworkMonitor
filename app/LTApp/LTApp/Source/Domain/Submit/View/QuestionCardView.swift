@@ -16,6 +16,7 @@ struct QuestionCardView: View {
         }
         .frame(maxWidth: .infinity)
         .background(AppColor.color(hex: 0xFFFAEE))
+        .cornerRadius(12, corners: .allCorners)
         .overlay(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(AppColor.color(hex: 0x717171), lineWidth: 1)
