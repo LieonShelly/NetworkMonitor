@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 
 final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
-    @MainActor @Published var cardViewModels: [QuestionCardViewModel] = []
+    @Published var cardViewModels: [QuestionCardViewModel] = []
     @MainActor @Published var answerText: String = ""
     @MainActor @Published var createAt: Date?
     @MainActor @Published var submitted: Bool = false
@@ -25,24 +25,19 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
         self.inputQuestions = questions
         self.title = Date().monthDayDesc
         self.submittedAction = submitted
+        for index in 0 ..< inputQuestions.count {
+            let viewModel = QuestionCardViewModel(
+                question: inputQuestions[index],
+                index: index,
+                count: inputQuestions.count) { [weak self] in
+                    self?.changeToNextCard()
+                }
+            self.cardViewModels.append(viewModel)
+        }
     }
     
     deinit {
         print("TodayAnswerViewModel-deinit")
-    }
-    
-    func initializeData() async {
-        await MainActor.run {
-            for index in 0 ..< inputQuestions.count {
-                let viewModel = QuestionCardViewModel(
-                    question: inputQuestions[index],
-                    index: index,
-                    count: inputQuestions.count) {[weak self] in
-                        self?.changeToNextCard()
-                    }
-                self.cardViewModels.append(viewModel)
-            }
-        }
     }
     
     func fetchData() async throws {
@@ -67,7 +62,7 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
             createAt = Date()
         }
         guard let createAt = await createAt else { return }
-        guard let question = await cardViewModels.first?.question else { return }
+        guard let question = cardViewModels.first?.question else { return }
         
         let _ = try await service.submitAnswerUseCase.execute(
             .init(

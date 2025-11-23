@@ -46,7 +46,7 @@ struct TodayAnswerView: View {
         .animation(.easeInOut, value: presented)
         .task {
             viewModel.submitted = false
-            await viewModel.initializeData()
+//            await viewModel.initializeData()
             guard viewModel.cardViewModels.isEmpty else { return }
             try? await viewModel.fetchData()
         }
@@ -81,23 +81,21 @@ struct TodayAnswerView: View {
     
     @ViewBuilder
     var cardListView: some View {
-        let count = viewModel.cardViewModels.count
-        if count > 0 {
-            ZStack {
-                ForEach(viewModel.cardViewModels, id: \.id) { cardViewModel in
-                    let index = viewModel.cardViewModels.firstIndex(where: { $0.id == cardViewModel.id}) ?? 0
-                    let zIndex = Double(count - index)
-                    LoopingStackCardView(viewModel: cardViewModel)
-                        .zIndex(zIndex)
-                        .disabled(keyboardObserver.keyboardShown)
-                }
+        ZStack {
+            ForEach(viewModel.cardViewModels, id: \.id) { cardViewModel in
+                let count = cardViewModel.count
+                let index = viewModel.cardViewModels.firstIndex(where: { $0.id == cardViewModel.id}) ?? 0
+                let zIndex = Double(count - index)
+                LoopingStackCardView(viewModel: cardViewModel)
+                    .zIndex(zIndex)
+                    .disabled(keyboardObserver.keyboardShown)
             }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, 20)
-            .padding(.top, 20)
-            .opacity(opacity)
-            .matchedGeometryEffect(id: "question", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
         }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 20)
+        .padding(.top, 20)
+        .opacity(opacity)
+        .matchedGeometryEffect(id: "question", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
     }
     
     @ViewBuilder
