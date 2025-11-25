@@ -10,6 +10,7 @@ import Persistence
 final class AppCoordinator: ObservableObject, @unchecked Sendable {
     @Published private(set) var root: AppRootType = .preHome
     let appDataService: any AppDataWithAuthorizationServiceful
+    let tokenProvider: any TokenProvider
     
     init(environment: AppEnvironment = .dev) {
         let enviroment = environment
@@ -43,11 +44,12 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
         let reflectionRepository = ReflectionRepository(apiClient: apiClient)
         let appDataWithAuthorizationService = AppDataWithAuthorizationService(
             authRepository: authRepository,
-            reflectionRepository: reflectionRepository
+            reflectionRepository: reflectionRepository,
+            storage: keyChain
         )
         self.appDataService = appDataWithAuthorizationService
-//        changeRoot(.preHome)
-        changeRoot(.home(.init(overLayData: nil)))
+        self.tokenProvider = sessionManager
+        self.launch()
     }
     
     func changeRoot(_ type: AppRootType) {
@@ -62,6 +64,14 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
             return AnyView(AppHomeRootView(viewModel: viewModel))
         }
     }
+    
+    func launch() {
+        if tokenProvider.refreshToken != nil {
+            changeRoot(.home(.init(overLayData: nil)))
+        } else {
+            changeRoot(.preHome)
+        }
+    }
 }
 
 
@@ -74,3 +84,5 @@ enum AppRootType {
 enum AppRoute: Route {
     
 }
+
+

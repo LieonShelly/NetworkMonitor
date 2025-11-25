@@ -45,5 +45,9 @@ final class FirstQuestionViewModel: ObservableObject, @unchecked Sendable {
         )
     }
     
+    func disableOnboardingFlow() {
+        service.onboardingAccessUseCase.disabled()
+    }
+    
 }
 

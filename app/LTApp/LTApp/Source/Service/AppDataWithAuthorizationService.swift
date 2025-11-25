@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import Persistence
 
 public protocol AppDataWithAuthorizationServiceful {
     var authUseCasse: any AuthUseCaseType { get }
@@ -16,16 +17,20 @@ public protocol AppDataWithAuthorizationServiceful {
     var pinQuestionUseCase: any PinQuestionUseCaseType { get }
     var fetchHistoryAnswersUseCase: any FetchHistoryAnswersUseCaseType { get }
     var fetchTodayQuestionsUseCase: any FetchTodayQuestionsUseCaseType { get }
+    var onboardingAccessUseCase: any OnboardingAccessUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
     private let authRepository: any AuthRepositoryType
     private let reflectionRepository: any ReflectionRepositoryType
+    private let storage: any KeyValueStorageType
     
     public init(authRepository: any AuthRepositoryType,
-                reflectionRepository: any ReflectionRepositoryType) {
+                reflectionRepository: any ReflectionRepositoryType,
+                storage: any KeyValueStorageType) {
         self.authRepository = authRepository
         self.reflectionRepository = reflectionRepository
+        self.storage = storage
     }
     
     public lazy var authUseCasse: any AuthUseCaseType = {
@@ -70,5 +75,9 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var fetchTodayQuestionsUseCase: any FetchTodayQuestionsUseCaseType = {
         FetchTodayQuestionsUseCase(repository: reflectionRepository)
+    }()
+    
+    public lazy var onboardingAccessUseCase: any OnboardingAccessUseCaseType = {
+        OnboardingAccessUseCase(storage: storage)
     }()
 }

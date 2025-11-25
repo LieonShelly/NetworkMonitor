@@ -178,6 +178,7 @@ struct FirstQuestionView: View {
         withAnimation(.easeInOut(duration: 0.5)) {
             currentPage = .submitted
         }
+        viewModel.disableOnboardingFlow()
         try await Task.sleep(for: .milliseconds(700))
         coordinaor.changeRoot(
             .home(.init(

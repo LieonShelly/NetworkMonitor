@@ -59,7 +59,7 @@ struct AppleIDSignInView: View {
                 Task.detached {
                     do {
                         try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
-                        await gotoSplash()
+                        await route()
                     } catch {
                         
                     }
@@ -73,23 +73,28 @@ struct AppleIDSignInView: View {
         .frame(height: 54)
         .padding(.horizontal, 30)
         .padding(.bottom, 168)
-       /* .onTapGesture {
+       .onTapGesture {
             Task.detached {
                 do {
-                    try await viewModel.login(authorizationCode: "ca956246d14cb4840bf2181e6f41b5b28.0.rrxxu.Ciodj8mvlmOmYohAG6vn7Q", identityToken: "eyJraWQiOiJVYUlJRlkyZlc0IiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmxpdHRsZS50aGluZ3MiLCJleHAiOjE3NjM1NDgzOTQsImlhdCI6MTc2MzQ2MTk5NCwic3ViIjoiMDAxNzc0LmZiNmI2MWIyOTkyZTQ2ODM4YmVlMzRlNzgxYTZhMTE0LjEwMjEiLCJjX2hhc2giOiJWaldqV3lvY0Q3YmJMM0U2UE9lUFV3IiwiZW1haWwiOiJieGJiZGR4eW40QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc19wcml2YXRlX2VtYWlsIjp0cnVlLCJhdXRoX3RpbWUiOjE3NjM0NjE5OTQsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.N4Elie6rxZOh1PHGuQLtXY7TaRy9QIrszEVactkPDVFT0XzzgKSWjAmuxPtBeW-YfdkEeVdCQoD4P9m17DwckqgOm37I41WwuPS-mQc9OW53hItOGdDxQOP_igODDU5COlxup6nebtcHri3SIr3AvzljK5Zgh2ze5FmkHO82D1eUKtK2owLgggYu_EU_NAzFm9KdxT_191R2-M7Ug0zpDmNzl9SJuRRzuOPed33QBVUaIRDlQaaOPEsqm2fUgtejIE8shgT6mLnfmUKS-M0lhp8ECGtmOIvYTVsG2L-7tIVHO_m6BJl4CapnD13MhAlUKn8BxkYnG49GXIUtpAHw7w")
-                    await gotoSplash()
-
+                    try await viewModel.login(authorizationCode: "cbef6e869cca045efa2b9b1111213e777.0.mrxxu.bGfBd5VRQw6F-_8qRSzDBA", identityToken: "eyJraWQiOiJVYUlJRlkyZlc0IiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmxpdHRsZS50aGluZ3MiLCJleHAiOjE3NjQxMjg0MjMsImlhdCI6MTc2NDA0MjAyMywic3ViIjoiMDAxNzc0LmZiNmI2MWIyOTkyZTQ2ODM4YmVlMzRlNzgxYTZhMTE0LjEwMjEiLCJjX2hhc2giOiJTc3pma2hDWXhtaDBvZDNxSHZTVERnIiwiZW1haWwiOiJieGJiZGR4eW40QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc19wcml2YXRlX2VtYWlsIjp0cnVlLCJhdXRoX3RpbWUiOjE3NjQwNDIwMjMsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.ZqM3PeMBqbbnr4Y5aC5ELeLlBk_JFn222ptTCSBgCvGCI7ZVcctVTFXRAlPLjYVmZtldpqSkTDxOxdrBY_24mS3RxacgCuHrGB_5JMl_Wrmqgvs7saW2nl7-pOD-Db6HB8yRJN75xj053pL5fshSE02ZEl_XJjQ5f6mXM68jhZbezUKKytmdY0SF8rrVa3_2s3U4i2QLD3dMM_UZfL6-nY5y_cPn0CzyoXiY1mYYXoLe_4PCTDoke2PheRxxDfhrTQ8zHELS8Ghqps5jCC-YlekmAFWpZ-fziJ6qXFpS3zNPc3tz9S3UmJtNANPqIaNpeF_cB3EN5Sa6-AFFuy9lXA")
+                    await route()
                 } catch {
                   await MainActor.run {
                         showError = true
                     }
                 }
             }
-        } */
+        }
     }
     
     @MainActor
-    func gotoSplash() {
-        coordinator.push(PreHomeRoute.splash)
+    func route() {
+        if viewModel.onboardingEnabled {
+            coordinator.push(PreHomeRoute.splash)
+        } else {
+            appCoordinator.changeRoot(
+                .home(.init(overLayData: nil))
+            )
+        }
     }
 }

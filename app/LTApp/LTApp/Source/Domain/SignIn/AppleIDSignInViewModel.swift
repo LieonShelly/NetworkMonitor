@@ -6,6 +6,9 @@ import Combine
 
 class AppleIDSignInViewModel: ObservableObject, @unchecked Sendable {
     private let service: any AppDataWithAuthorizationServiceful
+    var onboardingEnabled: Bool {
+        service.onboardingAccessUseCase.isEnabled
+    }
     
     init(service: any AppDataWithAuthorizationServiceful) {
         self.service = service
@@ -15,6 +18,6 @@ class AppleIDSignInViewModel: ObservableObject, @unchecked Sendable {
         print("authorizationCode:\(authorizationCode)")
         print("identityToken:\(identityToken)")
         let user = try await service.authUseCasse.execute(authorizationCode: authorizationCode, identityToken: identityToken)
-         print(user)
+        print(user)
     }
 }
