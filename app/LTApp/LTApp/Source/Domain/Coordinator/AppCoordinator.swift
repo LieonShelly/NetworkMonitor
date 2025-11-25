@@ -5,12 +5,14 @@
 import SwiftUI
 import LTNetwork
 import Persistence
+import Combine
 
 @MainActor
 final class AppCoordinator: ObservableObject, @unchecked Sendable {
     @Published private(set) var root: AppRootType = .preHome
     let appDataService: any AppDataWithAuthorizationServiceful
-    let tokenProvider: any TokenProvider
+    let rootViewProvider: any RootViewProviding
+    private var cancellables: Set<AnyCancellable> = .init()
     
     init(environment: AppEnvironment = .dev) {
         let enviroment = environment
@@ -31,11 +33,13 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
         let refreshTokenInterceptor = RefreshTokenInterceptor(
             tokenProvider: sessionManager,
             service: appDataWithoutAuthorizationService)
+        let logoutInterceptor = LogoutInterceptor(tokenProvider: sessionManager)
         let apiClient = ApiClient(
             environment: enviroment,
             interceptors: [
                 tokenInterceptor,
-                refreshTokenInterceptor
+                refreshTokenInterceptor,
+                logoutInterceptor
             ])
         let authRepository = AuthRepository(
             apiClient: apiClient,
@@ -48,7 +52,10 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
             storage: keyChain
         )
         self.appDataService = appDataWithAuthorizationService
-        self.tokenProvider = sessionManager
+        self.rootViewProvider = RootViewProvider(
+            tokenProvider: sessionManager,
+            tokenExpired: logoutInterceptor
+        )
         self.launch()
     }
     
@@ -66,11 +73,11 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
     }
     
     func launch() {
-        if tokenProvider.refreshToken != nil {
-            changeRoot(.home(.init(overLayData: nil)))
-        } else {
-            changeRoot(.preHome)
-        }
+        rootViewProvider.root
+            .sink { [weak self] root in
+                self?.root = root
+            }
+            .store(in: &cancellables)
     }
 }
 

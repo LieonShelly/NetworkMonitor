@@ -39,3 +39,5 @@ actor RefreshTokenInterceptor: NetworkInterceptor, @unchecked Sendable {
         try await service.refreshTokenUseCase.execute()
     }
 }
+
+

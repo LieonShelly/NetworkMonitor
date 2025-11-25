@@ -46,6 +46,11 @@ public class ApiClient: ApiClientType {
                 if shouldRetry {
                     return try await sendRequest(request)
                 }
+                if try await interceptor.abort(urlRequest, response: response) {
+                    throw AppNetworkError.httpError(
+                        statusCode: .init(rawValue: statusCode) ??  HttpErrorCode.badRequest,
+                        body: responseData.0)
+                }
             }
         default:
             throw AppNetworkError.httpError(
