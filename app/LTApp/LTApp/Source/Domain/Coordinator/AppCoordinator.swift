@@ -39,7 +39,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
             interceptors: [
                 tokenInterceptor,
                 refreshTokenInterceptor,
-                logoutInterceptor
+                logoutInterceptor,
             ])
         let authRepository = AuthRepository(
             apiClient: apiClient,
