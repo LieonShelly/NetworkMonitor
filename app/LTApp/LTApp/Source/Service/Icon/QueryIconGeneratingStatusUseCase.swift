@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol QueryIconGeneratingStatusUseCaseType: Sendable {
-    func execute(_ iconId: String) async throws -> AsyncThrowingStream<IconData, any Error>
+    func execute(_ iconId: String) -> AsyncThrowingStream<IconData, any Error>
 }
 
 public final class QueryIconGeneratingStatusUseCase: QueryIconGeneratingStatusUseCaseType, @unchecked Sendable {
@@ -18,7 +18,7 @@ public final class QueryIconGeneratingStatusUseCase: QueryIconGeneratingStatusUs
         self.repository = repository
     }
     
-    public func execute(_ iconId: String) async throws -> AsyncThrowingStream<IconData, any Error> {
+    public func execute(_ iconId: String) -> AsyncThrowingStream<IconData, any Error> {
         repository.queryIconGeneratingStatus(iconId)
     }
 }

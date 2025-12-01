@@ -16,5 +16,5 @@ public enum IconGeneratingStatus: String, Codable {
 public struct IconDto: Codable {
     let status: IconGeneratingStatus?
     let url: String?
-    let iconId: String?
+    let id: String?
 }

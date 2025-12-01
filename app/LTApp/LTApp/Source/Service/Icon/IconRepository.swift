@@ -30,8 +30,13 @@ public class IconRepository: IconRepositoryType {
                         return
                     }
                     for try await line in bytes.0.lines {
-                        let reponse: UniversalResponse<IconDto> = try JSONDecoder().decode(UniversalResponse<IconDto> .self, from: Data(line.utf8))
-                        continuation.yield(reponse.data.toDomain())
+                        if line.hasPrefix("data:") {
+                            let jsonString = line.dropFirst(5).trimmingCharacters(in: .whitespaces)
+                            if let data = jsonString.data(using: .utf8) {
+                                let reponse: UniversalResponse<IconDto> = try JSONDecoder().decode(UniversalResponse<IconDto> .self, from: data)
+                                continuation.yield(reponse.data.toDomain())
+                            }
+                        }
                     }
                     continuation.finish()
                 } catch {

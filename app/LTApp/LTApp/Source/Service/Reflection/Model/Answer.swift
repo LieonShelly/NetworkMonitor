@@ -9,6 +9,7 @@ public struct Answer: Sendable {
     let content: String
     let createTms: Date?
     let createYmd: Date?
+    let icon: IconData?
 }
 
 public struct DayReflections: Sendable {

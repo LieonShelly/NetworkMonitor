@@ -64,7 +64,7 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
         guard let createAt = await createAt else { return }
         guard let question = cardViewModels.first?.question else { return }
         
-        let _ = try await service.submitAnswerUseCase.execute(
+        let answer = try await service.submitAnswerUseCase.execute(
             .init(
                 questionId: question.id,
                 content: answerText,
@@ -72,6 +72,11 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
             )
         )
         submittedAction?()
+        if let icon = answer.icon, let iconId = icon.iconId {
+            for try await progress in service.queryIconStatusUseCase.execute(iconId) {
+                print(progress.status)
+            }
+        }
         await MainActor.run {
             submitted = true
         }

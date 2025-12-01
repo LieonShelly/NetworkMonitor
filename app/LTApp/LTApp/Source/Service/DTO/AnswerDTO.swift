@@ -35,7 +35,8 @@ extension AnswerDTO {
             id: id,
             content: content,
             createTms: createTmsDate,
-            createYmd: createYmdDate
+            createYmd: createYmdDate,
+            icon: icon?.toDomain()
         )
     }
 }

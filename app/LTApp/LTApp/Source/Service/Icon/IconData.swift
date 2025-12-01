@@ -30,7 +30,7 @@ extension IconDto {
         return  .init(
             status: .init(rawValue: status?.rawValue ?? "") ?? .failed,
             url: url ?? "",
-            iconId: iconId
+            iconId: id
         )
     }
 }
