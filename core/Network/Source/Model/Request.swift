@@ -8,7 +8,7 @@ public protocol EndPoint {
     func absoluteUrl(_ environment: AppEnvironment) -> URL
 }
 
-public protocol Request {
+public protocol Request: Sendable {
     var endPoint: EndPoint { get }
     var method: HttpMethod { get }
     var payload: HttpPayload { get }

@@ -4,7 +4,7 @@
 
 import Foundation
 
-public enum AppEnvironment {
+public enum AppEnvironment: Sendable {
     case dev
     case stagging
     case release

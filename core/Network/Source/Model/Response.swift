@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct Response {
+public struct Response: Sendable {
     let statusCode: Int
     let data: Data?
 }

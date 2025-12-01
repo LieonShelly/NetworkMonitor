@@ -29,11 +29,12 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public init(authRepository: any AuthRepositoryType,
                 reflectionRepository: any ReflectionRepositoryType,
+                iconRepositroy: any IconRepositoryType,
                 storage: any KeyValueStorageType) {
         self.authRepository = authRepository
         self.reflectionRepository = reflectionRepository
         self.storage = storage
-        self.iconRepositroy = IconRepository()
+        self.iconRepositroy = iconRepositroy
     }
     
     public lazy var authUseCasse: any AuthUseCaseType = {

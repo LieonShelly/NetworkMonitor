@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct AnswerParam: Encodable {
+public struct AnswerParam: Encodable, Sendable {
     let questionId: String
     let content: String
     let createdAt: String

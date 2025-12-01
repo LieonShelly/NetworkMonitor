@@ -8,7 +8,7 @@ public protocol ApiClientType {
     func sendRequest(_ request: any Request) async throws -> Response
 }
 
-public class ApiClient: ApiClientType {
+public class ApiClient: ApiClientType, @unchecked Sendable {
     private let session: URLSession
     private let environment: AppEnvironment
     private let interceptors: [NetworkInterceptor]
@@ -58,5 +58,44 @@ public class ApiClient: ApiClientType {
                 body: responseData.0)
         }
         throw AppNetworkError.dataError(debugDescription: "Data error")
+    }
+    
+    public func sendSSERequest<T: Codable>(_ request: any Request) -> AsyncThrowingStream<T, any Error> where T: Sendable {
+     
+       return AsyncThrowingStream { continuation in
+            let task = Task.detached {
+                let builder = RequestBuilder(request: request)
+                var urlRequest = builder.build(self.environment)
+                let interceptors = self.interceptors
+                urlRequest.timeoutInterval = .infinity
+                urlRequest.setValue("text/event-stream", forHTTPHeaderField: "Accept")
+                for interceptor in interceptors {
+                    urlRequest = try await interceptor.adapt(urlRequest)
+                }
+                do {
+                    let bytes = try await self.session.bytes(for: urlRequest)
+                    guard let httpResonse = bytes.1 as? HTTPURLResponse, httpResonse.statusCode == 200 else {
+                        continuation.finish(throwing: URLError(.badServerResponse))
+                        return
+                    }
+                    for try await line in bytes.0.lines {
+                        if line.hasPrefix("data:") {
+                            let jsonString = line.dropFirst(5).trimmingCharacters(in: .whitespaces)
+                            if let data = jsonString.data(using: .utf8) {
+                                let reponse = try JSONDecoder().decode(T.self, from: data)
+                                continuation.yield(reponse)
+                            }
+                        }
+                    }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+            
+            continuation.onTermination = { @Sendable _ in
+                task.cancel()
+            }
+        }
     }
 }

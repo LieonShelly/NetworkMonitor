@@ -7,13 +7,13 @@
 
 import Foundation
 
-public enum IconGeneratingStatus: String, Codable {
+public enum IconGeneratingStatus: String, Codable, Sendable {
     case pending = "PENDING"
     case generated = "GENERATED"
     case failed = "FAILED"
 }
 
-public struct IconDto: Codable {
+public struct IconDto: Codable, Sendable {
     let status: IconGeneratingStatus?
     let url: String?
     let id: String?
