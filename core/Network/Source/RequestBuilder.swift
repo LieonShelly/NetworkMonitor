@@ -11,7 +11,7 @@ public class RequestBuilder {
         self.request = request
     }
     
-    func build(_ environment: AppEnvironment) -> URLRequest {
+    public func build(_ environment: AppEnvironment) -> URLRequest {
         let url = request.endPoint.absoluteUrl(environment)
         var urlRequest =  URLRequest(url: url)
         urlRequest.httpMethod = request.method.rawValue

@@ -9,12 +9,14 @@ public struct AnswerDTO: Decodable {
     let content: String
     let createTms: String?
     let createdYmd: String?
+    let icon: IconDto?
     
     enum CodingKeys: String, CodingKey {
         case id
         case content
         case createTms = "created_tms"
         case createdYmd = "created_ymd"
+        case icon
     }
 }
 

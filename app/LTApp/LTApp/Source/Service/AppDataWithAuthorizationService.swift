@@ -18,11 +18,13 @@ public protocol AppDataWithAuthorizationServiceful {
     var fetchHistoryAnswersUseCase: any FetchHistoryAnswersUseCaseType { get }
     var fetchTodayQuestionsUseCase: any FetchTodayQuestionsUseCaseType { get }
     var onboardingAccessUseCase: any OnboardingAccessUseCaseType { get }
+    var queryIconStatusUseCase: any QueryIconGeneratingStatusUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
     private let authRepository: any AuthRepositoryType
     private let reflectionRepository: any ReflectionRepositoryType
+    private let iconRepositroy: any IconRepositoryType
     private let storage: any KeyValueStorageType
     
     public init(authRepository: any AuthRepositoryType,
@@ -31,6 +33,7 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
         self.authRepository = authRepository
         self.reflectionRepository = reflectionRepository
         self.storage = storage
+        self.iconRepositroy = IconRepository()
     }
     
     public lazy var authUseCasse: any AuthUseCaseType = {
@@ -79,5 +82,9 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var onboardingAccessUseCase: any OnboardingAccessUseCaseType = {
         OnboardingAccessUseCase(storage: storage)
+    }()
+    
+    public lazy var queryIconStatusUseCase: any QueryIconGeneratingStatusUseCaseType = {
+        QueryIconGeneratingStatusUseCase(repository: iconRepositroy)
     }()
 }
