@@ -61,7 +61,6 @@ public class ApiClient: ApiClientType, @unchecked Sendable {
     }
     
     public func sendSSERequest<T: Codable>(_ request: any Request) -> AsyncThrowingStream<T, any Error> where T: Sendable {
-     
        return AsyncThrowingStream { continuation in
             let task = Task.detached {
                 let builder = RequestBuilder(request: request)
@@ -81,14 +80,21 @@ public class ApiClient: ApiClientType, @unchecked Sendable {
                     for try await line in bytes.0.lines {
                         if line.hasPrefix("data:") {
                             let jsonString = line.dropFirst(5).trimmingCharacters(in: .whitespaces)
+                            print("SSE:\(jsonString)")
+                       
                             if let data = jsonString.data(using: .utf8) {
-                                let reponse = try JSONDecoder().decode(T.self, from: data)
-                                continuation.yield(reponse)
+                                if let jsonData = try JSONSerialization.jsonObject(with: data) as? [String: Any], let dataStr = jsonData["data"] as? [String: Any] {
+                                    let data = try JSONSerialization.data(withJSONObject: dataStr)
+                                    let reponse = try JSONDecoder().decode(T.self, from: data)
+                                    continuation.yield(reponse)
+                                }
                             }
                         }
                     }
+                    print("SSE: finish")
                     continuation.finish()
                 } catch {
+                    print("SSE ERROR: \(error)")
                     continuation.finish(throwing: error)
                 }
             }
