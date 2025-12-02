@@ -217,25 +217,47 @@ struct CalendarView: View {
     @ViewBuilder
     func dayIcon(_ day: CalendarDay) -> some View {
         if let reflections = day.reflections?.reflections, !reflections.isEmpty {
+            let reflection = reflections.last
             if reflections.count == 1 {
-                let reflection = reflections.last
+                
                 if day.dayType == .today {
                     toDayIconView(reflection?.icon)
+                        .onTapGesture {
+                            if let reflection {
+                                homeCoordinator.push(HomeRoute.answerDetail(reflection))
+                            }
+                        }
                 } else {
                     iconView(reflection?.icon)
+                        .onTapGesture {
+                            if let reflection {
+                                homeCoordinator.push(HomeRoute.answerDetail(reflection))
+                            }
+                        }
                 }
             } else {
-                if let icon = reflections.last(where: { $0.icon != nil })?.icon {
+                if let icon = reflection?.icon {
                     if day.dayType == .today {
                         toDayIconView(icon)
+                            .onTapGesture {
+                                if let reflection {
+                                    homeCoordinator.push(HomeRoute.answerDetail(reflection))
+                                }
+                            }
                     } else {
                         iconView(icon)
+                            .onTapGesture {
+                                if let reflection {
+                                    homeCoordinator.push(HomeRoute.answerDetail(reflection))
+                                }
+                            }
                     }
                 } else {
                     placeholderIcon
                 }
             }
         }
+    
     }
     
     var placeholderIcon: some View {

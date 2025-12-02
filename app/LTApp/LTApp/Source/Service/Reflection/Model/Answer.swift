@@ -4,12 +4,21 @@
 
 import Foundation
 
-public struct Answer: Sendable {
+public struct Answer: Sendable, Equatable, Hashable {
     let id: String
     let content: String
     let createTms: Date?
     let createYmd: Date?
     var icon: IconData?
+    
+    public static func == (lhs: Answer, rhs: Answer) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 public struct DayReflections: Sendable {

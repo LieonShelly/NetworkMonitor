@@ -26,7 +26,7 @@ struct DetailAnswerRow: View {
                 .textStyle(size: 20, color: AppColor.color(hex: 0x000000), fontFamily: .feltTipSeniorRegular)
             
         }
-        .frame(width: 30)
+//        .frame(width: 30)
         .padding(.top, 42)
     }
     

@@ -19,6 +19,7 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var currentMonth: Date?
     @MainActor @Published var scrollPostion: UUID? = nil
     @MainActor @Published var todayUpdatingIcon: IconData?
+    @MainActor @Published var selectedDay: CalendarDay?
     
     let itemSize: CGSize = .init(width: 30, height: 30)
     
@@ -124,8 +125,8 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
                     self.todayUpdatingIcon = stream.toDomain()
                 }
             }
+            try await self.fetchData()
         }
-       
     }
 }
 
