@@ -7,6 +7,10 @@ options:
     iOS: 18.0
     defaultConfig: Debug
  
+packages:
+  Kingfisher:
+    url: https://github.com/onevcat/Kingfisher.git
+    exactVersion: 8.0
 
 targets:
  LTApp:
@@ -24,6 +28,10 @@ targets:
       implicit: true
     - framework: UIComponent.framework
       implicit: true
+    - package: Kingfisher
+      product: Kingfisher
+      implicit: true
+      
   settings:
     base:
       PRODUCT_NAME: LTApp

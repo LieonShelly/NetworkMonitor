@@ -4,7 +4,7 @@
 
 import SwiftUI
 import UIComponent
-
+import Kingfisher
 
 struct CalendarView: View {
     enum Constants {
@@ -257,14 +257,13 @@ struct CalendarView: View {
                 placeholderIcon
             case .generated:
                 if let url = icon.url {
-                    AsyncImage(url: URL(string: url), scale: 1) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24, height: 24)
-                    } placeholder: {
-                        placeholderIcon
-                    }
+                    KFImage(URL(string: url))
+                        .resizable()
+                        .placeholder { _ in
+                            placeholderIcon
+                        }
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
                 }
             case .failed:
                 placeholderIcon
@@ -283,14 +282,13 @@ struct CalendarView: View {
                 placeholderIcon
             case .generated:
                 if let url = icon.url {
-                    AsyncImage(url: URL(string: url), scale: 1) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24, height: 24)
-                    } placeholder: {
-                        placeholderIcon
-                    }
+                    KFImage(URL(string: url))
+                        .resizable()
+                        .placeholder { _ in
+                            placeholderIcon
+                        }
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
                 }
             case .failed:
                 placeholderIcon
