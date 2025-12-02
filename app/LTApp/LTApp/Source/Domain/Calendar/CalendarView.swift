@@ -70,7 +70,7 @@ struct CalendarView: View {
                                 if let dripleTransitionData = homeCoordinator.dripleTransitionData, let reflections = day.reflections {
                                     if day.date.isSameDay(dripleTransitionData.date) {
                                         if dripleTransitionData.showCalendarDripple {
-                                            placeholderIcon
+                                            dayIcon(day)
                                                 .matchedGeometryEffect(id: "dripple", in: dripleTransitionData.drippleAnimationSpace)
                                                 .frame(width: 24, height: 24)
                                         } else {
@@ -218,14 +218,14 @@ struct CalendarView: View {
     func dayIcon(_ day: CalendarDay) -> some View {
         if let reflections = day.reflections?.reflections, !reflections.isEmpty {
             if reflections.count == 1 {
-                let reflection = reflections.first
+                let reflection = reflections.last
                 if day.dayType == .today {
                     toDayIconView(reflection?.icon)
                 } else {
                     iconView(reflection?.icon)
                 }
             } else {
-                if let icon = reflections.first(where: { $0.icon != nil })?.icon {
+                if let icon = reflections.last(where: { $0.icon != nil })?.icon {
                     if day.dayType == .today {
                         toDayIconView(icon)
                     } else {
@@ -254,7 +254,10 @@ struct CalendarView: View {
         if let icon {
             switch icon.status {
             case .pending:
-                placeholderIcon
+                Image(.lock)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
             case .generated:
                 if let url = icon.url {
                     KFImage(URL(string: url))
@@ -266,7 +269,10 @@ struct CalendarView: View {
                         .frame(width: 24, height: 24)
                 }
             case .failed:
-                placeholderIcon
+                Image(.lock)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
             }
         } else {
             placeholderIcon
@@ -279,7 +285,10 @@ struct CalendarView: View {
         if let icon {
             switch icon.status {
             case .pending:
-                placeholderIcon
+                Image(.lock)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
             case .generated:
                 if let url = icon.url {
                     KFImage(URL(string: url))
@@ -291,7 +300,10 @@ struct CalendarView: View {
                         .frame(width: 24, height: 24)
                 }
             case .failed:
-                placeholderIcon
+                Image(.lock)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
             }
         } else {
             placeholderIcon

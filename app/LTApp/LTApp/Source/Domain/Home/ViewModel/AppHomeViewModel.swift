@@ -78,9 +78,9 @@ final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
     
     @MainActor
     func generateTodayViewModel() -> TodayAnswerViewModel {
-        let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: todayQuestions, submitted: {[weak self] in
+        let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: todayQuestions, submitted: {[weak self] iconId in
             Task {
-               try? await self?.fetchData()
+                self?.contentViewModel.calendarViewModel.queryCurrenntIconStatus(iconId)
                 self?.showTodayQuestion = false
             }
             

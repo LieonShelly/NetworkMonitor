@@ -15,12 +15,12 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var createAt: Date?
     @MainActor @Published var submitted: Bool = false
     
-    private var submittedAction: (() -> Void)?
+    private var submittedAction: ((_ iconId: String) -> Void)?
     let title: String
     private let service: any AppDataWithAuthorizationServiceful
     private let inputQuestions: [Question]
     
-    init(service: any AppDataWithAuthorizationServiceful, questions: [Question], submitted: (() -> Void)?)  {
+    init(service: any AppDataWithAuthorizationServiceful, questions: [Question], submitted: ((_ iconId: String) -> Void)?)  {
         self.service = service
         self.inputQuestions = questions
         self.title = Date().monthDayDesc
@@ -71,7 +71,7 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
                 createdAt: AppDateFormatter.ymdhsm.string(from: createAt)
             )
         )
-        submittedAction?()
+        submittedAction?(answer.icon?.iconId ?? "")
         await MainActor.run {
             submitted = true
         }

@@ -115,14 +115,17 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         }
     }
     
-    func queryCurrenntIconStatus(_ iconId: String) async throws {
-        try await fetchData()
-        let streams = service.queryIconStatusUseCase.execute(iconId)
-        for try await stream in streams {
-            await MainActor.run {
-                todayUpdatingIcon = stream.toDomain()
+    func queryCurrenntIconStatus(_ iconId: String) {
+        Task.detached {
+            try await self.fetchData()
+            let streams = self.service.queryIconStatusUseCase.execute(iconId)
+            for try await stream in streams {
+                await MainActor.run {
+                    self.todayUpdatingIcon = stream.toDomain()
+                }
             }
         }
+       
     }
 }
 
