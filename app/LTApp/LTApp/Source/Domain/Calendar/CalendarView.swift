@@ -70,24 +70,11 @@ struct CalendarView: View {
                                 if let dripleTransitionData = homeCoordinator.dripleTransitionData, let reflections = day.reflections {
                                     if day.date.isSameDay(dripleTransitionData.date) {
                                         if dripleTransitionData.showCalendarDripple {
-                                            Circle()
-                                                .fill(Color.clear)
-                                                .overlay(content: {
-                                                    Image(.calendarDripper)
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fit)
-                                                })
+                                            placeholderIcon
                                                 .matchedGeometryEffect(id: "dripple", in: dripleTransitionData.drippleAnimationSpace)
                                                 .frame(width: 24, height: 24)
                                         } else {
-                                            Circle()
-                                                .fill(Color.clear)
-                                                .overlay(content: {
-                                                    Image(.calendarDripper)
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fit)
-                                                })
-                                                .frame(width: 24, height: 24)
+                                            dayIcon(day)
                                         }
                                         
                                         Color.clear.frame(width: .zero, height: .zero)
@@ -96,24 +83,10 @@ struct CalendarView: View {
                                             }
                                        
                                     } else {
-                                        Circle()
-                                            .fill(Color.clear)
-                                            .overlay(content: {
-                                                Image(.calendarDripper)
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fit)
-                                            })
-                                            .frame(width: 24, height: 24)
+                                        dayIcon(day)
                                     }
                                 } else if let reflections = day.reflections {
-                                    Circle()
-                                        .fill(Color.clear)
-                                        .overlay(content: {
-                                            Image(.calendarDripper)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                        })
-                                        .frame(width: 24, height: 24)
+                                    dayIcon(day)
                                 } else if day.dayType == .today {
                                     addBtn
                                 } else {
@@ -239,6 +212,92 @@ struct CalendarView: View {
         Circle()
             .fill(AppColor.color(hex: 0xCDCDCD))
             .frame(width: 8, height: 8)
+    }
+    
+    @ViewBuilder
+    func dayIcon(_ day: CalendarDay) -> some View {
+        if let reflections = day.reflections?.reflections, !reflections.isEmpty {
+            if reflections.count == 1 {
+                let reflection = reflections.first
+                if day.dayType == .today {
+                    toDayIconView(reflection?.icon)
+                } else {
+                    iconView(reflection?.icon)
+                }
+            } else {
+                if let icon = reflections.first(where: { $0.icon != nil })?.icon {
+                    if day.dayType == .today {
+                        toDayIconView(icon)
+                    } else {
+                        iconView(icon)
+                    }
+                } else {
+                    placeholderIcon
+                }
+            }
+        }
+    }
+    
+    var placeholderIcon: some View {
+        Circle()
+            .fill(Color.clear)
+            .overlay(content: {
+                Image(.calendarDripper)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            })
+            .frame(width: 24, height: 24)
+    }
+    
+    @ViewBuilder
+    func iconView(_ icon: IconData?) -> some View {
+        if let icon {
+            switch icon.status {
+            case .pending:
+                placeholderIcon
+            case .generated:
+                if let url = icon.url {
+                    AsyncImage(url: URL(string: url), scale: 1) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24, height: 24)
+                    } placeholder: {
+                        placeholderIcon
+                    }
+                }
+            case .failed:
+                placeholderIcon
+            }
+        } else {
+            placeholderIcon
+        }
+    }
+    
+    
+    @ViewBuilder
+    func toDayIconView(_ icon: IconData?) -> some View {
+        if let icon {
+            switch icon.status {
+            case .pending:
+                placeholderIcon
+            case .generated:
+                if let url = icon.url {
+                    AsyncImage(url: URL(string: url), scale: 1) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24, height: 24)
+                    } placeholder: {
+                        placeholderIcon
+                    }
+                }
+            case .failed:
+                placeholderIcon
+            }
+        } else {
+            placeholderIcon
+        }
     }
 }
 

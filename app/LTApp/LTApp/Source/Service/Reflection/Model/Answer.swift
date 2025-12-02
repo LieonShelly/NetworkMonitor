@@ -9,12 +9,12 @@ public struct Answer: Sendable {
     let content: String
     let createTms: Date?
     let createYmd: Date?
-    let icon: IconData?
+    var icon: IconData?
 }
 
 public struct DayReflections: Sendable {
     let day: Date
-    let reflections: [Answer]
+    var reflections: [Answer]
 }
 
 public struct ThreadQuestion: Sendable {

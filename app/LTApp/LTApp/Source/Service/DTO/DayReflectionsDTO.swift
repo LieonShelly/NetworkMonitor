@@ -14,7 +14,7 @@ extension DayReflectionsDTO {
         let day = AppDateFormatter.yyyymmdd.date(from: date) ?? Date()
         return DayReflections(
             day: day,
-            reflections: reflections.map { $0.toDomain() }
+            reflections: reflections.map { $0.toDomain() },
         )
     }
 }

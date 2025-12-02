@@ -15,7 +15,7 @@ public enum IconStatus: String, Sendable {
 
 public struct IconData: Sendable {
     let status: IconStatus
-    let url: String
+    let url: String?
     let iconId: String?
 }
 

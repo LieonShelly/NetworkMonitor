@@ -72,11 +72,6 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
             )
         )
         submittedAction?()
-        if let icon = answer.icon, let iconId = icon.iconId {
-            for try await progress in service.queryIconStatusUseCase.execute(iconId) {
-                print(progress.status)
-            }
-        }
         await MainActor.run {
             submitted = true
         }

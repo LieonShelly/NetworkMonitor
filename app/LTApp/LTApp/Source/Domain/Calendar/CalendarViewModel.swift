@@ -18,7 +18,8 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     ]
     @MainActor @Published var currentMonth: Date?
     @MainActor @Published var scrollPostion: UUID? = nil
-
+    @MainActor @Published var todayUpdatingIcon: IconData?
+    
     let itemSize: CGSize = .init(width: 30, height: 30)
     
     private let service: any AppDataWithAuthorizationServiceful
@@ -110,6 +111,16 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
                    self.scrollPostion = day.id
                }
               
+            }
+        }
+    }
+    
+    func queryCurrenntIconStatus(_ iconId: String) async throws {
+        try await fetchData()
+        let streams = service.queryIconStatusUseCase.execute(iconId)
+        for try await stream in streams {
+            await MainActor.run {
+                todayUpdatingIcon = stream.toDomain()
             }
         }
     }
