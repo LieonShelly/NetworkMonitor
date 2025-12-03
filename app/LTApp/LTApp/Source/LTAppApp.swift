@@ -26,7 +26,20 @@ struct LTAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            coordinator.rootView()
+//            coordinator.rootView()
+            MetalSmartIconView(originalImage: UIImage(resource: .chick))
+//            VStack(spacing: 20) {
+//                Text("原图 (留白大):")
+//                Image(.chick) // 假设这是 Assets 里的原图
+//                    .resizable()
+//                    .frame(width: 24, height: 24)
+//                    .border(Color.red)
+//                
+//                Text("自动去留白后:")
+//                // 假设这里的 UIImage(named: "chick") 是你从服务端拿到的
+//                SmartIconView(originalImage: UIImage(resource: .chick))
+//                    .border(Color.green)
+//            }
         }
         .environmentObject(homeCoordinator)
         .environmentObject(coordinator)
