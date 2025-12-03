@@ -281,7 +281,6 @@ struct CalendarView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24, height: 24)
             case .generated:
-            
                 if let url = icon.url {
                     KFImage(URL(string: url))
                         .resizable()

@@ -31,13 +31,13 @@ struct MetalSmartIconView: View {
                         Image(uiImage: img)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-//                            .border(.red)
                             .frame(width: 40, height: 40)
                     }
                 } else {
                     Color.clear
                 }
             }
+            .background(Color.pink)
           
         }
        
