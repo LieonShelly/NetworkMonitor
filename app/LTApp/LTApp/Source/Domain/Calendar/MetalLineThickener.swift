@@ -84,9 +84,17 @@ class MetalLineThickener {
         let w = pipelineState.threadExecutionWidth
         let h = pipelineState.maxTotalThreadsPerThreadgroup / w
         let threadsPerThreadgroup = MTLSizeMake(w, h, 1)
-        let threadsPerGrid = MTLSizeMake(inputTexture.width, inputTexture.height, 1)
         
-        computeEncoder.dispatchThreads(threadsPerGrid, threadsPerThreadgroup: threadsPerThreadgroup)
+        // 2. 手动计算需要多少个组(Grid Size)才能覆盖整张图
+        // 公式：(图片尺寸 + 组尺寸 - 1) / 组尺寸 -> 实现向上取整
+        // 例如：图片宽100，组宽32。 (100+31)/32 = 4组。 4*32=128，足够覆盖100。
+        let threadgroupsPerGrid = MTLSizeMake(
+            (inputTexture.width + w - 1) / w,
+            (inputTexture.height + h - 1) / h,
+            1)
+        
+        // 3. 使用兼容性最好的 dispatchThreadgroups API
+        computeEncoder.dispatchThreadgroups(threadgroupsPerGrid, threadsPerThreadgroup: threadsPerThreadgroup)
         computeEncoder.endEncoding()
         
         // 4. 获取结果
