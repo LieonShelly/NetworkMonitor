@@ -4,6 +4,7 @@
 
 import Foundation
 import SwiftUI
+import Kingfisher
 
 final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var days: [CalendarDay] = []

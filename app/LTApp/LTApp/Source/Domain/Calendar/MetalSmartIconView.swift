@@ -31,7 +31,7 @@ struct MetalSmartIconView: View {
                         Image(uiImage: img)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .border(.red)
+//                            .border(.red)
                             .frame(width: 40, height: 40)
                     }
                 } else {
@@ -43,15 +43,11 @@ struct MetalSmartIconView: View {
        
         .onAppear {
             // 使用 Metal 进行高性能裁切
-            MetalCropper.shared.cropImage(originalImage) { result in
-                MetalLineThickener.shared.thicken(result!, thickness: thicknessLevel) { thickened in
-                    DispatchQueue.main.async {
-                        self.processedImage = thickened
-                    }
+            MetalImageProcessor.shared.process(originalImage, thickness: 3) { thickened in
+                DispatchQueue.main.async {
+                    self.processedImage = thickened
                 }
             }
-            
-         
         }
     }
 }

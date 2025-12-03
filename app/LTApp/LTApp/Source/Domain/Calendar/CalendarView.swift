@@ -281,27 +281,16 @@ struct CalendarView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24, height: 24)
             case .generated:
-                
-                Circle()
-                    .fill(Color.clear)
-                    .overlay(content: {
-                        Image(.chick)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24, height: 24) // 2. 你的目标尺寸
-                    })
-                    .frame(width: 24, height: 24)
-//                    .clipShape(Circle())
-                
-//                if let url = icon.url {
-//                    KFImage(URL(string: url))
-//                        .resizable()
-//                        .placeholder { _ in
-//                            placeholderIcon
-//                        }
-//                        .aspectRatio(contentMode: .fit)
-//                        .frame(width: 24, height: 24)
-//                }
+            
+                if let url = icon.url {
+                    KFImage(URL(string: url))
+                        .resizable()
+                        .placeholder { _ in
+                            placeholderIcon
+                        }
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                }
             case .failed:
                 Image(.lock)
                     .resizable()
