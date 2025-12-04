@@ -33,12 +33,14 @@ struct CalendarView: View {
         }
         .padding(.horizontal, 10)
         .defaultBackground()
-        .task {
-            do {
-               await viewModel.generateDay()
-                try await viewModel.fetchData()
-            } catch {
-                print(error)
+        .onFirstAppear {
+            Task.detached {
+                do {
+                   await viewModel.generateDay()
+                    try await viewModel.fetchData()
+                } catch {
+                    print(error)
+                }
             }
         }
     }
@@ -282,7 +284,9 @@ struct CalendarView: View {
                     .frame(width: 24, height: 24)
             case .generated:
                 if let url = icon.url {
-                    IconImageView(url: url)
+                    IconImageView(url: url) {
+                        placeholderIcon
+                    }
                 }
             case .failed:
                 Image(.lock)
@@ -307,7 +311,9 @@ struct CalendarView: View {
                     .frame(width: 24, height: 24)
             case .generated:
                 if let url = icon.url {
-                    IconImageView(url: url)
+                    IconImageView(url: url) {
+                        placeholderIcon
+                    }
                 }
             case .failed:
                 Image(.lock)

@@ -9,8 +9,9 @@ import SwiftUI
 import Kingfisher
 
 
-struct IconImageView: View {
+struct IconImageView<Placeholder: View>: View {
     let url: String
+    @ViewBuilder let placeholder:  () -> Placeholder
     
     var body: some View {
         KFImage(source: imageResource.map { .network($0) })
@@ -19,11 +20,12 @@ struct IconImageView: View {
             .cacheMemoryOnly(false)
             .resizable()
             .placeholder { _ in
-                
+                placeholder()
             }
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 24, height: 24)
+            .id(iconId())
     }
     
     var imageResource: KF.ImageResource? {
