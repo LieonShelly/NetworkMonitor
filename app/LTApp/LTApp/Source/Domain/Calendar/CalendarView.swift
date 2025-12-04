@@ -282,17 +282,7 @@ struct CalendarView: View {
                     .frame(width: 24, height: 24)
             case .generated:
                 if let url = icon.url {
-                    KFImage(URL(string: url))
-                        .setProcessor(MetalIconProcessor(thickness: 4))
-                        .cacheMemoryOnly(false)
-                        .resizable()
-                        .placeholder { _ in
-                            placeholderIcon
-                        }
-                        .fade(duration: 0.25)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24, height: 24)
+                    IconImageView(url: url)
                 }
             case .failed:
                 Image(.lock)
@@ -317,17 +307,7 @@ struct CalendarView: View {
                     .frame(width: 24, height: 24)
             case .generated:
                 if let url = icon.url {
-                    KFImage(URL(string: url))
-                        .setProcessor(MetalIconProcessor(thickness: 4))
-                        .cacheMemoryOnly(false)
-                        .resizable()
-                        .placeholder { _ in
-                            placeholderIcon
-                        }
-                        .fade(duration: 0.25)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24, height: 24)
+                    IconImageView(url: url)
                 }
             case .failed:
                 Image(.lock)
@@ -340,4 +320,3 @@ struct CalendarView: View {
         }
     }
 }
-
