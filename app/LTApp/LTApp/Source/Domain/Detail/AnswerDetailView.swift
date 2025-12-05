@@ -20,6 +20,7 @@ struct AnswerDetailView: View {
             AppColor.backgroundPage.opacity(opacity)
             NaviBar(titlte: viewModel.title, hideBackBtn: true) {
             }
+            .opacity(opacity)
             .zIndex(1)
             
             TodayAnswerSubmittedView(

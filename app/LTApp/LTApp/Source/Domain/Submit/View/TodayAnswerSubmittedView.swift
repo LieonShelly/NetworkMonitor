@@ -43,12 +43,10 @@ struct TodayAnswerSubmittedView: View {
         
     }
     
-    var answerView: some View {
+   @ViewBuilder var answerView: some View {
         HStack {
             Text(viewModel.answer.content)
                 .textStyle(size: 12, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxHeight: 149)
                 .padding(.init(top: 22, leading: 18, bottom: 22, trailing: 18))
             Spacer()
         }
@@ -59,7 +57,6 @@ struct TodayAnswerSubmittedView: View {
                 .foregroundStyle(AppColor.color(hex: 0xEBEBEB))
         )
         .padding(.horizontal, 24)
-        .padding(.top, 42)
         .opacity(opacity)
         .matchedGeometryEffect(id: "answer", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
     }
@@ -72,7 +69,6 @@ struct TodayAnswerSubmittedView: View {
                     loadingView
                 }
                 .padding(.horizontal, 48)
-                .padding(.vertical, 42)
                 .matchedGeometryEffect(id: "dripple", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
             } else {
                 loadingView

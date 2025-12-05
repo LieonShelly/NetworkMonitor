@@ -54,7 +54,7 @@ struct ThreadView: View {
                 ForEach(0 ..< 3) { index in
                     if index < question.answers.count {
                         let answer = question.answers[index]
-                        answerRow(answer.content, icon: .calendarDripper)
+                        answerRow(answer)
                     }
                 }
                 if question.answers.count >= 3 {
@@ -79,14 +79,17 @@ struct ThreadView: View {
     }
     
     
-    func answerRow(_ value: String, icon: ImageResource? = nil) -> some View {
+    func answerRow(_ answer: Answer) -> some View {
         HStack(spacing: .zero) {
             Rectangle()
                 .fill(Color.clear)
                 .frame(width: 30, height: 30)
                 .overlay {
-                    if let icon {
-                        Image(icon)
+                    if let url = answer.icon?.url {
+                        ThumbnailIconImageView(url: url) {
+                            Image(.calendarDripper)
+                        }
+                        .frame(width: 24, height: 24)
                     } else {
                         Circle()
                             .fill(AppColor.color(hex: 0x848484))
@@ -95,7 +98,7 @@ struct ThreadView: View {
                 }
                 .padding(.trailing, 24)
                
-            Text(value)
+            Text(answer.content)
                 .lineLimit(1)
                 .textStyle(size: 12, color: AppColor.color(hex: 0x6f6f6f), fontFamily: .poppinsRegular)
             Spacer()
