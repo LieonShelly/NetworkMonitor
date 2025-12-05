@@ -12,6 +12,9 @@ struct TodayAnswerSubmittedView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     let dismissed: () -> Void
     @State var showBtn: Bool = true
+    @State var imageCoverScale: CGFloat = 1
+    @State var imageCoverEnpoint: CGFloat = 0
+    @State var imageOpacity: CGFloat = 0
     
     init(viewModel: TodayAnswerSubmittedViewModel, opacity: Binding<CGFloat> = .constant(1), dismissed: @escaping () -> Void) {
         self._opacity = opacity
@@ -22,8 +25,11 @@ struct TodayAnswerSubmittedView: View {
     var body: some View {
         VStack(spacing: .zero) {
             questionView
-            imageView
-            answerView
+            if let url = viewModel.answer.icon?.url, !url.isEmpty {
+                imageAnswerView
+            } else {
+                loadingAnswerView
+            }
             Spacer()
             closeBtn
         }
@@ -31,6 +37,28 @@ struct TodayAnswerSubmittedView: View {
         .task {
             homeCoordinator.dripleTransitionData?.showCalendarDripple = false
         }
+    }
+    
+    @ViewBuilder var imageAnswerView: some View {
+        ZStack(alignment: .top) {
+            VStack(spacing: .zero) {
+                imageView
+                answerView
+            }
+            .opacity(imageOpacity)
+            
+            imageCover
+                .onAppear {
+                    withAnimation(.easeInOut.delay(0.5)) {
+                        imageOpacity = 1
+                    }
+                }
+        }
+    }
+    
+    @ViewBuilder var loadingAnswerView: some View {
+        loadingView
+        answerView
     }
     
     var questionView: some View {
@@ -64,16 +92,17 @@ struct TodayAnswerSubmittedView: View {
     var imageView: some View {
         if !homeCoordinator.dripleTransitionData.showCalendarDripple {
             if let url = viewModel.answer.icon?.url, !url.isEmpty {
-                OriginalIconView(url: url) {
-                    loadingView
+                OriginalIconView(url: url) { } onSuccess: {
+                    withAnimation(.easeInOut(duration: 4)) {
+                        imageCoverScale = 0
+                    }
+                    withAnimation(.easeInOut(duration: 0.1)) {
+                        imageCoverEnpoint = 0.2
+                    }
                 }
                 .padding(.horizontal, 48)
                 .padding(.vertical, 50)
                 .matchedGeometryEffect(id: "dripple", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
-            } else {
-                loadingView
-                    .padding(.top, 42)
-                    .matchedGeometryEffect(id: "dripple", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
             }
         }
     }
@@ -109,14 +138,33 @@ struct TodayAnswerSubmittedView: View {
       
     }
     
-    var loadingView: some View {
-        VStack(spacing: .zero) {
-            LoadingView()
-                .frame(width: 290, height: 200)
-            
-            Text("Weaving your thoughts...")
-                .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
-                .padding(.vertical, 36)
+    @ViewBuilder var loadingView: some View {
+        if showBtn {
+            VStack(spacing: .zero) {
+                LoadingView()
+                    .frame(width: 290, height: 200)
+                    .transition(.opacity)
+                
+                Text("Weaving your thoughts...")
+                    .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
+                    .padding(.vertical, 36)
+                    .transition(.opacity)
+            }
+            .padding(.top, 42)
+            .transition(.opacity)
         }
+    
+    }
+    
+   @ViewBuilder var imageCover: some View {
+        if showBtn {
+            LinearGradient(gradient: .init(colors: [
+                AppColor.color(hex: 0xFFFDF8).opacity(0),
+                AppColor.color(hex: 0xFFFDF8),
+            ]), startPoint: .init(x: 0.5, y: 0), endPoint: .init(x: 0.5, y: 0.1))
+            .scaleEffect(.init(width: 1, height: imageCoverScale), anchor: .init(x: 0.5, y: 1))
+            .transition(.opacity)
+        }
+        
     }
 }

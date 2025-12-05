@@ -50,6 +50,7 @@ extension ImageCacheKeyType {
 struct OriginalIconView<Placeholder: View>: View, ImageCacheKeyType {
     let url: String
     @ViewBuilder let placeholder:  () -> Placeholder
+    var onSuccess: (() -> Void)? = nil
     
     var body: some View {
         KFImage(source: imageResource.map { .network($0) })
@@ -58,6 +59,9 @@ struct OriginalIconView<Placeholder: View>: View, ImageCacheKeyType {
             .placeholder { _ in
                 placeholder()
             }
+            .onSuccess({ _ in
+                onSuccess?()
+            })
             .resizable()
             .aspectRatio(contentMode: .fit)
             .id(cacheKey(url))
