@@ -47,17 +47,19 @@ struct TodayAnswerSubmittedView: View {
         HStack {
             Text(viewModel.answer.content)
                 .textStyle(size: 12, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxHeight: 149)
                 .padding(.init(top: 22, leading: 18, bottom: 22, trailing: 18))
             Spacer()
         }
+        .clipped()
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(style: .init(lineWidth: 1))
                 .foregroundStyle(AppColor.color(hex: 0xEBEBEB))
         )
-        .frame(maxHeight: 149)
         .padding(.horizontal, 24)
-        .padding(.top, 90)
+        .padding(.top, 42)
         .opacity(opacity)
         .matchedGeometryEffect(id: "answer", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
     }
@@ -65,13 +67,18 @@ struct TodayAnswerSubmittedView: View {
     @ViewBuilder
     var imageView: some View {
         if !homeCoordinator.dripleTransitionData.showCalendarDripple {
-            Image(uiImage: LocalIconLib.fallLeave)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 150, height: 147)
-                .padding(.top, 58)
-                .opacity(imageViewOpacity)
+            if let url = viewModel.answer.icon?.url, !url.isEmpty {
+                OriginalIconView(url: url) {
+                    loadingView
+                }
+                .padding(.horizontal, 48)
+                .padding(.vertical, 42)
                 .matchedGeometryEffect(id: "dripple", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
+            } else {
+                loadingView
+                    .padding(.top, 42)
+                    .matchedGeometryEffect(id: "dripple", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
+            }
         }
     }
     
@@ -96,5 +103,16 @@ struct TodayAnswerSubmittedView: View {
         }
         .padding(.bottom, 45)
         .opacity(opacity)
+    }
+    
+    var loadingView: some View {
+        VStack(spacing: .zero) {
+            LoadingView()
+                .frame(width: 290, height: 200)
+            
+            Text("Weaving your thoughts...")
+                .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
+                .padding(.top, 36)
+        }
     }
 }

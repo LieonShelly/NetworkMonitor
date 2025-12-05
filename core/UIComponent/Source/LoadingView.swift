@@ -13,7 +13,6 @@ public struct LoadingView: View {
         VStack {
             LottieView(animation: .named("knitting", bundle: UIComponentModule.lottieBundle))
                 .playing(loopMode: .loop)
-                .frame(width: 100)
         }
     }
 }
