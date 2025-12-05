@@ -11,7 +11,6 @@ struct TodayAnswerSubmittedView: View {
     @Binding var opacity: CGFloat
     @Binding var presented: Bool
     @EnvironmentObject var homeCoordinator: HomeCoordinator
-    @State var imageViewOpacity: CGFloat = 0
     
     init(viewModel: TodayAnswerSubmittedViewModel, opacity: Binding<CGFloat> = .constant(1), presented: Binding<Bool>) {
         self._opacity = opacity
@@ -30,7 +29,6 @@ struct TodayAnswerSubmittedView: View {
         .animation(.easeInOut, value: opacity)
         .task {
             homeCoordinator.dripleTransitionData?.showCalendarDripple = false
-            imageViewOpacity = 1
         }
     }
     
@@ -81,10 +79,11 @@ struct TodayAnswerSubmittedView: View {
     
     var closeBtn: some View {
         Button {
-            homeCoordinator.dripleTransitionData?.showCalendarDripple = true
             withAnimation(.easeIn(duration: 0.5)) {
                 opacity = 0
-              
+            }
+            withAnimation(.easeIn(duration: 0.5)) {
+                homeCoordinator.dripleTransitionData?.showCalendarDripple = true
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 + 0.25, execute: {
                 presented.toggle()
