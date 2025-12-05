@@ -17,7 +17,7 @@ struct AnswerDetailView: View {
     
     var body: some View {
         ZStack(alignment: .top) {
-            AppColor.backgroundPage
+            AppColor.backgroundPage.opacity(opacity)
             NaviBar(titlte: viewModel.title, hideBackBtn: true) {
             }
             .zIndex(1)
@@ -30,7 +30,6 @@ struct AnswerDetailView: View {
             .padding(.top, 44)
             .contentShape(.rect)
             .padding(.top, 20)
-
         }
         .toolbarVisibility(.hidden, for: .navigationBar)
     }

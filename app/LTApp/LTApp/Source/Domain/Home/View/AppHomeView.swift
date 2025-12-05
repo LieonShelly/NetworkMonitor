@@ -32,9 +32,7 @@ struct AppHomeView: View {
             }
         }
         .onChange(of: subPagePrensented) { oldValue, newValue in
-            if newValue == false {
-                viewModel.subPageRoute = .none
-            }
+            viewModel.subPageRoute = .none
         }
         .animation(.easeInOut, value: viewModel.subPageRoute)
     }
