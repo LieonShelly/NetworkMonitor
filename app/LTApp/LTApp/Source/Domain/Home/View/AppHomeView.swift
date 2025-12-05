@@ -30,7 +30,7 @@ struct AppHomeView: View {
                         pushToAddTodayAnsnwer()
                     } onTapAnswerAction: { answerDetailViewModel in
                         if let answerDetailViewModel {
-                            viewModel.subPageRoute = .answerDetail(answerDetailViewModel)
+                            viewModel.route(.answerDetail(answerDetailViewModel))
                         }
                     }
                     ZStack(alignment: .bottom) {
@@ -72,7 +72,7 @@ struct AppHomeView: View {
     }
     
     func pushToAddTodayAnsnwer() {
-        viewModel.subPageRoute = .todayAnswer(viewModel.generateTodayViewModel())
+        viewModel.route(.todayAnswer(viewModel.generateTodayViewModel()))
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
             self.viewModel.selected(0)
         })

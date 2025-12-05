@@ -44,6 +44,8 @@ final class ReflectionDetailViewModel: @preconcurrency BaseViewModelType, Observ
 }
 
 
+import SwiftUI
+
 protocol BaseViewModelType: AnyObject {
     var subPageRoute: InnerPageRouteState { get set }
     
@@ -55,7 +57,9 @@ extension BaseViewModelType {
     
     @MainActor
     func route(_ route: InnerPageRouteState) {
-        guard subPageRoute != route else { return}
-        subPageRoute = route
+        guard subPageRoute != route else { return }
+        withAnimation(.easeInOut) {
+            subPageRoute = route
+        }
     }
 }

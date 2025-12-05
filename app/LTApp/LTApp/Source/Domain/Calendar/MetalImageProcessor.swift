@@ -48,7 +48,6 @@ class MetalImageProcessor: @unchecked Sendable {
     }
     
     func process(_ image: UIImage, thickness: Int = 1, completion: ((UIImage?) -> Void)? = nil) {
-        print("🔥 Metal Processor Running... Thickness: \(thickness)")
         guard let device = device,
               let commandQueue = commandQueue,
               let cropPipelineState = cropPipelineState,

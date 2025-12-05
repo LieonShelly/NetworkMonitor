@@ -31,8 +31,8 @@ struct ReflectionDetailView: View {
             .ignoresSafeArea(edges: .top)
             .toolbarVisibility(.hidden, for: .navigationBar)
             .animation(.easeInOut, value: showSummary)
+            .innerPageRoute($viewModel.subPageRoute)
         }
-        .innerPageRoute($viewModel.subPageRoute)
         .task {
             do {
                 try await viewModel.fetchData()
@@ -60,7 +60,7 @@ struct ReflectionDetailView: View {
                     ForEach(viewModel.answers, id: \.id) { answer in
                         DetailAnswerRow(answer: answer)
                             .onTapGesture {
-                                viewModel.subPageRoute = .answerDetail(.init(answer: answer, question: viewModel.question, service: viewModel.service))
+                                viewModel.route(.answerDetail(.init(answer: answer, question: viewModel.question, service: viewModel.service)))
                             }
                     }
                 }
@@ -147,38 +147,3 @@ struct ReflectionDetailView: View {
     }
 }
 
-
-struct InnerPageRoutingModifier: ViewModifier {
-    @Binding var subPageRoute: InnerPageRouteState
-    @State var subPagePrensented: Bool = false
-    
-    func body(content: Content) -> some View {
-        ZStack {
-            content
-            switch subPageRoute {
-            case .todayAnswer(let todayAnswerViewModel):
-                TodayAnswerView(viewModel: todayAnswerViewModel, presented: $subPagePrensented)
-                    .transition(
-                        .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
-            case .answerDetail(let todayAnswerSubmittedViewModel):
-                AnswerDetailView(viewModel: todayAnswerSubmittedViewModel, dismissed: { 
-                    subPageRoute = .none
-                })
-            case .none:
-                EmptyView()
-            }
-        }
-        .animation(.easeInOut, value: subPageRoute)
-        .onChange(of: subPagePrensented) { oldValue, newValue in
-            subPageRoute = .none
-        }
-    }
-}
-
-
-extension View {
-    
-    func innerPageRoute(_ state: Binding<InnerPageRouteState>) -> some View {
-        modifier(InnerPageRoutingModifier(subPageRoute: state))
-    }
-}

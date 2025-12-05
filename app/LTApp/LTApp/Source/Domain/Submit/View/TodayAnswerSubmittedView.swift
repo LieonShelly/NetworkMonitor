@@ -11,6 +11,7 @@ struct TodayAnswerSubmittedView: View {
     @Binding var opacity: CGFloat
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     let dismissed: () -> Void
+    @State var showBtn: Bool = true
     
     init(viewModel: TodayAnswerSubmittedViewModel, opacity: Binding<CGFloat> = .constant(1), dismissed: @escaping () -> Void) {
         self._opacity = opacity
@@ -77,29 +78,35 @@ struct TodayAnswerSubmittedView: View {
         }
     }
     
-    var closeBtn: some View {
-        Button {
-            withAnimation(.easeIn(duration: 0.5)) {
-                opacity = 0
-            }
-            withAnimation(.easeIn(duration: 0.5)) {
-                homeCoordinator.dripleTransitionData?.showCalendarDripple = true
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 + 0.25, execute: {
-                dismissed()
-            })
-            
-        } label: {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(AppColor.color(hex: 0xD9D9D9))
-                .frame(width: 48, height: 48)
-                .overlay {
-                    Image(.xmark)
+   @ViewBuilder var closeBtn: some View {
+        if showBtn {
+            Button {
+                withAnimation(.easeIn(duration: 0.5)) {
+                    opacity = 0
                 }
+                withAnimation(.easeIn(duration: 0.5)) {
+                    showBtn = false
+                }
+                withAnimation(.easeIn(duration: 0.5)) {
+                    homeCoordinator.dripleTransitionData?.showCalendarDripple = true
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 + 0.25, execute: {
+                    dismissed()
+                })
+                
+            } label: {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(AppColor.color(hex: 0xD9D9D9))
+                    .frame(width: 48, height: 48)
+                    .overlay {
+                        Image(.xmark)
+                    }
+            }
+            .padding(.top, 20)
+            .padding(.bottom, 45)
+            .transition(.opacity)
         }
-        .padding(.top, 20)
-        .padding(.bottom, 45)
-        .opacity(opacity)
+      
     }
     
     var loadingView: some View {

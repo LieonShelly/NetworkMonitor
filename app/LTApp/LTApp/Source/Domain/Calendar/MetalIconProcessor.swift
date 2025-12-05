@@ -10,12 +10,12 @@ import Kingfisher
 import UIKit
 
 struct MetalIconProcessor: ImageProcessor {
-    var identifier = "com.metal.icon.processor.v1"
+    var identifier = "com.metal.icon.processor.v2"
     let thickness: Int
     
     init(thickness: Int = 1) {
         self.thickness = thickness
-        self.identifier = "com.metal.icon.processor.v1_thickness_\(thickness)"
+        self.identifier = "com.metal.icon.processor.vw_thickness_\(thickness)"
     }
     
     func process(item: ImageProcessItem, options: KingfisherParsedOptionsInfo) -> KFCrossPlatformImage? {
