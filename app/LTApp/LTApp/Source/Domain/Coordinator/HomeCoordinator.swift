@@ -44,10 +44,6 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
             return AnyView(
                 AnwserQuestionView(viewModel: .init(question: question, service: appDataService))
             )
-        case let .answerDetail(answer):
-            return AnyView(
-                AnswerDetailView(answer: answer)
-            )
         }
     }
     
@@ -63,7 +59,6 @@ enum HomeRoute: Route {
     case questioDetail
     case reflectionDetail(questionId: String, title: String)
     case addNewAnswer(question: Question)
-    case answerDetail(_ answer: Answer)
 }
 
 

@@ -11,17 +11,27 @@ import UIComponent
 import Kingfisher
 
 struct AnswerDetailView: View {
-    let answer: Answer
+    @ObservedObject var viewModel: TodayAnswerSubmittedViewModel
+    @State var opacity: CGFloat = 1
+    @Binding var presented: Bool
     
     var body: some View {
-        VStack {
-            if let url = answer.icon?.url {
-                OriginalIconView(url: url) {
-                    LoadingView()
-                }
+        ZStack(alignment: .top) {
+            AppColor.backgroundPage
+            NaviBar(titlte: viewModel.title, hideBackBtn: true) {
             }
+            .zIndex(1)
+            
+            TodayAnswerSubmittedView(
+                viewModel: viewModel,
+                opacity: $opacity,
+                presented: $presented
+            )
+            .padding(.top, 44)
+            .contentShape(.rect)
+            .padding(.top, 20)
+
         }
-        .defaultBackground()
-       
+        .toolbarVisibility(.hidden, for: .navigationBar)
     }
 }

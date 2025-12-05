@@ -13,7 +13,7 @@ struct TodayAnswerSubmittedView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @State var imageViewOpacity: CGFloat = 0
     
-    init(viewModel: TodayAnswerSubmittedViewModel, opacity: Binding<CGFloat>, presented: Binding<Bool>) {
+    init(viewModel: TodayAnswerSubmittedViewModel, opacity: Binding<CGFloat> = .constant(1), presented: Binding<Bool>) {
         self._opacity = opacity
         self._presented = presented
         self._viewModel = .init(wrappedValue: viewModel)

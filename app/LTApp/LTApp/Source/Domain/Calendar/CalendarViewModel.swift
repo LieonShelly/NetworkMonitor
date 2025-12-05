@@ -21,6 +21,7 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var scrollPostion: UUID? = nil
     @MainActor @Published var todayUpdatingIcon: IconData?
     @MainActor @Published var selectedDay: CalendarDay?
+    @MainActor @Published var showTodayAnswerView: Bool = false
     
     let itemSize: CGSize = .init(width: 30, height: 30)
     
@@ -128,6 +129,15 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
             }
             try await self.fetchData()
         }
+    }
+    
+    @MainActor
+    func onTapIcon(_ day: CalendarDay) -> TodayAnswerSubmittedViewModel? {
+        guard let answer = day.reflections?.reflections.last, let question = day.reflections?.question  else {
+            return nil
+        }
+        let todayAnswerSubmittedViewModel = TodayAnswerSubmittedViewModel(answer: answer, question: question, service: service)
+        return todayAnswerSubmittedViewModel
     }
 }
 

@@ -16,33 +16,45 @@ struct CalendarView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @StateObject var viewModel: CalendarViewModel
     let addAction: (() -> Void)
+    let onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?
     
-    init(viewModel: CalendarViewModel, addAction:  @escaping (() -> Void)) {
+    init(viewModel: CalendarViewModel,
+         addAction:  @escaping (() -> Void),
+         onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?,
+    ) {
         self._viewModel = .init(wrappedValue: viewModel)
         self.addAction = addAction
+        self.onTapAnswerAction = onTapAnswerAction
     }
     
     var body: some View {
-        GeometryReader { proxy in
-            VStack(spacing: .zero) {
-                headerView(proxy)
-                weekDay(spacing: .zero, proxy: proxy)
-                gridView(proxy: proxy)
-                Spacer()
+        ZStack {
+            GeometryReader { proxy in
+                ZStack {
+                    VStack(spacing: .zero) {
+                        headerView(proxy)
+                        weekDay(spacing: .zero, proxy: proxy)
+                        gridView(proxy: proxy)
+                        Spacer()
+                    }
+                    
+                }
             }
-        }
-        .padding(.horizontal, 10)
-        .defaultBackground()
-        .onFirstAppear {
-            Task.detached {
-                do {
-                   await viewModel.generateDay()
-                    try await viewModel.fetchData()
-                } catch {
-                    print(error)
+            .padding(.horizontal, 10)
+            .defaultBackground()
+            .onFirstAppear {
+                Task.detached {
+                    do {
+                        await viewModel.generateDay()
+                        try await viewModel.fetchData()
+                    } catch {
+                        print(error)
+                    }
                 }
             }
         }
+        .animation(.easeInOut, value: viewModel.showTodayAnswerView)
+      
     }
     
     @ViewBuilder func weekDay(spacing: CGFloat, proxy: GeometryProxy) -> some View {
@@ -225,16 +237,12 @@ struct CalendarView: View {
                 if day.dayType == .today {
                     toDayIconView(reflection?.icon)
                         .onTapGesture {
-                            if let reflection {
-                                homeCoordinator.push(HomeRoute.answerDetail(reflection))
-                            }
+                            onTapAnswerAction?( viewModel.onTapIcon(day))
                         }
                 } else {
                     iconView(reflection?.icon)
                         .onTapGesture {
-                            if let reflection {
-                                homeCoordinator.push(HomeRoute.answerDetail(reflection))
-                            }
+                            onTapAnswerAction?( viewModel.onTapIcon(day))
                         }
                 }
             } else {
@@ -242,16 +250,12 @@ struct CalendarView: View {
                     if day.dayType == .today {
                         toDayIconView(icon)
                             .onTapGesture {
-                                if let reflection {
-                                    homeCoordinator.push(HomeRoute.answerDetail(reflection))
-                                }
+                                onTapAnswerAction?( viewModel.onTapIcon(day))
                             }
                     } else {
                         iconView(icon)
                             .onTapGesture {
-                                if let reflection {
-                                    homeCoordinator.push(HomeRoute.answerDetail(reflection))
-                                }
+                                onTapAnswerAction?( viewModel.onTapIcon(day))
                             }
                     }
                 } else {
@@ -300,7 +304,6 @@ struct CalendarView: View {
         }
     }
     
-    
     @ViewBuilder
     func toDayIconView(_ icon: IconData?) -> some View {
         if let icon {
@@ -327,4 +330,6 @@ struct CalendarView: View {
             placeholderIcon
         }
     }
+    
+    
 }

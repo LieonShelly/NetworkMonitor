@@ -8,9 +8,7 @@ import SwiftUI
 final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
     @MainActor @Published var todayQuestions: [Question] = []
     @MainActor @Published var showTodayQuestion: Bool = true
-    @MainActor @Published var showTodayAnswerView: Bool = false
-    
-    var todayAnswerViewModel: TodayAnswerViewModel?
+    @MainActor @Published var subPageRoute: SubPageRouteState = .none
     
     var tabbarViewModel = AppTabbarViewModel(
         items: [
@@ -90,5 +88,27 @@ final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
     
     @MainActor func selected(_ index: Int) {
         contentViewModel.scrollTo(index)
+    }
+}
+
+
+extension AppHomeViewModel {
+    enum SubPageRouteState: Equatable {
+        case todayAnswer(TodayAnswerViewModel)
+        case answerDetail(TodayAnswerSubmittedViewModel)
+        case none
+        
+        static func == (lhs: SubPageRouteState, rhs: SubPageRouteState) -> Bool {
+            switch (lhs, rhs) {
+            case  (.todayAnswer, .todayAnswer):
+                return true
+            case  (.answerDetail, .answerDetail):
+                return true
+            case  (.none, .none):
+                return true
+            default:
+                return false
+            }
+        }
     }
 }

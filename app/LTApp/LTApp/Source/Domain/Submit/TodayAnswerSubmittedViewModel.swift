@@ -12,10 +12,12 @@ final class TodayAnswerSubmittedViewModel: ObservableObject, @unchecked Sendable
     @Published var answer: Answer
     @Published var question: Question
     let service: any AppDataWithAuthorizationServiceful
+    let title: String
     
     init(answer: Answer, question: Question, service: any AppDataWithAuthorizationServiceful) {
         self.answer = answer
         self.question = question
         self.service = service
+        self.title = answer.createYmd?.monthDayDesc ?? ""
     }
 }

@@ -23,6 +23,7 @@ public struct Answer: Sendable, Equatable, Hashable {
 
 public struct DayReflections: Sendable {
     let day: Date
+    let question: Question
     var reflections: [Answer]
 }
 

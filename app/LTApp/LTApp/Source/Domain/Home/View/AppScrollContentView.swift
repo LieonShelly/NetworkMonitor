@@ -7,11 +7,13 @@ import SwiftUI
 struct AppScrollContentView: View {
     @ObservedObject var viewModel: AppScrollContentViewModel
     let addAction: (() -> Void)
+    let onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?
+    
     var body: some View {
         GeometryReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: .zero) {
-                    CalendarView(viewModel: viewModel.calendarViewModel, addAction: addAction)
+                    CalendarView(viewModel: viewModel.calendarViewModel, addAction: addAction, onTapAnswerAction: onTapAnswerAction)
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(0)
                     ThreadView(viewModel: viewModel.threadViewModel)

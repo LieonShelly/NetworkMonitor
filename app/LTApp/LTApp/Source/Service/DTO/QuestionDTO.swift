@@ -17,6 +17,14 @@ public struct QuestionDTO: Decodable {
         case category
     }
     
+     init(id: String, title: String, pinned: Bool? = nil, category: CategoryDTO? = nil) {
+        self.id = id
+        self.title = title
+        self.pinned = pinned
+        self.category = category
+    }
+
+    
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)

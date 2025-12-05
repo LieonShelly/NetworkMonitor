@@ -8,9 +8,8 @@ import UIComponent
 struct AppHomeView: View {
     @StateObject var viewModel: AppHomeViewModel
     @EnvironmentObject var homeCoordinator: HomeCoordinator
-    
     @State var showPage: Bool = false
-   
+    @State var subPagePrensented: Bool = false
     
     init(service: any AppDataWithAuthorizationServiceful) {
         self._viewModel = StateObject(wrappedValue: AppHomeViewModel(service: service))
@@ -21,14 +20,23 @@ struct AppHomeView: View {
             GeometryReader { proxy in
                 homeView(proxy)
             }
-            if viewModel.showTodayAnswerView {
-                todayAnswerView
-                        .transition(
-                            .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
-                     
+            switch viewModel.subPageRoute {
+            case .todayAnswer(let todayAnswerViewModel):
+                TodayAnswerView(viewModel: todayAnswerViewModel, presented: $subPagePrensented)
+                    .transition(
+                        .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
+            case .answerDetail(let todayAnswerSubmittedViewModel):
+                AnswerDetailView(viewModel: todayAnswerSubmittedViewModel, presented: $subPagePrensented)
+            case .none:
+                EmptyView()
             }
         }
-        .animation(.easeInOut, value: viewModel.showTodayAnswerView)
+        .onChange(of: subPagePrensented) { oldValue, newValue in
+            if newValue == false {
+                viewModel.subPageRoute = .none
+            }
+        }
+        .animation(.easeInOut, value: viewModel.subPageRoute)
     }
     
     func homeView(_ proxy: GeometryProxy) -> some View {
@@ -37,6 +45,10 @@ struct AppHomeView: View {
                 VStack(spacing: .zero) {
                     AppScrollContentView(viewModel: viewModel.contentViewModel) {
                         pushToAddTodayAnsnwer()
+                    } onTapAnswerAction: { answerDetailViewModel in
+                        if let answerDetailViewModel {
+                            viewModel.subPageRoute = .answerDetail(answerDetailViewModel)
+                        }
                     }
                     ZStack(alignment: .bottom) {
                         AppTabbar(viewModel: viewModel.tabbarViewModel)
@@ -69,11 +81,6 @@ struct AppHomeView: View {
         }
     }
     
-    @ViewBuilder var todayAnswerView: some View {
-        let viewModel = viewModel.generateTodayViewModel()
-        TodayAnswerView(viewModel: viewModel, presented: $viewModel.showTodayAnswerView)
-        
-    }
     
     var titleView: some View {
         Text("The Little Things")
@@ -82,7 +89,7 @@ struct AppHomeView: View {
     }
     
     func pushToAddTodayAnsnwer() {
-        viewModel.showTodayAnswerView = true
+        viewModel.subPageRoute = .todayAnswer(viewModel.generateTodayViewModel())
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
             self.viewModel.selected(0)
         })
