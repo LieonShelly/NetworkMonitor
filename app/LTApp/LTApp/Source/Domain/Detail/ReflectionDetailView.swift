@@ -161,7 +161,9 @@ struct InnerPageRoutingModifier: ViewModifier {
                     .transition(
                         .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
             case .answerDetail(let todayAnswerSubmittedViewModel):
-                AnswerDetailView(viewModel: todayAnswerSubmittedViewModel, presented: $subPagePrensented)
+                AnswerDetailView(viewModel: todayAnswerSubmittedViewModel, dismissed: { 
+                    subPageRoute = .none
+                })
             case .none:
                 EmptyView()
             }

@@ -4,7 +4,7 @@
 
 import Combine
 
-final class ReflectionDetailViewModel: ObservableObject, @unchecked Sendable {
+final class ReflectionDetailViewModel: @preconcurrency BaseViewModelType, ObservableObject, @unchecked Sendable {
     
     @MainActor @Published var history: History?
     @MainActor @Published var sumary: ReflectionSummary?
@@ -44,3 +44,18 @@ final class ReflectionDetailViewModel: ObservableObject, @unchecked Sendable {
 }
 
 
+protocol BaseViewModelType: AnyObject {
+    var subPageRoute: InnerPageRouteState { get set }
+    
+    func route(_ route: InnerPageRouteState)
+}
+
+
+extension BaseViewModelType {
+    
+    @MainActor
+    func route(_ route: InnerPageRouteState) {
+        guard subPageRoute != route else { return}
+        subPageRoute = route
+    }
+}

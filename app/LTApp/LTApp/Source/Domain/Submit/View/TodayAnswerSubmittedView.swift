@@ -9,12 +9,12 @@ import UIComponent
 struct TodayAnswerSubmittedView: View {
     @StateObject var viewModel: TodayAnswerSubmittedViewModel
     @Binding var opacity: CGFloat
-    @Binding var presented: Bool
     @EnvironmentObject var homeCoordinator: HomeCoordinator
+    let dismissed: () -> Void
     
-    init(viewModel: TodayAnswerSubmittedViewModel, opacity: Binding<CGFloat> = .constant(1), presented: Binding<Bool>) {
+    init(viewModel: TodayAnswerSubmittedViewModel, opacity: Binding<CGFloat> = .constant(1), dismissed: @escaping () -> Void) {
         self._opacity = opacity
-        self._presented = presented
+        self.dismissed = dismissed
         self._viewModel = .init(wrappedValue: viewModel)
     }
     
@@ -86,7 +86,7 @@ struct TodayAnswerSubmittedView: View {
                 homeCoordinator.dripleTransitionData?.showCalendarDripple = true
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 + 0.25, execute: {
-                presented.toggle()
+                dismissed()
             })
             
         } label: {

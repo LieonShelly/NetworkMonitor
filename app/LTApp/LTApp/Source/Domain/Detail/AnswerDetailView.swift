@@ -13,7 +13,7 @@ import Kingfisher
 struct AnswerDetailView: View {
     @ObservedObject var viewModel: TodayAnswerSubmittedViewModel
     @State var opacity: CGFloat = 1
-    @Binding var presented: Bool
+    let dismissed: () -> Void
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -26,7 +26,7 @@ struct AnswerDetailView: View {
             TodayAnswerSubmittedView(
                 viewModel: viewModel,
                 opacity: $opacity,
-                presented: $presented
+                dismissed: dismissed
             )
             .frame(maxHeight: .infinity)
             .padding(.top, 44)

@@ -5,7 +5,7 @@
 import Combine
 import SwiftUI
 
-final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
+final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObject,  @unchecked Sendable {
     @MainActor @Published var todayQuestions: [Question] = []
     @MainActor @Published var showTodayQuestion: Bool = true
     @MainActor @Published var subPageRoute: InnerPageRouteState = .none

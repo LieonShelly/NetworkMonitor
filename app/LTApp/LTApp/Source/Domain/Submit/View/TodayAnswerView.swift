@@ -73,7 +73,9 @@ struct TodayAnswerView: View {
             TodayAnswerSubmittedView(
                 viewModel: viewModel,
                 opacity: $opacity,
-                presented: $presented
+                dismissed: {
+                    presented.toggle()
+                }
             )
             .padding(.top, 44)
             .contentShape(.rect)
