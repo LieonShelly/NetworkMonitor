@@ -284,9 +284,10 @@ struct CalendarView: View {
                     .frame(width: 24, height: 24)
             case .generated:
                 if let url = icon.url {
-                    IconImageView(url: url) {
+                    ThumbnailIconImageView(url: url) {
                         placeholderIcon
                     }
+                    .frame(width: 24, height: 24)
                 }
             case .failed:
                 Image(.lock)
@@ -311,9 +312,10 @@ struct CalendarView: View {
                     .frame(width: 24, height: 24)
             case .generated:
                 if let url = icon.url {
-                    IconImageView(url: url) {
+                    ThumbnailIconImageView(url: url) {
                         placeholderIcon
                     }
+                    .frame(width: 24, height: 24)
                 }
             case .failed:
                 Image(.lock)

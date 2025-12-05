@@ -16,13 +16,9 @@ struct AnswerDetailView: View {
     var body: some View {
         VStack {
             if let url = answer.icon?.url {
-                KFImage(URL(string: url))
-                    .resizable()
-                    .placeholder { _ in
-                        LoadingView()
-                    }
-                    .aspectRatio(contentMode: .fit)
-                    .padding(.horizontal, 50)
+                OriginalIconView(url: url) {
+                    LoadingView()
+                }
             }
         }
         .defaultBackground()

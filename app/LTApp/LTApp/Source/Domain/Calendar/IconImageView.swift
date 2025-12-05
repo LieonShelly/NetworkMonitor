@@ -8,38 +8,62 @@
 import SwiftUI
 import Kingfisher
 
-
-struct IconImageView<Placeholder: View>: View {
+struct ThumbnailIconImageView<Placeholder: View>: View, ImageCacheKeyType {
     let url: String
     @ViewBuilder let placeholder:  () -> Placeholder
     
     var body: some View {
         KFImage(source: imageResource.map { .network($0) })
+            .cacheOriginalImage()
             .setProcessor(MetalIconProcessor(thickness: 4))
             .serialize(by: FormatIndicatedCacheSerializer.png)
             .cacheMemoryOnly(false)
-            .resizable()
             .placeholder { _ in
                 placeholder()
             }
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: 24, height: 24)
-            .id(iconId())
+            .id(cacheKey(url))
     }
     
     var imageResource: KF.ImageResource? {
         guard let url = URL(string: url) else { return nil }
-        let key = iconId()
-        return KF.ImageResource(downloadURL: url, cacheKey: key)
+        return KF.ImageResource(downloadURL: url, cacheKey: cacheKey(self.url))
     }
-    
-    func iconId() -> String {
+}
+
+protocol ImageCacheKeyType {
+    func cacheKey(_ url: String) -> String
+}
+
+extension ImageCacheKeyType {
+    func cacheKey(_ url: String) -> String {
         guard let url = URL(string: url) else { return url }
         let filename = url.lastPathComponent
         if let iconId = filename.components(separatedBy: "-").first {
             return iconId
         }
         return filename
+    }
+}
+
+struct OriginalIconView<Placeholder: View>: View, ImageCacheKeyType {
+    let url: String
+    @ViewBuilder let placeholder:  () -> Placeholder
+    
+    var body: some View {
+        KFImage(source: imageResource.map { .network($0) })
+            .cacheOriginalImage()
+            .placeholder { _ in
+                placeholder()
+            }
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .id(cacheKey(url))
+    }
+    
+    var imageResource: KF.ImageResource? {
+        guard let url = URL(string: url) else { return nil }
+        return KF.ImageResource(downloadURL: url, cacheKey: cacheKey(self.url))
     }
 }
