@@ -10,8 +10,9 @@ final class ReflectionDetailViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var sumary: ReflectionSummary?
     @MainActor @Published var answers: [Answer] = []
     @MainActor @Published var title: String = ""
-    
-    private let service: any AppDataWithAuthorizationServiceful
+    @MainActor @Published var subPageRoute: InnerPageRouteState = .none
+    let question: Question
+    let service: any AppDataWithAuthorizationServiceful
     private let questionId: String
     
     @MainActor
@@ -23,6 +24,7 @@ final class ReflectionDetailViewModel: ObservableObject, @unchecked Sendable {
         self.service = service
         self.questionId = questionId
         self.title = title
+        question = Question(id: questionId, title: title)
     }
     
     func fetchData() async throws {

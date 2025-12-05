@@ -32,10 +32,20 @@ struct DetailAnswerRow: View {
     
     var iconView: some View {
         VStack(spacing: .zero) {
-            Image(.calendarDripper)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 32, height: 32)
+            if let url = answer.icon?.url {
+                ThumbnailIconImageView(url: url) {
+                    Image(.calendarDripper)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                }
+                .frame(width: 24, height: 24)
+            } else {
+                Image(.calendarDripper)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
+            }
             line()
                 .padding(.vertical, 8)
         }

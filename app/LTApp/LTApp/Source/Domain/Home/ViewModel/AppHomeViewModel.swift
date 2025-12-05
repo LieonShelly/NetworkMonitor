@@ -8,7 +8,7 @@ import SwiftUI
 final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
     @MainActor @Published var todayQuestions: [Question] = []
     @MainActor @Published var showTodayQuestion: Bool = true
-    @MainActor @Published var subPageRoute: SubPageRouteState = .none
+    @MainActor @Published var subPageRoute: InnerPageRouteState = .none
     
     var tabbarViewModel = AppTabbarViewModel(
         items: [
@@ -91,24 +91,21 @@ final class AppHomeViewModel: ObservableObject,  @unchecked Sendable {
     }
 }
 
-
-extension AppHomeViewModel {
-    enum SubPageRouteState: Equatable {
-        case todayAnswer(TodayAnswerViewModel)
-        case answerDetail(TodayAnswerSubmittedViewModel)
-        case none
-        
-        static func == (lhs: SubPageRouteState, rhs: SubPageRouteState) -> Bool {
-            switch (lhs, rhs) {
-            case  (.todayAnswer, .todayAnswer):
-                return true
-            case  (.answerDetail, .answerDetail):
-                return true
-            case  (.none, .none):
-                return true
-            default:
-                return false
-            }
+enum InnerPageRouteState: Equatable {
+    case todayAnswer(TodayAnswerViewModel)
+    case answerDetail(TodayAnswerSubmittedViewModel)
+    case none
+    
+    static func == (lhs: InnerPageRouteState, rhs: InnerPageRouteState) -> Bool {
+        switch (lhs, rhs) {
+        case  (.todayAnswer, .todayAnswer):
+            return true
+        case  (.answerDetail, .answerDetail):
+            return true
+        case  (.none, .none):
+            return true
+        default:
+            return false
         }
     }
 }

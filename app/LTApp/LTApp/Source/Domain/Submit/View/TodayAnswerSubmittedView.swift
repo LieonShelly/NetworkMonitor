@@ -108,7 +108,7 @@ struct TodayAnswerSubmittedView: View {
             
             Text("Weaving your thoughts...")
                 .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
-                .padding(.top, 36)
+                .padding(.vertical, 36)
         }
     }
 }

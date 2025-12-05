@@ -11,6 +11,7 @@ struct ReflectionDetailView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @State var showSummary: Bool = false
     @State var navibarOpacity: CGFloat = 0
+    @State var subPagePrensented: Bool = false
     
     enum Constants {
         static let navibarH: CGFloat = 85
@@ -21,22 +22,34 @@ struct ReflectionDetailView: View {
     }
     
     var body: some View {
-        GeometryReader { proxy in
-            ZStack(alignment: .top) {
-                topbar(proxy)
-                contentView(proxy)
-                summaryView
+        ZStack {
+            GeometryReader { proxy in
+                ZStack(alignment: .top) {
+                    topbar(proxy)
+                    contentView(proxy)
+                    summaryView
+                }
+                .ignoresSafeArea(edges: .top)
+                .toolbarVisibility(.hidden, for: .navigationBar)
+                .animation(.easeInOut, value: showSummary)
             }
-            .ignoresSafeArea(edges: .top)
-            .toolbarVisibility(.hidden, for: .navigationBar)
-            .animation(.easeInOut, value: showSummary)
+            .task {
+                do {
+                    try await viewModel.fetchData()
+                } catch {
+                    print("ReflectionDetailView-error: \(error)")
+                }
+            }
+            switch viewModel.subPageRoute {
+            case .answerDetail(let todayAnswerSubmittedViewModel):
+                AnswerDetailView(viewModel: todayAnswerSubmittedViewModel, presented: $subPagePrensented)
+            default:
+                EmptyView()
+            }
         }
-        .task {
-            do {
-                try await viewModel.fetchData()
-            } catch {
-                print("ReflectionDetailView-error: \(error)")
-            }
+        .animation(.easeInOut, value: viewModel.subPageRoute)
+        .onChange(of: subPagePrensented) { oldValue, newValue in
+            viewModel.subPageRoute = .none
         }
     }
     
@@ -57,6 +70,9 @@ struct ReflectionDetailView: View {
                 LazyVStack(spacing: .zero) {
                     ForEach(viewModel.answers, id: \.id) { answer in
                         DetailAnswerRow(answer: answer)
+                            .onTapGesture {
+                                viewModel.subPageRoute = .answerDetail(.init(answer: answer, question: viewModel.question, service: viewModel.service))
+                            }
                     }
                 }
                 .padding(.horizontal, 32)
