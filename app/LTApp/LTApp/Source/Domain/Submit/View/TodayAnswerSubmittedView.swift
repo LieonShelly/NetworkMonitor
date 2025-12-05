@@ -7,18 +7,16 @@ import SwiftUI
 import UIComponent
 
 struct TodayAnswerSubmittedView: View {
-    let quesitionText: String
-    let answerText: String
+    @StateObject var viewModel: TodayAnswerSubmittedViewModel
     @Binding var opacity: CGFloat
     @Binding var presented: Bool
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @State var imageViewOpacity: CGFloat = 0
     
-    init(quesitionText: String, answerText: String, opacity: Binding<CGFloat>, presented: Binding<Bool>) {
-        self.quesitionText = quesitionText
-        self.answerText = answerText
+    init(viewModel: TodayAnswerSubmittedViewModel, opacity: Binding<CGFloat>, presented: Binding<Bool>) {
         self._opacity = opacity
         self._presented = presented
+        self._viewModel = .init(wrappedValue: viewModel)
     }
     
     var body: some View {
@@ -37,7 +35,7 @@ struct TodayAnswerSubmittedView: View {
     }
     
     var questionView: some View {
-        Text(quesitionText)
+        Text(viewModel.question.title)
             .textStyle(size: 32, fontFamily: .vividlyRegular)
             .padding(.horizontal, 16)
             .opacity(opacity)
@@ -47,7 +45,7 @@ struct TodayAnswerSubmittedView: View {
     
     var answerView: some View {
         HStack {
-            Text(answerText)
+            Text(viewModel.answer.content)
                 .textStyle(size: 12, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
                 .padding(.init(top: 22, leading: 18, bottom: 22, trailing: 18))
             Spacer()

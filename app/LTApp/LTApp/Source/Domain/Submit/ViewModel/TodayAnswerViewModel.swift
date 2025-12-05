@@ -14,6 +14,7 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var answerText: String = ""
     @MainActor @Published var createAt: Date?
     @MainActor @Published var submitted: Bool = false
+    var submittedViewModel: TodayAnswerSubmittedViewModel?
     
     private var submittedAction: ((_ iconId: String) -> Void)?
     let title: String
@@ -72,6 +73,7 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
             )
         )
         submittedAction?(answer.icon?.iconId ?? "")
+        submittedViewModel = .init(answer: answer, question: question, service: service)
         await MainActor.run {
             submitted = true
         }

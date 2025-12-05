@@ -67,16 +67,18 @@ struct TodayAnswerView: View {
         }
     }
     
+    @ViewBuilder
     var submittedForm: some View {
-        TodayAnswerSubmittedView(
-            quesitionText: viewModel.cardViewModels.first?.question.title ?? "",
-            answerText: viewModel.answerText,
-            opacity: $opacity,
-            presented: $presented
-        )
-        .padding(.top, 44)
-        .contentShape(.rect)
-        .padding(.top, 20)
+        if let viewModel = viewModel.submittedViewModel {
+            TodayAnswerSubmittedView(
+                viewModel: viewModel,
+                opacity: $opacity,
+                presented: $presented
+            )
+            .padding(.top, 44)
+            .contentShape(.rect)
+            .padding(.top, 20)
+        }
     }
     
     @ViewBuilder
