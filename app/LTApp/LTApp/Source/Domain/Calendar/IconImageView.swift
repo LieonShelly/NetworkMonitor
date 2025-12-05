@@ -54,6 +54,7 @@ struct OriginalIconView<Placeholder: View>: View, ImageCacheKeyType {
     var body: some View {
         KFImage(source: imageResource.map { .network($0) })
             .cacheOriginalImage()
+            .setProcessor(MetalIconProcessor(thickness: 0))
             .placeholder { _ in
                 placeholder()
             }

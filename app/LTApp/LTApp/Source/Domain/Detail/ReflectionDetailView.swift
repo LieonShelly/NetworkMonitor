@@ -22,34 +22,23 @@ struct ReflectionDetailView: View {
     }
     
     var body: some View {
-        ZStack {
-            GeometryReader { proxy in
-                ZStack(alignment: .top) {
-                    topbar(proxy)
-                    contentView(proxy)
-                    summaryView
-                }
-                .ignoresSafeArea(edges: .top)
-                .toolbarVisibility(.hidden, for: .navigationBar)
-                .animation(.easeInOut, value: showSummary)
+        GeometryReader { proxy in
+            ZStack(alignment: .top) {
+                topbar(proxy)
+                contentView(proxy)
+                summaryView
             }
-            .task {
-                do {
-                    try await viewModel.fetchData()
-                } catch {
-                    print("ReflectionDetailView-error: \(error)")
-                }
-            }
-            switch viewModel.subPageRoute {
-            case .answerDetail(let todayAnswerSubmittedViewModel):
-                AnswerDetailView(viewModel: todayAnswerSubmittedViewModel, presented: $subPagePrensented)
-            default:
-                EmptyView()
-            }
+            .ignoresSafeArea(edges: .top)
+            .toolbarVisibility(.hidden, for: .navigationBar)
+            .animation(.easeInOut, value: showSummary)
         }
-        .animation(.easeInOut, value: viewModel.subPageRoute)
-        .onChange(of: subPagePrensented) { oldValue, newValue in
-            viewModel.subPageRoute = .none
+        .innerPageRoute($viewModel.subPageRoute)
+        .task {
+            do {
+                try await viewModel.fetchData()
+            } catch {
+                print("ReflectionDetailView-error: \(error)")
+            }
         }
     }
     
@@ -155,5 +144,39 @@ struct ReflectionDetailView: View {
          .zIndex(2)
         
         
+    }
+}
+
+
+struct InnerPageRoutingModifier: ViewModifier {
+    @Binding var subPageRoute: InnerPageRouteState
+    @State var subPagePrensented: Bool = false
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+            switch subPageRoute {
+            case .todayAnswer(let todayAnswerViewModel):
+                TodayAnswerView(viewModel: todayAnswerViewModel, presented: $subPagePrensented)
+                    .transition(
+                        .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
+            case .answerDetail(let todayAnswerSubmittedViewModel):
+                AnswerDetailView(viewModel: todayAnswerSubmittedViewModel, presented: $subPagePrensented)
+            case .none:
+                EmptyView()
+            }
+        }
+        .animation(.easeInOut, value: subPageRoute)
+        .onChange(of: subPagePrensented) { oldValue, newValue in
+            subPageRoute = .none
+        }
+    }
+}
+
+
+extension View {
+    
+    func innerPageRoute(_ state: Binding<InnerPageRouteState>) -> some View {
+        modifier(InnerPageRoutingModifier(subPageRoute: state))
     }
 }

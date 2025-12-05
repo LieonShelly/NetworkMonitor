@@ -16,25 +16,10 @@ struct AppHomeView: View {
     }
     
     var body: some View {
-        ZStack {
-            GeometryReader { proxy in
-                homeView(proxy)
-            }
-            switch viewModel.subPageRoute {
-            case .todayAnswer(let todayAnswerViewModel):
-                TodayAnswerView(viewModel: todayAnswerViewModel, presented: $subPagePrensented)
-                    .transition(
-                        .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
-            case .answerDetail(let todayAnswerSubmittedViewModel):
-                AnswerDetailView(viewModel: todayAnswerSubmittedViewModel, presented: $subPagePrensented)
-            case .none:
-                EmptyView()
-            }
+        GeometryReader { proxy in
+            homeView(proxy)
         }
-        .onChange(of: subPagePrensented) { oldValue, newValue in
-            viewModel.subPageRoute = .none
-        }
-        .animation(.easeInOut, value: viewModel.subPageRoute)
+        .innerPageRoute($viewModel.subPageRoute)
     }
     
     func homeView(_ proxy: GeometryProxy) -> some View {
@@ -52,15 +37,15 @@ struct AppHomeView: View {
                         AppTabbar(viewModel: viewModel.tabbarViewModel)
                             .padding(.horizontal, 50)
                             .padding(.top, 10)
-                            
+                        
                         if let head = viewModel.todayQuestions.first, viewModel.showTodayQuestion {
                             TodayQuestionView(question: head) {
                                 pushToAddTodayAnsnwer()
                             }
-                                .offset(y: -(40 + 16 * 2))
-                                .padding(.horizontal, 40)
-                                .padding(.bottom, 10)
-                                .transition(.opacity)
+                            .offset(y: -(40 + 16 * 2))
+                            .padding(.horizontal, 40)
+                            .padding(.bottom, 10)
+                            .transition(.opacity)
                         }
                     }
                 }
@@ -75,7 +60,7 @@ struct AppHomeView: View {
             withAnimation(.easeInOut) {
                 showPage = true
             }
-           try? await viewModel.fetchData()
+            try? await viewModel.fetchData()
         }
     }
     

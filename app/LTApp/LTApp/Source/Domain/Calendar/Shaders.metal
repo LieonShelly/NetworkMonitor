@@ -40,12 +40,6 @@ float getLuma(float4 color) {
     return dot(color.rgb, float3(0.299, 0.587, 0.114));
 }
 
-// 内核函数：线条加粗 (形态学腐蚀 - 取局部最小值)
-// radius: 加粗力度。1 = 轻微加粗(3x3范围), 2 = 明显加粗(5x5范围)
-// 增加了一个参数：cropOffset
-// ... 之前的代码不变 ...
-
-// 内核函数：线条加粗 + 去除背景
 kernel void thickenAndRemoveBackground(texture2d<float, access::read> inTexture [[texture(0)]],
                                        texture2d<float, access::write> outTexture [[texture(1)]],
                                        constant int &radius [[buffer(0)]],
@@ -80,15 +74,10 @@ kernel void thickenAndRemoveBackground(texture2d<float, access::read> inTexture 
     }
     
     // 去除背景逻辑
-    // 建议使用 0.90 ~ 0.95，能容忍 JPEG 压缩带来的“不纯的白色”
     if (minLuma > 0.95) {
         // 背景 -> 全透明
         outTexture.write(float4(0.0, 0.0, 0.0, 0.0), gid);
     } else {
-        // 内容 -> 保留原色
-        // 强制 Alpha = 1.0 确保线条实心，或者使用 darkestColor.a 保留原透明度
-        // 如果你的线条在黑色背景上看不清，可能是因为这里输出了半透明黑色
-        // 这里我们强制它不透明：
         outTexture.write(float4(darkestColor.rgb, 1.0), gid);
     }
 }

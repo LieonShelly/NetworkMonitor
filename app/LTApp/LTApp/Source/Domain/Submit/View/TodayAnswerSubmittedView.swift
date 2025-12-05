@@ -69,6 +69,7 @@ struct TodayAnswerSubmittedView: View {
                     loadingView
                 }
                 .padding(.horizontal, 48)
+                .padding(.vertical, 50)
                 .matchedGeometryEffect(id: "dripple", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
             } else {
                 loadingView
@@ -80,14 +81,14 @@ struct TodayAnswerSubmittedView: View {
     
     var closeBtn: some View {
         Button {
-            withAnimation(.easeIn(duration: 0.5), completionCriteria: .logicallyComplete) {
+            homeCoordinator.dripleTransitionData?.showCalendarDripple = true
+            withAnimation(.easeIn(duration: 0.5)) {
                 opacity = 0
-                homeCoordinator.dripleTransitionData?.showCalendarDripple = true
-            } completion: {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
-                    presented.toggle()
-                })
+              
             }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 + 0.25, execute: {
+                presented.toggle()
+            })
             
         } label: {
             RoundedRectangle(cornerRadius: 12)
@@ -97,6 +98,7 @@ struct TodayAnswerSubmittedView: View {
                     Image(.xmark)
                 }
         }
+        .padding(.top, 20)
         .padding(.bottom, 45)
         .opacity(opacity)
     }
