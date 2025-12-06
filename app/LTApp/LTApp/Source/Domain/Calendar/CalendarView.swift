@@ -81,25 +81,7 @@ struct CalendarView: View {
                     HStack {
                         if let currentMonth = viewModel.currentMonth {
                             if day.date.isSameMonth(currentMonth) {
-                                if let dripleTransitionData = homeCoordinator.dripleTransitionData, let reflections = day.reflections {
-                                    if day.date.isSameDay(dripleTransitionData.date) {
-                                        if dripleTransitionData.showCalendarDripple {
-                                            dayIcon(day)
-                                                .matchedGeometryEffect(id: "dripple", in: dripleTransitionData.drippleAnimationSpace)
-                                                .frame(width: 24, height: 24)
-                                        } else {
-                                            dayIcon(day)
-                                        }
-                                        
-                                        Color.clear.frame(width: .zero, height: .zero)
-                                            .onAppear {
-                                                homeCoordinator.dripleTransitionData?.showDrippleClose = true
-                                            }
-                                       
-                                    } else {
-                                        dayIcon(day)
-                                    }
-                                } else if let reflections = day.reflections {
+                               if let _ = day.reflections {
                                     dayIcon(day)
                                 } else if day.dayType == .today {
                                     addBtn

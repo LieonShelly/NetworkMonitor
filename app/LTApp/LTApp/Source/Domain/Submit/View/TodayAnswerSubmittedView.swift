@@ -90,20 +90,18 @@ struct TodayAnswerSubmittedView: View {
     
     @ViewBuilder
     var imageView: some View {
-        if !homeCoordinator.dripleTransitionData.showCalendarDripple {
-            if let url = viewModel.answer.icon?.url, !url.isEmpty {
-                OriginalIconView(url: url) { } onSuccess: {
-                    withAnimation(.easeInOut(duration: 4)) {
-                        imageCoverScale = 0
-                    }
-                    withAnimation(.easeInOut(duration: 0.1)) {
-                        imageCoverEnpoint = 0.2
-                    }
+        if showBtn, let url = viewModel.answer.icon?.url, !url.isEmpty {
+            OriginalIconView(url: url) { } onSuccess: {
+                withAnimation(.easeInOut(duration: 4)) {
+                    imageCoverScale = 0
                 }
-                .padding(.horizontal, 48)
-                .padding(.vertical, 50)
-                .matchedGeometryEffect(id: "dripple", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
+                withAnimation(.easeInOut(duration: 0.1)) {
+                    imageCoverEnpoint = 0.2
+                }
             }
+            .padding(.horizontal, 48)
+            .padding(.vertical, 50)
+            .transition(.opacity)
         }
     }
     
