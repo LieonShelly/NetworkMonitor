@@ -18,6 +18,6 @@ class AppleIDSignInViewModel: ObservableObject, @unchecked Sendable {
         print("authorizationCode:\(authorizationCode)")
         print("identityToken:\(identityToken)")
         let user = try await service.authUseCasse.execute(authorizationCode: authorizationCode, identityToken: identityToken)
-        print(user)
+        try service.userManagementService.updateUser(user)
     }
 }

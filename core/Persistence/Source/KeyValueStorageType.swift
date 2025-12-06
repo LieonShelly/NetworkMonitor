@@ -12,6 +12,14 @@ public protocol KeyValueStorageType {
     func delete(_ key: String)
 }
 
+public protocol KeyDataStorageType {
+    func save(value: Data, key: String) throws
+    
+    func read(_ key: String) -> Data?
+    
+    func delete(_ key: String)
+}
+
 public class KeyChainStorage: KeyValueStorageType {
     
     public init() {}
@@ -51,5 +59,25 @@ public class KeyChainStorage: KeyValueStorageType {
             kSecAttrAccount as String : key,
             ]
         SecItemDelete(query as CFDictionary)
+    }
+}
+
+
+public class UserDefaultStorage: KeyDataStorageType {
+    private let userDefault: UserDefaults = .standard
+    
+    public init() {}
+    
+    public func save(value: Data, key: String) throws {
+        userDefault.set(value, forKey: key)
+        userDefault.synchronize()
+    }
+    
+    public func read(_ key: String) -> Data? {
+        userDefault.value(forKey: key) as? Data
+    }
+    
+    public func delete(_ key: String) {
+        userDefault.removeObject(forKey: key)
     }
 }

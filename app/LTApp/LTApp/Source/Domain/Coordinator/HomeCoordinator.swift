@@ -33,7 +33,7 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
         }
         switch route {
         case .home:
-            return AnyView(AppHomeView(service: appDataService))
+            return AnyView(AppHomeView(viewModel: .init(service: appDataService)))
         case .questionLib:
             return AnyView(QuestionLibView(viewModel: QuestionLibViewModel(service: appDataService)))
         case .questioDetail:

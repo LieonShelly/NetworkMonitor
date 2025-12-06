@@ -11,8 +11,8 @@ struct AppHomeView: View {
     @State var showPage: Bool = false
     @State var subPagePrensented: Bool = false
     
-    init(service: any AppDataWithAuthorizationServiceful) {
-        self._viewModel = StateObject(wrappedValue: AppHomeViewModel(service: service))
+    init(viewModel: AppHomeViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
