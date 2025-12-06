@@ -22,32 +22,40 @@ struct AppHomeView: View {
         .innerPageRoute($viewModel.subPageRoute)
     }
     
+    fileprivate func scrollContentView() -> AppScrollContentView {
+        return AppScrollContentView(viewModel: viewModel.contentViewModel) {
+            pushToAddTodayAnsnwer()
+        } onTapAnswerAction: { answerDetailViewModel in
+            if let answerDetailViewModel {
+                viewModel.route(.answerDetail(answerDetailViewModel))
+            }
+        }
+    }
+    
+    fileprivate func tabbar() -> ZStack<TupleView<(some View, (some View)?)>> {
+        return ZStack(alignment: .bottom) {
+            AppTabbar(viewModel: viewModel.tabbarViewModel)
+                .padding(.horizontal, 50)
+                .padding(.top, 10)
+            
+            if let head = viewModel.todayQuestions.first, viewModel.showTodayQuestion {
+                TodayQuestionView(question: head) {
+                    pushToAddTodayAnsnwer()
+                }
+                .offset(y: -(40 + 16 * 2))
+                .padding(.horizontal, 40)
+                .padding(.bottom, 10)
+                .transition(.opacity)
+            }
+        }
+    }
+    
     func homeView(_ proxy: GeometryProxy) -> some View {
         VStack {
             if showPage {
-                VStack(spacing: .zero) {
-                    AppScrollContentView(viewModel: viewModel.contentViewModel) {
-                        pushToAddTodayAnsnwer()
-                    } onTapAnswerAction: { answerDetailViewModel in
-                        if let answerDetailViewModel {
-                            viewModel.route(.answerDetail(answerDetailViewModel))
-                        }
-                    }
-                    ZStack(alignment: .bottom) {
-                        AppTabbar(viewModel: viewModel.tabbarViewModel)
-                            .padding(.horizontal, 50)
-                            .padding(.top, 10)
-                        
-                        if let head = viewModel.todayQuestions.first, viewModel.showTodayQuestion {
-                            TodayQuestionView(question: head) {
-                                pushToAddTodayAnsnwer()
-                            }
-                            .offset(y: -(40 + 16 * 2))
-                            .padding(.horizontal, 40)
-                            .padding(.bottom, 10)
-                            .transition(.opacity)
-                        }
-                    }
+                ZStack(alignment: .bottom) {
+                    scrollContentView()
+                    tabbar()
                 }
                 .toolbarVisibility(.hidden, for: .navigationBar)
                 .transition(.opacity)
@@ -62,13 +70,6 @@ struct AppHomeView: View {
             }
             try? await viewModel.fetchData()
         }
-    }
-    
-    
-    var titleView: some View {
-        Text("The Little Things")
-            .textStyle(size: 36)
-            .padding(.top, 35)
     }
     
     func pushToAddTodayAnsnwer() {

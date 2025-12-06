@@ -158,6 +158,7 @@ struct ThreadView: View {
             .overlay(alignment: .leading) {
                 line(true, segmentCount: 10, seed: 40)
             }
+            .padding(.bottom, 200)
     }
     
     var moreBtn: some View {
