@@ -132,7 +132,7 @@ struct ThreadView: View {
     }
     
     var titleView: some View {
-        HStack(spacing: .zero) {
+        ZStack(alignment: .leading) {
             Button {
                 homeCoordinator.push(HomeRoute.questionLib)
             } label: {
@@ -140,11 +140,13 @@ struct ThreadView: View {
                     .resizable()
                     .frame(width: 32, height: 32)
             }
-            Spacer()
-            Text("The Little Things")
-                .textStyle(size: 32)
-            Spacer()
+            HStack(spacing: .zero) {
+                Spacer()
+                Text("The Little Things")
+                    .textStyle(size: 32)
+                Spacer()
 
+            }
         }
         .padding(.leading, 24)
     }

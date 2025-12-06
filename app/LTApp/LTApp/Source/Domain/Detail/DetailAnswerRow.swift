@@ -46,7 +46,7 @@ struct DetailAnswerRow: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 24, height: 24)
             }
-            line()
+            line(answer)
                 .padding(.vertical, 8)
         }
         .padding(.leading, 8)
@@ -65,7 +65,9 @@ struct DetailAnswerRow: View {
     }
     
     
-    func line(segmentCount: Int = 40, seed: Int = 100) -> some View {
+    @ViewBuilder  func line(_ answer: Answer) -> some View {
+        let segmentCount: Int = answer.content.count < 100 ? 10 : 40
+        let seed: Int = answer.content.count < 100 ? 30 : 100
         WavyLine(segmentCount: segmentCount, seed: seed)
             .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round))
             .foregroundColor(AppColor.color(hex: 0x000000))
