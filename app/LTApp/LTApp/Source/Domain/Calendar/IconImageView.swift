@@ -65,6 +65,7 @@ struct OriginalIconView<Placeholder: View>: View, ImageCacheKeyType {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .id(cacheKey(url))
+            .border(Color.red)
     }
     
     var imageResource: KF.ImageResource? {

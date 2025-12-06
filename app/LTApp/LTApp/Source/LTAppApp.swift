@@ -38,6 +38,36 @@ struct LTAppApp: App {
 
 import SwiftUI
 
+
+struct MetalSmartIconView: View {
+    let originalImage: UIImage
+    @State var processedImage: UIImage?
+    
+    var body: some View {
+        
+        VStack {
+            Image(uiImage: originalImage)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 200, height: 200)
+            
+            if let processedImage {
+                Image(uiImage: processedImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 200, height: 200)
+                    .background(Color.red)
+            }
+        }
+        
+        .onAppear {
+            MetalImageProcessor.shared.process(originalImage, thickness: 0) { processedImage in
+                self.processedImage = processedImage
+            }
+        }
+    }
+}
+
 struct MatchedGeometryExampleView: View {
     @Namespace private var animationSpace
     @State private var isExpanded = true

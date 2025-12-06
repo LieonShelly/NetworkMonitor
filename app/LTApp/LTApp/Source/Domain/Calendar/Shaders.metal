@@ -25,7 +25,7 @@ kernel void detectContentBounds(texture2d<float, access::read> inputTexture [[te
     
     float4 color = inputTexture.read(gid);
     bool isTransparent = color.a < 0.01;
-    bool isWhite = (color.r > 0.94 && color.g > 0.94 && color.b > 0.94);
+    bool isWhite = (color.r > 0.8 && color.g > 0.8 && color.b > 0.8);
     
     if (!isTransparent && !isWhite) {
         atomic_fetch_min_explicit(&result.minX, gid.x, memory_order_relaxed);

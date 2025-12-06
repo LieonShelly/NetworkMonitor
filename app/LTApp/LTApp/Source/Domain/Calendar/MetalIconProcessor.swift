@@ -15,7 +15,7 @@ struct MetalIconProcessor: ImageProcessor {
     
     init(thickness: Int = 1) {
         self.thickness = thickness
-        self.identifier = "com.metal.icon.processor.vw_thickness_\(thickness)"
+        self.identifier = "com.metal.icon.processor.v3_thickness_\(thickness)"
     }
     
     func process(item: ImageProcessItem, options: KingfisherParsedOptionsInfo) -> KFCrossPlatformImage? {
