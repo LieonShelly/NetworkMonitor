@@ -76,7 +76,7 @@ struct AppleIDSignInView: View {
 //       .onTapGesture {
 //            Task.detached {
 //                do {
-//                    try await viewModel.login(authorizationCode: "cbcd2dfdea8ac4b35a6a54477a25b5fde.0.mrxxu.pTOAAFQiZvJ9LGDJSIiFBA", identityToken: "eyJraWQiOiJZUXJxZE1ENGJxIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmxpdHRsZS50aGluZ3MiLCJleHAiOjE3NjQ2NzMyNTQsImlhdCI6MTc2NDU4Njg1NCwic3ViIjoiMDAxNzc0LmZiNmI2MWIyOTkyZTQ2ODM4YmVlMzRlNzgxYTZhMTE0LjEwMjEiLCJjX2hhc2giOiJwQmJ3SVdrZktLcTVEMGk3S2wtV2dRIiwiZW1haWwiOiJieGJiZGR4eW40QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc19wcml2YXRlX2VtYWlsIjp0cnVlLCJhdXRoX3RpbWUiOjE3NjQ1ODY4NTQsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.l_yA5Viza9WYJtUKyG3URMnV63iK-w8VG-ddaCH9zjWIHEmVaMHDd8RabsN3acnEHEc8jh--_CV1eLJz0WxuZNMtX4QYpoPnXSTL6jbXuo3po0UNRUkh99kgDKsVZNq2Yx3Xd4lb9iFfDPURuy-v71EjLka3CRZmqU1UHznNynn-kE-X_mLBw3w3uwPCGTZiCZuEI183PaUOJJXSUs9qeirpccKdqqe2Zv5FNUrIZK_mQ-COn9Mo-0LUiHYKQyoSbgYNQRBkBscEyXu7wYOA6U6DOphKEfBiyeA5kUvUjrxSmO_B_SYkjfdu2ffz9jonKSLhk0deqqowoME0M00new")
+//                    try await viewModel.login(authorizationCode: "", identityToken: "")
 //                    await route()
 //                } catch {
 //                  await MainActor.run {

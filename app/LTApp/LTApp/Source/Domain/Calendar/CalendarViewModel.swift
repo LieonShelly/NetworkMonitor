@@ -133,7 +133,7 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     
     @MainActor
     func onTapIcon(_ day: CalendarDay) -> TodayAnswerSubmittedViewModel? {
-        guard let answer = day.reflections?.reflections.last, let question = day.reflections?.question  else {
+        guard let answer = day.reflections?.reflections.last, let question = answer.question  else {
             return nil
         }
         let todayAnswerSubmittedViewModel = TodayAnswerSubmittedViewModel(answer: answer, question: question, service: service)

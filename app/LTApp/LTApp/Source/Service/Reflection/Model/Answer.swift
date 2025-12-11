@@ -10,6 +10,7 @@ public struct Answer: Sendable, Equatable, Hashable {
     let createTms: Date?
     let createYmd: Date?
     var icon: IconData?
+    var question: Question?
     
     public static func == (lhs: Answer, rhs: Answer) -> Bool {
         lhs.id == rhs.id
@@ -23,7 +24,6 @@ public struct Answer: Sendable, Equatable, Hashable {
 
 public struct DayReflections: Sendable {
     let day: Date
-    let question: Question
     var reflections: [Answer]
 }
 

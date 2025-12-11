@@ -10,6 +10,7 @@ public struct AnswerDTO: Decodable {
     let createTms: String?
     let createdYmd: String?
     let icon: IconDto?
+    let question: QuestionDTO?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -17,6 +18,7 @@ public struct AnswerDTO: Decodable {
         case createTms = "created_tms"
         case createdYmd = "created_ymd"
         case icon
+        case question
     }
 }
 
@@ -36,7 +38,8 @@ extension AnswerDTO {
             content: content,
             createTms: createTmsDate,
             createYmd: createYmdDate,
-            icon: icon?.toDomain()
+            icon: icon?.toDomain(),
+            question: question?.toDomain()
         )
     }
 }
