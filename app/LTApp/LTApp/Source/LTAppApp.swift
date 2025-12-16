@@ -26,7 +26,8 @@ struct LTAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            coordinator.rootView()
+//            coordinator.rootView()
+            NotificationView()
 //            MetalSmartIconView(originalImage: UIImage(resource: .chick))
 //            ManualHeroAnimationView()
         }
