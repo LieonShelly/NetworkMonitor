@@ -7,8 +7,15 @@
 
 import SwiftUI
 import UIComponent
+import UserNotifications
 
 struct NotificationView: View {
+    @StateObject var viewModel: NotificationViewModel
+    
+    init(viewModel: NotificationViewModel) {
+        self._viewModel = .init(wrappedValue: viewModel)
+    }
+    
     var body: some View {
         VStack {
             titleView
@@ -23,6 +30,14 @@ struct NotificationView: View {
             
             VStack(spacing: 16) {
                 DefaultAppButton(title: "Notify me") {
+                    Task {
+                        do {
+                            let granted = try await viewModel.requestPermission()
+                            print(granted)
+                        } catch {
+                            print("requestPermission-error:\(error)")
+                        }
+                    }
                 }
                 Button(action: {
                     

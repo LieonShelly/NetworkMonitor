@@ -19,3 +19,21 @@ public class CalendarReflectionsUseCase: CalendarReflectionsUseCaseType, @unchec
         try await repository.fetchCalendarReflections(startMonth: startMonth, endMonth: endMonth)
     }
 }
+
+import Foundation
+
+public protocol PostNotificationUseCaseType: Sendable {
+    func execute(deviceToken: String) async throws
+}
+
+public class PostNotificationUseCase: PostNotificationUseCaseType, @unchecked Sendable {
+    private let repository: any NotificationRepositoryType
+    
+    public init(repository: any NotificationRepositoryType) {
+        self.repository = repository
+    }
+    
+    public func execute(deviceToken: String) async throws {
+       try await repository.postDeviceToken(deviceToken)
+    }
+}

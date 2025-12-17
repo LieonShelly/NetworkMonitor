@@ -5,6 +5,24 @@
 import Foundation
 import LTNetwork
 
+
+public protocol NotificationRepositoryType {
+    func postDeviceToken(_ token: String) async throws
+}
+
+public final class NotificationRepository: NotificationRepositoryType {
+    private let apiClient: ApiClient
+    
+    public init(apiClient: ApiClient) {
+        self.apiClient = apiClient
+    }
+    
+    public func postDeviceToken(_ token: String) async throws {
+        let request = NotificationRequest.saveDeviceToken(token)
+        let _ = try await apiClient.sendRequest(request)
+    }
+}
+    
 public protocol ReflectionRepositoryType {
     func fetchOnboardingSentence() async throws -> OnboardingSentence
     

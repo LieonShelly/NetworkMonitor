@@ -20,6 +20,7 @@ public protocol AppDataWithAuthorizationServiceful {
     var onboardingAccessUseCase: any OnboardingAccessUseCaseType { get }
     var queryIconStatusUseCase: any QueryIconGeneratingStatusUseCaseType { get }
     var userManagementService: any UserManagementServiceful { get }
+    var postNotificationService: any PostNotificationUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
@@ -28,16 +29,19 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     private let iconRepositroy: any IconRepositoryType
     private let storage: any KeyValueStorageType
     public let userManagementService: any UserManagementServiceful
+    private let notificationRepository: any NotificationRepositoryType
     
     public init(authRepository: any AuthRepositoryType,
                 reflectionRepository: any ReflectionRepositoryType,
                 iconRepositroy: any IconRepositoryType,
+                notificationRepository: any NotificationRepositoryType,
                 storage: any KeyValueStorageType) {
         self.authRepository = authRepository
         self.reflectionRepository = reflectionRepository
         self.storage = storage
         self.iconRepositroy = iconRepositroy
         self.userManagementService = UserManagementService()
+        self.notificationRepository = notificationRepository
     }
     
     public lazy var authUseCasse: any AuthUseCaseType = {
@@ -90,5 +94,9 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var queryIconStatusUseCase: any QueryIconGeneratingStatusUseCaseType = {
         QueryIconGeneratingStatusUseCase(repository: iconRepositroy)
+    }()
+    
+    public lazy var postNotificationService: any PostNotificationUseCaseType = {
+        PostNotificationUseCase(repository: notificationRepository)
     }()
 }

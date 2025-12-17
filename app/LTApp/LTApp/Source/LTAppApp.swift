@@ -11,10 +11,9 @@ struct LTAppApp: App {
     @StateObject var homeCoordinator: HomeCoordinator
     @StateObject var preHomeCoordinator: PreHomeCoordinator
     @Namespace var dripleTransition
-    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @Environment(\.scenePhase) var scenePhase
     init() {
-        try! AppFont.registerFonts()
-        
         let appCoordinator = AppCoordinator()
         _coordinator = StateObject(
             wrappedValue: appCoordinator
@@ -22,18 +21,23 @@ struct LTAppApp: App {
         _homeCoordinator = StateObject(wrappedValue: HomeCoordinator(appDataService: appCoordinator.appDataService))
         
         _preHomeCoordinator = StateObject(wrappedValue: PreHomeCoordinator(appDataService: appCoordinator.appDataService))
+        appDelegate.appCoordinator = appCoordinator
     }
     
     var body: some Scene {
         WindowGroup {
-//            coordinator.rootView()
-            NotificationView()
+            coordinator.rootView()
 //            MetalSmartIconView(originalImage: UIImage(resource: .chick))
 //            ManualHeroAnimationView()
         }
         .environmentObject(homeCoordinator)
         .environmentObject(coordinator)
         .environmentObject(preHomeCoordinator)
+        .onChange(of: scenePhase) { oldValue, newValue in
+            if newValue == .active {
+                UNUserNotificationCenter.current().setBadgeCount(0)
+            }
+        }
     }
 }
 
