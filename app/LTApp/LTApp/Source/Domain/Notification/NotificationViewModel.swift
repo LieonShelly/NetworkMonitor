@@ -19,4 +19,8 @@ class NotificationViewModel: ObservableObject, @unchecked Sendable {
     func requestPermission() async throws -> Bool {
         return try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
     }
+    
+    func didOpen() async {
+        await appService.notificationFlagUseCase.save()
+    }
 }

@@ -115,6 +115,8 @@
 		F8642C8A2EE0330000D92A07 /* MetalImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8642C892EE0330000D92A07 /* MetalImageProcessor.swift */; };
 		F8642C902EE04EF000D92A07 /* MetalIconProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8642C8F2EE04EF000D92A07 /* MetalIconProcessor.swift */; };
 		F8653D158C566ADBE66E781E /* FetchOnboardingSentenceUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C73B50298BF20B069EA0DED /* FetchOnboardingSentenceUseCase.swift */; };
+		F86ECAC92EF39F4E007EEA24 /* PostNotificationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86ECAC82EF39F4E007EEA24 /* PostNotificationUseCase.swift */; };
+		F86ECACB2EF3A11C007EEA24 /* NotificationFlagUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86ECACA2EF3A11C007EEA24 /* NotificationFlagUseCase.swift */; };
 		F88E5FFE060A4CDAD0021795 /* UniversalResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FF8161A8C18829BAA0967 /* UniversalResponse.swift */; };
 		F8A22C4C3D1795B392850452 /* FirstQuestionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5700C32AD3048D4D735EFB /* FirstQuestionViewModel.swift */; };
 		F8BE5EC22EE1640C009206C2 /* IconImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BE5EC12EE1640B009206C2 /* IconImageView.swift */; };
@@ -261,6 +263,8 @@
 		F85859F32EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayAnswerSubmittedViewModel.swift; sourceTree = "<group>"; };
 		F8642C892EE0330000D92A07 /* MetalImageProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalImageProcessor.swift; sourceTree = "<group>"; };
 		F8642C8F2EE04EF000D92A07 /* MetalIconProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalIconProcessor.swift; sourceTree = "<group>"; };
+		F86ECAC82EF39F4E007EEA24 /* PostNotificationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNotificationUseCase.swift; sourceTree = "<group>"; };
+		F86ECACA2EF3A11C007EEA24 /* NotificationFlagUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFlagUseCase.swift; sourceTree = "<group>"; };
 		F8BE5EC12EE1640B009206C2 /* IconImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImageView.swift; sourceTree = "<group>"; };
 		F8C266512EF285EE0000F5D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8C266532EF286030000F5D6 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -625,6 +629,8 @@
 		E81C9A699055A08036CC26C8 /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
+				F86ECACA2EF3A11C007EEA24 /* NotificationFlagUseCase.swift */,
+				F86ECAC82EF39F4E007EEA24 /* PostNotificationUseCase.swift */,
 				A2AC3ECD67EDD0DA13A5CABC /* CalendarReflectionsUseCase.swift */,
 				878A40C120CF49A427018EDD /* FetchCategoriesUseCase.swift */,
 				F4EA66A0CB3CB6B4CB331EE1 /* FetchHeadQuestionUseCase.swift */,
@@ -829,6 +835,7 @@
 				A9A0644E8593A152539FDEBE /* AppScrollContentViewModel.swift in Sources */,
 				9BB548E33C85CA305BC4EFAA /* AppTabbar.swift in Sources */,
 				D6553CA92EF7F5086C2D3652 /* AppTabbarItem.swift in Sources */,
+				F86ECACB2EF3A11C007EEA24 /* NotificationFlagUseCase.swift in Sources */,
 				411879C93E870B65D2792153 /* AppTabbarView.swift in Sources */,
 				BE23B8FA23E7357F40A9042B /* AppTabbarViewModel.swift in Sources */,
 				FAA6D2B8FB0286BEE0D9140C /* AppleIDSignInView.swift in Sources */,
@@ -922,6 +929,7 @@
 				FF7C7736C42D858DEA6687ED /* UserManagementServiceful.swift in Sources */,
 				5A9B569CECC17045B80790DD /* UserRow.swift in Sources */,
 				FC384158B10A64A8B751A47A /* UserRowItem.swift in Sources */,
+				F86ECAC92EF39F4E007EEA24 /* PostNotificationUseCase.swift in Sources */,
 				4EECAD353BB7BC9928A7AC4B /* ViewExtension.swift in Sources */,
 				E2DA5FFF029D9D4E00EFF8DB /* WelcomeView.swift in Sources */,
 				92BD92C1E7E99F3A6370EA63 /* WelcomeViewModel.swift in Sources */,

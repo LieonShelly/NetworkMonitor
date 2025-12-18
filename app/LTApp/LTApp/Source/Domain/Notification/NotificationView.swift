@@ -11,9 +11,13 @@ import UserNotifications
 
 struct NotificationView: View {
     @StateObject var viewModel: NotificationViewModel
+    @Binding var opacity: CGFloat
+    let dismissed: () -> Void
     
-    init(viewModel: NotificationViewModel) {
+    init(viewModel: NotificationViewModel, opacity: Binding<CGFloat>, dismissed: @escaping () -> Void) {
         self._viewModel = .init(wrappedValue: viewModel)
+        self.dismissed = dismissed
+        self._opacity = opacity
     }
     
     var body: some View {
@@ -32,15 +36,16 @@ struct NotificationView: View {
                 DefaultAppButton(title: "Notify me") {
                     Task {
                         do {
-                            let granted = try await viewModel.requestPermission()
-                            print(granted)
+                            let _ = try await viewModel.requestPermission()
+                            await viewModel.didOpen()
+                            dismiss()
                         } catch {
-                            print("requestPermission-error:\(error)")
+                            dismiss()
                         }
                     }
                 }
                 Button(action: {
-                    
+                    dismiss()
                 }) {
                     RoundedRectangle(cornerRadius: 12)
                         .fill(AppColor.color(hex: 0xD9D9D9).opacity(0.4))
@@ -56,6 +61,7 @@ struct NotificationView: View {
             .padding(.bottom, 30)
         }
         .defaultBackground()
+        .opacity(opacity)
     }
     
     @ViewBuilder var titleView: some View {
@@ -83,5 +89,15 @@ struct NotificationView: View {
         .padding(.top, 42)
         .transition(.opacity)
     
+    }
+    
+    func dismiss() {
+        withAnimation(.easeIn(duration: 0.5)) {
+            opacity = 0
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            dismissed()
+        })
     }
 }

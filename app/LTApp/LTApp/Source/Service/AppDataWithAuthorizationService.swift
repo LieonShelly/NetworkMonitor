@@ -21,6 +21,7 @@ public protocol AppDataWithAuthorizationServiceful {
     var queryIconStatusUseCase: any QueryIconGeneratingStatusUseCaseType { get }
     var userManagementService: any UserManagementServiceful { get }
     var postNotificationService: any PostNotificationUseCaseType { get }
+    var notificationFlagUseCase: any NotificationFlagUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
@@ -28,6 +29,7 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     private let reflectionRepository: any ReflectionRepositoryType
     private let iconRepositroy: any IconRepositoryType
     private let storage: any KeyValueStorageType
+    private let keyDataStorage: any KeyDataStorageType
     public let userManagementService: any UserManagementServiceful
     private let notificationRepository: any NotificationRepositoryType
     
@@ -35,13 +37,15 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
                 reflectionRepository: any ReflectionRepositoryType,
                 iconRepositroy: any IconRepositoryType,
                 notificationRepository: any NotificationRepositoryType,
-                storage: any KeyValueStorageType) {
+                storage: any KeyValueStorageType,
+                keyDataStorage: any KeyDataStorageType) {
         self.authRepository = authRepository
         self.reflectionRepository = reflectionRepository
         self.storage = storage
         self.iconRepositroy = iconRepositroy
         self.userManagementService = UserManagementService()
         self.notificationRepository = notificationRepository
+        self.keyDataStorage = keyDataStorage
     }
     
     public lazy var authUseCasse: any AuthUseCaseType = {
@@ -98,5 +102,9 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var postNotificationService: any PostNotificationUseCaseType = {
         PostNotificationUseCase(repository: notificationRepository)
+    }()
+    
+    public lazy var notificationFlagUseCase: any NotificationFlagUseCaseType = {
+        NotificationFlagUseCase(storage: keyDataStorage)
     }()
 }

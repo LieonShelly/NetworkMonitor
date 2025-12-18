@@ -21,6 +21,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
             interceptors: []
         )
         let keyChain = KeyChainStorage()
+        let userDefaultStorage = UserDefaultStorage()
         let sessionManager = SessionService(storage: keyChain)
         let sessionRepository = SessionDataRepository(
             apiClient: interceptorClient,
@@ -53,7 +54,8 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
             reflectionRepository: reflectionRepository,
             iconRepositroy: iconRepository,
             notificationRepository: notificationRepository,
-            storage: keyChain
+            storage: keyChain,
+            keyDataStorage: userDefaultStorage
         )
         self.appDataService = appDataWithAuthorizationService
         self.rootViewProvider = RootViewProvider(

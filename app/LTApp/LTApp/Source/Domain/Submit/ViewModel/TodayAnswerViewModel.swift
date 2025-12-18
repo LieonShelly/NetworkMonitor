@@ -10,15 +10,20 @@ import Combine
 import SwiftUI
 
 final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
+    enum PageState {
+        case unsubmit
+        case submitted
+        case notificationView
+    }
     @Published var cardViewModels: [QuestionCardViewModel] = []
     @MainActor @Published var answerText: String = ""
     @MainActor @Published var createAt: Date?
-    @MainActor @Published var submitted: Bool = false
+    @MainActor @Published var pageState: PageState = .unsubmit
     var submittedViewModel: TodayAnswerSubmittedViewModel?
     
     private var submittedAction: ((_ iconId: String) -> Void)?
     let title: String
-    private let service: any AppDataWithAuthorizationServiceful
+    let service: any AppDataWithAuthorizationServiceful
     private let inputQuestions: [Question]
     
     init(service: any AppDataWithAuthorizationServiceful, questions: [Question], submitted: ((_ iconId: String) -> Void)?)  {
@@ -74,8 +79,14 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
         )
         submittedAction?(answer.icon?.iconId ?? "")
         submittedViewModel = .init(answer: answer, question: question, service: service)
+        let didOpenNotification = await service.notificationFlagUseCase.fetch()
         await MainActor.run {
-            submitted = true
+//            if didOpenNotification {
+//                pageState = .submitted
+//            } else {
+//                pageState = .notificationView
+//            }
+            pageState = .notificationView
         }
     }
     

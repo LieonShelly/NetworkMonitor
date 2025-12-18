@@ -22,7 +22,7 @@ struct TodayAnswerView: View {
         ZStack(alignment: .top) {
             AppColor.backgroundPage
                 .opacity(opacity)
-            NaviBar(titlte: viewModel.title, hideBackBtn: viewModel.submitted) {
+            NaviBar(titlte: viewModel.title, hideBackBtn: viewModel.pageState != .unsubmit) {
                 withAnimation(.easeInOut, completionCriteria: .logicallyComplete) {
                     opacity = 0
                 } completion: {
@@ -33,19 +33,24 @@ struct TodayAnswerView: View {
             }
             .zIndex(1)
             .opacity(opacity)
-            
-            if viewModel.submitted {
-                submittedForm
-            } else {
+            switch viewModel.pageState {
+            case .unsubmit:
                 unsubmittedForm
+            case .submitted:
+                submittedForm
+            case .notificationView:
+                NotificationView(viewModel: .init(appService: viewModel.service),
+                                 opacity: $opacity) {
+                    presented.toggle()
+                }
             }
         }
         .toolbarVisibility(.hidden, for: .navigationBar)
         .animation(.easeInOut, value: keyboardObserver.keyboardHeight)
-        .animation(.easeInOut, value: viewModel.submitted)
+        .animation(.easeInOut, value: viewModel.pageState)
         .animation(.easeInOut, value: presented)
         .task {
-            viewModel.submitted = false
+            viewModel.pageState = .unsubmit
 //            await viewModel.initializeData()
             guard viewModel.cardViewModels.isEmpty else { return }
             try? await viewModel.fetchData()
