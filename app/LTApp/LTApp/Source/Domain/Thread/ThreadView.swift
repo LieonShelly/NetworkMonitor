@@ -30,6 +30,13 @@ struct ThreadView: View {
             }
             .padding(.leading, 40)
             .padding(.trailing, 20)
+            .refreshable {
+                do {
+                    try await viewModel.fetchData()
+                } catch {
+                    print("threadView:\(error)")
+                }
+            }
         }
         .task {
             do {
