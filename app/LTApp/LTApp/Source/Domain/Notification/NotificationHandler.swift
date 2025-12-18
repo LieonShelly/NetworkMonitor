@@ -25,8 +25,7 @@ class NotificationHandler: @preconcurrency NotificationHandlingType, @unchecked 
     private let topicSubject: CurrentValueSubject<NotificationTopic?, Never> = .init(nil)
     
     func didRecieveNotification(_ userInfo: [String : any Sendable]) async {
-        guard let aps = userInfo["aps"] as? [String: Any] else { return }
-        guard let customPayload = aps["custom"] as? [String: Any] else { return }
+        guard let customPayload = userInfo["custom"] as? [String: Any] else { return }
         guard let data = try? JSONSerialization.data(withJSONObject: customPayload) else {
             return
         }
