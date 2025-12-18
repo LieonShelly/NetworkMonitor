@@ -81,12 +81,11 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
         submittedViewModel = .init(answer: answer, question: question, service: service)
         let didOpenNotification = await service.notificationFlagUseCase.fetch()
         await MainActor.run {
-//            if didOpenNotification {
-//                pageState = .submitted
-//            } else {
-//                pageState = .notificationView
-//            }
-            pageState = .notificationView
+            if didOpenNotification {
+                pageState = .submitted
+            } else {
+                pageState = .notificationView
+            }
         }
     }
     

@@ -22,21 +22,12 @@ struct TodayAnswerView: View {
         ZStack(alignment: .top) {
             AppColor.backgroundPage
                 .opacity(opacity)
-            NaviBar(titlte: viewModel.title, hideBackBtn: viewModel.pageState != .unsubmit) {
-                withAnimation(.easeInOut, completionCriteria: .logicallyComplete) {
-                    opacity = 0
-                } completion: {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
-                        presented.toggle()
-                    })
-                }
-            }
-            .zIndex(1)
-            .opacity(opacity)
             switch viewModel.pageState {
             case .unsubmit:
+                naviBar
                 unsubmittedForm
             case .submitted:
+                naviBar
                 submittedForm
             case .notificationView:
                 NotificationView(viewModel: .init(appService: viewModel.service),
@@ -55,6 +46,20 @@ struct TodayAnswerView: View {
             guard viewModel.cardViewModels.isEmpty else { return }
             try? await viewModel.fetchData()
         }
+    }
+    
+    @ViewBuilder var naviBar: some View {
+        NaviBar(titlte: viewModel.title, hideBackBtn: viewModel.pageState != .unsubmit) {
+            withAnimation(.easeInOut, completionCriteria: .logicallyComplete) {
+                opacity = 0
+            } completion: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
+                    presented.toggle()
+                })
+            }
+        }
+        .zIndex(1)
+        .opacity(opacity)
     }
     
     var unsubmittedForm: some View {
