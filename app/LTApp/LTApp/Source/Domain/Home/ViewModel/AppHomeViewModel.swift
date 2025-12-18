@@ -61,7 +61,19 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
             guard let self else { return }
             self.contentViewModel.scrollTo(index)
         }
-        notificationHandler.topic.sink { [weak self] topic in
+       
+    }
+    
+    func fetchData() async throws {
+        let questions = try await service.fetchTodayQuestionsUseCase.execute()
+        await MainActor.run {
+            self.todayQuestions = questions
+        }
+    }
+    
+   @MainActor
+    func observeNotification() {
+        self.notificationHandler.topic.sink { [weak self] topic in
             guard let self else { return }
             switch topic {
             case .iconFinished:
@@ -76,13 +88,6 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
             }
         }
         .store(in: &cancellables)
-    }
-    
-    func fetchData() async throws {
-        let questions = try await service.fetchTodayQuestionsUseCase.execute()
-        await MainActor.run {
-            self.todayQuestions = questions
-        }
     }
     
     @MainActor
@@ -135,41 +140,4 @@ enum InnerPageRouteState: Equatable {
             return false
         }
     }
-}
-
-enum NotificationTopic: String, Codable {
-    case iconFinished = "icon_finished"
-    case todayQuestion = "today_question"
-}
-
-struct NotificationPayload: Codable {
-    var topic: NotificationTopic
-}
-
-protocol NotificationHandlingType: Sendable {
-    var topic: AnyPublisher<NotificationTopic, Never> { get }
-    
-    func didRecieveNotification(_ userInfo: [String: any Sendable]) async
-}
-
-final class NotificationHandler: NotificationHandlingType, @unchecked Sendable {
-    
-    var topic: AnyPublisher<NotificationTopic, Never> {
-        topicSubject.eraseToAnyPublisher()
-    }
-    
-    private let topicSubject: PassthroughSubject<NotificationTopic, Never> = .init()
-    
-    func didRecieveNotification(_ userInfo: [String : any Sendable]) async {
-        guard let customPayload = userInfo["custom"] as? [String: Any] else { return }
-        guard let data = try? JSONSerialization.data(withJSONObject: customPayload) else {
-            return
-        }
-        guard let payload = try? JSONDecoder().decode(NotificationPayload.self, from: data) else {
-            return
-        }
-        topicSubject.send(payload.topic)
-    }
-    
-    
 }

@@ -46,6 +46,9 @@ struct AppHomeView: View {
                 .padding(.horizontal, 40)
                 .padding(.bottom, 10)
                 .transition(.opacity)
+                .task {
+                    viewModel.observeNotification()
+                }
             }
         }
     }

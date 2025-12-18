@@ -117,6 +117,8 @@
 		F8653D158C566ADBE66E781E /* FetchOnboardingSentenceUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C73B50298BF20B069EA0DED /* FetchOnboardingSentenceUseCase.swift */; };
 		F86ECAC92EF39F4E007EEA24 /* PostNotificationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86ECAC82EF39F4E007EEA24 /* PostNotificationUseCase.swift */; };
 		F86ECACB2EF3A11C007EEA24 /* NotificationFlagUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86ECACA2EF3A11C007EEA24 /* NotificationFlagUseCase.swift */; };
+		F86ECACD2EF3B5AA007EEA24 /* NotificationTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86ECACC2EF3B5AA007EEA24 /* NotificationTopic.swift */; };
+		F86ECACF2EF3B5B4007EEA24 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86ECACE2EF3B5B4007EEA24 /* NotificationHandler.swift */; };
 		F88E5FFE060A4CDAD0021795 /* UniversalResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FF8161A8C18829BAA0967 /* UniversalResponse.swift */; };
 		F8A22C4C3D1795B392850452 /* FirstQuestionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5700C32AD3048D4D735EFB /* FirstQuestionViewModel.swift */; };
 		F8BE5EC22EE1640C009206C2 /* IconImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BE5EC12EE1640B009206C2 /* IconImageView.swift */; };
@@ -265,6 +267,8 @@
 		F8642C8F2EE04EF000D92A07 /* MetalIconProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalIconProcessor.swift; sourceTree = "<group>"; };
 		F86ECAC82EF39F4E007EEA24 /* PostNotificationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNotificationUseCase.swift; sourceTree = "<group>"; };
 		F86ECACA2EF3A11C007EEA24 /* NotificationFlagUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFlagUseCase.swift; sourceTree = "<group>"; };
+		F86ECACC2EF3B5AA007EEA24 /* NotificationTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTopic.swift; sourceTree = "<group>"; };
+		F86ECACE2EF3B5B4007EEA24 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		F8BE5EC12EE1640B009206C2 /* IconImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImageView.swift; sourceTree = "<group>"; };
 		F8C266512EF285EE0000F5D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8C266532EF286030000F5D6 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -710,6 +714,8 @@
 		F8D888682EF12C6E00D4E14F /* Notification */ = {
 			isa = PBXGroup;
 			children = (
+				F86ECACE2EF3B5B4007EEA24 /* NotificationHandler.swift */,
+				F86ECACC2EF3B5AA007EEA24 /* NotificationTopic.swift */,
 				F8C266572EF2973F0000F5D6 /* NotificationViewModel.swift */,
 				F8D888692EF12D5200D4E14F /* NotificationView.swift */,
 			);
@@ -853,6 +859,7 @@
 				3D8214F0F78A07CAEBD7D865 /* CategoryDTO.swift in Sources */,
 				B4383FD8FDC52AA006BA4FE8 /* Coordinator.swift in Sources */,
 				961DF519B9273BCA5ADFB8EE /* DateExtension.swift in Sources */,
+				F86ECACF2EF3B5B4007EEA24 /* NotificationHandler.swift in Sources */,
 				251D83036C1C4D45618B91DF /* DayReflectionsDTO.swift in Sources */,
 				0DF096C53022D08153C5E810 /* DefaultEndPoint.swift in Sources */,
 				C15DEB64381AC3730DC90088 /* DetailAnswerRow.swift in Sources */,
@@ -868,6 +875,7 @@
 				4A61DBBA35C61856E1DC4882 /* FirstQuestionView.swift in Sources */,
 				F8A22C4C3D1795B392850452 /* FirstQuestionViewModel.swift in Sources */,
 				4F31DC62285BD5C37592B097 /* HomeCoordinator.swift in Sources */,
+				F86ECACD2EF3B5AA007EEA24 /* NotificationTopic.swift in Sources */,
 				F8C266562EF28B630000F5D6 /* NotificationRequest.swift in Sources */,
 				8B72C98AA0D7D97C5F45B585 /* IconData.swift in Sources */,
 				4D20F566DAE1DB4542F4281A /* IconDto.swift in Sources */,
