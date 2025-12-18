@@ -18,8 +18,10 @@ struct LTAppApp: App {
         _coordinator = StateObject(
             wrappedValue: appCoordinator
         )
-        _homeCoordinator = StateObject(wrappedValue: HomeCoordinator(appDataService: appCoordinator.appDataService))
-        
+        _homeCoordinator = StateObject(wrappedValue: HomeCoordinator(
+            appDataService: appCoordinator.appDataService,
+            notificationHandler: appCoordinator.notificationHandler)
+        )
         _preHomeCoordinator = StateObject(wrappedValue: PreHomeCoordinator(appDataService: appCoordinator.appDataService))
         appDelegate.appCoordinator = appCoordinator
     }

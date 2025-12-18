@@ -11,9 +11,11 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
 
     var children: [any Coordinator] = []
     private let appDataService: any AppDataWithAuthorizationServiceful
+    private let notificationHandler: any NotificationHandlingType
     
-    init(appDataService: any AppDataWithAuthorizationServiceful) {
+    init(appDataService: any AppDataWithAuthorizationServiceful, notificationHandler: any NotificationHandlingType) {
         self.appDataService = appDataService
+        self.notificationHandler = notificationHandler
         let historyCoordinator = PreHomeCoordinator(appDataService: appDataService)
         addChild(historyCoordinator, isSameStack: true)
     }
@@ -33,7 +35,7 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
         }
         switch route {
         case .home:
-            return AnyView(AppHomeView(viewModel: .init(service: appDataService)))
+            return AnyView(AppHomeView(viewModel: .init(service: appDataService, notificationHandler: notificationHandler)))
         case .questionLib:
             return AnyView(QuestionLibView(viewModel: QuestionLibViewModel(service: appDataService)))
         case .questioDetail:

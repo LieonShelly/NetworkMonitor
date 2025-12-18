@@ -20,7 +20,7 @@ public protocol AppDataWithAuthorizationServiceful {
     var onboardingAccessUseCase: any OnboardingAccessUseCaseType { get }
     var queryIconStatusUseCase: any QueryIconGeneratingStatusUseCaseType { get }
     var userManagementService: any UserManagementServiceful { get }
-    var postNotificationService: any PostNotificationUseCaseType { get }
+    var postNotificationDeviceTokenUseCase: any PostNotificationDeviceTokenUseCaseType { get }
     var notificationFlagUseCase: any NotificationFlagUseCaseType { get }
 }
 
@@ -100,8 +100,8 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
         QueryIconGeneratingStatusUseCase(repository: iconRepositroy)
     }()
     
-    public lazy var postNotificationService: any PostNotificationUseCaseType = {
-        PostNotificationUseCase(repository: notificationRepository)
+    public lazy var postNotificationDeviceTokenUseCase: any PostNotificationDeviceTokenUseCaseType = {
+        PostNotificationDeviceTokenUseCase(repository: notificationRepository)
     }()
     
     public lazy var notificationFlagUseCase: any NotificationFlagUseCaseType = {

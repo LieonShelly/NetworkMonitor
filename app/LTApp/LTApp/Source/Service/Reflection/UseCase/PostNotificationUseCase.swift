@@ -7,11 +7,11 @@
 
 import Foundation
 
-public protocol PostNotificationUseCaseType: Sendable {
+public protocol PostNotificationDeviceTokenUseCaseType: Sendable {
     func execute(deviceToken: String) async throws
 }
 
-public class PostNotificationUseCase: PostNotificationUseCaseType, @unchecked Sendable {
+public class PostNotificationDeviceTokenUseCase: PostNotificationDeviceTokenUseCaseType, @unchecked Sendable {
     private let repository: any NotificationRepositoryType
     
     public init(repository: any NotificationRepositoryType) {

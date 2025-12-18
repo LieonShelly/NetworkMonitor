@@ -35,14 +35,18 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
         ])
     let contentViewModel: AppScrollContentViewModel
     private let service: any AppDataWithAuthorizationServiceful
+    private let notificationHandler: any NotificationHandlingType
+    private var cancellables: Set<AnyCancellable> = .init()
     
     deinit {
         print("AppHomeViewModel-deinit")
     }
     
     @MainActor
-    init(service: any AppDataWithAuthorizationServiceful) {
+    init(service: any AppDataWithAuthorizationServiceful,
+         notificationHandler: any NotificationHandlingType) {
         self.service = service
+        self.notificationHandler = notificationHandler
         contentViewModel = AppScrollContentViewModel(service: service)
         
         contentViewModel.didScroll = { [weak self] progress, isToRight in
@@ -57,6 +61,21 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
             guard let self else { return }
             self.contentViewModel.scrollTo(index)
         }
+        notificationHandler.topic.sink { [weak self] topic in
+            guard let self else { return }
+            switch topic {
+            case .iconFinished:
+                self.selected(0)
+            case .todayQuestion:
+                Task {
+                    if todayQuestions.isEmpty {
+                        try? await fetchData()
+                    }
+                    self.pushToAddTodayAnsnwer()
+                }
+            }
+        }
+        .store(in: &cancellables)
     }
     
     func fetchData() async throws {
@@ -89,6 +108,14 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
     @MainActor func selected(_ index: Int) {
         contentViewModel.scrollTo(index)
     }
+    
+    
+    @MainActor func pushToAddTodayAnsnwer() {
+        route(.todayAnswer(generateTodayViewModel()))
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+            self.selected(0)
+        })
+    }
 }
 
 enum InnerPageRouteState: Equatable {
@@ -108,4 +135,41 @@ enum InnerPageRouteState: Equatable {
             return false
         }
     }
+}
+
+enum NotificationTopic: String, Codable {
+    case iconFinished = "icon_finished"
+    case todayQuestion = "today_question"
+}
+
+struct NotificationPayload: Codable {
+    var topic: NotificationTopic
+}
+
+protocol NotificationHandlingType: Sendable {
+    var topic: AnyPublisher<NotificationTopic, Never> { get }
+    
+    func didRecieveNotification(_ userInfo: [String: any Sendable]) async
+}
+
+final class NotificationHandler: NotificationHandlingType, @unchecked Sendable {
+    
+    var topic: AnyPublisher<NotificationTopic, Never> {
+        topicSubject.eraseToAnyPublisher()
+    }
+    
+    private let topicSubject: PassthroughSubject<NotificationTopic, Never> = .init()
+    
+    func didRecieveNotification(_ userInfo: [String : any Sendable]) async {
+        guard let customPayload = userInfo["custom"] as? [String: Any] else { return }
+        guard let data = try? JSONSerialization.data(withJSONObject: customPayload) else {
+            return
+        }
+        guard let payload = try? JSONDecoder().decode(NotificationPayload.self, from: data) else {
+            return
+        }
+        topicSubject.send(payload.topic)
+    }
+    
+    
 }

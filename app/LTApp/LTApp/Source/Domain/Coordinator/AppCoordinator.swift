@@ -11,6 +11,7 @@ import Combine
 final class AppCoordinator: ObservableObject, @unchecked Sendable {
     @Published private(set) var root: AppRootType = .preHome
     let appDataService: any AppDataWithAuthorizationServiceful
+    let notificationHandler: any NotificationHandlingType
     let rootViewProvider: any RootViewProviding
     private var cancellables: Set<AnyCancellable> = .init()
     
@@ -62,6 +63,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
             tokenProvider: sessionManager,
             tokenExpired: logoutInterceptor
         )
+        self.notificationHandler = NotificationHandler()
         self.launch()
     }
     

@@ -31,6 +31,12 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         let identifier = response.notification.request.identifier
         print("用户点击了通知，ID: \(identifier)")
         print(response.notification.request.content.userInfo)
+        guard let userInfo = response.notification.request.content.userInfo as? [String: any Sendable] else {
+            return  completionHandler()
+        }
+        Task { @MainActor in
+           await appCoordinator.notificationHandler.didRecieveNotification(userInfo)
+        }
         completionHandler()
     }
     
@@ -39,7 +45,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         let token = tokenParts.joined()
         print("Device Token: \(token)")
         Task {
-            try? await appCoordinator.appDataService.postNotificationService.execute(deviceToken: token)
+            try? await appCoordinator.appDataService.postNotificationDeviceTokenUseCase.execute(deviceToken: token)
         }
     }
     

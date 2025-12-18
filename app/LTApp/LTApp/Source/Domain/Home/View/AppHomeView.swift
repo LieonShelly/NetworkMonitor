@@ -24,7 +24,7 @@ struct AppHomeView: View {
     
     fileprivate func scrollContentView() -> AppScrollContentView {
         return AppScrollContentView(viewModel: viewModel.contentViewModel) {
-            pushToAddTodayAnsnwer()
+            viewModel.pushToAddTodayAnsnwer()
         } onTapAnswerAction: { answerDetailViewModel in
             if let answerDetailViewModel {
                 viewModel.route(.answerDetail(answerDetailViewModel))
@@ -40,7 +40,7 @@ struct AppHomeView: View {
             
             if let head = viewModel.todayQuestions.first, viewModel.showTodayQuestion {
                 TodayQuestionView(question: head) {
-                    pushToAddTodayAnsnwer()
+                    viewModel.pushToAddTodayAnsnwer()
                 }
                 .offset(y: -(40 + 16 * 2))
                 .padding(.horizontal, 40)
@@ -72,10 +72,4 @@ struct AppHomeView: View {
         }
     }
     
-    func pushToAddTodayAnsnwer() {
-        viewModel.route(.todayAnswer(viewModel.generateTodayViewModel()))
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-            self.viewModel.selected(0)
-        })
-    }
 }
