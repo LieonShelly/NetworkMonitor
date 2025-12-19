@@ -17,9 +17,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         try! AppFont.registerFonts()
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
-        Task {
-            try? await appCoordinator.appDataService.threadQuestionsUseCase.execute()
-        }
         return true
     }
     

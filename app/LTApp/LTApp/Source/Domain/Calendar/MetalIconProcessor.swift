@@ -21,25 +21,13 @@ struct MetalIconProcessor: ImageProcessor {
     func process(item: ImageProcessItem, options: KingfisherParsedOptionsInfo) -> KFCrossPlatformImage? {
         switch item {
         case .image(let image):
-            return processImage(image)
+            // 直接调用同步方法
+            return MetalImageProcessor.shared.processSync(image, thickness: thickness) ?? image
+            
         case let .data(data):
             guard let image = UIImage(data: data) else { return nil }
-            return processImage(image)
+            // 直接调用同步方法
+            return MetalImageProcessor.shared.processSync(image, thickness: thickness) ?? image
         }
-    }
-    
-    func processImage(_ image: UIImage) -> UIImage {
-        var processedImage: UIImage?
-        let semaphore = DispatchSemaphore(value: 0)
-        MetalImageProcessor.shared.process(image, thickness: thickness) { result in
-            processedImage = result
-            semaphore.signal()
-        }
-        let waitResult = semaphore.wait(timeout: .now() + 3.0)
-        
-        if waitResult == .timedOut {
-            return image
-        }
-        return processedImage ?? image
     }
 }

@@ -40,7 +40,7 @@ struct CalendarView: View {
                     
                 }
             }
-            .padding(.horizontal, 10)
+            .padding(.horizontal, 20)
             .defaultBackground()
             .onFirstAppear {
                 Task.detached {
@@ -82,23 +82,24 @@ struct CalendarView: View {
                         if let currentMonth = viewModel.currentMonth {
                             if day.date.isSameMonth(currentMonth) {
                                if let _ = day.reflections {
-                                    dayIcon(day)
+                                    dayIcon(day).frame(width: columnW, height: columnW)
                                 } else if day.dayType == .today {
-                                    addBtn
+                                    addBtn.frame(width: columnW, height: columnW)
                                 } else {
-                                    dot
+                                    dot.frame(width: columnW, height: columnW)
                                 }
                             } else if day.date.isPreviousMonth(currentMonth) {
                                    Text("\(day.date.dayDesc())")
                                        .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
                             } else {
-                                dot
+                                dot.frame(width: columnW, height: columnW)
                             }
                         } else {
-                            dot
+                            dot.frame(width: columnW, height: columnW)
                         }
                     }
                     .id(day.id)
+                  
                     .frame(width: columnW, height: columnW)
                     .overlay {
                         if day.date.isTheFirstDayInMonth {

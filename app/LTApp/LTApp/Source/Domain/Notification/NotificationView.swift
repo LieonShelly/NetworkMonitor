@@ -40,6 +40,7 @@ struct NotificationView: View {
                             await viewModel.didOpen()
                             dismiss()
                         } catch {
+                            print("requestPermission-error:\(error)")
                             dismiss()
                         }
                     }
