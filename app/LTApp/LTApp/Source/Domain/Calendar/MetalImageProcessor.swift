@@ -47,7 +47,6 @@ class MetalImageProcessor: @unchecked Sendable {
         var maxY: UInt32
     }
     
-    // ⬇️ 核心修改：改为同步方法，移除 Completion
     func processSync(_ image: UIImage, thickness: Int = 1) -> UIImage? {
         guard let device = device,
               let commandQueue = commandQueue,
@@ -58,19 +57,16 @@ class MetalImageProcessor: @unchecked Sendable {
             return nil
         }
         
-        // 1. 加载纹理
         let options: [MTKTextureLoader.Option: Any] = [.SRGB: false, .origin: MTKTextureLoader.Origin.topLeft]
         guard let originalTexture = try? textureLoader.newTexture(cgImage: cgImage, options: options) else {
             return nil
         }
         
-        // 2. 准备 Buffer
         var initData = BoundingBoxResult(minX: UInt32(originalTexture.width), minY: UInt32(originalTexture.height), maxX: 0, maxY: 0)
         guard let buffer = device.makeBuffer(bytes: &initData, length: MemoryLayout<BoundingBoxResult>.stride, options: .storageModeShared) else {
             return nil
         }
         
-        // 3. 裁剪计算 Pass
         guard let commandBuffer1 = commandQueue.makeCommandBuffer(),
               let encoder1 = commandBuffer1.makeComputeCommandEncoder() else {
             return nil
@@ -82,23 +78,20 @@ class MetalImageProcessor: @unchecked Sendable {
         dispatchCompatible(encoder: encoder1, pipeline: cropPipelineState, width: originalTexture.width, height: originalTexture.height)
         encoder1.endEncoding()
         
-        // 🟢 关键点：提交并等待 GPU 完成第一个步骤 (为了拿到裁剪框数据)
         commandBuffer1.commit()
-        commandBuffer1.waitUntilCompleted() // 阻塞当前线程直到 GPU 完工
+        commandBuffer1.waitUntilCompleted()
         
-        // 4. 读取 Buffer 结果
         let ptr = buffer.contents().bindMemory(to: BoundingBoxResult.self, capacity: 1)
         let result = ptr.pointee
         
         if result.maxX < result.minX || result.maxY < result.minY {
-            return image // 没检测到内容，原样返回
+            return image
         }
         
         let cropRect = MTLRegionMake2D(Int(result.minX), Int(result.minY),
                                        Int(result.maxX - result.minX + 1),
                                        Int(result.maxY - result.minY + 1))
         
-        // 5. 渲染处理 Pass
         return runProcessPassSync(device: device,
                                   commandQueue: commandQueue,
                                   pipeline: processPipelineState,
@@ -109,7 +102,6 @@ class MetalImageProcessor: @unchecked Sendable {
                                   orientation: image.imageOrientation)
     }
     
-    // ⬇️ 辅助方法也改为同步返回
     private func runProcessPassSync(device: MTLDevice,
                                     commandQueue: MTLCommandQueue,
                                     pipeline: MTLComputePipelineState,
@@ -144,11 +136,9 @@ class MetalImageProcessor: @unchecked Sendable {
         dispatchCompatible(encoder: encoder2, pipeline: pipeline, width: outputTexture.width, height: outputTexture.height)
         encoder2.endEncoding()
         
-        // 🟢 关键点：提交并等待 GPU 完成
         commandBuffer2.commit()
-        commandBuffer2.waitUntilCompleted() // 阻塞直到渲染完成
+        commandBuffer2.waitUntilCompleted()
         
-        // 此时 GPU 已完成，可以安全地进行 textureToImage (使用你之前修复过的版本)
         return self.textureToImage(texture: outputTexture, scale: originalScale, orientation: orientation)
     }
     
@@ -169,10 +159,6 @@ class MetalImageProcessor: @unchecked Sendable {
         
         let region = MTLRegionMake2D(0, 0, width, height)
         texture.getBytes(&data, bytesPerRow: bytesPerRow, from: region, mipmapLevel: 0)
-        
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        
-        let bitmapInfo = CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.premultipliedFirst.rawValue)
         
         return data.withUnsafeMutableBytes { bufferPointer in
             guard let baseAddress = bufferPointer.baseAddress else { return nil }
