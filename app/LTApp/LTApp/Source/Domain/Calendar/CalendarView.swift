@@ -34,7 +34,7 @@ struct CalendarView: View {
                     VStack(spacing: .zero) {
                         headerView(proxy)
                         weekDay(spacing: .zero, proxy: proxy)
-                        gridView(proxy: proxy)
+                        monthListView(proxy: proxy)
                         Spacer()
                     }
                     
@@ -45,7 +45,7 @@ struct CalendarView: View {
             .onFirstAppear {
                 Task.detached {
                     do {
-                        await viewModel.generateDay()
+                        await viewModel.generateMonthForYear(2025)
                         try await viewModel.fetchData()
                     } catch {
                         print(error)
@@ -68,70 +68,7 @@ struct CalendarView: View {
             }
         }
     }
-    
-    @ViewBuilder
-    func gridView(proxy: GeometryProxy) -> some View {
-        let columns: Int = 7
-        let columnW: CGFloat = proxy.size.width / CGFloat(columns)
-        let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: .zero, alignment: .center)
-        }
-        ScrollView(showsIndicators: false) {
-            LazyVGrid(columns: columnsG, alignment: .center, spacing: .zero) {
-                ForEach(viewModel.days, id: \.id) { day in
-                    HStack {
-                        if let currentMonth = viewModel.currentMonth {
-                            if day.date.isSameMonth(currentMonth) {
-                               if let _ = day.reflections {
-                                    dayIcon(day).frame(width: columnW, height: columnW)
-                                } else if day.dayType == .today {
-                                    addBtn.frame(width: columnW, height: columnW)
-                                } else {
-                                    dot.frame(width: columnW, height: columnW)
-                                }
-                            } else if day.date.isPreviousMonth(currentMonth) {
-                                   Text("\(day.date.dayDesc())")
-                                       .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
-                            } else {
-                                dot.frame(width: columnW, height: columnW)
-                            }
-                        } else {
-                            dot.frame(width: columnW, height: columnW)
-                        }
-                    }
-                    .id(day.id)
-                  
-                    .frame(width: columnW, height: columnW)
-                    .overlay {
-                        if day.date.isTheFirstDayInMonth {
-                            if let currentMonth = viewModel.currentMonth, day.date.isSameMonth(currentMonth) {
-                                Text("\(day.date.monthDesc())")
-                                    .textStyle(size: 12, color: AppColor.color(hex: 0x000000), fontFamily: .sfProRegular)
-                                    .offset(y: -columnW * 0.35)
-                            } else {
-                                Text("\(day.date.monthDesc())")
-                                    .textStyle(size: 12, color: AppColor.color(hex: 0xCDCDCD), fontFamily: .sfProRegular)
-                                    .offset(y: -columnW * 0.35)
-                            }
-                        }
-                    }
-                }
-            }
-            Rectangle()
-                .fill(Color.clear)
-                .frame(height: 200)
-        }
-        .scrollPosition(id: $viewModel.scrollPostion, anchor: .top)
-        .onScrollGeometryChange(for: CGPoint.self, of: { $0.contentOffset }, action: { oldValue, newValue in
-            let rowIndex = Int(newValue.y / columnW)
-            guard rowIndex >= 0, !viewModel.days.isEmpty else { return }
-            let lastDayIndex = (rowIndex + 1) * columns + (columns - 1)
-            let currentDate = viewModel.days[min(lastDayIndex, viewModel.days.count - 1)]
-            withAnimation(.easeIn(duration: 0.25)) {
-                viewModel.currentMonth = currentDate.date
-            }
-        })
-    }
-    
+
     @ViewBuilder func headerView(_ proxy: GeometryProxy) -> some View {
         let count: CGFloat = 7
         let itemW = proxy.size.width / count
@@ -203,12 +140,6 @@ struct CalendarView: View {
             }
         }
        
-    }
-    
-    var dot: some View {
-        Circle()
-            .fill(AppColor.color(hex: 0xCDCDCD))
-            .frame(width: 8, height: 8)
     }
     
     @ViewBuilder
@@ -315,4 +246,34 @@ struct CalendarView: View {
     }
     
     
+    @ViewBuilder
+    func monthListView(proxy: GeometryProxy) -> some View {
+        let columns: Int = 7
+        let columnW: CGFloat = proxy.size.width / CGFloat(columns)
+        let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: .zero, alignment: .center)
+        }
+       let itemH: CGFloat = 88
+        ScrollView(.horizontal) {
+            HStack(spacing: .zero) {
+                ForEach(viewModel.months) { month in
+                     ScrollView(showsIndicators: false) {
+                         LazyVGrid(columns: columnsG, alignment: .center, spacing: .zero) {
+                             ForEach(month.days, id: \.id) { day in
+                                 ClendarItemView(day: day)
+                                     .frame(height: itemH)
+                                     .background(Color.random)
+                             }
+                         }
+                         Rectangle()
+                             .fill(Color.clear)
+                             .frame(height: 200)
+                     }
+                     .frame(width: proxy.size.width)
+                     .id(month.id)
+                }
+            }
+        }
+        .scrollTargetBehavior(.paging)
+        .scrollPosition(id: $viewModel.scrollPostion, anchor: .center)
+    }
 }

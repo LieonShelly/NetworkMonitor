@@ -112,6 +112,7 @@
 		F80E7DA72EDED0E400CBC678 /* AnswerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80E7DA62EDED0E300CBC678 /* AnswerDetailView.swift */; };
 		F84409E72EE32B33004A40B2 /* InnerPageRoutingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84409E62EE32B33004A40B2 /* InnerPageRoutingModifier.swift */; };
 		F85859F42EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85859F32EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift */; };
+		F8598A842EF9292C0044ABCB /* ClendarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8598A832EF9292C0044ABCB /* ClendarItemView.swift */; };
 		F8642C8A2EE0330000D92A07 /* MetalImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8642C892EE0330000D92A07 /* MetalImageProcessor.swift */; };
 		F8642C902EE04EF000D92A07 /* MetalIconProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8642C8F2EE04EF000D92A07 /* MetalIconProcessor.swift */; };
 		F8653D158C566ADBE66E781E /* FetchOnboardingSentenceUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C73B50298BF20B069EA0DED /* FetchOnboardingSentenceUseCase.swift */; };
@@ -263,6 +264,7 @@
 		F819405F06FE6217721A71E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F84409E62EE32B33004A40B2 /* InnerPageRoutingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerPageRoutingModifier.swift; sourceTree = "<group>"; };
 		F85859F32EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayAnswerSubmittedViewModel.swift; sourceTree = "<group>"; };
+		F8598A832EF9292C0044ABCB /* ClendarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClendarItemView.swift; sourceTree = "<group>"; };
 		F8642C892EE0330000D92A07 /* MetalImageProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalImageProcessor.swift; sourceTree = "<group>"; };
 		F8642C8F2EE04EF000D92A07 /* MetalIconProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalIconProcessor.swift; sourceTree = "<group>"; };
 		F86ECAC82EF39F4E007EEA24 /* PostNotificationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNotificationUseCase.swift; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 		A003F063569C9ED12070D111 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				F8598A832EF9292C0044ABCB /* ClendarItemView.swift */,
 				F8BE5EC12EE1640B009206C2 /* IconImageView.swift */,
 				F8642C8F2EE04EF000D92A07 /* MetalIconProcessor.swift */,
 				F8642C892EE0330000D92A07 /* MetalImageProcessor.swift */,
@@ -881,6 +884,7 @@
 				4D20F566DAE1DB4542F4281A /* IconDto.swift in Sources */,
 				6C17CABCCE04D8F14C3A279A /* IconRepository.swift in Sources */,
 				F30FC501E337AB0B4B0C0D18 /* IconRequest.swift in Sources */,
+				F8598A842EF9292C0044ABCB /* ClendarItemView.swift in Sources */,
 				4DC39F6F61376BAAF1156EB2 /* InsightsView.swift in Sources */,
 				7126B63ED6C7C11ABB3BEC34 /* LTAppApp.swift in Sources */,
 				ED6B9CE126E3CFB5306162CB /* LogoutInterceptor.swift in Sources */,

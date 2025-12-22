@@ -22,6 +22,7 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var todayUpdatingIcon: IconData?
     @MainActor @Published var selectedDay: CalendarDay?
     @MainActor @Published var showTodayAnswerView: Bool = false
+    @MainActor @Published var months: [CalendarMonth] = []
     
     let itemSize: CGSize = .init(width: 30, height: 30)
     
@@ -29,66 +30,6 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     
     init(service: any AppDataWithAuthorizationServiceful) {
         self.service = service
-    }
-    
-    func generateDaysForYear(_ year: Int, skipHeadder: Bool = false) async {
-        let calendar = Calendar.current
-        var component = DateComponents()
-        component.year = year
-        component.month = 1
-        if let date = calendar.date(from: component) {
-          await  generateDays(for: date, needWeekdayOffset: !skipHeadder)
-        }
-        
-        for month in 2...12 {
-            component.year = year
-            component.month = month
-            guard let date = calendar.date(from: component) else { continue }
-           await generateDays(for: date, needWeekdayOffset: false)
-        }
-    }
-    
-    func generateDays(for moth: Date, needWeekdayOffset: Bool = true) async {
-        let calendar = Calendar.current
-        guard let range = calendar.range(of: .day, in: .month, for: moth) else {
-            return
-        }
-        let components = calendar.dateComponents([.year, .month], from: moth)
-        guard let firstDay = calendar.date(from: components) else {
-             return
-        }
-        var days: [CalendarDay] = []
-        let weekdayOffset = calendar.component(.weekday, from: firstDay) - calendar.firstWeekday
-        let totalDays = range.count
-        if needWeekdayOffset {
-            guard weekdayOffset >= 0 else { return }
-            for i in 0 ..< weekdayOffset {
-                if let date = calendar.date(byAdding: .day, value: -weekdayOffset + i, to: firstDay) {
-                    days.append(
-                        CalendarDay(
-                            date: date,
-                            isCurrentMonth: false,
-                            isToday: false
-                        )
-                    )
-                }
-            }
-        }
-        guard totalDays >= 1 else { return }
-        for day in 1...totalDays {
-            if let date = calendar.date(byAdding: .day, value: day - 1, to: firstDay) {
-                days.append(
-                    CalendarDay(
-                        date: date,
-                        isCurrentMonth: true,
-                        isToday: calendar.isDateInToday(date)
-                    )
-                )
-            }
-        }
-        await MainActor.run {
-            self.days.append(contentsOf: days)
-        }
     }
     
     @MainActor
@@ -142,13 +83,6 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
 }
 
 extension CalendarViewModel {
-    func generateDay() async {
-        await generateDaysForYear(2023, skipHeadder: false)
-        for year in 2024 ... 2030 {
-            await generateDaysForYear(year, skipHeadder: true)
-        }
-    }
-    
     func fetchData() async throws {
         let endMonth = Date()
         let startMonth = Date.January
@@ -157,18 +91,78 @@ extension CalendarViewModel {
             endMonth: endMonth
         )
        await MainActor.run {
+           var months = self.months
             for reflection in reflections {
-                guard let index = days.firstIndex(where: { $0.date.isSameDay(reflection.day)}) else { continue }
-                let newDay = days[index].copyWith(reflection)
-                days[index] = newDay
+                for monthIndex in 0 ..< months.count {
+                    var days = months[monthIndex].days
+                    if let index = days.firstIndex(where: { $0.date.isSameDay(reflection.day)}) {
+                        let newDay = days[index].copyWith(reflection)
+                        days[index] = newDay
+                    }
+                    months[monthIndex].days = days
+                }
             }
-           
-           if let day = days.first(where: { $0.date.isSameMonth(endMonth)}) {
+           self.months = months
+           if let month = months.first(where: { $0.date.isSameMonth(endMonth)}) {
                currentMonth = endMonth
                withAnimation(.easeInOut) {
-                   self.scrollPostion = day.id
+                   self.scrollPostion = month.id
                }
            }
+        }
+    }
+}
+
+
+extension CalendarViewModel {
+    func generateMonthForYear(_ year: Int) async {
+        let calendar = Calendar.current
+        var component = DateComponents()
+        component.year = year
+        var calendarMonths: [CalendarMonth] = []
+        for month in 1 ... 12 {
+            component.month = month
+           
+            guard let monthDate = calendar.date(from: component),
+                let range = calendar.range(of: .day, in: .month, for: monthDate) else {
+                continue
+            }
+          
+            guard let firstDayInMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: monthDate)) else {
+                continue
+            }
+            var days: [CalendarDay] = []
+            let weekdayOffset = calendar.component(.weekday, from: firstDayInMonth) - calendar.firstWeekday
+            let totalDays = range.count
+            guard weekdayOffset >= 0 else { continue }
+            for index in 0 ..< weekdayOffset {
+                if let date = calendar.date(byAdding: .day, value: -weekdayOffset + index, to: firstDayInMonth) {
+                    days.append(
+                        CalendarDay(
+                            date: date,
+                            isCurrentMonth: false,
+                            isToday: false
+                        )
+                    )
+                }
+            }
+            guard totalDays >= 1 else { continue }
+            for day in 1...totalDays {
+                if let date = calendar.date(byAdding: .day, value: day - 1, to: firstDayInMonth) {
+                    days.append(
+                        CalendarDay(
+                            date: date,
+                            isCurrentMonth: true,
+                            isToday: calendar.isDateInToday(date)
+                        )
+                    )
+                }
+            }
+            let calendarMonth = CalendarMonth(date: monthDate, days: days)
+            calendarMonths.append(calendarMonth)
+        }
+        await MainActor.run {
+            self.months = calendarMonths
         }
     }
 }

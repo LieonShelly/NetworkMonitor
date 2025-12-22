@@ -54,5 +54,5 @@ enum DayType {
 struct CalendarMonth: Identifiable {
     let id = UUID()
     let date: Date
-    let days: [CalendarDay]
+    var days: [CalendarDay]
 }
