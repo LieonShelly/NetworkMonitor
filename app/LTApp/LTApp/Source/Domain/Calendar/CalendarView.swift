@@ -110,7 +110,7 @@ struct CalendarView: View {
         let columnW: CGFloat = proxy.size.width / CGFloat(columns)
         let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: .zero, alignment: .center)
         }
-       let itemH: CGFloat = 128
+       let itemH: CGFloat = 90
         ScrollView(.horizontal) {
             HStack(spacing: .zero) {
                 ForEach(viewModel.months) { month in
