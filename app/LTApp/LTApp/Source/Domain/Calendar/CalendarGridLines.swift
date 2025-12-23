@@ -12,7 +12,7 @@ struct CalendarGridLines: View {
     let rowHeight: CGFloat
     let color: Color
     let lineWidth: CGFloat = 0.5
-
+    
     var body: some View {
         GeometryReader { geometry in
             Path { path in
@@ -25,7 +25,7 @@ struct CalendarGridLines: View {
                     path.move(to: CGPoint(x: x, y: 0))
                     path.addLine(to: CGPoint(x: x, y: height))
                 }
-            
+                
                 let rows = Int(height / rowHeight)
                 if rows > 0 {
                     for i in 1 ..< rows {

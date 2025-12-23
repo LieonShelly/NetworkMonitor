@@ -10,30 +10,54 @@ import SwiftUI
 
 struct ClendarItemView: View {
     let day: CalendarDay
+    let addAction: (() -> Void)
+    
+    enum Constants {
+        static let iconViewTop: CGFloat = 23
+        static let iconViewBotton: CGFloat = 8
+        static let fourIconHSp: CGFloat = 2
+    }
     
     var body: some View {
-        VStack {
-            if let answers = day.reflections?.reflections, !answers.isEmpty {
-                switch answers.count {
-                case 1:
-                    oneIcon(day.reflections!.reflections.first!)
-                case 2:
-                    twoIcon(day.reflections!.reflections)
-                default:
-                    threeIcon(answers)
+        GeometryReader { proxy in
+            ZStack(content: {
+                VStack {
+                    if let answers = day.reflections?.reflections, !answers.isEmpty {
+                        switch answers.count {
+                        case 1:
+                            oneIcon(answers.first!)
+                        case 2:
+                            twoIcon(answers)
+                        case 3:
+                            threeIcon(answers)
+                        default:
+                            fourIcon(answers, proxy: proxy)
+                        }
+                    } else {
+                        Rectangle()
+                            .fill(Color.clear)
+                    }
                 }
-            } else {
-                Rectangle()
-                    .fill(Color.clear)
-            }
+                dateView
+            })
         }
-        .padding(.horizontal, 2)
+      
         
     }
     
     var dateView: some View {
-        Text(day.date.dayDesc())
-            .textStyle(size: 14, color: AppColor.color(hex: 0x323232), fontFamily: .feltTipSeniorRegular)
+        HStack {
+            VStack {
+                Text(day.date.dayDesc())
+                    .textStyle(size: 14,
+                               color: AppColor.color(hex: 0x323232),
+                               fontFamily: .feltTipSeniorRegular)
+                Spacer()
+            }
+            Spacer()
+        }
+        .padding(.leading, 4)
+        .padding(.top, 4)
     }
     
     @ViewBuilder
@@ -41,97 +65,88 @@ struct ClendarItemView: View {
         VStack {
             Spacer()
             iconView(answer)
-                .frame(width: 24, height: 24)
                 .padding(.bottom, 8)
         }
     }
     
     @ViewBuilder
     func twoIcon(_ answers: [Answer]) -> some View {
-        VStack(spacing: .zero) {
+        VStack(spacing: 8) {
+            Spacer()
             if let answer = answers.first {
                 HStack {
                     Spacer()
                     iconView(answer)
-                    .frame(width: 24, height: 24)
-                  
+                    
                 }
-               
+                
             }
-            
+            Spacer()
             if let answer = answers.last {
                 HStack {
-                    
                     iconView(answer)
-                    .frame(width: 24, height: 24)
                     Spacer()
                 }
             }
+            Spacer()
         }
         .padding(.bottom, 4)
     }
     
     @ViewBuilder
     func threeIcon(_ answers: [Answer]) -> some View {
-        VStack(spacing: .zero) {
+        VStack(spacing: 8) {
             if let answer = answers.first {
                 HStack {
                     Spacer()
                     iconView(answer)
-                    .frame(width: 24, height: 24)
                 }
-               
+                
             }
             HStack {
                 iconView(answers[1])
-                .frame(width: 24, height: 24)
                 Spacer()
             }
             if let answer = answers.last {
                 HStack {
                     Spacer()
                     iconView(answer)
-                    .frame(width: 24, height: 24)
                 }
             }
         }
     }
     
     @ViewBuilder
-    func fourIcon(_ answers: [Answer]) -> some View {
-        VStack(spacing: .zero) {
-            HStack(spacing: .zero) {
-                ThumbnailIconImageView(url: answers[0].icon?.url ?? "") {
-                    placeholderIcon
-                }
-                .frame(width: 24, height: 24)
-                Spacer()
-                ThumbnailIconImageView(url: answers[1].icon?.url ?? "") {
-                    placeholderIcon
-                }
+    func fourIcon(_ answers: [Answer], proxy: GeometryProxy) -> some View {
+        let horizontal: CGFloat = 4
+        let vertical: CGFloat = .zero
+        let iconW = (proxy.size.width - horizontal * 3) / 2
+        let iconH = (proxy.size.height - vertical - Constants.iconViewTop - Constants.iconViewBotton) / 2
+        VStack(spacing: vertical) {
+            HStack(spacing: horizontal) {
+                iconView(answers[0], size: .init(width: iconW , height: iconH))
+                iconView(answers[1], size: .init(width: iconW , height: iconH))
             }
             
-            HStack(spacing: .zero) {
-                ThumbnailIconImageView(url: answers[2].icon?.url ?? "") {
-                    placeholderIcon
-                }
-                .frame(width: 24, height: 24)
-                Spacer()
+            HStack(spacing: 2) {
+                iconView(answers[2], size: .init(width: iconW, height: iconH))
                 Rectangle()
                     .fill(Color.clear)
-                .frame(width: 24, height: 24)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(AppColor.color(hex: 0x323232))
-                        .frame(width: 16, height: 16)
-                        .overlay {
-                            Text("\(answers.count - 3)+")
-                                .textStyle(size: 8, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
-                        }
-                }
+                    .frame(width: iconW, height: iconH)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(AppColor.color(hex: 0x323232))
+                            .frame(width: 16, height: 16)
+                            .overlay {
+                                Text("\(answers.count - 3)+")
+                                    .textStyle(size: 8, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
+                            }
+                    }
             }
-            .padding(.top, 8)
         }
+        .padding(.horizontal, horizontal)
+        .padding(.top, Constants.iconViewTop)
+        .padding(.bottom, Constants.iconViewBotton)
     }
     
     var placeholderIcon: some View {
@@ -146,10 +161,43 @@ struct ClendarItemView: View {
     }
     
     @ViewBuilder
-    func iconView(_ answer: Answer) -> some View {
+    func iconView(_ answer: Answer, size: CGSize = .init(width: 24, height: 24)) -> some View {
         if let url = answer.icon?.url {
             ThumbnailIconImageView(url: url) {
                 placeholderIcon
+            }
+            .frame(width: size.width, height: size.height)
+        }
+    }
+    
+    
+    @State private var isBreathing = false
+    var addBtn: some View {
+        Button {
+            addAction()
+        } label: {
+            LinearGradient(
+                colors: [
+                    AppColor.color(hex: 0x040404),
+                    AppColor.color(hex: 0x656565)
+                ],
+                startPoint: .init(x: 0, y: 0),
+                endPoint: .init(x: 1, y: 0.7)
+            )
+            .cornerRadius(20, corners: .allCorners)
+            .blur(radius: 3)
+            .frame(width: 40, height: 40)
+            .overlay {
+                Image(.smallAdd)
+                    .resizable()
+                    .frame(width: 16, height: 16)
+            }
+            .scaleEffect(isBreathing ? 1.2 : 1.0)
+            .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true),
+                       value: isBreathing
+            )
+            .task {
+                isBreathing = true
             }
         }
     }

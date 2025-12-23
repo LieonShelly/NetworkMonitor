@@ -40,7 +40,7 @@ struct CalendarView: View {
                     
                 }
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, 24)
             .defaultBackground()
             .onFirstAppear {
                 Task.detached {
@@ -64,82 +64,44 @@ struct CalendarView: View {
         HStack(spacing: spacing) {
             ForEach(viewModel.weekdays, id: \.id) { day in
                 Text(day.title)
-                    .textStyle(size: 14, color: AppColor.color(hex: 0x323232), fontFamily: .sfProRegular)
+                    .textStyle(size: 16, color: AppColor.color(hex: 0x323232), fontFamily: .feltTipSeniorRegular)
                     .frame(width: itemW, height: itemW)
             }
         }
     }
 
     @ViewBuilder func headerView(_ proxy: GeometryProxy) -> some View {
-        let count: CGFloat = 7
-        let itemW = proxy.size.width / count
-        let btnW: CGFloat = 30
-        HStack(spacing: .zero) {
-            Button(action: {
-                viewModel.goPreviousMonth()
-            }) {
-                Image(.leftPoly)
-                Spacer()
-            }
-            .contentShape(.rect)
-            .frame(width: btnW, height: btnW)
-            Spacer()
-            VStack(spacing: 10) {
-                if let currentMonth = viewModel.currentMonth {
+        VStack(alignment: .leading, spacing: 2) {
+            if let currentMonth = viewModel.currentMonth {
+                
+                HStack(spacing: .zero) {
                     Text(currentMonth.monthDesc(isShort: false))
-                        .textStyle(size: 36)
+                        .textStyle(size: 36, fontFamily: .feltTipSeniorRegular)
                         .transition(.opacity)
                     
-                    Text(currentMonth.yearDesc())
-                        .textStyle(size: 24)
+                    Button(action: {
+                        viewModel.goPreviousMonth()
+                    }) {
+                        Image(.downFillArrow)
+                        Spacer()
+                    }
+                    .contentShape(.rect)
+                    .frame(width: 24, height: 24)
+                    
+                    Spacer()
+                    
+                    Text(currentMonth.dayDesc())
+                        .textStyle(size: 18, fontFamily: .feltTipSeniorRegular)
                         .transition(.opacity)
+
                 }
-            }
-            Spacer()
-            Button(action: {
-                viewModel.goNextMonth()
-            }) {
-                Spacer()
-                Image(.rightPloly)
-            }
-            .contentShape(.rect)
-            .frame(width: btnW, height: btnW)
-        }
-        .padding(.horizontal, itemW * 0.35)
-        .padding(.top, 30)
-        .padding(.bottom, 30)
-    }
-    
-    @State private var isBreathing = false
-    var addBtn: some View {
-        Button {
-            addAction()
-        } label: {
-            LinearGradient(
-                colors: [
-                    AppColor.color(hex: 0x040404),
-                    AppColor.color(hex: 0x656565)
-                ],
-                startPoint: .init(x: 0, y: 0),
-                endPoint: .init(x: 1, y: 0.7)
-            )
-            .cornerRadius(20, corners: .allCorners)
-            .blur(radius: 3)
-            .frame(width: 40, height: 40)
-            .overlay {
-                Image(.smallAdd)
-                    .resizable()
-                    .frame(width: 16, height: 16)
-            }
-            .scaleEffect(isBreathing ? 1.2 : 1.0)
-            .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true),
-                       value: isBreathing
-            )
-            .task {
-                isBreathing = true
+                 Text(currentMonth.yearDesc())
+                     .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
+                     .transition(.opacity)
+               
             }
         }
-       
+        
     }
     
     @ViewBuilder
@@ -148,14 +110,16 @@ struct CalendarView: View {
         let columnW: CGFloat = proxy.size.width / CGFloat(columns)
         let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: .zero, alignment: .center)
         }
-       let itemH: CGFloat = 88
+       let itemH: CGFloat = 128
         ScrollView(.horizontal) {
             HStack(spacing: .zero) {
                 ForEach(viewModel.months) { month in
                      ScrollView(showsIndicators: false) {
                          LazyVGrid(columns: columnsG, alignment: .center, spacing: .zero) {
                              ForEach(month.days, id: \.id) { day in
-                                 ClendarItemView(day: day)
+                                 ClendarItemView(day: day, addAction: {
+                                     addAction()
+                                 })
                                      .frame(height: itemH)
                              }
                          }
