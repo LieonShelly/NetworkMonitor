@@ -47,6 +47,7 @@ struct CalendarView: View {
                     do {
                         await viewModel.generateMonthForYear(2025)
                         try await viewModel.fetchData()
+                        await viewModel.scrollToCurrentMonth()
                     } catch {
                         print(error)
                     }
@@ -107,7 +108,6 @@ struct CalendarView: View {
         .padding(.horizontal, itemW * 0.35)
         .padding(.top, 30)
         .padding(.bottom, 30)
-        .animation(.easeInOut, value: viewModel.scrollPostion)
     }
     
     @State private var isBreathing = false
@@ -143,110 +143,6 @@ struct CalendarView: View {
     }
     
     @ViewBuilder
-    func dayIcon(_ day: CalendarDay) -> some View {
-        if let reflections = day.reflections?.reflections, !reflections.isEmpty {
-            let reflection = reflections.last
-            if reflections.count == 1 {
-                
-                if day.dayType == .today {
-                    toDayIconView(reflection?.icon)
-                        .onTapGesture {
-                            onTapAnswerAction?( viewModel.onTapIcon(day))
-                        }
-                } else {
-                    iconView(reflection?.icon)
-                        .onTapGesture {
-                            onTapAnswerAction?( viewModel.onTapIcon(day))
-                        }
-                }
-            } else {
-                if let icon = reflection?.icon {
-                    if day.dayType == .today {
-                        toDayIconView(icon)
-                            .onTapGesture {
-                                onTapAnswerAction?( viewModel.onTapIcon(day))
-                            }
-                    } else {
-                        iconView(icon)
-                            .onTapGesture {
-                                onTapAnswerAction?( viewModel.onTapIcon(day))
-                            }
-                    }
-                } else {
-                    placeholderIcon
-                }
-            }
-        }
-    
-    }
-    
-    var placeholderIcon: some View {
-        Circle()
-            .fill(Color.clear)
-            .overlay(content: {
-                Image(.calendarDripper)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            })
-            .frame(width: 24, height: 24)
-    }
-    
-    @ViewBuilder
-    func iconView(_ icon: IconData?) -> some View {
-        if let icon {
-            switch icon.status {
-            case .pending:
-                Image(.lock)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 24, height: 24)
-            case .generated:
-                if let url = icon.url {
-                    ThumbnailIconImageView(url: url) {
-                        placeholderIcon
-                    }
-                    .frame(width: 24, height: 24)
-                }
-            case .failed:
-                Image(.lock)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 24, height: 24)
-            }
-        } else {
-            placeholderIcon
-        }
-    }
-    
-    @ViewBuilder
-    func toDayIconView(_ icon: IconData?) -> some View {
-        if let icon {
-            switch icon.status {
-            case .pending:
-                Image(.lock)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 24, height: 24)
-            case .generated:
-                if let url = icon.url {
-                    ThumbnailIconImageView(url: url) {
-                        placeholderIcon
-                    }
-                    .frame(width: 24, height: 24)
-                }
-            case .failed:
-                Image(.lock)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 24, height: 24)
-            }
-        } else {
-            placeholderIcon
-        }
-    }
-    
-    
-    @ViewBuilder
     func monthListView(proxy: GeometryProxy) -> some View {
         let columns: Int = 7
         let columnW: CGFloat = proxy.size.width / CGFloat(columns)
@@ -261,9 +157,15 @@ struct CalendarView: View {
                              ForEach(month.days, id: \.id) { day in
                                  ClendarItemView(day: day)
                                      .frame(height: itemH)
-                                     .background(Color.random)
                              }
                          }
+                         .overlay(
+                            CalendarGridLines(
+                                columns: columns,
+                                rowHeight: itemH,
+                                color: AppColor.color(hex: 0xcdcdcd)
+                            )
+                         )
                          Rectangle()
                              .fill(Color.clear)
                              .frame(height: 200)
@@ -277,3 +179,4 @@ struct CalendarView: View {
         .scrollPosition(id: $viewModel.scrollPostion, anchor: .center)
     }
 }
+

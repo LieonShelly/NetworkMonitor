@@ -7,7 +7,6 @@ import SwiftUI
 import Kingfisher
 
 final class CalendarViewModel: ObservableObject, @unchecked Sendable {
-    @MainActor @Published var days: [CalendarDay] = []
     @MainActor @Published var weekdays: [WeekDay] = [
         WeekDay(title: "S"),
         WeekDay(title: "M"),
@@ -37,9 +36,9 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         guard let currentMonth else { return }
         let calendar = Calendar.current
         if let nextMonth = calendar.date(byAdding: .month, value: 1, to: currentMonth) {
-           if let day = days.first(where: { $0.date.isSameMonth(nextMonth)}) {
+           if let month = months.first(where: { $0.date.isSameMonth(nextMonth)}) {
                withAnimation(.easeInOut) {
-                   self.scrollPostion = day.id
+                   self.scrollPostion = month.id
                }
            }
         }
@@ -50,9 +49,9 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         guard let currentMonth else { return }
         let calendar = Calendar.current
         if let nextMonth = calendar.date(byAdding: .month, value: -1, to: currentMonth) {
-           if let day = days.first(where: { $0.date.isSameMonth(nextMonth)}) {
+           if let month = months.first(where: { $0.date.isSameMonth(nextMonth)}) {
                withAnimation(.easeInOut) {
-                   self.scrollPostion = day.id
+                   self.scrollPostion = month.id
                }
               
             }
@@ -103,12 +102,17 @@ extension CalendarViewModel {
                 }
             }
            self.months = months
-           if let month = months.first(where: { $0.date.isSameMonth(endMonth)}) {
-               currentMonth = endMonth
-               withAnimation(.easeInOut) {
-                   self.scrollPostion = month.id
-               }
-           }
+        }
+    }
+    
+   @MainActor
+    func scrollToCurrentMonth() {
+        let endMonth = Date()
+        if let month = months.first(where: { $0.date.isSameMonth(endMonth)}) {
+            currentMonth = endMonth
+            withAnimation(.easeInOut) {
+                self.scrollPostion = month.id
+            }
         }
     }
 }

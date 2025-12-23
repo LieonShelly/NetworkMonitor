@@ -110,6 +110,7 @@
 		F30FC501E337AB0B4B0C0D18 /* IconRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB18B18DB1403A5E4F474A33 /* IconRequest.swift */; };
 		F7EEBCB8F06F2AFB8348CBE5 /* ReflectionDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9D7669128928BF1C1B5FEE /* ReflectionDetailViewModel.swift */; };
 		F80E7DA72EDED0E400CBC678 /* AnswerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80E7DA62EDED0E300CBC678 /* AnswerDetailView.swift */; };
+		F81AAB2F2EFA4E6900F1680F /* CalendarGridLines.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */; };
 		F84409E72EE32B33004A40B2 /* InnerPageRoutingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84409E62EE32B33004A40B2 /* InnerPageRoutingModifier.swift */; };
 		F85859F42EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85859F32EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift */; };
 		F8598A842EF9292C0044ABCB /* ClendarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8598A832EF9292C0044ABCB /* ClendarItemView.swift */; };
@@ -262,6 +263,7 @@
 		F4EA66A0CB3CB6B4CB331EE1 /* FetchHeadQuestionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchHeadQuestionUseCase.swift; sourceTree = "<group>"; };
 		F80E7DA62EDED0E300CBC678 /* AnswerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerDetailView.swift; sourceTree = "<group>"; };
 		F819405F06FE6217721A71E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridLines.swift; sourceTree = "<group>"; };
 		F84409E62EE32B33004A40B2 /* InnerPageRoutingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerPageRoutingModifier.swift; sourceTree = "<group>"; };
 		F85859F32EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayAnswerSubmittedViewModel.swift; sourceTree = "<group>"; };
 		F8598A832EF9292C0044ABCB /* ClendarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClendarItemView.swift; sourceTree = "<group>"; };
@@ -528,6 +530,7 @@
 		A003F063569C9ED12070D111 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */,
 				F8598A832EF9292C0044ABCB /* ClendarItemView.swift */,
 				F8BE5EC12EE1640B009206C2 /* IconImageView.swift */,
 				F8642C8F2EE04EF000D92A07 /* MetalIconProcessor.swift */,
@@ -887,6 +890,7 @@
 				F8598A842EF9292C0044ABCB /* ClendarItemView.swift in Sources */,
 				4DC39F6F61376BAAF1156EB2 /* InsightsView.swift in Sources */,
 				7126B63ED6C7C11ABB3BEC34 /* LTAppApp.swift in Sources */,
+				F81AAB2F2EFA4E6900F1680F /* CalendarGridLines.swift in Sources */,
 				ED6B9CE126E3CFB5306162CB /* LogoutInterceptor.swift in Sources */,
 				F8642C902EE04EF000D92A07 /* MetalIconProcessor.swift in Sources */,
 				77BA7C884C2D706C5876FFDF /* LoopingStackCardView.swift in Sources */,
