@@ -25,11 +25,11 @@ struct ClendarItemView: View {
                     if let answers = day.reflections?.reflections, !answers.isEmpty {
                         switch answers.count {
                         case 1:
-                            oneIcon(answers.first!)
+                            oneIcon(answers.first!, proxy: proxy)
                         case 2:
-                            twoIcon(answers)
+                            twoIcon(answers, proxy: proxy)
                         case 3:
-                            threeIcon(answers)
+                            threeIcon(answers, proxy: proxy)
                         default:
                             fourIcon(answers, proxy: proxy)
                         }
@@ -41,8 +41,6 @@ struct ClendarItemView: View {
                 dateView
             })
         }
-      
-        
     }
     
     var dateView: some View {
@@ -61,59 +59,82 @@ struct ClendarItemView: View {
     }
     
     @ViewBuilder
-    func oneIcon(_ answer: Answer) -> some View {
+    func oneIcon(_ answer: Answer, proxy: GeometryProxy) -> some View {
+        let top: CGFloat = 23
+        let bottom: CGFloat = 8
         VStack {
             Spacer()
             iconView(answer)
-                .padding(.bottom, 8)
+             
         }
+        .padding(.top, top)
+        .padding(.bottom, bottom)
     }
     
     @ViewBuilder
-    func twoIcon(_ answers: [Answer]) -> some View {
-        VStack(spacing: 8) {
-            Spacer()
+    func twoIcon(_ answers: [Answer], proxy: GeometryProxy) -> some View {
+        let top: CGFloat = 23
+        let bottom: CGFloat = 8
+        let vspacing: CGFloat = 10
+     
+        let iconH: CGFloat = 20
+        let iconW: CGFloat = 20
+        let overlayW: CGFloat = 4
+        let iconTotalW = iconW * 2 - overlayW * 2
+        let hPadding: CGFloat = (proxy.size.width - iconTotalW) * 0.5
+        VStack(spacing: vspacing) {
             if let answer = answers.first {
                 HStack {
                     Spacer()
-                    iconView(answer)
-                    
+                    iconView(answer, size: .init(width: iconW, height: iconH))
+                        .padding(.trailing, hPadding)
                 }
                 
             }
-            Spacer()
             if let answer = answers.last {
                 HStack {
-                    iconView(answer)
+                    iconView(answer, size: .init(width: iconW, height: iconH))
+                        .padding(.leading, hPadding)
                     Spacer()
                 }
             }
-            Spacer()
         }
-        .padding(.bottom, 4)
+        .padding(.top, top)
+        .padding(.bottom, bottom)
     }
     
     @ViewBuilder
-    func threeIcon(_ answers: [Answer]) -> some View {
-        VStack(spacing: 8) {
+    func threeIcon(_ answers: [Answer], proxy: GeometryProxy) -> some View {
+        let top: CGFloat = 23
+        let bottom: CGFloat = 8
+        let vspacing: CGFloat = 4
+        let hPadding: CGFloat = 2
+        let iconH = (proxy.size.height - top - bottom - vspacing * 2) / 3
+        let iconW: CGFloat = proxy.size.width * 0.5
+        VStack(spacing: vspacing) {
             if let answer = answers.first {
                 HStack {
                     Spacer()
-                    iconView(answer)
+                    iconView(answer, size: .init(width: iconW, height: iconH))
+                        .padding(.trailing, hPadding)
                 }
                 
             }
             HStack {
-                iconView(answers[1])
+                iconView(answers[1], size: .init(width: iconW, height: iconH))
+                    .padding(.leading, hPadding)
                 Spacer()
             }
             if let answer = answers.last {
                 HStack {
                     Spacer()
-                    iconView(answer)
+                    iconView(answer, size: .init(width: iconW, height: iconH))
+                        .padding(.trailing, hPadding)
                 }
             }
         }
+        .padding(.top, top)
+        .padding(.bottom, bottom)
     }
     
     @ViewBuilder
