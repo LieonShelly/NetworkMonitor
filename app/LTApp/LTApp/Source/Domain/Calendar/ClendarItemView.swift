@@ -33,6 +33,8 @@ struct ClendarItemView: View {
                         default:
                             fourIcon(answers, proxy: proxy)
                         }
+                    } else if day.isToday {
+                        addBtn
                     } else {
                         Rectangle()
                             .fill(Color.clear)
@@ -193,7 +195,9 @@ struct ClendarItemView: View {
     
     
     @State private var isBreathing = false
+    @ViewBuilder
     var addBtn: some View {
+        Spacer()
         Button {
             addAction()
         } label: {
@@ -207,11 +211,11 @@ struct ClendarItemView: View {
             )
             .cornerRadius(20, corners: .allCorners)
             .blur(radius: 3)
-            .frame(width: 40, height: 40)
+            .frame(width: 26, height: 26)
             .overlay {
                 Image(.smallAdd)
                     .resizable()
-                    .frame(width: 16, height: 16)
+                    .frame(width: 10, height: 10)
             }
             .scaleEffect(isBreathing ? 1.2 : 1.0)
             .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true),
@@ -221,5 +225,7 @@ struct ClendarItemView: View {
                 isBreathing = true
             }
         }
+        .padding(.bottom, 8)
+        
     }
 }
