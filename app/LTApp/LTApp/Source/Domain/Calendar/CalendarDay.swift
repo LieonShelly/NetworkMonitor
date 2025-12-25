@@ -18,13 +18,15 @@ struct CalendarDay: Identifiable {
     let date: Date
     let isCurrentMonth: Bool
     let isToday: Bool
+    var isConsecutive: Bool
     var reflections: DayReflections?
     
-    init(date: Date, isCurrentMonth: Bool, isToday: Bool, reflections: DayReflections? = nil) {
+    init(date: Date, isCurrentMonth: Bool, isToday: Bool, isConsecutive: Bool, reflections: DayReflections? = nil) {
         self.date = date
         self.isCurrentMonth = isCurrentMonth
         self.isToday = isToday
         self.reflections = reflections
+        self.isConsecutive = isConsecutive
     }
     
     var dayType: DayType {
@@ -41,6 +43,7 @@ struct CalendarDay: Identifiable {
     func copyWith(_ reflections: DayReflections) -> CalendarDay{
         var entity = self
         entity.reflections = reflections
+        entity.isConsecutive = true
         return entity
     }
 }

@@ -91,13 +91,23 @@ extension CalendarViewModel {
         )
        await MainActor.run {
            var months = self.months
-            for reflection in reflections {
-                for monthIndex in 0 ..< months.count {
-                    var days = months[monthIndex].days
-                    if let index = days.firstIndex(where: { $0.date.isSameDay(reflection.day)}) {
-                        let newDay = days[index].copyWith(reflection)
-                        days[index] = newDay
-                    }
+           for relectionIndex in 0 ..< reflections.count {
+                let reflection = reflections[relectionIndex]
+               for monthIndex in 0 ..< months.count {
+                   var days = months[monthIndex].days
+                   if let index = days.firstIndex(where: { $0.date.isSameDay(reflection.day)}) {
+                       let newDay = days[index].copyWith(reflection)
+                       days[index] = newDay
+                   }
+                  guard let firstAnswerDay = days.first(where: {$0.reflections != nil })?.date,
+                            let endAnswerDay = days.last(where: { $0.reflections != nil })?.date else {
+                      continue
+                  }
+                   let emptyDays = days.filter { $0.reflections == nil}
+                   for emptyDay in emptyDays {
+                       guard let dayIndex = days.firstIndex(where: { $0.id == emptyDay.id }) else { continue }
+                       days[dayIndex].isConsecutive = days[dayIndex].date >= firstAnswerDay &&  days[dayIndex].date <= endAnswerDay
+                   }
                     months[monthIndex].days = days
                 }
             }
@@ -145,7 +155,8 @@ extension CalendarViewModel {
                         CalendarDay(
                             date: date,
                             isCurrentMonth: false,
-                            isToday: false
+                            isToday: false,
+                            isConsecutive: false
                         )
                     )
                 }
@@ -157,7 +168,8 @@ extension CalendarViewModel {
                         CalendarDay(
                             date: date,
                             isCurrentMonth: true,
-                            isToday: calendar.isDateInToday(date)
+                            isToday: calendar.isDateInToday(date),
+                            isConsecutive: false
                         )
                     )
                 }

@@ -35,9 +35,8 @@ struct ClendarItemView: View {
                         }
                     } else if day.isToday {
                         addBtn
-                    } else {
-                        Rectangle()
-                            .fill(Color.clear)
+                    } else if day.isConsecutive {
+                        slashLine
                     }
                 }
                 dateView
@@ -58,6 +57,7 @@ struct ClendarItemView: View {
         }
         .padding(.leading, 4)
         .padding(.top, 4)
+        .opacity(day.isCurrentMonth ? 1 : 0)
     }
     
     @ViewBuilder
@@ -237,5 +237,13 @@ struct ClendarItemView: View {
         }
         .padding(.bottom, 8)
         
+    }
+    
+    @ViewBuilder
+    var slashLine: some View {
+        Spacer()
+        CalendarSlashLine()
+            .frame(width: 20, height: 15)
+            .padding(.bottom, 15)
     }
 }
