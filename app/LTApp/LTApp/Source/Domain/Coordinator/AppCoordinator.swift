@@ -83,7 +83,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
     func launch() {
         rootViewProvider.root
             .sink { [weak self] root in
-                self?.root = .home(.init(overLayData: nil))
+                self?.root = root
             }
             .store(in: &cancellables)
     }

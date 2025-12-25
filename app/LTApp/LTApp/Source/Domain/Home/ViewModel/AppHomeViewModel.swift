@@ -77,7 +77,10 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
             guard let self else { return }
             switch topic {
             case .iconFinished:
-                self.selected(0)
+                Task {
+                    try? await  contentViewModel.calendarViewModel.fetchData()
+                    self.selected(0)
+                }
             case .todayQuestion:
                 Task {
                     if todayQuestions.isEmpty {
