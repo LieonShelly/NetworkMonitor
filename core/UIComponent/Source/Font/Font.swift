@@ -14,6 +14,8 @@ public class AppFont {
             return Font.custom(AppFontType.feltTipSeniorRegular.fontName, size: size)
         case .heavy:
             return Font.custom(AppFontType.feltTipSeniorRegular.fontName, size: size)
+        case .mediumItalic:
+            return Font.custom(AppFontType.poppinsMediumItalic.fontName, size: size)
         }
     }
     
@@ -26,6 +28,8 @@ public class AppFont {
             return UIFont(descriptor: .init(name: AppFontType.feltTipSeniorRegular.fontName, size: size), size: size)
         case .heavy:
             return UIFont(descriptor: .init(name: AppFontType.feltTipSeniorRegular.fontName, size: size), size: size)
+        case .mediumItalic:
+            return UIFont(descriptor: .init(name: AppFontType.poppinsMediumItalic.fontName, size: size), size: size)
         }
     }
     
@@ -37,6 +41,8 @@ public class AppFont {
             return Font.custom(AppFontType.poppinsRegular.fontName, size: size)
         case .heavy:
             return Font.custom(AppFontType.poppinsRegular.fontName, size: size)
+        case .mediumItalic:
+            return Font.custom(AppFontType.poppinsMediumItalic.fontName, size: size)
         }
     }
     
@@ -50,6 +56,8 @@ public class AppFont {
             return Font.custom(AppFontType.sfProBold.fontName, size: size)
         case .heavy:
             return Font.custom(AppFontType.sfProRegular.fontName, size: size)
+        case .mediumItalic:
+            return Font.custom(AppFontType.poppinsMediumItalic.fontName, size: size)
         }
     }
     
@@ -64,6 +72,8 @@ public class AppFont {
             return Font.custom(AppFontType.vividlyRegular.fontName, size: size)
         case .heavy:
             return Font.custom(AppFontType.vividlyRegular.fontName, size: size)
+        case .mediumItalic:
+            return Font.custom(AppFontType.poppinsMediumItalic.fontName, size: size)
         }
     }
     
@@ -76,6 +86,8 @@ public class AppFont {
             return UIFont(descriptor: .init(name: AppFontType.vividlyRegular.fontName, size: size), size: size)
         case .heavy:
             return UIFont(descriptor: .init(name: AppFontType.vividlyRegular.fontName, size: size), size: size)
+        case .mediumItalic:
+            return UIFont(descriptor: .init(name: AppFontType.poppinsMediumItalic.fontName, size: size), size: size)
         }
     }
     

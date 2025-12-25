@@ -30,6 +30,9 @@ public extension View {
         case .vividlyRegular:
             return self.foregroundStyle(color)
                 .font(AppFont.vividly(size: size, fontWeight: .regular))
+        case .poppinsMediumItalic:
+            return self.foregroundStyle(color)
+                .font(AppFont.poppins(size: size, fontWeight: .mediumItalic))
         }
     }
 }

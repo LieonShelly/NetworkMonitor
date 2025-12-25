@@ -141,35 +141,45 @@ struct ClendarItemView: View {
     
     @ViewBuilder
     func fourIcon(_ answers: [Answer], proxy: GeometryProxy) -> some View {
-        let horizontal: CGFloat = 4
-        let vertical: CGFloat = .zero
-        let iconW = (proxy.size.width - horizontal * 3) / 2
-        let iconH = (proxy.size.height - vertical - Constants.iconViewTop - Constants.iconViewBotton) / 2
-        VStack(spacing: vertical) {
-            HStack(spacing: horizontal) {
-                iconView(answers[0], size: .init(width: iconW , height: iconH))
-                iconView(answers[1], size: .init(width: iconW , height: iconH))
+        let top: CGFloat = 23
+        let bottom: CGFloat = 8
+        let vspacing: CGFloat = 4
+        let hPadding: CGFloat = 2
+        let iconH = (proxy.size.height - top - bottom - vspacing * 2) / 3
+        let iconW: CGFloat = proxy.size.width * 0.5
+        let textRP: CGFloat = hPadding * 4
+        VStack(spacing: vspacing) {
+            if let answer = answers.first {
+                HStack {
+                    iconView(answer, size: .init(width: iconW, height: iconH))
+                        .padding(.leading, hPadding)
+                    Spacer()
+                }
+                
             }
-            
-            HStack(spacing: 2) {
-                iconView(answers[2], size: .init(width: iconW, height: iconH))
-                Rectangle()
-                    .fill(Color.clear)
-                    .frame(width: iconW, height: iconH)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(AppColor.color(hex: 0x323232))
-                            .frame(width: 16, height: 16)
-                            .overlay {
-                                Text("\(answers.count - 3)+")
-                                    .textStyle(size: 8, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
-                            }
+            HStack {
+                Spacer()
+                iconView(answers[1], size: .init(width: iconW, height: iconH))
+                    .padding(.trailing, hPadding)
+               
+            }
+            if let answer = answers.last {
+                ZStack(alignment: .trailing) {
+                    HStack {
+                        iconView(answer, size: .init(width: iconW, height: iconH))
+                            .padding(.leading, hPadding)
+                        Spacer()
                     }
+                    
+                    Text("\(answers.count - 3)+")
+                        .textStyle(size: 8, color: AppColor.color(hex: 0x000000), fontFamily: .poppinsMediumItalic)
+                        .padding(.trailing, textRP)
+                }
+            
             }
         }
-        .padding(.horizontal, horizontal)
-        .padding(.top, Constants.iconViewTop)
-        .padding(.bottom, Constants.iconViewBotton)
+        .padding(.top, top)
+        .padding(.bottom, bottom)
     }
     
     var placeholderIcon: some View {

@@ -33,6 +33,7 @@
 		E9E65CDB07211204207C03EF /* SFPRODISPLAYREGULAR.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 6D8DBA0614E81655B6DA4DA0 /* SFPRODISPLAYREGULAR.OTF */; };
 		F81BBF172ED2FA2300D6392C /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81BBF162ED2FA2300D6392C /* LoadingView.swift */; };
 		F81BBF192ED2FB4400D6392C /* Lottie.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F81BBF182ED2FB4400D6392C /* Lottie.bundle */; };
+		F8B1D04F2EFD2BE300503ABF /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F8B1D04E2EFD2BE300503ABF /* Poppins-MediumItalic.ttf */; };
 		F8BE5EC42EE16A13009206C2 /* OnFirstAppearViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BE5EC32EE16A13009206C2 /* OnFirstAppearViewModifier.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		D0B974295D3F09C44A2CC00B /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
 		F81BBF162ED2FA2300D6392C /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		F81BBF182ED2FB4400D6392C /* Lottie.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Lottie.bundle; sourceTree = "<group>"; };
+		F8B1D04E2EFD2BE300503ABF /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
 		F8BE5EC32EE16A13009206C2 /* OnFirstAppearViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnFirstAppearViewModifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -88,6 +90,7 @@
 				BDA4700CE717C32AD6F75060 /* SFPRODISPLAYMEDIUM.OTF */,
 				6D8DBA0614E81655B6DA4DA0 /* SFPRODISPLAYREGULAR.OTF */,
 				73B304C658A19F73D38495F8 /* VividlyRegular.ttf */,
+				F8B1D04E2EFD2BE300503ABF /* Poppins-MediumItalic.ttf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 				E9E65CDB07211204207C03EF /* SFPRODISPLAYREGULAR.OTF in Resources */,
 				04CDD63E76124D79FB0C1578 /* VividlyRegular.ttf in Resources */,
 				F81BBF192ED2FB4400D6392C /* Lottie.bundle in Resources */,
+				F8B1D04F2EFD2BE300503ABF /* Poppins-MediumItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
