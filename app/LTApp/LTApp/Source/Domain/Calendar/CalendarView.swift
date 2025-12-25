@@ -130,6 +130,7 @@ struct CalendarView: View {
                                 color: AppColor.color(hex: 0xcdcdcd)
                             )
                          )
+                         footerView(momth: month)
                          Rectangle()
                              .fill(Color.clear)
                              .frame(height: 200)
@@ -141,6 +142,15 @@ struct CalendarView: View {
         }
         .scrollTargetBehavior(.paging)
         .scrollPosition(id: $viewModel.scrollPostion, anchor: .center)
+    }
+    
+    @ViewBuilder
+    func footerView(momth: CalendarMonth) -> some View {
+        Text("\(momth.iconCount) icons created this month \n \(momth.moreDaysTogo) more days to go!")
+            .multilineTextAlignment(.center)
+            .textStyle(size: 18, color: AppColor.color(hex: 0x000000), fontFamily: .feltTipSeniorRegular)
+            .padding(.bottom, 50)
+            .padding(.top, 20)
     }
 }
 

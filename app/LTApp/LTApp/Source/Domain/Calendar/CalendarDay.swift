@@ -58,4 +58,13 @@ struct CalendarMonth: Identifiable {
     let id = UUID()
     let date: Date
     var days: [CalendarDay]
+    var iconCount: Int
+    var moreDaysTogo: Int
+    
+    init(date: Date, days: [CalendarDay], iconCount: Int, moreDaysTogo: Int) {
+        self.date = date
+        self.days = days
+        self.iconCount = iconCount
+        self.moreDaysTogo = moreDaysTogo
+    }
 }

@@ -108,7 +108,12 @@ extension CalendarViewModel {
                        guard let dayIndex = days.firstIndex(where: { $0.id == emptyDay.id }) else { continue }
                        days[dayIndex].isConsecutive = days[dayIndex].date >= firstAnswerDay &&  days[dayIndex].date <= endAnswerDay
                    }
-                    months[monthIndex].days = days
+                   let totalIcons = days.flatMap { $0.reflections?.reflections ?? []}.filter { $0.icon != nil}.count
+                   months[monthIndex].days = days
+                   months[monthIndex].iconCount = totalIcons
+                   if months[monthIndex].date.isSameMonth(endMonth), let currentIndex = days.firstIndex(where: { $0.date.isSameDay(endMonth)}) {
+                       months[monthIndex].moreDaysTogo = days.count - currentIndex
+                   }
                 }
             }
            self.months = months
@@ -174,7 +179,7 @@ extension CalendarViewModel {
                     )
                 }
             }
-            let calendarMonth = CalendarMonth(date: monthDate, days: days)
+            let calendarMonth = CalendarMonth(date: monthDate, days: days, iconCount: 0, moreDaysTogo: 20)
             calendarMonths.append(calendarMonth)
         }
         await MainActor.run {
