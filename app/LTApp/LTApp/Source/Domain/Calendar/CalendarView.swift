@@ -161,7 +161,6 @@ struct CalendarView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
                 ForEach(viewModel.months, id: \.id) { month in
-                   
                     Text("\(month.date.monthDesc(isShort: true))")
                         .textStyle(size: 20,
                                    color: isCurrentMonth(month: month) ? AppColor.color(hex: 0xffffff) : AppColor.color(hex: 0x000000),
@@ -179,12 +178,14 @@ struct CalendarView: View {
                             }
                         }
                         .padding(.vertical, 6)
+                        .id(month.id)
                 }
             }
             .padding(.horizontal, Constants.hP)
         }
         .frame(height: 42)
         .padding(.vertical, 12)
+        .scrollPosition(id: $viewModel.scrollPostion, anchor: .center)
     }
     
     func isCurrentMonth(month: CalendarMonth) -> Bool {
