@@ -49,6 +49,8 @@ struct CalendarView: View {
             }
         }
         .animation(.easeInOut, value: viewModel.showTodayAnswerView)
+        .scrollPosition(id: $viewModel.contentScrollPostion, anchor: .center)
+        .scrollPosition(id: $viewModel.monthScrollPostion, anchor: .center)
       
     }
     
@@ -70,12 +72,12 @@ struct CalendarView: View {
         VStack(alignment: .leading, spacing: 0) {
             if let currentMonth = viewModel.currentMonth {
                 HStack(spacing: .zero) {
-                    Text(currentMonth.monthDesc(isShort: false))
+                    Text(currentMonth.date.monthDesc(isShort: false))
                         .textStyle(size: 36, fontFamily: .feltTipSeniorRegular)
                         .transition(.opacity)
                     
                     Button(action: {
-                        viewModel.goPreviousMonth()
+
                     }) {
                         Image(.downFillArrow)
                         Spacer()
@@ -85,13 +87,13 @@ struct CalendarView: View {
                     
                     Spacer()
                     
-                    Text(currentMonth.dayDesc())
+                    Text(currentMonth.date.dayDesc())
                         .textStyle(size: 18, fontFamily: .feltTipSeniorRegular)
                         .transition(.opacity)
 
                 }
                 .padding(.horizontal, Constants.hP)
-                Text(currentMonth.yearDesc())
+                Text(currentMonth.date.yearDesc())
                     .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
                     .transition(.opacity)
                     .padding(.top, 2)
@@ -141,7 +143,8 @@ struct CalendarView: View {
             }
         }
         .scrollTargetBehavior(.paging)
-        .scrollPosition(id: $viewModel.scrollPostion, anchor: .center)
+        .scrollPosition(id: $viewModel.contentScrollPostion, anchor: .center)
+        .scrollPosition(id: $viewModel.monthScrollPostion, anchor: .center)
         .padding(.horizontal, Constants.hP)
         .padding(.vertical, 24)
     }
@@ -179,18 +182,20 @@ struct CalendarView: View {
                         }
                         .padding(.vertical, 6)
                         .id(month.id)
+                        .onTapGesture {
+                            viewModel.didTapMonth(month)
+                        }
                 }
             }
             .padding(.horizontal, Constants.hP)
         }
         .frame(height: 42)
         .padding(.vertical, 12)
-        .scrollPosition(id: $viewModel.scrollPostion, anchor: .center)
     }
     
     func isCurrentMonth(month: CalendarMonth) -> Bool {
         var selected = false
-        if let currentMonth = viewModel.currentMonth, month.date.isSameMonth(currentMonth) {
+        if let currentMonth = viewModel.currentMonth, month.date.isSameMonth(currentMonth.date) {
             selected = true
         }
         return selected

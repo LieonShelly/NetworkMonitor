@@ -16,8 +16,9 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         WeekDay(title: "F"),
         WeekDay(title: "S")
     ]
-    @MainActor @Published var currentMonth: Date?
-    @MainActor @Published var scrollPostion: UUID? = nil
+    @MainActor @Published var currentMonth: CalendarMonth?
+    @MainActor @Published var contentScrollPostion: UUID? = nil
+    @MainActor @Published var monthScrollPostion: UUID? = nil
     @MainActor @Published var todayUpdatingIcon: IconData?
     @MainActor @Published var selectedDay: CalendarDay?
     @MainActor @Published var showTodayAnswerView: Bool = false
@@ -29,33 +30,6 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     
     init(service: any AppDataWithAuthorizationServiceful) {
         self.service = service
-    }
-    
-    @MainActor
-    func goNextMonth() {
-        guard let currentMonth else { return }
-        let calendar = Calendar.current
-        if let nextMonth = calendar.date(byAdding: .month, value: 1, to: currentMonth) {
-           if let month = months.first(where: { $0.date.isSameMonth(nextMonth)}) {
-               withAnimation(.easeInOut) {
-                   self.scrollPostion = month.id
-               }
-           }
-        }
-    }
-    
-    @MainActor
-    func goPreviousMonth() {
-        guard let currentMonth else { return }
-        let calendar = Calendar.current
-        if let nextMonth = calendar.date(byAdding: .month, value: -1, to: currentMonth) {
-           if let month = months.first(where: { $0.date.isSameMonth(nextMonth)}) {
-               withAnimation(.easeInOut) {
-                   self.scrollPostion = month.id
-               }
-              
-            }
-        }
     }
     
     func queryCurrenntIconStatus(_ iconId: String) {
@@ -124,10 +98,20 @@ extension CalendarViewModel {
     func scrollToCurrentMonth() {
         let endMonth = Date()
         if let month = months.first(where: { $0.date.isSameMonth(endMonth)}) {
-            currentMonth = endMonth
+            currentMonth = month
             withAnimation(.easeInOut) {
-                self.scrollPostion = month.id
+                self.contentScrollPostion = month.id
+                self.monthScrollPostion = month.id
             }
+        }
+    }
+    
+    @MainActor
+    func didTapMonth(_ month: CalendarMonth) {
+        withAnimation(.easeInOut) {
+            self.contentScrollPostion = month.id
+            self.monthScrollPostion = month.id
+            currentMonth = month
         }
     }
 }
