@@ -70,39 +70,43 @@ struct CalendarView: View {
 
     @ViewBuilder func headerView(_ proxy: GeometryProxy) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            if let currentMonth = viewModel.currentMonth {
-                HStack(spacing: .zero) {
-                    Text(currentMonth.date.monthDesc(isShort: false))
-                        .textStyle(size: 36, fontFamily: .feltTipSeniorRegular)
-                        .transition(.opacity)
-                    
-                    Button(action: {
-                        withAnimation(.easeInOut(duration: 0.3)) {
-                            showMonthList = !showMonthList
+            VStack(alignment: .leading, spacing: 0) {
+                if let currentMonth = viewModel.currentMonth {
+                    HStack(spacing: .zero) {
+                        Text(currentMonth.date.monthDesc(isShort: false))
+                            .textStyle(size: 36, fontFamily: .feltTipSeniorRegular)
+                            .transition(.opacity)
+                        
+                        Button(action: {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                showMonthList = !showMonthList
+                            }
+                        }) {
+                            Image(.downFillArrow)
+                                .rotationEffect(.init(degrees: showMonthList ? 0 : -180))
+                            Spacer()
                         }
-                    }) {
-                        Image(.downFillArrow)
-                            .rotationEffect(.init(degrees: showMonthList ? 0 : -180))
+                        .contentShape(.rect)
+                        .frame(width: 24, height: 24)
+                        
                         Spacer()
-                    }
-                    .contentShape(.rect)
-                    .frame(width: 24, height: 24)
-                    
-                    Spacer()
-                    
-                    Text(Date().dayDesc())
-                        .textStyle(size: 18, fontFamily: .feltTipSeniorRegular)
-                        .transition(.opacity)
+                        
+                        Text(Date().dayDesc())
+                            .textStyle(size: 18, fontFamily: .feltTipSeniorRegular)
+                            .transition(.opacity)
 
+                    }
+                   
+                    Text(currentMonth.date.yearDesc())
+                        .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
+                        .transition(.opacity)
+                        .padding(.top, 2)
+                        .padding(.horizontal, Constants.hP)
+                   
                 }
-                .padding(.horizontal, Constants.hP)
-                Text(currentMonth.date.yearDesc())
-                    .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
-                    .transition(.opacity)
-                    .padding(.top, 2)
-                    .padding(.horizontal, Constants.hP)
-               
             }
+            .padding(.horizontal, Constants.hP)
+           
             monthView
         }
     }
