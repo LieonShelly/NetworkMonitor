@@ -12,6 +12,7 @@ struct CalendarView: View {
         static let maxRowCount: CGFloat = 7
         static let cornorRadius: CGFloat = 4
         static let weekDayBottom: CGFloat = 70
+        static let hP: CGFloat = 24
     }
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @StateObject var viewModel: CalendarViewModel
@@ -28,29 +29,22 @@ struct CalendarView: View {
     }
     
     var body: some View {
-        ZStack {
-            GeometryReader { proxy in
-                ZStack {
-                    VStack(spacing: .zero) {
-                        headerView(proxy)
-                        weekDay(spacing: .zero, proxy: proxy)
-                        monthListView(proxy: proxy)
-                        Spacer()
-                    }
-                    
-                }
+        GeometryReader { proxy in
+            VStack(spacing: .zero) {
+                headerView(proxy)
+                weekDay(spacing: .zero, proxy: proxy)
+                monthListView(proxy: proxy)
             }
-            .padding(.horizontal, 24)
-            .defaultBackground()
-            .onFirstAppear {
-                Task.detached {
-                    do {
-                        await viewModel.generateMonthForYear(2025)
-                        try await viewModel.fetchData()
-                        await viewModel.scrollToCurrentMonth()
-                    } catch {
-                        print(error)
-                    }
+        }
+        .defaultBackground()
+        .onFirstAppear {
+            Task.detached {
+                do {
+                    await viewModel.generateMonthForYear(2025)
+                    try await viewModel.fetchData()
+                    await viewModel.scrollToCurrentMonth()
+                } catch {
+                    print(error)
                 }
             }
         }
@@ -60,20 +54,21 @@ struct CalendarView: View {
     
     @ViewBuilder func weekDay(spacing: CGFloat, proxy: GeometryProxy) -> some View {
         let count: CGFloat = 7
-        let itemW = proxy.size.width / count
+        let parentWidth = proxy.size.width - Constants.hP * 2
+        let itemW = parentWidth / count
         HStack(spacing: spacing) {
             ForEach(viewModel.weekdays, id: \.id) { day in
                 Text(day.title)
                     .textStyle(size: 16, color: AppColor.color(hex: 0x323232), fontFamily: .feltTipSeniorRegular)
-                    .frame(width: itemW, height: itemW)
+                    .frame(width: itemW, height: 18)
             }
         }
+        .padding(.horizontal, Constants.hP)
     }
 
     @ViewBuilder func headerView(_ proxy: GeometryProxy) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(alignment: .leading, spacing: 0) {
             if let currentMonth = viewModel.currentMonth {
-                
                 HStack(spacing: .zero) {
                     Text(currentMonth.monthDesc(isShort: false))
                         .textStyle(size: 36, fontFamily: .feltTipSeniorRegular)
@@ -95,19 +90,24 @@ struct CalendarView: View {
                         .transition(.opacity)
 
                 }
-                 Text(currentMonth.yearDesc())
-                     .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
-                     .transition(.opacity)
+                .padding(.horizontal, Constants.hP)
+                Text(currentMonth.yearDesc())
+                    .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
+                    .transition(.opacity)
+                    .padding(.top, 2)
+                    .padding(.horizontal, Constants.hP)
                
             }
+            
+            monthView
         }
-        
     }
     
     @ViewBuilder
     func monthListView(proxy: GeometryProxy) -> some View {
+        let parentWith = proxy.size.width - Constants.hP * 2
         let columns: Int = 7
-        let columnW: CGFloat = proxy.size.width / CGFloat(columns)
+        let columnW: CGFloat = parentWith / CGFloat(columns)
         let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: .zero, alignment: .center)
         }
        let itemH: CGFloat = 88
@@ -135,13 +135,15 @@ struct CalendarView: View {
                              .fill(Color.clear)
                              .frame(height: 200)
                      }
-                     .frame(width: proxy.size.width)
+                     .frame(width: parentWith)
                      .id(month.id)
                 }
             }
         }
         .scrollTargetBehavior(.paging)
         .scrollPosition(id: $viewModel.scrollPostion, anchor: .center)
+        .padding(.horizontal, Constants.hP)
+        .padding(.vertical, 24)
     }
     
     @ViewBuilder
@@ -152,5 +154,44 @@ struct CalendarView: View {
             .padding(.bottom, 50)
             .padding(.top, 20)
     }
+    
+    @ViewBuilder
+    var monthView: some View {
+      
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(viewModel.months, id: \.id) { month in
+                   
+                    Text("\(month.date.monthDesc(isShort: true))")
+                        .textStyle(size: 20,
+                                   color: isCurrentMonth(month: month) ? AppColor.color(hex: 0xffffff) : AppColor.color(hex: 0x000000),
+                                   fontFamily: .feltTipSeniorRegular)
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 12)
+                        .background {
+                            if isCurrentMonth(month: month) {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(AppColor.color(hex: 0x323232))
+                            } else {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(style: .init(lineWidth: 1))
+                                    .foregroundStyle(AppColor.color(hex: 0x323232))
+                            }
+                        }
+                        .padding(.vertical, 6)
+                }
+            }
+            .padding(.horizontal, Constants.hP)
+        }
+        .frame(height: 42)
+        .padding(.vertical, 12)
+    }
+    
+    func isCurrentMonth(month: CalendarMonth) -> Bool {
+        var selected = false
+        if let currentMonth = viewModel.currentMonth, month.date.isSameMonth(currentMonth) {
+            selected = true
+        }
+        return selected
+    }
 }
-

@@ -29,6 +29,7 @@ extension Date {
         formatter.dateFormat = isShort ? "MMM" : "MMMM"
         formatter.locale = Locale.current
         let month = formatter.string(from: self)
+        print(month)
         return month
     }
     
