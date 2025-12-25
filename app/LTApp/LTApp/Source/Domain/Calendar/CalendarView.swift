@@ -155,22 +155,6 @@ struct CalendarView: View {
                 .fill(Color.clear)
                 .frame(height: 200)
         }
-        .onScrollGeometryChange(for: CGFloat.self, of: { geometry in
-            geometry.contentOffset.y // 监听 Y 轴偏移量
-        }, action: { oldValue, newValue in
-            let threshold: CGFloat = 5
-            let diff = newValue - oldValue
-            
-            if diff > threshold && showMonthList {
-                withAnimation(.easeInOut(duration: 0.3)) {
-                    showMonthList = false
-                }
-            } else if diff < -threshold && !showMonthList {
-                withAnimation(.easeInOut(duration: 0.3)) {
-                    showMonthList = true
-                }
-            }
-        })
     }
     
     @ViewBuilder
