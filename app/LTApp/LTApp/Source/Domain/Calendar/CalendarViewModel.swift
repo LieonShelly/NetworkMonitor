@@ -53,6 +53,17 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         let todayAnswerSubmittedViewModel = TodayAnswerSubmittedViewModel(answer: answer, question: question, service: service)
         return todayAnswerSubmittedViewModel
     }
+    
+    @MainActor
+    func onContentScroll(_ progress: CGFloat) {
+        let index = Int(progress.rounded())
+        guard index < months.count else { return }
+        let month = months[index]
+        withAnimation(.easeInOut) {
+            self.monthScrollPostion = month.id
+            currentMonth = month
+        }
+    }
 }
 
 extension CalendarViewModel {

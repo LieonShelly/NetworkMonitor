@@ -16,6 +16,7 @@ struct CalendarView: View {
     }
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @StateObject var viewModel: CalendarViewModel
+    @State var showMonthList: Bool = true
     let addAction: (() -> Void)
     let onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?
     
@@ -49,8 +50,6 @@ struct CalendarView: View {
             }
         }
         .animation(.easeInOut, value: viewModel.showTodayAnswerView)
-        .scrollPosition(id: $viewModel.contentScrollPostion, anchor: .center)
-        .scrollPosition(id: $viewModel.monthScrollPostion, anchor: .center)
       
     }
     
@@ -87,7 +86,7 @@ struct CalendarView: View {
                     
                     Spacer()
                     
-                    Text(currentMonth.date.dayDesc())
+                    Text(Date().dayDesc())
                         .textStyle(size: 18, fontFamily: .feltTipSeniorRegular)
                         .transition(.opacity)
 
@@ -100,7 +99,6 @@ struct CalendarView: View {
                     .padding(.horizontal, Constants.hP)
                
             }
-            
             monthView
         }
     }
@@ -108,45 +106,67 @@ struct CalendarView: View {
     @ViewBuilder
     func monthListView(proxy: GeometryProxy) -> some View {
         let parentWith = proxy.size.width - Constants.hP * 2
-        let columns: Int = 7
-        let columnW: CGFloat = parentWith / CGFloat(columns)
-        let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: .zero, alignment: .center)
-        }
-       let itemH: CGFloat = 88
         ScrollView(.horizontal) {
             HStack(spacing: .zero) {
                 ForEach(viewModel.months) { month in
-                     ScrollView(showsIndicators: false) {
-                         LazyVGrid(columns: columnsG, alignment: .center, spacing: .zero) {
-                             ForEach(month.days, id: \.id) { day in
-                                 ClendarItemView(day: day, addAction: {
-                                     addAction()
-                                 })
-                                     .frame(height: itemH)
-                             }
-                         }
-                         .overlay(
-                            CalendarGridLines(
-                                columns: columns,
-                                rowHeight: itemH,
-                                color: AppColor.color(hex: 0xcdcdcd)
-                            )
-                         )
-                         footerView(momth: month)
-                         Rectangle()
-                             .fill(Color.clear)
-                             .frame(height: 200)
-                     }
-                     .frame(width: parentWith)
-                     .id(month.id)
+                    oneMonthView(month: month, proxy: proxy)
                 }
             }
         }
         .scrollTargetBehavior(.paging)
         .scrollPosition(id: $viewModel.contentScrollPostion, anchor: .center)
-        .scrollPosition(id: $viewModel.monthScrollPostion, anchor: .center)
+        .onScrollGeometryChange(for: CGFloat.self, of: { $0.contentOffset.x}, action: { oldValue, newValue in
+            let index = newValue / parentWith
+            viewModel.onContentScroll(index)
+        })
         .padding(.horizontal, Constants.hP)
         .padding(.vertical, 24)
+    }
+    
+    @ViewBuilder
+    func oneMonthView(month: CalendarMonth, proxy: GeometryProxy) -> some View {
+        let parentWith = proxy.size.width - Constants.hP * 2
+        let columns: Int = 7
+        let columnW: CGFloat = parentWith / CGFloat(columns)
+        let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: .zero, alignment: .center)}
+        let itemH: CGFloat = 88
+        ScrollView(showsIndicators: false) {
+            LazyVGrid(columns: columnsG, alignment: .center, spacing: .zero) {
+                ForEach(month.days, id: \.id) { day in
+                    ClendarItemView(day: day, addAction: {
+                        addAction()
+                    })
+                        .frame(height: itemH)
+                }
+            }
+            .overlay(
+               CalendarGridLines(
+                   columns: columns,
+                   rowHeight: itemH,
+                   color: AppColor.color(hex: 0xcdcdcd)
+               )
+            )
+            footerView(momth: month)
+            Rectangle()
+                .fill(Color.clear)
+                .frame(height: 200)
+        }
+        .onScrollGeometryChange(for: CGFloat.self, of: { geometry in
+            geometry.contentOffset.y // 监听 Y 轴偏移量
+        }, action: { oldValue, newValue in
+            let threshold: CGFloat = 5
+            let diff = newValue - oldValue
+            
+            if diff > threshold && showMonthList {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    showMonthList = false
+                }
+            } else if diff < -threshold && !showMonthList {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    showMonthList = true
+                }
+            }
+        })
     }
     
     @ViewBuilder
@@ -160,7 +180,6 @@ struct CalendarView: View {
     
     @ViewBuilder
     var monthView: some View {
-      
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
                 ForEach(viewModel.months, id: \.id) { month in
@@ -189,8 +208,10 @@ struct CalendarView: View {
             }
             .padding(.horizontal, Constants.hP)
         }
+        .scrollPosition(id: $viewModel.monthScrollPostion, anchor: .center)
         .frame(height: 42)
         .padding(.vertical, 12)
+       
     }
     
     func isCurrentMonth(month: CalendarMonth) -> Bool {
