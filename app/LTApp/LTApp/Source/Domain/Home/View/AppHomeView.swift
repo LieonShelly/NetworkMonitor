@@ -58,7 +58,9 @@ struct AppHomeView: View {
             if showPage {
                 ZStack(alignment: .bottom) {
                     scrollContentView()
+                        .frame(width: proxy.size.width)
                     tabbar()
+                        .frame(width: proxy.size.width)
                 }
                 .toolbarVisibility(.hidden, for: .navigationBar)
                 .transition(.opacity)

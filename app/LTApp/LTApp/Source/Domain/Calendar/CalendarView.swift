@@ -96,6 +96,7 @@ struct CalendarView: View {
                             .transition(.opacity)
 
                     }
+                    .padding(.horizontal, Constants.hP)
                    
                     Text(currentMonth.date.yearDesc())
                         .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
@@ -105,8 +106,6 @@ struct CalendarView: View {
                    
                 }
             }
-            .padding(.horizontal, Constants.hP)
-           
             monthView
         }
     }
