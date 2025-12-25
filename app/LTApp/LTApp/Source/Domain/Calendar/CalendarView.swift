@@ -65,6 +65,7 @@ struct CalendarView: View {
             }
         }
         .padding(.horizontal, Constants.hP)
+        .padding(.top, showMonthList ? 0 : 24)
     }
 
     @ViewBuilder func headerView(_ proxy: GeometryProxy) -> some View {
@@ -76,9 +77,12 @@ struct CalendarView: View {
                         .transition(.opacity)
                     
                     Button(action: {
-
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            showMonthList = !showMonthList
+                        }
                     }) {
                         Image(.downFillArrow)
+                            .rotationEffect(.init(degrees: showMonthList ? 0 : -180))
                         Spacer()
                     }
                     .contentShape(.rect)
@@ -209,9 +213,9 @@ struct CalendarView: View {
             .padding(.horizontal, Constants.hP)
         }
         .scrollPosition(id: $viewModel.monthScrollPostion, anchor: .center)
-        .frame(height: 42)
-        .padding(.vertical, 12)
-       
+        .frame(height: showMonthList ? 42 : 0)
+        .padding(.vertical, showMonthList ? 12 : 0)
+        .scaleEffect(.init(width: 1, height: showMonthList ? 1 : 0))
     }
     
     func isCurrentMonth(month: CalendarMonth) -> Bool {
