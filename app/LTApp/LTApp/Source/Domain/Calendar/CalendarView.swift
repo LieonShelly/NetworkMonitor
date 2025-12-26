@@ -16,7 +16,7 @@ struct CalendarView: View {
     }
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @StateObject var viewModel: CalendarViewModel
-    @State var showMonthList: Bool = true
+    @State var showMonthList: Bool = false
     let addAction: (() -> Void)
     let onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?
     
@@ -49,8 +49,6 @@ struct CalendarView: View {
                 }
             }
         }
-        .animation(.easeInOut, value: viewModel.showTodayAnswerView)
-      
     }
     
     @ViewBuilder func weekDay(spacing: CGFloat, proxy: GeometryProxy) -> some View {
@@ -73,24 +71,19 @@ struct CalendarView: View {
             VStack(alignment: .leading, spacing: 0) {
                 if let currentMonth = viewModel.currentMonth {
                     HStack(spacing: .zero) {
-                        Text(currentMonth.date.monthDesc(isShort: false))
-                            .textStyle(size: 36, fontFamily: .feltTipSeniorRegular)
-                            .transition(.opacity)
-                        
-                        Button(action: {
+                        HStack(spacing: .zero) {
+                            Text(currentMonth.date.monthDesc(isShort: false))
+                                .textStyle(size: 36, fontFamily: .feltTipSeniorRegular)
+                                .transition(.opacity)
+                            Image(.downFillArrow)
+                                .rotationEffect(.init(degrees: showMonthList ? 0 : -180))
+                        }.onTapGesture {
                             withAnimation(.easeInOut(duration: 0.3)) {
                                 showMonthList = !showMonthList
                             }
-                        }) {
-                            Image(.downFillArrow)
-                                .rotationEffect(.init(degrees: showMonthList ? 0 : -180))
-                            Spacer()
                         }
-                        .contentShape(.rect)
-                        .frame(width: 24, height: 24)
-                        
+                      
                         Spacer()
-                        
                         Text(Date().dayDesc())
                             .textStyle(size: 18, fontFamily: .feltTipSeniorRegular)
                             .transition(.opacity)
@@ -140,10 +133,15 @@ struct CalendarView: View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: columnsG, alignment: .center, spacing: .zero) {
                 ForEach(month.days, id: \.id) { day in
-                    ClendarItemView(day: day, addAction: {
-                        addAction()
-                    })
-                        .frame(height: itemH)
+                    ClendarItemView(
+                        day: day,
+                        addAction: {
+                            addAction()
+                        }, didTapIcon: { answer in
+                            onTapAnswerAction?(viewModel.generateAnswerDetailViewModel(answer))
+                        }
+                    )
+                    .frame(height: itemH)
                 }
             }
             .overlay(

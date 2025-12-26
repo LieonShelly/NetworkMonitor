@@ -11,6 +11,7 @@ import SwiftUI
 struct ClendarItemView: View {
     let day: CalendarDay
     let addAction: (() -> Void)
+    let didTapIcon: ((Answer) -> Void)
     
     enum Constants {
         static let iconViewTop: CGFloat = 23
@@ -71,6 +72,9 @@ struct ClendarItemView: View {
         }
         .padding(.top, top)
         .padding(.bottom, bottom)
+        .onTapGesture {
+            didTapIcon(answer)
+        }
     }
     
     @ViewBuilder
@@ -91,6 +95,9 @@ struct ClendarItemView: View {
                     iconView(answer, size: .init(width: iconW, height: iconH))
                         .padding(.trailing, hPadding)
                 }
+                .onTapGesture {
+                    didTapIcon(answer)
+                }
                 
             }
             if let answer = answers.last {
@@ -98,6 +105,9 @@ struct ClendarItemView: View {
                     iconView(answer, size: .init(width: iconW, height: iconH))
                         .padding(.leading, hPadding)
                     Spacer()
+                }
+                .onTapGesture {
+                    didTapIcon(answer)
                 }
             }
         }
@@ -120,6 +130,9 @@ struct ClendarItemView: View {
                     iconView(answer, size: .init(width: iconW, height: iconH))
                         .padding(.trailing, hPadding)
                 }
+                .onTapGesture {
+                    didTapIcon(answer)
+                }
                 
             }
             HStack {
@@ -127,11 +140,17 @@ struct ClendarItemView: View {
                     .padding(.leading, hPadding)
                 Spacer()
             }
+            .onTapGesture {
+                didTapIcon(answers[1])
+            }
             if let answer = answers.last {
                 HStack {
                     Spacer()
                     iconView(answer, size: .init(width: iconW, height: iconH))
                         .padding(.trailing, hPadding)
+                }
+                .onTapGesture {
+                    didTapIcon(answer)
                 }
             }
         }
@@ -155,6 +174,9 @@ struct ClendarItemView: View {
                         .padding(.leading, hPadding)
                     Spacer()
                 }
+                .onTapGesture {
+                    didTapIcon(answer)
+                }
                 
             }
             HStack {
@@ -163,12 +185,18 @@ struct ClendarItemView: View {
                     .padding(.trailing, hPadding)
                
             }
+            .onTapGesture {
+                didTapIcon(answers[1])
+            }
             if let answer = answers.last {
                 ZStack(alignment: .trailing) {
                     HStack {
                         iconView(answer, size: .init(width: iconW, height: iconH))
                             .padding(.leading, hPadding)
                         Spacer()
+                    }
+                    .onTapGesture {
+                        didTapIcon(answer)
                     }
                     
                     Text("\(answers.count - 3)+")

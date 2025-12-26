@@ -21,7 +21,6 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var monthScrollPostion: UUID? = nil
     @MainActor @Published var todayUpdatingIcon: IconData?
     @MainActor @Published var selectedDay: CalendarDay?
-    @MainActor @Published var showTodayAnswerView: Bool = false
     @MainActor @Published var months: [CalendarMonth] = []
     
     let itemSize: CGSize = .init(width: 30, height: 30)
@@ -63,6 +62,11 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
             self.monthScrollPostion = month.id
             currentMonth = month
         }
+    }
+    
+    func generateAnswerDetailViewModel(_ answer: Answer) -> TodayAnswerSubmittedViewModel? {
+        guard let question = answer.question else { return nil }
+        return .init(answer: answer, question: question, service: service)
     }
 }
 
@@ -174,7 +178,7 @@ extension CalendarViewModel {
                     )
                 }
             }
-            let calendarMonth = CalendarMonth(date: monthDate, days: days, iconCount: 0, moreDaysTogo: 20)
+            let calendarMonth = CalendarMonth(date: monthDate, days: days, iconCount: 0, moreDaysTogo: 0)
             calendarMonths.append(calendarMonth)
         }
         await MainActor.run {
