@@ -41,7 +41,7 @@ struct CalendarView: View {
         .onFirstAppear {
             Task.detached {
                 do {
-                    await viewModel.generateMonthForYear(2025)
+                    await viewModel.generateMonths()
                     try await viewModel.fetchData()
                     await viewModel.scrollToCurrentMonth()
                 } catch {
@@ -87,6 +87,15 @@ struct CalendarView: View {
                         Text(Date().dayDesc())
                             .textStyle(size: 18, fontFamily: .feltTipSeniorRegular)
                             .transition(.opacity)
+                            .background(
+                                Image(.brushCycle)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 29, height: 29)
+                            )
+                            .onTapGesture {
+                                viewModel.scrollToCurrentMonth()
+                            }
 
                     }
                     .padding(.horizontal, Constants.hP)

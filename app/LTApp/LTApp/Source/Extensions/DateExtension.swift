@@ -34,7 +34,7 @@ extension Date {
     
     func dayDesc() -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd"
+        formatter.dateFormat = "d"
         return formatter.string(from: self)
     }
     

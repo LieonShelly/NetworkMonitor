@@ -52,6 +52,15 @@ struct ClendarItemView: View {
                     .textStyle(size: 14,
                                color: AppColor.color(hex: 0x323232),
                                fontFamily: .feltTipSeniorRegular)
+                    .background {
+                        if day.isToday, day.reflections == nil {
+                            Image(.brushCycle)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 20, height: 20)
+                        }
+                    }
+                    .padding(.top, 4)
                 Spacer()
             }
             Spacer()
@@ -223,11 +232,22 @@ struct ClendarItemView: View {
     
     @ViewBuilder
     func iconView(_ answer: Answer, size: CGSize = .init(width: 24, height: 24)) -> some View {
-        if let url = answer.icon?.url {
-            ThumbnailIconImageView(url: url) {
-                placeholderIcon
+      
+        if let icon = answer.icon {
+            switch icon.status {
+            case .pending:
+                Image(.lock)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: size.width, height: size.height)
+            default:
+                if let url = icon.url {
+                    ThumbnailIconImageView(url: url) {
+                        placeholderIcon
+                    }
+                    .frame(width: size.width, height: size.height)
+                }
             }
-            .frame(width: size.width, height: size.height)
         }
     }
     

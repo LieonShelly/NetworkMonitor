@@ -133,7 +133,7 @@ extension CalendarViewModel {
 
 
 extension CalendarViewModel {
-    func generateMonthForYear(_ year: Int) async {
+    func generateMonthForYear(_ year: Int) async -> [CalendarMonth] {
         let calendar = Calendar.current
         var component = DateComponents()
         component.year = year
@@ -181,8 +181,15 @@ extension CalendarViewModel {
             let calendarMonth = CalendarMonth(date: monthDate, days: days, iconCount: 0, moreDaysTogo: 0)
             calendarMonths.append(calendarMonth)
         }
+        return calendarMonths
+    }
+    
+    func generateMonths() async {
+        var months = [CalendarMonth]()
+        months.append(contentsOf: await generateMonthForYear(2025))
+        months.append(contentsOf: await generateMonthForYear(2026))
         await MainActor.run {
-            self.months = calendarMonths
+            self.months = months
         }
     }
 }
