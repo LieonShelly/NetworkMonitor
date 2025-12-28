@@ -16,7 +16,7 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         WeekDay(title: "F"),
         WeekDay(title: "S")
     ]
-    @MainActor @Published var currentMonth: CalendarMonth?
+    var currentMonth: CalendarMonth?
     @MainActor @Published var contentScrollPostion: UUID? = nil
     @MainActor @Published var monthScrollPostion: UUID? = nil
     @MainActor @Published var todayUpdatingIcon: IconData?
@@ -26,6 +26,7 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     let itemSize: CGSize = .init(width: 30, height: 30)
     
     private let service: any AppDataWithAuthorizationServiceful
+    private var didTapMontHeaderItem: Bool = false
     
     init(service: any AppDataWithAuthorizationServiceful) {
         self.service = service
@@ -53,16 +54,7 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         return todayAnswerSubmittedViewModel
     }
     
-    @MainActor
-    func onContentScroll(_ progress: CGFloat) {
-        let index = Int(progress.rounded())
-        guard index < months.count else { return }
-        let month = months[index]
-        withAnimation(.easeInOut) {
-            self.monthScrollPostion = month.id
-            currentMonth = month
-        }
-    }
+  
     
     func generateAnswerDetailViewModel(_ answer: Answer) -> TodayAnswerSubmittedViewModel? {
         guard let question = answer.question else { return nil }
@@ -109,24 +101,43 @@ extension CalendarViewModel {
         }
     }
     
+    @MainActor
+    func onMonthContentScroll(_ progress: CGFloat) {
+        guard !didTapMontHeaderItem else { return }
+        let index = Int(progress.rounded())
+        guard index < months.count else { return }
+        let month = months[index]
+        currentMonth = month
+        withAnimation(.easeInOut) {
+            self.monthScrollPostion = month.id
+        }
+    }
+    
+
    @MainActor
     func scrollToCurrentMonth() {
         let endMonth = Date()
         if let month = months.first(where: { $0.date.isSameMonth(endMonth)}) {
             currentMonth = month
-            withAnimation(.easeInOut) {
+            didTapMontHeaderItem = true
+            withAnimation(.easeInOut, completionCriteria: .logicallyComplete) {
                 self.contentScrollPostion = month.id
                 self.monthScrollPostion = month.id
+            } completion: {
+                self.didTapMontHeaderItem = false
             }
         }
     }
     
     @MainActor
     func didTapMonth(_ month: CalendarMonth) {
-        withAnimation(.easeInOut) {
-            self.contentScrollPostion = month.id
+        currentMonth = month
+        didTapMontHeaderItem = true
+        withAnimation(.easeInOut, completionCriteria: .logicallyComplete) {
             self.monthScrollPostion = month.id
-            currentMonth = month
+            self.contentScrollPostion = month.id
+        } completion: {
+            self.didTapMontHeaderItem = false
         }
     }
 }

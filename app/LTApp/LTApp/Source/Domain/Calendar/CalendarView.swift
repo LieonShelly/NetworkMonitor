@@ -76,7 +76,7 @@ struct CalendarView: View {
                                 .textStyle(size: 36, fontFamily: .feltTipSeniorRegular)
                                 .transition(.opacity)
                             Image(.downFillArrow)
-                                .rotationEffect(.init(degrees: showMonthList ? 0 : -180))
+                                .rotationEffect(.init(degrees: showMonthList ? -180 : 0))
                         }.onTapGesture {
                             withAnimation(.easeInOut(duration: 0.3)) {
                                 showMonthList = !showMonthList
@@ -126,7 +126,7 @@ struct CalendarView: View {
         .scrollPosition(id: $viewModel.contentScrollPostion, anchor: .center)
         .onScrollGeometryChange(for: CGFloat.self, of: { $0.contentOffset.x}, action: { oldValue, newValue in
             let index = newValue / parentWith
-            viewModel.onContentScroll(index)
+            viewModel.onMonthContentScroll(index)
         })
         .padding(.horizontal, Constants.hP)
         .padding(.vertical, 24)
