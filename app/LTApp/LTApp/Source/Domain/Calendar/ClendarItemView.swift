@@ -13,6 +13,14 @@ struct ClendarItemView: View {
     let addAction: (() -> Void)
     let didTapIcon: ((Answer) -> Void)
     
+    
+    init(day: CalendarDay, addAction: @escaping () -> Void, didTapIcon: @escaping (Answer) -> Void, isBreathing: Bool = false) {
+        self.day = day
+        self.addAction = addAction
+        self.didTapIcon = didTapIcon
+        self.isBreathing = isBreathing
+    }
+    
     enum Constants {
         static let iconViewTop: CGFloat = 23
         static let iconViewBotton: CGFloat = 8
@@ -50,7 +58,7 @@ struct ClendarItemView: View {
             VStack {
                 Text(day.date.dayDesc())
                     .textStyle(size: 14,
-                               color: AppColor.color(hex: day.isAbsent ? 0xcdcdcd : 0x323232),
+                               color: AppColor.color(hex: day.isAbsent || day.dayType == .future ? 0xcdcdcd : 0x323232),
                                fontFamily: .feltTipSeniorRegular)
                     .background {
                         if day.isToday, day.reflections == nil {

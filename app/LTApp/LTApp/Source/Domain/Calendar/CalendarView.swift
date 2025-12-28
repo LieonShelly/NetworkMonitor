@@ -118,7 +118,7 @@ struct CalendarView: View {
         let parentWith = proxy.size.width - Constants.hP * 2
         let months = viewModel.months.filter { $0.isValildMonth }
         ScrollView(.horizontal) {
-            HStack(spacing: .zero) {
+            LazyHStack(spacing: .zero) {
                 ForEach(months) { month in
                     oneMonthView(month: month, proxy: proxy)
                 }

@@ -105,7 +105,7 @@ extension Date {
     var yyyymmdd: String {
         let formatter = DateFormatter()
         formatter.timeZone = .current
-        formatter.dateFormat = "YYYY-MM-dd"
+        formatter.dateFormat = "yyyy-MM-dd"
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter.string(from: self)
     }
@@ -146,7 +146,7 @@ struct AppDateFormatter {
    static var yyyymmdd: DateFormatter {
         let formatter = DateFormatter()
         formatter.timeZone = .current
-        formatter.dateFormat = "YYYY-MM-dd"
+        formatter.dateFormat = "yyyy-MM-dd"
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }
@@ -154,7 +154,7 @@ struct AppDateFormatter {
     static var ymdhsm: DateFormatter {
         let formatter = DateFormatter()
         formatter.timeZone = .current
-        formatter.dateFormat = "YYYY-MM-dd hh:mm:ss"
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }
