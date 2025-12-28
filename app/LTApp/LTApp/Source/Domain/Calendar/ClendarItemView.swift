@@ -23,7 +23,7 @@ struct ClendarItemView: View {
         GeometryReader { proxy in
             ZStack(content: {
                 VStack {
-                    if let answers = day.reflections?.reflections, !answers.isEmpty {
+                    if day.isCurrentMonth, let answers = day.reflections?.reflections, !answers.isEmpty {
                         switch answers.count {
                         case 1:
                             oneIcon(answers.first!, proxy: proxy)
@@ -36,7 +36,7 @@ struct ClendarItemView: View {
                         }
                     } else if day.isToday {
                         addBtn
-                    } else if day.isConsecutive {
+                    } else if day.isAbsent && day.dayType != .future {
                         slashLine
                     }
                 }
@@ -50,7 +50,7 @@ struct ClendarItemView: View {
             VStack {
                 Text(day.date.dayDesc())
                     .textStyle(size: 14,
-                               color: AppColor.color(hex: 0x323232),
+                               color: AppColor.color(hex: day.isAbsent ? 0xcdcdcd : 0x323232),
                                fontFamily: .feltTipSeniorRegular)
                     .background {
                         if day.isToday, day.reflections == nil {
@@ -227,7 +227,6 @@ struct ClendarItemView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
             })
-            .frame(width: 24, height: 24)
     }
     
     @ViewBuilder
@@ -246,8 +245,14 @@ struct ClendarItemView: View {
                         placeholderIcon
                     }
                     .frame(width: size.width, height: size.height)
+                } else {
+                    placeholderIcon
+                        .frame(width: size.width, height: size.height)
                 }
             }
+        } else if !answer.content.isEmpty {
+            placeholderIcon
+                .frame(width: size.width, height: size.height)
         }
     }
     
@@ -293,5 +298,6 @@ struct ClendarItemView: View {
         CalendarSlashLine()
             .frame(width: 20, height: 15)
             .padding(.bottom, 15)
+            .opacity(day.isCurrentMonth ? 1 : 0)
     }
 }

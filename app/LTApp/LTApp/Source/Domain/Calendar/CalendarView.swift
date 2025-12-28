@@ -55,10 +55,11 @@ struct CalendarView: View {
         let count: CGFloat = 7
         let parentWidth = proxy.size.width - Constants.hP * 2
         let itemW = parentWidth / count
+        let isFutureMonth = viewModel.currentMonth?.isFuture ?? false
         HStack(spacing: spacing) {
             ForEach(viewModel.weekdays, id: \.id) { day in
                 Text(day.title)
-                    .textStyle(size: 16, color: AppColor.color(hex: 0x323232), fontFamily: .feltTipSeniorRegular)
+                    .textStyle(size: 16, color: AppColor.color(hex: isFutureMonth ? 0xcdcdcd : 0x323232), fontFamily: .feltTipSeniorRegular)
                     .frame(width: itemW, height: 18)
             }
         }
@@ -115,9 +116,10 @@ struct CalendarView: View {
     @ViewBuilder
     func monthListView(proxy: GeometryProxy) -> some View {
         let parentWith = proxy.size.width - Constants.hP * 2
+        let months = viewModel.months.filter { $0.isValildMonth }
         ScrollView(.horizontal) {
             HStack(spacing: .zero) {
-                ForEach(viewModel.months) { month in
+                ForEach(months) { month in
                     oneMonthView(month: month, proxy: proxy)
                 }
             }
@@ -159,6 +161,11 @@ struct CalendarView: View {
                    rowHeight: itemH,
                    color: AppColor.color(hex: 0xcdcdcd)
                )
+               .overlay(content: {
+                   if month.isFuture {
+                       monthLockView
+                   }
+               })
             )
             footerView(momth: month)
             Rectangle()
@@ -181,27 +188,37 @@ struct CalendarView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
                 ForEach(viewModel.months, id: \.id) { month in
-                    Text("\(month.date.monthDesc(isShort: true))")
-                        .textStyle(size: 20,
-                                   color: isCurrentMonth(month: month) ? AppColor.color(hex: 0xffffff) : AppColor.color(hex: 0x000000),
-                                   fontFamily: .feltTipSeniorRegular)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 12)
-                        .background {
-                            if isCurrentMonth(month: month) {
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(AppColor.color(hex: 0x323232))
-                            } else {
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(style: .init(lineWidth: 1))
-                                    .foregroundStyle(AppColor.color(hex: 0x323232))
+                    switch month.itemType {
+                    case .normal:
+                        Text("\(month.date.monthDesc(isShort: true))")
+                            .textStyle(size: 20,
+                                       color: isCurrentMonth(month: month) ? AppColor.color(hex: 0xffffff) : AppColor.color(hex: 0x000000),
+                                       fontFamily: .feltTipSeniorRegular)
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 12)
+                            .background {
+                                if isCurrentMonth(month: month) {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(AppColor.color(hex: 0x323232))
+                                } else {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(style: .init(lineWidth: 1))
+                                        .foregroundStyle(AppColor.color(hex: 0x323232))
+                                }
                             }
-                        }
-                        .padding(.vertical, 6)
-                        .id(month.id)
-                        .onTapGesture {
-                            viewModel.didTapMonth(month)
-                        }
+                            .padding(.vertical, 6)
+                            .id(month.id)
+                            .onTapGesture {
+                                viewModel.didTapMonth(month)
+                            }
+                    case .yearPlaceholder:
+                        Text("\(month.date.yearDesc())")
+                            .textStyle(
+                                size: 20,
+                                color: AppColor.color(hex: 0x000000),
+                                fontFamily: .feltTipSeniorRegular
+                            )
+                    }
                 }
             }
             .padding(.horizontal, Constants.hP)
@@ -218,5 +235,21 @@ struct CalendarView: View {
             selected = true
         }
         return selected
+    }
+    
+    var monthLockView: some View {
+        VStack(spacing: .zero) {
+            Image(.monthLock)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 42, height: 42)
+            
+            Text("The best is \n yet to come")
+                .textStyle(
+                    size: 36,
+                    color: AppColor.color(hex: 0x000000),
+                    fontFamily: .feltTipSeniorRegular
+                )
+        }
     }
 }

@@ -87,7 +87,7 @@ extension CalendarViewModel {
                    let emptyDays = days.filter { $0.reflections == nil}
                    for emptyDay in emptyDays {
                        guard let dayIndex = days.firstIndex(where: { $0.id == emptyDay.id }) else { continue }
-                       days[dayIndex].isConsecutive = days[dayIndex].date >= firstAnswerDay &&  days[dayIndex].date <= endAnswerDay
+                       days[dayIndex].isAbsent = days[dayIndex].date >= firstAnswerDay &&  days[dayIndex].date <= endAnswerDay
                    }
                    let totalIcons = days.flatMap { $0.reflections?.reflections ?? []}.filter { $0.icon != nil}.count
                    months[monthIndex].days = days
@@ -105,15 +105,15 @@ extension CalendarViewModel {
     func onMonthContentScroll(_ progress: CGFloat) {
         guard !didTapMontHeaderItem else { return }
         let index = Int(progress.rounded())
-        guard index < months.count else { return }
-        let month = months[index]
+        let monthContentItems = months.filter { $0.isValildMonth }
+        guard index < monthContentItems.count else { return }
+        let month = monthContentItems[index]
         currentMonth = month
         withAnimation(.easeInOut) {
             self.monthScrollPostion = month.id
         }
     }
     
-
    @MainActor
     func scrollToCurrentMonth() {
         let endMonth = Date()
@@ -149,6 +149,11 @@ extension CalendarViewModel {
         var component = DateComponents()
         component.year = year
         var calendarMonths: [CalendarMonth] = []
+        if let monthDate = calendar.date(from: component) {
+            let zeroMonth = CalendarMonth(date: monthDate, itemType: .yearPlaceholder)
+            calendarMonths.append(zeroMonth)
+        }
+        
         for month in 1 ... 12 {
             component.month = month
            
@@ -171,7 +176,7 @@ extension CalendarViewModel {
                             date: date,
                             isCurrentMonth: false,
                             isToday: false,
-                            isConsecutive: false
+                            isAbsent: true
                         )
                     )
                 }
@@ -184,7 +189,7 @@ extension CalendarViewModel {
                             date: date,
                             isCurrentMonth: true,
                             isToday: calendar.isDateInToday(date),
-                            isConsecutive: false
+                            isAbsent: true
                         )
                     )
                 }

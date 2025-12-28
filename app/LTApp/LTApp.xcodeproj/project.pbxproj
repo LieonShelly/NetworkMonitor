@@ -131,6 +131,7 @@
 		F8C266582EF2973F0000F5D6 /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C266572EF2973F0000F5D6 /* NotificationViewModel.swift */; };
 		F8D8886A2EF12D5200D4E14F /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D888692EF12D5200D4E14F /* NotificationView.swift */; };
 		F8DC77C42EDFE53200B68A61 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = F8DC77C32EDFE53200B68A61 /* Shaders.metal */; };
+		F8F2F9302F01069F00936ECD /* CalendarSlashLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */; };
 		FA51BF2C6E9391EC6BDEAD4F /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE6F66A04E6E854AA39FECE /* AppCoordinator.swift */; };
 		FAA6D2B8FB0286BEE0D9140C /* AppleIDSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F26996D055177D80D1143B /* AppleIDSignInView.swift */; };
 		FC384158B10A64A8B751A47A /* UserRowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A664918C535A01D715CF5A0 /* UserRowItem.swift */; };
@@ -280,6 +281,7 @@
 		F8C266572EF2973F0000F5D6 /* NotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
 		F8D888692EF12D5200D4E14F /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		F8DC77C32EDFE53200B68A61 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSlashLine.swift; sourceTree = "<group>"; };
 		F99FD6DBD2BE11AB7830C23C /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		FC3BB1A5F6EF38CD8369837F /* ThreadQuestionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadQuestionDTO.swift; sourceTree = "<group>"; };
 		FC921C66811B73642A86CE1A /* ReflectionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionDetailView.swift; sourceTree = "<group>"; };
@@ -530,6 +532,7 @@
 		A003F063569C9ED12070D111 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */,
 				F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */,
 				F8598A832EF9292C0044ABCB /* ClendarItemView.swift */,
 				F8BE5EC12EE1640B009206C2 /* IconImageView.swift */,
@@ -947,6 +950,7 @@
 				FC384158B10A64A8B751A47A /* UserRowItem.swift in Sources */,
 				F86ECAC92EF39F4E007EEA24 /* PostNotificationUseCase.swift in Sources */,
 				4EECAD353BB7BC9928A7AC4B /* ViewExtension.swift in Sources */,
+				F8F2F9302F01069F00936ECD /* CalendarSlashLine.swift in Sources */,
 				E2DA5FFF029D9D4E00EFF8DB /* WelcomeView.swift in Sources */,
 				92BD92C1E7E99F3A6370EA63 /* WelcomeViewModel.swift in Sources */,
 			);
