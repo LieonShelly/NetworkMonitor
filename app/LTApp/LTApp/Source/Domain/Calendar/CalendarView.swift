@@ -176,6 +176,9 @@ struct CalendarView: View {
                 .fill(Color.clear)
                 .frame(height: 200)
         }
+        .refreshable {
+            try? await viewModel.fetchData()
+        }
     }
     
     @ViewBuilder
