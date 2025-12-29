@@ -73,18 +73,18 @@ struct AppleIDSignInView: View {
         .frame(height: 54)
         .padding(.horizontal, 30)
         .padding(.bottom, 168)
-//       .onTapGesture {
-//            Task.detached {
-//                do {
-//                    try await viewModel.login(authorizationCode: "", identityToken: "")
-//                    await route()
-//                } catch {
-//                  await MainActor.run {
-//                        showError = true
-//                    }
-//                }
-//            }
-//        }
+       .onTapGesture {
+            Task.detached {
+                do {
+                    try await viewModel.login(authorizationCode: "c58988adf6c7f4b868d7e60456f2983bd.0.mrxxu.BxSBveMcVjRS9JOOBhBfew", identityToken: "eyJraWQiOiJIdlZJNkVzWlhKIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmxpdHRsZS50aGluZ3MiLCJleHAiOjE3NjcwNjI3ODIsImlhdCI6MTc2Njk3NjM4Miwic3ViIjoiMDAxNzc0LmZiNmI2MWIyOTkyZTQ2ODM4YmVlMzRlNzgxYTZhMTE0LjEwMjEiLCJjX2hhc2giOiJraEdranlmWV90QUh2MnpRTVdKQUpnIiwiZW1haWwiOiJieGJiZGR4eW40QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc19wcml2YXRlX2VtYWlsIjp0cnVlLCJhdXRoX3RpbWUiOjE3NjY5NzYzODIsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.iorfRfas_m0C1GpesVlHKBXS0wCFrmXVpamhG4PDxO7GJscFaE40fTCyQ76zamlWQdznsm9D1ELQGRuIEo50-fRXk20WoOFTCkQ-Gv4sfw32KBfylvvrSgwkPnRodkIq9nRAtguHI8QzPmy18v86jzIqxV8iUQi5nRUxrplmOSU4Cgo3UiJIA3QklN5wgaq93O7E3QrPyJl8wouTxC27Pl4BzfeIMz1_YxZG7n9u6Chb3i9rVmeTYKunRJ9mvExdBxqMidgBenj5RTuDMlcau8lDd6YCvANaK9fGg5thixSCsGO6MpuQQWY2XrAViO5b9jS-U1QYS43feGA9TsX6Ow")
+                    await route()
+                } catch {
+                  await MainActor.run {
+                        showError = true
+                    }
+                }
+            }
+        }
     }
     
     @MainActor

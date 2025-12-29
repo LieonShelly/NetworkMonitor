@@ -40,13 +40,8 @@ struct CalendarView: View {
         .defaultBackground()
         .onFirstAppear {
             Task.detached {
-                do {
-                    await viewModel.generateMonths()
-                    try await viewModel.fetchData()
-                    await viewModel.scrollToCurrentMonth()
-                } catch {
-                    print(error)
-                }
+                await viewModel.generateMonths()
+                await viewModel.scrollToCurrentMonth()
             }
         }
     }
@@ -130,6 +125,15 @@ struct CalendarView: View {
             let index = newValue / parentWith
             viewModel.onMonthContentScroll(index)
         })
+        .onScrollPhaseChange({ oldPhase, newPhase in
+            switch newPhase {
+            case .idle:
+                Task {
+                    try? await viewModel.fetchData()
+                }
+            default: break
+            }
+        })
         .padding(.horizontal, Constants.hP)
         .padding(.vertical, 24)
     }
@@ -209,7 +213,9 @@ struct CalendarView: View {
                             .padding(.vertical, 6)
                             .id(month.id)
                             .onTapGesture {
-                                viewModel.didTapMonth(month)
+                                Task {
+                                   viewModel.didTapMonth(month)
+                                }
                             }
                     case .yearPlaceholder:
                         Text("\(month.date.yearDesc())")

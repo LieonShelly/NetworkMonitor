@@ -45,6 +45,54 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         }
     }
     
+}
+
+extension CalendarViewModel {
+    func fetchData() async throws {
+        guard let currentMonth else { return }
+        let endMonth = currentMonth.date.endOfMonth()
+        let startMonth = currentMonth.date.startOfMonth()
+        let reflections = try await service.calendarReflectionsUseCase.execute(
+            startMonth: startMonth,
+            endMonth: endMonth
+        )
+        await MainActor.run {
+            var months = self.months
+            for relectionIndex in 0 ..< reflections.count {
+                let reflection = reflections[relectionIndex]
+                for monthIndex in 0 ..< months.count {
+                    var days = months[monthIndex].days
+                    if let index = days.firstIndex(where: { $0.date.isSameDay(reflection.day)}) {
+                        let newDay = days[index].copyWith(reflection)
+                        days[index] = newDay
+                    }
+                    guard let firstAnswerDay = days.first(where: {$0.reflections != nil })?.date,
+                          let endAnswerDay = days.last(where: { $0.reflections != nil })?.date else {
+                        continue
+                    }
+                    let emptyDays = days.filter { $0.reflections == nil}
+                    for emptyDay in emptyDays {
+                        guard let dayIndex = days.firstIndex(where: { $0.id == emptyDay.id }) else { continue }
+                        days[dayIndex].isAbsent = days[dayIndex].date >= firstAnswerDay &&  days[dayIndex].date <= endAnswerDay
+                    }
+                    let totalIcons = days
+                        .filter { $0.isCurrentMonth }
+                        .flatMap { $0.reflections?.reflections ?? []}
+                        .filter { $0.icon != nil}.count
+                    months[monthIndex].days = days
+                    months[monthIndex].iconCount = totalIcons
+                    if months[monthIndex].date.isSameMonth(endMonth), let currentIndex = days.firstIndex(where: { $0.date.isSameDay(endMonth)}) {
+                        months[monthIndex].moreDaysTogo = days.count - currentIndex
+                    }
+                }
+            }
+            self.months = months
+        }
+    }
+}
+
+extension CalendarViewModel {
+    
     @MainActor
     func onTapIcon(_ day: CalendarDay) -> TodayAnswerSubmittedViewModel? {
         guard let answer = day.reflections?.reflections.last, let question = answer.question  else {
@@ -54,52 +102,6 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         return todayAnswerSubmittedViewModel
     }
     
-  
-    
-    func generateAnswerDetailViewModel(_ answer: Answer) -> TodayAnswerSubmittedViewModel? {
-        guard let question = answer.question else { return nil }
-        return .init(answer: answer, question: question, service: service)
-    }
-}
-
-extension CalendarViewModel {
-    func fetchData() async throws {
-        let endMonth = Date()
-        let startMonth = Date.January
-        let reflections = try await service.calendarReflectionsUseCase.execute(
-            startMonth: startMonth,
-            endMonth: endMonth
-        )
-       await MainActor.run {
-           var months = self.months
-           for relectionIndex in 0 ..< reflections.count {
-                let reflection = reflections[relectionIndex]
-               for monthIndex in 0 ..< months.count {
-                   var days = months[monthIndex].days
-                   if let index = days.firstIndex(where: { $0.date.isSameDay(reflection.day)}) {
-                       let newDay = days[index].copyWith(reflection)
-                       days[index] = newDay
-                   }
-                  guard let firstAnswerDay = days.first(where: {$0.reflections != nil })?.date,
-                            let endAnswerDay = days.last(where: { $0.reflections != nil })?.date else {
-                      continue
-                  }
-                   let emptyDays = days.filter { $0.reflections == nil}
-                   for emptyDay in emptyDays {
-                       guard let dayIndex = days.firstIndex(where: { $0.id == emptyDay.id }) else { continue }
-                       days[dayIndex].isAbsent = days[dayIndex].date >= firstAnswerDay &&  days[dayIndex].date <= endAnswerDay
-                   }
-                   let totalIcons = days.flatMap { $0.reflections?.reflections ?? []}.filter { $0.icon != nil}.count
-                   months[monthIndex].days = days
-                   months[monthIndex].iconCount = totalIcons
-                   if months[monthIndex].date.isSameMonth(endMonth), let currentIndex = days.firstIndex(where: { $0.date.isSameDay(endMonth)}) {
-                       months[monthIndex].moreDaysTogo = days.count - currentIndex
-                   }
-                }
-            }
-           self.months = months
-        }
-    }
     
     @MainActor
     func onMonthContentScroll(_ progress: CGFloat) {
@@ -114,7 +116,7 @@ extension CalendarViewModel {
         }
     }
     
-   @MainActor
+    @MainActor
     func scrollToCurrentMonth() {
         let endMonth = Date()
         if let month = months.first(where: { $0.date.isSameMonth(endMonth)}) {
@@ -156,12 +158,12 @@ extension CalendarViewModel {
         
         for month in 1 ... 12 {
             component.month = month
-           
+            
             guard let monthDate = calendar.date(from: component),
-                let range = calendar.range(of: .day, in: .month, for: monthDate) else {
+                  let range = calendar.range(of: .day, in: .month, for: monthDate) else {
                 continue
             }
-          
+            
             guard let firstDayInMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: monthDate)) else {
                 continue
             }
@@ -207,5 +209,10 @@ extension CalendarViewModel {
         await MainActor.run {
             self.months = months
         }
+    }
+    
+    func generateAnswerDetailViewModel(_ answer: Answer) -> TodayAnswerSubmittedViewModel? {
+        guard let question = answer.question else { return nil }
+        return .init(answer: answer, question: question, service: service)
     }
 }

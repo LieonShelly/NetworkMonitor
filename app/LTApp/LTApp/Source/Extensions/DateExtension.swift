@@ -19,6 +19,12 @@ extension Date {
         return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: self))) ?? Date()
     }
     
+    func endOfMonth() -> Date {
+        let calendar = Calendar.current
+        let start = startOfMonth()
+        return Calendar.current.date(byAdding: DateComponents(month: 1, day:  -1), to: start) ?? Date()
+    }
+    
     func startOfDay() -> Date {
         return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day],
                                                                            from: Calendar.current.startOfDay(for: self))) ?? Date()
@@ -94,11 +100,17 @@ extension Date {
         var component = calendar.dateComponents([.year], from: currentYear)
         var firstDayComponent = DateComponents()
         firstDayComponent.year = component.year
-        component.month = 1
-        component.day = 1
-        component.hour = 0
-        component.minute = 0
-        component.second = 0 
+        return calendar.date(from: firstDayComponent) ?? currentYear
+    }
+    
+    static var January2025: Date {
+        var calendar = Calendar.current
+        calendar.timeZone = .current
+        calendar.locale = Locale(identifier: "en_US_POSIX")
+        let currentYear = Date()
+        var component = calendar.dateComponents([.year], from: currentYear)
+        var firstDayComponent = DateComponents()
+        firstDayComponent.year = 2025
         return calendar.date(from: firstDayComponent) ?? currentYear
     }
     
