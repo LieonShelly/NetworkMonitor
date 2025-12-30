@@ -12,7 +12,7 @@ class HomeView extends StatelessWidget {
       body: child,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: const Padding(
-        padding: EdgeInsets.only(bottom: 20),
+        padding: EdgeInsets.only(bottom: 0),
         child: AppTabbar(),
       ),
     );

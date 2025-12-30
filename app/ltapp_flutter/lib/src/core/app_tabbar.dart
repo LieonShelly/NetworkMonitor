@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class AppTabbar extends StatelessWidget {
@@ -7,38 +8,60 @@ class AppTabbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String location = GoRouterState.of(context).uri.path;
-    return Container(
-      width: 280,
-      height: 72,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(36),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildTabbarItem(
-            context,
-            Icons.calendar_today_outlined,
-            '/calendar',
-            location,
-          ),
-          _buildTabbarItem(context, Icons.all_inclusive, '/thread', location),
-          _buildTabbarItem(
-            context,
-            Icons.lightbulb_outline,
-            '/insights',
-            location,
-          ),
-          _buildTabbarItem(context, Icons.person_outline, '/user', location),
-        ],
+    final row = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildTabbarItem(
+          context,
+          Icons.calendar_today_outlined,
+          '/calendar',
+          location,
+          "assets/icons/Calendar.svg",
+          "assets/icons/deselectedCalendar.svg",
+        ),
+        _buildTabbarItem(
+          context,
+          Icons.all_inclusive,
+          '/thread',
+          location,
+          "assets/icons/Threads.svg",
+          "assets/icons/deselectedThread.svg",
+        ),
+        _buildTabbarItem(
+          context,
+          Icons.lightbulb_outline,
+          '/insights',
+          location,
+          "assets/icons/insights.svg",
+          "assets/icons/deselected_insights.svg",
+        ),
+        _buildTabbarItem(
+          context,
+          Icons.person_outline,
+          '/user',
+          location,
+          "assets/icons/user.svg",
+          "assets/icons/deselected_user.svg",
+        ),
+      ],
+    );
+
+    return Padding(
+      padding: EdgeInsets.only(left: 40, right: 40),
+      child: Container(
+        height: 70,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(36),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: row,
       ),
     );
   }
@@ -48,17 +71,17 @@ class AppTabbar extends StatelessWidget {
     IconData icon,
     String targetPath,
     String currentPath,
+    String activeIcon,
+    String inActiveIcon,
   ) {
     final bool isActive = targetPath == currentPath;
     return IconButton(
       onPressed: () {
         context.go(targetPath);
       },
-      icon: Icon(
-        icon,
-        color: isActive ? Colors.white : Colors.white.withOpacity(0.5),
-        size: 28,
-      ),
+      icon: isActive
+          ? SvgPicture.asset(activeIcon, width: 40, height: 40)
+          : SvgPicture.asset(inActiveIcon, width: 40, height: 40),
     );
   }
 }
