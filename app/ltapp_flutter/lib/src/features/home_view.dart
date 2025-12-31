@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ltapp_flutter/src/core/app_tabbar.dart';
+import 'package:ltapp_flutter/src/core/ui_component/app_tabbar.dart';
 
 class HomeView extends StatelessWidget {
   final Widget child;

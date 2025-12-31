@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
 
 class AppTabbar extends StatelessWidget {
   const AppTabbar({super.key});
@@ -16,32 +17,32 @@ class AppTabbar extends StatelessWidget {
           Icons.calendar_today_outlined,
           '/calendar',
           location,
-          "assets/icons/Calendar.svg",
-          "assets/icons/deselectedCalendar.svg",
+          "Calendar.svg",
+          "deselectedCalendar.svg",
         ),
         _buildTabbarItem(
           context,
           Icons.all_inclusive,
           '/thread',
           location,
-          "assets/icons/Threads.svg",
-          "assets/icons/deselectedThread.svg",
+          "Threads.svg",
+          "deselectedThread.svg",
         ),
         _buildTabbarItem(
           context,
           Icons.lightbulb_outline,
           '/insights',
           location,
-          "assets/icons/insights.svg",
-          "assets/icons/deselected_insights.svg",
+          "insights.svg",
+          "deselected_insights.svg",
         ),
         _buildTabbarItem(
           context,
           Icons.person_outline,
           '/user',
           location,
-          "assets/icons/user.svg",
-          "assets/icons/deselected_user.svg",
+          "user.svg",
+          "deselected_user.svg",
         ),
       ],
     );
@@ -80,8 +81,8 @@ class AppTabbar extends StatelessWidget {
         context.go(targetPath);
       },
       icon: isActive
-          ? SvgPicture.asset(activeIcon, width: 40, height: 40)
-          : SvgPicture.asset(inActiveIcon, width: 40, height: 40),
+          ? SvgAsset(activeIcon, width: 40, height: 40)
+          : SvgAsset(inActiveIcon, width: 40, height: 40),
     );
   }
 }
