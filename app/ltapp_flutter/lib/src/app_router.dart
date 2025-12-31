@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ltapp_flutter/src/features/calendar/calendar_page.dart';
 import 'package:ltapp_flutter/src/features/home_view.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -24,9 +25,8 @@ GoRouter router(Ref ref) {
         routes: [
           GoRoute(
             path: '/calendar',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: Scaffold(body: Center(child: Text("Calendar page"))),
-            ),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: Scaffold(body: CalendarPage())),
           ),
           GoRoute(
             path: '/thread',
