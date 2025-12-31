@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -21,7 +22,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
           child: Column(
             children: [
               _buildHeader(),
@@ -37,7 +38,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   }
 
   Widget _buildHeader() {
-    return Column(
+    final Widget column = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 0,
       children: [
@@ -47,22 +48,19 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           children: [
             Text(
               DateFormat('MMMM').format(_focusedDay),
-              style: TextStyle(
+              style: AppTextStyle.feltTipSeniorRegular(
                 fontSize: 36,
-                color: Color(0xFF000000),
-                fontFamily: 'FeltTipSeniorRegular',
+                color: Color(0xff000000),
               ),
-              textAlign: TextAlign.center,
             ),
-            SvgAsset('down_arrow_fill.svg', width: 24, height: 24),
+            SvgAsset(IconName.downArrowFill, width: 24, height: 24),
 
             Spacer(),
             Text(
               DateFormat('dd').format(_focusedDay),
-              style: TextStyle(
+              style: AppTextStyle.feltTipSeniorRegular(
                 fontSize: 18,
-                color: Color(0xFF000000),
-                fontFamily: 'FeltTipSeniorRegular',
+                color: Color(0xff000000),
               ),
             ),
           ],
@@ -77,6 +75,10 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           ),
         ),
       ],
+    );
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: column,
     );
   }
 
@@ -145,15 +147,15 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
   Widget _buildFooterStats() {
     return Column(
-      children: const [
+      children: [
         Text(
           '9 icons created this month',
-          style: TextStyle(fontFamily: 'Poppins', fontSize: 16),
+          style: AppTextStyle.poppins(color: Color(0xff000000), fontSize: 16),
         ),
         const SizedBox(height: 8),
         Text(
           '20 more days to go!',
-          style: TextStyle(fontFamily: 'Poppins', fontSize: 16),
+          style: AppTextStyle.poppins(color: Color(0xff000000), fontSize: 16),
         ),
       ],
     );

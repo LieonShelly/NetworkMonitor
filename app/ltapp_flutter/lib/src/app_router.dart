@@ -26,7 +26,7 @@ GoRouter router(Ref ref) {
           GoRoute(
             path: '/calendar',
             pageBuilder: (context, state) =>
-                const NoTransitionPage(child: Scaffold(body: CalendarPage())),
+                const NoTransitionPage(child: CalendarPage()),
           ),
           GoRoute(
             path: '/thread',
