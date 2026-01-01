@@ -7,7 +7,7 @@ import Foundation
 extension Date {
     
     func endOfDay() -> Date {
-        let calendar = Calendar.current
+        let calendar = AppCalendar.current
         guard let nextDay = calendar.date(byAdding: .day, value: 1, to: startOfDay()),
               let endOfDay = calendar.date(byAdding: .second, value: -1, to: nextDay) else {
             return Date()
@@ -16,24 +16,25 @@ extension Date {
     }
     
     func startOfMonth() -> Date {
-        return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: self))) ?? Date()
+        let calendar = AppCalendar.current
+        return calendar.date(from: calendar.dateComponents([.year, .month], from: calendar.startOfDay(for: self))) ?? Date()
     }
     
     func endOfMonth() -> Date {
-        let calendar = Calendar.current
+        let calendar = AppCalendar.current
         let start = startOfMonth()
-        return Calendar.current.date(byAdding: DateComponents(month: 1, day:  -1), to: start) ?? Date()
+        return calendar.date(byAdding: DateComponents(month: 1, day:  -1), to: start) ?? Date()
     }
     
     func startOfDay() -> Date {
-        return Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day],
+        return AppCalendar.current.date(from: AppCalendar.current.dateComponents([.year, .month, .day],
                                                                            from: Calendar.current.startOfDay(for: self))) ?? Date()
     }
     
     func monthDesc(isShort: Bool = true) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = isShort ? "MMM" : "MMMM"
-        formatter.locale = Locale.current
+        formatter.locale = AppCalendar.locale
         let month = formatter.string(from: self)
         return month
     }
@@ -52,14 +53,14 @@ extension Date {
     
     var monthDayDesc: String {
         let formatter = DateFormatter()
-        formatter.timeZone = .current
+        formatter.timeZone = AppCalendar.timeZone
         formatter.dateFormat = "MMMM d"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.locale = AppCalendar.locale
         return formatter.string(from: self)
     }
     
     var isTheFirstDayInMonth: Bool {
-        let calendar = Calendar.current
+        let calendar = AppCalendar.current
         let date = self
         let components = calendar.dateComponents([.year, .month], from: date)
         guard let firstDay = calendar.date(from: components) else { return false }
@@ -68,57 +69,20 @@ extension Date {
     }
     
     func isSameMonth(_ date: Date) -> Bool {
-        let calendar = Calendar.current
-        let component1 = calendar.dateComponents([.year, .month], from: self)
-        let component2 = calendar.dateComponents([.year, .month], from: date)
-        return component1.year == component2.year && component1.month == component2.month
+        let calendar = AppCalendar.current
+        return calendar.isDate(date, equalTo: self, toGranularity: .month)
     }
     
     func isSameDay(_ date: Date) -> Bool {
-        let calendar = Calendar.current
-        let component1 = calendar.dateComponents([.year, .month, .day], from: self)
-        let component2 = calendar.dateComponents([.year, .month, .day], from: date)
-        return component1.year == component2.year && component1.month == component2.month && component1.day == component2.day
-    }
-    
-    func isPreviousMonth(_ date: Date) -> Bool {
-        let calendar = Calendar.current
-        let component1 = calendar.dateComponents([.year, .month], from: self)
-        let component2 = calendar.dateComponents([.year, .month], from: date)
-        return component1.year == component2.year && component1.month! < component2.month! || component1.year! < component2.year!
-    }
-    
-    func isNextMonth(_ date: Date) -> Bool {
-        !isPreviousMonth(date)
-    }
-    
-    static var January: Date {
-        var calendar = Calendar.current
-        calendar.timeZone = .current
-        calendar.locale = Locale(identifier: "en_US_POSIX")
-        let currentYear = Date()
-        var component = calendar.dateComponents([.year], from: currentYear)
-        var firstDayComponent = DateComponents()
-        firstDayComponent.year = component.year
-        return calendar.date(from: firstDayComponent) ?? currentYear
-    }
-    
-    static var January2025: Date {
-        var calendar = Calendar.current
-        calendar.timeZone = .current
-        calendar.locale = Locale(identifier: "en_US_POSIX")
-        let currentYear = Date()
-        var component = calendar.dateComponents([.year], from: currentYear)
-        var firstDayComponent = DateComponents()
-        firstDayComponent.year = 2025
-        return calendar.date(from: firstDayComponent) ?? currentYear
+        let calendar = AppCalendar.current
+        return calendar.isDate(date, equalTo: self, toGranularity: .day)
     }
     
     var yyyymmdd: String {
         let formatter = DateFormatter()
-        formatter.timeZone = .current
+        formatter.timeZone = AppCalendar.timeZone
         formatter.dateFormat = "yyyy-MM-dd"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.locale = AppCalendar.locale
         return formatter.string(from: self)
     }
     
@@ -135,7 +99,7 @@ extension Date {
         }
     }
 
-    func formatDateToEnglishStyle(timeZone: TimeZone = .current, locale: Locale = Locale(identifier: "en_US")) -> String {
+    func formatDateToEnglishStyle(timeZone: TimeZone = .current, locale: Locale = AppCalendar.locale) -> String {
         let date = self
         let monthYearFormatter = DateFormatter()
         monthYearFormatter.dateFormat = "MMMM, yyyy"
@@ -143,7 +107,7 @@ extension Date {
         monthYearFormatter.locale = locale
         
         let monthYearString = monthYearFormatter.string(from: date)
-        var calendar = Calendar.current
+        var calendar = AppCalendar.current
         calendar.timeZone = timeZone
         calendar.locale = locale
         let day = calendar.component(.day, from: date)
@@ -157,18 +121,35 @@ extension Date {
 struct AppDateFormatter {
    static var yyyymmdd: DateFormatter {
         let formatter = DateFormatter()
-        formatter.timeZone = .current
+        formatter.timeZone = AppCalendar.timeZone
         formatter.dateFormat = "yyyy-MM-dd"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.locale = AppCalendar.locale
         return formatter
     }
     
     static var ymdhsm: DateFormatter {
         let formatter = DateFormatter()
-        formatter.timeZone = .current
+        formatter.timeZone = AppCalendar.timeZone
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.locale = AppCalendar.locale
         return formatter
     }
     
+}
+
+struct AppCalendar {
+   static var current: Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = timeZone
+        calendar.locale = locale
+        return calendar
+    }
+    
+    static var timeZone: TimeZone {
+        .autoupdatingCurrent
+    }
+    
+    static var locale: Locale {
+        .autoupdatingCurrent
+    }
 }

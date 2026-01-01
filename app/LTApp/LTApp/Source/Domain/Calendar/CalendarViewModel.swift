@@ -120,7 +120,7 @@ extension CalendarViewModel {
     @MainActor
     func scrollToCurrentMonth() {
         let endMonth = Date()
-        if let month = months.first(where: { $0.date.isSameMonth(endMonth)}) {
+        if let month = months.first(where: { $0.itemType == .normal && $0.date.isSameMonth(endMonth)}) {
             currentMonth = month
             didTapMontHeaderItem = true
             withAnimation(.easeInOut, completionCriteria: .logicallyComplete) {
@@ -148,7 +148,7 @@ extension CalendarViewModel {
 
 extension CalendarViewModel {
     func generateMonthForYear(_ year: Int) async -> [CalendarMonth] {
-        let calendar = Calendar.current
+        let calendar = AppCalendar.current
         var component = DateComponents()
         component.year = year
         var calendarMonths: [CalendarMonth] = []
