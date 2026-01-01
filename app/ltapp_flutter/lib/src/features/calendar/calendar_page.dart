@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
+import 'package:ltapp_flutter/src/features/calendar/calendar_month_view.dart';
+import 'package:ltapp_flutter/src/features/calendar/calendar_state_provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends ConsumerStatefulWidget {
@@ -17,6 +19,20 @@ class CalendarPage extends ConsumerStatefulWidget {
 class _CalendarPageState extends ConsumerState<CalendarPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _seletecDay;
+  static const int _initPage = 10000;
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _initPage);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,65 +100,43 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   }
 
   Widget _buildCustomTableCalendar() {
-    return TableCalendar(
-      focusedDay: _focusedDay,
-      firstDay: DateTime.utc(2020, 1, 1),
-      lastDay: DateTime.utc(2030, 12, 31),
-      headerVisible: false,
-      selectedDayPredicate: (day) => isSameDay(_seletecDay, day),
-      onDaySelected: (selectedDay, focusedDay) {
-        setState(() {
-          _seletecDay = selectedDay;
-          _focusedDay = focusedDay;
-        });
+    final calendarState = ref.watch(calendarStateProviderProvider);
+    return LayoutBuilder(
+      builder: (context, constrains) {
+        final width = constrains.maxWidth;
+        final hp = 0;
+        final itemWith = (width - hp * 6) / 7;
+        final gridH = itemWith * 6 + (hp * 5);
+        final totalH = gridH + 20 + 10 + 20;
+        return SizedBox(
+          height: totalH,
+          child: PageView.builder(
+            controller: _pageController,
+            onPageChanged: (index) {
+              final monthDifference = index - _initPage;
+              final now = DateTime.now();
+              final newMonth = DateTime(now.year, now.month + monthDifference);
+              ref
+                  .read(calendarStateProviderProvider.notifier)
+                  .onPageChanged(newMonth);
+            },
+            itemBuilder: (context, index) {
+              final monthDifference = index - _initPage;
+              final now = DateTime.now();
+              final monthDate = DateTime(now.year, now.month + monthDifference);
+              return CalendarMonthView(
+                month: monthDate,
+                selectedDate: calendarState.selectedDate,
+                onDateTap: (date) {
+                  ref
+                      .read(calendarStateProviderProvider.notifier)
+                      .setdDate(date);
+                },
+              );
+            },
+          ),
+        );
       },
-      onPageChanged: (focusedDay) {
-        setState(() {
-          _focusedDay = focusedDay;
-        });
-      },
-      calendarBuilders: CalendarBuilders(
-        dowBuilder: (context, day) {
-          final text = DateFormat.E().format(day)[0];
-          return Center(
-            child: Text(
-              text,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          );
-        },
-        defaultBuilder: (context, day, focusedDay) {
-          return _buildDayCell(day, isToday: false);
-        },
-        todayBuilder: (context, day, focusedDay) {
-          return _buildDayCell(day, isToday: true);
-        },
-        selectedBuilder: (context, day, focusedDay) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
-            ),
-            child: _buildDayCell(day, isToday: false),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildDayCell(DateTime day, {required bool isToday}) {
-    bool hasIcon = day.day == 15 || day.day == 20;
-    if (hasIcon) {
-      return Center(child: Icon(Icons.coffee, size: 24, color: Colors.black87));
-    }
-    return Center(
-      child: Text(
-        '${day.day}',
-        style: TextStyle(
-          fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
-          decoration: isToday ? TextDecoration.underline : null,
-        ),
-      ),
     );
   }
 
