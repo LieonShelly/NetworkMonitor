@@ -6,7 +6,6 @@ import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_month_view.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_state_provider.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends ConsumerStatefulWidget {
   const CalendarPage({super.key});
@@ -17,8 +16,6 @@ class CalendarPage extends ConsumerStatefulWidget {
 }
 
 class _CalendarPageState extends ConsumerState<CalendarPage> {
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _seletecDay;
   static const int _initPage = 10000;
   late PageController _pageController;
 
@@ -55,6 +52,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   }
 
   Widget _buildHeader() {
+    final calendarState = ref.watch(calendarStateProviderProvider);
     final Widget column = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 0,
@@ -64,7 +62,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           textBaseline: TextBaseline.alphabetic,
           children: [
             Text(
-              DateFormat('MMMM').format(_focusedDay),
+              DateFormat('MMMM').format(calendarState.selectedDate),
               style: AppTextStyle.feltTipSeniorRegular(
                 fontSize: 36,
                 color: Color(0xff000000),
@@ -74,7 +72,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
             Spacer(),
             Text(
-              DateFormat('dd').format(_focusedDay),
+              DateFormat('dd').format(calendarState.selectedDate),
               style: AppTextStyle.feltTipSeniorRegular(
                 fontSize: 18,
                 color: Color(0xff000000),
@@ -84,7 +82,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         ),
 
         Text(
-          DateFormat('yyyy').format(_focusedDay),
+          DateFormat('yyyy').format(calendarState.selectedDate),
           style: TextStyle(
             fontSize: 24,
             color: Color(0xFF000000),
