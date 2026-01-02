@@ -143,12 +143,18 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
       children: [
         Text(
           '9 icons created this month',
-          style: AppTextStyle.poppins(color: Color(0xff000000), fontSize: 16),
+          style: AppTextStyle.feltTipSeniorRegular(
+            color: Color(0xff000000),
+            fontSize: 18,
+          ),
         ),
         const SizedBox(height: 8),
         Text(
           '20 more days to go!',
-          style: AppTextStyle.poppins(color: Color(0xff000000), fontSize: 16),
+          style: AppTextStyle.feltTipSeniorRegular(
+            color: Color(0xff000000),
+            fontSize: 18,
+          ),
         ),
       ],
     );
