@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:ltapp_flutter/src/core/date_utl.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
@@ -36,11 +37,13 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             children: [
               _buildHeader(),
               const SizedBox(height: 20),
+              _buildWeekDaysHeader(),
+              const SizedBox(height: 10),
               _buildCustomTableCalendar(),
               const SizedBox(height: 20),
               _buildFooterStats(),
@@ -92,8 +95,29 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
       ],
     );
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      // padding: EdgeInsets.symmetric(horizontal: 20),
       child: column,
+    );
+  }
+
+  Widget _buildWeekDaysHeader() {
+    const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        for (var day in weekDays)
+          Expanded(
+            child: Center(
+              child: Text(
+                day,
+                style: AppTextStyle.feltTipSeniorRegular(
+                  fontSize: 14,
+                  color: Color(0xff000000),
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 
@@ -104,9 +128,17 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         final width = constrains.maxWidth;
         final hp = 0;
         final itemWith = (width - hp * 6) / 7;
-        final gridH = itemWith * 6 + (hp * 5);
-        final totalH = gridH + 20 + 10 + 20;
-        return SizedBox(
+        final currentMonth = calendarState.focusedMonth;
+        final int rowCount = DateUtl.getRowCount(
+          currentMonth.year,
+          currentMonth.month,
+        );
+        final gridH =
+            itemWith * rowCount + (hp * (rowCount > 0 ? (rowCount - 1) : 0));
+        final totalH = gridH;
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
           height: totalH,
           child: PageView.builder(
             controller: _pageController,

@@ -9,10 +9,18 @@ class DateUtl {
     return firstDay.weekday;
   }
 
-  static bool isSameDaty(DateTime? date1, DateTime? date2) {
+  static bool isSameDay(DateTime? date1, DateTime? date2) {
     if (date1 == null || date2 == null) return false;
     return date1.year == date2.year &&
         date1.month == date2.month &&
         date1.day == date2.day;
+  }
+
+  static int getRowCount(int year, int month) {
+    final daysInMonth = getDaysInMonth(year, month);
+    final firstDayOffset = getFirstDayOffset(year, month);
+
+    final totalSlots = daysInMonth + firstDayOffset;
+    return (totalSlots / 7).ceil();
   }
 }

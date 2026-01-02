@@ -18,71 +18,43 @@ class CalendarMonthView extends StatelessWidget {
   Widget build(BuildContext context) {
     final daysInMonth = DateUtl.getDaysInMonth(month.year, month.month);
     final firstDayOffset = DateUtl.getFirstDayOffset(month.year, month.month);
-    const totalCells = 42;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildWeekDaysHeader(),
-        const SizedBox(height: 10),
-        CustomPaint(
-          painter: DashedGridPainter(
-            color: Colors.black.withOpacity(0.1),
-            dashWidth: 3,
-            dashSpace: 3,
-          ),
-          child: GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 7,
-              mainAxisSpacing: 0,
-              crossAxisSpacing: 0,
-              childAspectRatio: 1.0,
-            ),
-            itemCount: totalCells,
-            itemBuilder: (context, index) {
-              if (index < firstDayOffset ||
-                  index >= firstDayOffset + daysInMonth) {
-                return const SizedBox();
-              }
-              final day = index - firstDayOffset + 1;
-              final currentDate = DateTime(month.year, month.month, day);
-              final isSelected = DateUtl.isSameDaty(
-                currentDate,
-                DateTime.now(),
-              );
-              final isToday = DateUtils.isSameDay(currentDate, DateTime.now());
-              return _buildDayCell(
-                day,
-                isSelected,
-                isToday,
-                () => onDateTap(currentDate),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-  }
+    final int totalSlots = daysInMonth + firstDayOffset;
+    final int rowCount = (totalSlots / 7).ceil();
+    final int totalCells = rowCount * 7;
 
-  Widget _buildWeekDaysHeader() {
-    const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        for (var day in weekDays)
-          Expanded(
-            child: Center(
-              child: Text(
-                day,
-                style: AppTextStyle.feltTipSeniorRegular(
-                  fontSize: 14,
-                  color: Color(0xff000000),
-                ),
-              ),
-            ),
-          ),
-      ],
+    return CustomPaint(
+      painter: DashedGridPainter(
+        color: Colors.black.withOpacity(0.1),
+        dashWidth: 3,
+        dashSpace: 3,
+        rows: rowCount,
+      ),
+      child: GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 7,
+          mainAxisSpacing: 0,
+          crossAxisSpacing: 0,
+          childAspectRatio: 1.0,
+        ),
+        itemCount: totalCells,
+        itemBuilder: (context, index) {
+          if (index < firstDayOffset || index >= firstDayOffset + daysInMonth) {
+            return const SizedBox();
+          }
+          final day = index - firstDayOffset + 1;
+          final currentDate = DateTime(month.year, month.month, day);
+          final isSelected = DateUtl.isSameDay(currentDate, selectedDate);
+          final isToday = DateUtl.isSameDay(currentDate, DateTime.now());
+          return _buildDayCell(
+            day,
+            isSelected,
+            isToday,
+            () => onDateTap(currentDate),
+          );
+        },
+      ),
     );
   }
 
@@ -94,14 +66,12 @@ class CalendarMonthView extends StatelessWidget {
   ) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        child: Center(
-          child: Text(
-            '$day',
-            style: AppTextStyle.feltTipSeniorRegular(
-              fontSize: 16,
-              color: Colors.black,
-            ),
+      child: Center(
+        child: Text(
+          '$day',
+          style: AppTextStyle.feltTipSeniorRegular(
+            fontSize: 16,
+            color: Colors.black,
           ),
         ),
       ),
@@ -114,12 +84,14 @@ class DashedGridPainter extends CustomPainter {
   final double strokedWith;
   final double dashWidth;
   final double dashSpace;
+  final int rows;
 
   DashedGridPainter({
     this.color = const Color(0xffe0e0e0),
     this.strokedWith = 1.0,
     this.dashWidth = 4.0,
     this.dashSpace = 4.0,
+    required this.rows,
   });
 
   @override
@@ -130,14 +102,14 @@ class DashedGridPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     final cellWidth = size.width / 7;
-    final cellHeight = size.height / 6;
+    final cellHeight = size.height / rows;
 
     for (int i = 1; i < 7; i++) {
       final x = i * cellWidth;
       _drawDashedline(canvas, paint, Offset(x, 0), Offset(x, size.height));
     }
 
-    for (int i = 1; i < 6; i++) {
+    for (int i = 1; i < rows; i++) {
       final y = i * cellHeight;
       _drawDashedline(canvas, paint, Offset(0, y), Offset(size.width, y));
     }
@@ -176,7 +148,7 @@ class DashedGridPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+  bool shouldRepaint(covariant DashedGridPainter oldDelegate) {
+    return oldDelegate.rows != rows || oldDelegate.color != color;
   }
 }
