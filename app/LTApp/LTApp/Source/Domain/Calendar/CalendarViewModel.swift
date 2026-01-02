@@ -83,7 +83,7 @@ extension CalendarViewModel {
                     months[monthIndex].iconCount = totalIcons
                     let currentMonth = Date()
                     if months[monthIndex].date.isSameMonth(currentMonth), let currentIndex = days.firstIndex(where: { $0.date.isSameDay(currentMonth)}) {
-                        months[monthIndex].moreDaysTogo = days.count - currentIndex
+                        months[monthIndex].moreDaysTogo = days.count - currentIndex - 1
                     }
                 }
             }
