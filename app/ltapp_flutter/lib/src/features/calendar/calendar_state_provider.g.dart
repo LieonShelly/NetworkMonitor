@@ -6,22 +6,58 @@ part of 'calendar_state_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$calendarStateProviderHash() =>
-    r'5ca344af65df3d17a336ea9fc469464b0c2b2d85';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [CalendarStateProvider].
 @ProviderFor(CalendarStateProvider)
-final calendarStateProviderProvider =
-    AutoDisposeNotifierProvider<CalendarStateProvider, CalendarState>.internal(
-      CalendarStateProvider.new,
-      name: r'calendarStateProviderProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$calendarStateProviderHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+final calendarStateProviderProvider = CalendarStateProviderProvider._();
 
-typedef _$CalendarStateProvider = AutoDisposeNotifier<CalendarState>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class CalendarStateProviderProvider
+    extends $NotifierProvider<CalendarStateProvider, CalendarState> {
+  CalendarStateProviderProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'calendarStateProviderProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$calendarStateProviderHash();
+
+  @$internal
+  @override
+  CalendarStateProvider create() => CalendarStateProvider();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(CalendarState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<CalendarState>(value),
+    );
+  }
+}
+
+String _$calendarStateProviderHash() =>
+    r'623fdcd208488c31e25ea91229b2f4926ed6fa12';
+
+abstract class _$CalendarStateProvider extends $Notifier<CalendarState> {
+  CalendarState build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<CalendarState, CalendarState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<CalendarState, CalendarState>,
+              CalendarState,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
