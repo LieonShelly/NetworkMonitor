@@ -102,7 +102,7 @@ class DashedGridPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     final cellWidth = size.width / 7;
-    final cellHeight = size.height / rows;
+    final cellHeight = cellWidth;
 
     for (int i = 1; i < 7; i++) {
       final x = i * cellWidth;
