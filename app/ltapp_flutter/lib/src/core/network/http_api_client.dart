@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
+import 'package:flutter/foundation.dart';
 import 'package:ltapp_flutter/src/core/network/api_client.dart';
 import 'package:ltapp_flutter/src/core/network/app_exception.dart';
 import 'package:ltapp_flutter/src/core/network/auth_interceptor.dart';
@@ -8,7 +12,8 @@ import 'package:ltapp_flutter/src/core/network/token_storage.dart';
 class HttpApiClient implements ApiClientType {
   late final Dio _dio;
   final TokenStorage _tokenStorage;
-
+  static const String _proxyIp = '127.0.0.1';
+  static const String _proxyPort = '8888';
   HttpApiClient({required String baseUrl, required TokenStorage tokenStorage})
     : _tokenStorage = tokenStorage {
     _dio = Dio(
@@ -36,6 +41,20 @@ class HttpApiClient implements ApiClientType {
         },
       ),
     ]);
+
+    if (kDebugMode) {
+      _dio.httpClientAdapter = IOHttpClientAdapter(
+        createHttpClient: () {
+          final client = HttpClient();
+          client.findProxy = (uri) {
+            return 'PROXY $_proxyIp:$_proxyPort';
+          };
+          client.badCertificateCallback =
+              (X509Certificate cert, String host, int port) => true;
+          return client;
+        },
+      );
+    }
   }
 
   @override
