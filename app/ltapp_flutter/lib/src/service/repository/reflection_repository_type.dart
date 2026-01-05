@@ -1,4 +1,4 @@
-import 'package:ltapp_flutter/src/service/calendar_reflection_model.dart';
+import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 
 abstract interface class ReflectionRepositoryType {
   Future<List<CalendardayModel>> fetchCalendarView({
