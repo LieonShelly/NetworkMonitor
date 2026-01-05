@@ -6,7 +6,7 @@ import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_month_view.dart';
-import 'package:ltapp_flutter/src/features/calendar/calendar_state_provider.dart';
+import 'package:ltapp_flutter/src/features/calendar/calendar_controller.dart';
 
 class CalendarPage extends ConsumerStatefulWidget {
   const CalendarPage({super.key});
@@ -55,7 +55,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   }
 
   Widget _buildHeader() {
-    final calendarState = ref.watch(calendarStateProviderProvider);
+    final calendarState = ref.watch(calendarControllerProvider);
     final Widget column = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 0,
@@ -122,7 +122,8 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   }
 
   Widget _buildCustomTableCalendar() {
-    final calendarState = ref.watch(calendarStateProviderProvider);
+    final calendarState = ref.watch(calendarControllerProvider);
+    final controller = ref.read(calendarControllerProvider.notifier);
     return LayoutBuilder(
       builder: (context, constrains) {
         final width = constrains.maxWidth;
@@ -146,9 +147,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               final monthDifference = index - _initPage;
               final now = DateTime.now();
               final newMonth = DateTime(now.year, now.month + monthDifference);
-              ref
-                  .read(calendarStateProviderProvider.notifier)
-                  .onPageChanged(newMonth);
+              controller.onPageChanged(newMonth);
             },
             itemBuilder: (context, index) {
               final monthDifference = index - _initPage;
@@ -158,9 +157,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                 month: monthDate,
                 selectedDate: calendarState.selectedDate,
                 onDateTap: (date) {
-                  ref
-                      .read(calendarStateProviderProvider.notifier)
-                      .setdDate(date);
+                  controller.setdDate(date);
                 },
               );
             },

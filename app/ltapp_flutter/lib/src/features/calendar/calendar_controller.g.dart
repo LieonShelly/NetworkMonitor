@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'calendar_state_provider.dart';
+part of 'calendar_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,28 +9,28 @@ part of 'calendar_state_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(CalendarStateProvider)
-final calendarStateProviderProvider = CalendarStateProviderProvider._();
+@ProviderFor(CalendarController)
+final calendarControllerProvider = CalendarControllerProvider._();
 
-final class CalendarStateProviderProvider
-    extends $NotifierProvider<CalendarStateProvider, CalendarState> {
-  CalendarStateProviderProvider._()
+final class CalendarControllerProvider
+    extends $NotifierProvider<CalendarController, CalendarState> {
+  CalendarControllerProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'calendarStateProviderProvider',
+        name: r'calendarControllerProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$calendarStateProviderHash();
+  String debugGetCreateSourceHash() => _$calendarControllerHash();
 
   @$internal
   @override
-  CalendarStateProvider create() => CalendarStateProvider();
+  CalendarController create() => CalendarController();
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(CalendarState value) {
@@ -41,10 +41,10 @@ final class CalendarStateProviderProvider
   }
 }
 
-String _$calendarStateProviderHash() =>
-    r'623fdcd208488c31e25ea91229b2f4926ed6fa12';
+String _$calendarControllerHash() =>
+    r'cfbc1d784491bf49bbaabd7bdce629f7b7e2cc5d';
 
-abstract class _$CalendarStateProvider extends $Notifier<CalendarState> {
+abstract class _$CalendarController extends $Notifier<CalendarState> {
   CalendarState build();
   @$mustCallSuper
   @override
