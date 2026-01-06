@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/date_utl.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
+import 'package:ltapp_flutter/src/features/calendar/calendar_item_view.dart';
+import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 
 class CalendarMonthView extends StatelessWidget {
   final DateTime month;
   final DateTime selectedDate;
   final Function(DateTime) onDateTap;
+  final Map<String, CalendardayModel>? dataMap;
+  final double childAspectRatio;
+  final double cellHeight;
 
   const CalendarMonthView({
     super.key,
     required this.month,
     required this.selectedDate,
     required this.onDateTap,
+    required this.dataMap,
+    required this.cellHeight,
+    required this.childAspectRatio,
   });
 
   @override
@@ -21,22 +30,23 @@ class CalendarMonthView extends StatelessWidget {
     final int totalSlots = daysInMonth + firstDayOffset;
     final int rowCount = (totalSlots / 7).ceil();
     final int totalCells = rowCount * 7;
-
+    final double childAspectRatio = this.childAspectRatio;
     return CustomPaint(
       painter: DashedGridPainter(
         color: Colors.black.withOpacity(0.1),
         dashWidth: 3,
         dashSpace: 3,
         rows: rowCount,
+        rowHeight: cellHeight,
       ),
       child: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 7,
           mainAxisSpacing: 0,
           crossAxisSpacing: 0,
-          childAspectRatio: 1.0,
+          childAspectRatio: childAspectRatio,
         ),
         itemCount: totalCells,
         itemBuilder: (context, index) {
@@ -47,10 +57,13 @@ class CalendarMonthView extends StatelessWidget {
           final currentDate = DateTime(month.year, month.month, day);
           final isSelected = DateUtl.isSameDay(currentDate, selectedDate);
           final isToday = DateUtl.isSameDay(currentDate, DateTime.now());
+          final String dateKey = DateFormat('yyyy-MM-dd').format(currentDate);
+          final CalendardayModel? dayModel = dataMap?[dateKey];
           return _buildDayCell(
-            day,
+            currentDate,
             isSelected,
             isToday,
+            dayModel,
             () => onDateTap(currentDate),
           );
         },
@@ -59,22 +72,15 @@ class CalendarMonthView extends StatelessWidget {
   }
 
   Widget _buildDayCell(
-    int day,
+    DateTime day,
     bool isSelected,
     bool isToday,
+    CalendardayModel? dayModel,
     VoidCallback onTap,
   ) {
     return GestureDetector(
       onTap: onTap,
-      child: Center(
-        child: Text(
-          '$day',
-          style: AppTextStyle.feltTipSeniorRegular(
-            fontSize: 16,
-            color: Colors.black,
-          ),
-        ),
-      ),
+      child: CalendarItemView(date: day, item: dayModel),
     );
   }
 }
@@ -85,6 +91,7 @@ class DashedGridPainter extends CustomPainter {
   final double dashWidth;
   final double dashSpace;
   final int rows;
+  final double rowHeight;
 
   DashedGridPainter({
     this.color = const Color(0xffe0e0e0),
@@ -92,6 +99,7 @@ class DashedGridPainter extends CustomPainter {
     this.dashWidth = 4.0,
     this.dashSpace = 4.0,
     required this.rows,
+    required this.rowHeight,
   });
 
   @override
@@ -102,7 +110,7 @@ class DashedGridPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     final cellWidth = size.width / 7;
-    final cellHeight = cellWidth;
+    final cellHeight = rowHeight;
 
     for (int i = 1; i < 7; i++) {
       final x = i * cellWidth;

@@ -7,12 +7,13 @@ class SvgAsset extends StatelessWidget {
   final double? width;
   final double? height;
   final Color? color;
-
+  final BoxFit fit;
   const SvgAsset(
     this.iconName, {
     this.width,
     this.height,
     this.color,
+    this.fit = BoxFit.none,
     super.key,
   });
 
@@ -26,6 +27,7 @@ class SvgAsset extends StatelessWidget {
       colorFilter: color != null
           ? ColorFilter.mode(color!, BlendMode.srcIn)
           : null,
+      fit: fit,
     );
   }
 }

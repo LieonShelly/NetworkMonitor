@@ -65,7 +65,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           textBaseline: TextBaseline.alphabetic,
           children: [
             Text(
-              DateFormat('MMMM').format(calendarState.selectedDate),
+              DateFormat('MMMM').format(calendarState.focusedMonth),
               style: AppTextStyle.feltTipSeniorRegular(
                 fontSize: 36,
                 color: Color(0xff000000),
@@ -75,7 +75,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
             Spacer(),
             Text(
-              DateFormat('dd').format(calendarState.selectedDate),
+              DateFormat('dd').format(calendarState.focusedMonth),
               style: AppTextStyle.feltTipSeniorRegular(
                 fontSize: 18,
                 color: Color(0xff000000),
@@ -85,7 +85,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         ),
 
         Text(
-          DateFormat('yyyy').format(calendarState.selectedDate),
+          DateFormat('yyyy').format(calendarState.focusedMonth),
           style: TextStyle(
             fontSize: 24,
             color: Color(0xFF000000),
@@ -124,6 +124,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   Widget _buildCustomTableCalendar() {
     final calendarState = ref.watch(calendarControllerProvider);
     final controller = ref.read(calendarControllerProvider.notifier);
+    final reflectionMap = calendarState.reflectionMap.value;
     return LayoutBuilder(
       builder: (context, constrains) {
         final width = constrains.maxWidth;
@@ -134,8 +135,9 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           currentMonth.year,
           currentMonth.month,
         );
-        final gridH =
-            itemWith * rowCount + (hp * (rowCount > 0 ? (rowCount - 1) : 0));
+        final double cellH = 88.0;
+        final aspectRatio = itemWith / cellH;
+        final gridH = cellH * rowCount;
         final totalH = gridH;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
@@ -156,6 +158,9 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               return CalendarMonthView(
                 month: monthDate,
                 selectedDate: calendarState.selectedDate,
+                dataMap: reflectionMap,
+                childAspectRatio: aspectRatio,
+                cellHeight: cellH,
                 onDateTap: (date) {
                   controller.setdDate(date);
                 },

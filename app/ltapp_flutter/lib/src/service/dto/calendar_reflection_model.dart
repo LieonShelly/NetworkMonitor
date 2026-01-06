@@ -1,13 +1,34 @@
+enum IconStatus {
+  generated,
+  pending,
+  failed,
+  unknown;
+
+  static IconStatus fromString(String? status) {
+    if (status == null) return IconStatus.unknown;
+    switch (status) {
+      case "GENERATED":
+        return IconStatus.generated;
+      case "PENDING":
+        return IconStatus.pending;
+      case "FAILED":
+        return IconStatus.failed;
+      default:
+        return IconStatus.unknown;
+    }
+  }
+}
+
 class IconModel {
   final String? url;
-  final String? status;
+  final IconStatus status;
 
-  IconModel({this.url, this.status});
+  IconModel({this.url, this.status = IconStatus.unknown});
 
   factory IconModel.fromJson(Map<String, dynamic> json) {
     return IconModel(
       url: json['url'] as String?,
-      status: json['status'] as String?,
+      status: IconStatus.fromString(json['status'] as String?),
     );
   }
 }

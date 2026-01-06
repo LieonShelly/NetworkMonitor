@@ -8,6 +8,7 @@ enum IconName {
   deselectedInsights,
   user,
   deselectedUser,
+  star,
 }
 
 extension IconNameExtension on IconName {
@@ -31,6 +32,8 @@ extension IconNameExtension on IconName {
         return "user.svg";
       case IconName.deselectedUser:
         return "deselected_user.svg";
+      case IconName.star:
+        return "Star.svg";
     }
   }
 }
