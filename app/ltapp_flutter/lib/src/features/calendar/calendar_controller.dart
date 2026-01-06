@@ -55,11 +55,13 @@ class CalendarController extends _$CalendarController {
 
     try {
       final data = await useCase.execute(start, end);
+      if (!ref.mounted) return;
       if (state.focusedMonth.year == month.year &&
           state.focusedMonth.month == month.month) {
         state = state.copyWith(reflectionMap: AsyncValue.data(data));
       }
     } catch (e, stack) {
+      if (!ref.mounted) return;
       if (state.focusedMonth.year == month.year &&
           state.focusedMonth.month == month.month) {
         state = state.copyWith(reflectionMap: AsyncValue.error(e, stack));

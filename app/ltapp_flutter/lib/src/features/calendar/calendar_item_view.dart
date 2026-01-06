@@ -11,19 +11,27 @@ class CalendarItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return buildOneIconView();
+    return Stack(
+      children: [
+        Positioned(left: 4, top: 4, child: buildDateView()),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: buildOneIconView(),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget buildDateView() {
     final day = date.day;
-    return Padding(
-      padding: EdgeInsets.only(left: 3, top: 4),
-      child: Text(
-        '$day',
-        style: AppTextStyle.feltTipSeniorRegular(
-          fontSize: 14,
-          color: Color(0xff323232),
-        ),
+    return Text(
+      '$day',
+      style: AppTextStyle.feltTipSeniorRegular(
+        fontSize: 14,
+        color: Color(0xff323232),
       ),
     );
   }
@@ -31,10 +39,7 @@ class CalendarItemView extends StatelessWidget {
   Widget buildOneIconView() {
     final icon = item?.reflections.last.icon;
 
-    return Padding(
-      padding: EdgeInsets.only(bottom: 12),
-      child: iconView(icon, 24, 24),
-    );
+    return iconView(icon, 24, 24);
   }
 
   Widget iconView(IconModel? icon, double width, double height) {
