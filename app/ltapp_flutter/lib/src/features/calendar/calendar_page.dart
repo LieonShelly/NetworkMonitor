@@ -44,9 +44,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               const SizedBox(height: 20),
               _buildWeekDaysHeader(),
               const SizedBox(height: 10),
-              _buildCustomTableCalendar(),
-              const SizedBox(height: 20),
-              _buildFooterStats(),
+              Expanded(child: _buildCustomTableCalendar()),
             ],
           ),
         ),
@@ -138,8 +136,10 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         final double cellH = 88.0;
         final aspectRatio = itemWith / cellH;
         final gridH = cellH * rowCount;
-        final totalH = gridH;
-        return AnimatedContainer(
+        final spacingH = 20.0;
+        final footerH = 55 * 3;
+        final totalH = gridH + spacingH + footerH;
+        final content = AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
           height: totalH,
@@ -155,18 +155,29 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               final monthDifference = index - _initPage;
               final now = DateTime.now();
               final monthDate = DateTime(now.year, now.month + monthDifference);
-              return CalendarMonthView(
-                month: monthDate,
-                selectedDate: calendarState.selectedDate,
-                dataMap: reflectionMap,
-                childAspectRatio: aspectRatio,
-                cellHeight: cellH,
-                onDateTap: (date) {
-                  controller.setdDate(date);
-                },
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CalendarMonthView(
+                    month: monthDate,
+                    selectedDate: calendarState.selectedDate,
+                    dataMap: reflectionMap,
+                    childAspectRatio: aspectRatio,
+                    cellHeight: cellH,
+                    onDateTap: (date) {
+                      controller.setdDate(date);
+                    },
+                  ),
+                  SizedBox(height: spacingH),
+                  _buildFooterStats(),
+                ],
               );
             },
           ),
+        );
+        return SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: content,
         );
       },
     );

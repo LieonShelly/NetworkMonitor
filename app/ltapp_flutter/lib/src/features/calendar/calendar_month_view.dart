@@ -31,7 +31,7 @@ class CalendarMonthView extends StatelessWidget {
     final int rowCount = (totalSlots / 7).ceil();
     final int totalCells = rowCount * 7;
     final double childAspectRatio = this.childAspectRatio;
-    return CustomPaint(
+    final canvas = CustomPaint(
       painter: DashedGridPainter(
         color: Colors.black.withOpacity(0.1),
         dashWidth: 3,
@@ -69,6 +69,7 @@ class CalendarMonthView extends StatelessWidget {
         },
       ),
     );
+    return SizedBox(height: rowCount * cellHeight, child: canvas);
   }
 
   Widget _buildDayCell(
