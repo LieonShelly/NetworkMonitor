@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
@@ -11,18 +12,7 @@ class CalendarItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned(left: 4, top: 4, child: buildDateView()),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: buildOneIconView(),
-          ),
-        ),
-      ],
-    );
+    return buildTwoIconView();
   }
 
   Widget buildDateView() {
@@ -38,8 +28,66 @@ class CalendarItemView extends StatelessWidget {
 
   Widget buildOneIconView() {
     final icon = item?.reflections.last.icon;
+    return Stack(
+      children: [
+        Positioned(left: 4, top: 4, child: buildDateView()),
+        iconView(icon, 24, 24),
+      ],
+    );
+  }
 
-    return iconView(icon, 24, 24);
+  Widget buildTwoIconView() {
+    final icon1 = item?.reflections.first.icon;
+    final icon2 = item?.reflections.last.icon;
+    const double top = 18;
+    const double bottom = 0;
+    return Stack(
+      children: [
+        Positioned(top: 4, left: 4, child: buildDateView()),
+        Padding(
+          padding: EdgeInsets.only(top: top, bottom: bottom),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 1),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final size =
+                            constraints.maxHeight < constraints.maxWidth
+                            ? constraints.maxHeight
+                            : constraints.maxWidth;
+                        return iconView(icon1, size, size);
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 1),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final size =
+                            constraints.maxHeight < constraints.maxWidth
+                            ? constraints.maxHeight
+                            : constraints.maxWidth;
+                        return iconView(icon2, size, size);
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   Widget iconView(IconModel? icon, double width, double height) {
@@ -51,11 +99,11 @@ class CalendarItemView extends StatelessWidget {
           height: height,
           fit: BoxFit.contain,
           errorBuilder: (context, error, stackTrace) {
-            return SvgAsset(IconName.star, width: 12, height: 12);
+            return SvgAsset(IconName.star, width: width, height: height);
           },
         );
       default:
-        return SvgAsset(IconName.star, width: 12, height: 12);
+        return SvgAsset(IconName.star, width: height, height: height);
     }
   }
 }
