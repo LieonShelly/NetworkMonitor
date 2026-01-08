@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
@@ -13,7 +12,7 @@ class CalendarItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return buildMoreThanThreeIconView();
+    return buildTwoIconView();
   }
 
   Widget buildDateView() {
