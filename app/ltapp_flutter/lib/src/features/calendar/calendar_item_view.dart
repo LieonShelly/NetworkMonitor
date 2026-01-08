@@ -168,90 +168,61 @@ class CalendarItemView extends StatelessWidget {
     final icon1 = item?.reflections.first.icon;
     final icon2 = item?.reflections[1].icon;
     final icon3 = item?.reflections.last.icon;
-    final remaining = (item?.reflections.length ?? 0) - 3;
+    final remaining = 300;
+    // (item?.reflections.length ?? 0) - 3;
     const double top = 20;
     const double bottom = 0;
-    const double hp = 0;
+    const double hp = 2;
 
     return Stack(
       alignment: Alignment.topLeft,
       children: [
         Positioned(left: 4, top: 4, child: buildDateView()),
-        Positioned(
-          top: top,
+        Padding(
+          padding: const EdgeInsets.only(
+            top: top,
+            left: hp,
+            right: hp,
+            bottom: bottom,
+          ),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final size =
-                            constraints.maxHeight < constraints.maxWidth
-                            ? constraints.maxHeight
-                            : constraints.maxWidth;
-                        return Container(
-                          width: size,
-                          height: size,
-                          color: Colors.red,
-                          child: iconView(icon3, size, size),
-                        ); //;
-                      },
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _buildGridItem(
+                        icon1,
+                        alignment: Alignment.bottomCenter,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final size =
-                            constraints.maxHeight < constraints.maxWidth
-                            ? constraints.maxHeight
-                            : constraints.maxWidth;
-                        return Container(
-                          width: size,
-                          height: size,
-                          color: Colors.blue,
-                          child: iconView(icon3, size, size),
-                        );
-                      },
+                    Expanded(
+                      child: _buildGridItem(
+                        icon2,
+                        alignment: Alignment.bottomCenter,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final size =
-                            constraints.maxHeight < constraints.maxWidth
-                            ? constraints.maxHeight
-                            : constraints.maxWidth;
-                        return Container(
-                          width: size,
-                          height: size,
-                          color: Colors.red,
-                          child: iconView(icon3, size, size),
-                        ); //;
-                      },
+              const SizedBox(height: 0),
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _buildGridItem(
+                        icon3,
+                        alignment: Alignment.topCenter,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final size =
-                            constraints.maxHeight < constraints.maxWidth
-                            ? constraints.maxHeight
-                            : constraints.maxWidth;
-                        return Container(
-                          width: size,
-                          height: size,
-                          color: Colors.blue,
-                          child: iconView(icon3, size, size),
-                        );
-                      },
+                    Expanded(
+                      child: _buildCountItem(
+                        remaining,
+                        alignment: Alignment.topCenter,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -275,5 +246,66 @@ class CalendarItemView extends StatelessWidget {
       default:
         return SvgAsset(IconName.star, width: height, height: height);
     }
+  }
+
+  Widget _buildGridItem(
+    IconModel? icon, {
+    Alignment alignment = Alignment.bottomCenter,
+  }) {
+    // if (icon == null) return const SizedBox();
+    return Container(
+      alignment: alignment,
+      // color: Colors.red,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final size = constraints.maxHeight < constraints.maxWidth
+              ? constraints.maxHeight
+              : constraints.maxWidth;
+          return SizedBox(
+            width: size,
+            height: size,
+            child: iconView(icon, size, size),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildCountItem(
+    int count, {
+    Alignment alignment = Alignment.bottomCenter,
+  }) {
+    return Container(
+      alignment: alignment,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final double maxsize = constraints.maxHeight < constraints.maxWidth
+              ? constraints.maxHeight
+              : constraints.maxWidth;
+          return Container(
+            padding: const EdgeInsets.all(0),
+            constraints: BoxConstraints(
+              minHeight: 16,
+              minWidth: 16,
+              maxWidth: maxsize,
+              maxHeight: maxsize,
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xff000000),
+              borderRadius: BorderRadius.circular(200),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              '$count+',
+              style: AppTextStyle.poppinsMediumItalic(
+                fontSize: 8,
+                color: const Color(0xffffffff),
+                height: 1,
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }
