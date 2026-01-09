@@ -12,7 +12,25 @@ class CalendarItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return buildTwoIconView();
+    if (item == null) {
+      return Stack(
+        children: [Positioned(left: 4, top: 4, child: buildDateView())],
+      );
+    }
+    final relfections = item!.reflections;
+    if (relfections.length == 1) {
+      return buildOneIconView();
+    } else if (relfections.length == 2) {
+      return buildTwoIconView();
+    } else if (relfections.length == 3) {
+      return buildThreeIconView();
+    } else if (relfections.length >= 3) {
+      return buildMoreThanThreeIconView();
+    } else {
+      return Stack(
+        children: [Positioned(left: 4, top: 4, child: buildDateView())],
+      );
+    }
   }
 
   Widget buildDateView() {
@@ -28,10 +46,20 @@ class CalendarItemView extends StatelessWidget {
 
   Widget buildOneIconView() {
     final icon = item?.reflections.last.icon;
+    const double top = 18;
+    const double bottom = 10;
     return Stack(
       children: [
         Positioned(left: 4, top: 4, child: buildDateView()),
-        iconView(icon, 24, 24),
+        Padding(
+          padding: EdgeInsets.only(top: top, bottom: bottom),
+          child: Expanded(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: iconView(icon, 24, 24),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -167,8 +195,7 @@ class CalendarItemView extends StatelessWidget {
     final icon1 = item?.reflections.first.icon;
     final icon2 = item?.reflections[1].icon;
     final icon3 = item?.reflections.last.icon;
-    final remaining = 300;
-    // (item?.reflections.length ?? 0) - 3;
+    final remaining = (item?.reflections.length ?? 0) - 3;
     const double top = 20;
     const double bottom = 0;
     const double hp = 2;
@@ -272,7 +299,7 @@ class CalendarItemView extends StatelessWidget {
 
   Widget _buildCountItem(
     int count, {
-    Alignment alignment = Alignment.bottomCenter,
+    Alignment alignment = Alignment.topCenter,
   }) {
     return Container(
       alignment: alignment,
@@ -281,27 +308,18 @@ class CalendarItemView extends StatelessWidget {
           final double maxsize = constraints.maxHeight < constraints.maxWidth
               ? constraints.maxHeight
               : constraints.maxWidth;
-          return Container(
-            padding: const EdgeInsets.all(0),
-            constraints: BoxConstraints(
-              minHeight: 16,
-              minWidth: 16,
-              maxWidth: maxsize,
-              maxHeight: maxsize,
-            ),
-            decoration: BoxDecoration(
+          final cornorText = Text(
+            '$count+',
+            style: AppTextStyle.poppinsMediumItalic(
+              fontSize: 8,
               color: const Color(0xff000000),
-              borderRadius: BorderRadius.circular(200),
+              height: 1,
             ),
-            alignment: Alignment.center,
-            child: Text(
-              '$count+',
-              style: AppTextStyle.poppinsMediumItalic(
-                fontSize: 8,
-                color: const Color(0xffffffff),
-                height: 1,
-              ),
-            ),
+          );
+          return SizedBox(
+            width: maxsize,
+            height: maxsize,
+            child: Center(child: cornorText),
           );
         },
       ),
