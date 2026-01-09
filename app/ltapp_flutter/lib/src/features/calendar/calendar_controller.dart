@@ -73,4 +73,8 @@ class CalendarController extends _$CalendarController {
       }
     }
   }
+
+  Future<void> refreshCurrentMonth() async {
+    await _fetchData(state.focusedMonth);
+  }
 }

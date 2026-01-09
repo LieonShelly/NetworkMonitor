@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/date_utl.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
-import 'package:ltapp_flutter/src/core/ui_component/keep_alive_page.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_month_view.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_controller.dart';
@@ -150,9 +149,19 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
             initPage: _initPage,
           ),
         );
-        return SingleChildScrollView(
+        final scrollContent = SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: content,
+        );
+        return RefreshIndicator(
+          color: Colors.black,
+          backgroundColor: Colors.white,
+          onRefresh: () async {
+            await ref
+                .read(calendarControllerProvider.notifier)
+                .refreshCurrentMonth();
+          },
+          child: scrollContent,
         );
       },
     );
