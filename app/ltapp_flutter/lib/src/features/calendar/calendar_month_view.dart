@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/date_utl.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_item_view.dart';
-import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 
 class CalendarMonthView extends StatelessWidget {
   final DateTime month;
-  final DateTime selectedDate;
   final Function(DateTime) onDateTap;
-  final Map<String, CalendardayModel>? dataMap;
   final double childAspectRatio;
   final double cellHeight;
 
   const CalendarMonthView({
     super.key,
     required this.month,
-    required this.selectedDate,
     required this.onDateTap,
-    required this.dataMap,
     required this.cellHeight,
     required this.childAspectRatio,
   });
@@ -54,30 +48,14 @@ class CalendarMonthView extends StatelessWidget {
           }
           final day = index - firstDayOffset + 1;
           final currentDate = DateTime(month.year, month.month, day);
-          final isSelected = DateUtl.isSameDay(currentDate, selectedDate);
-          final isToday = DateUtl.isSameDay(currentDate, DateTime.now());
-          final String dateKey = DateFormat('yyyy-MM-dd').format(currentDate);
-          final CalendardayModel? dayModel = dataMap?[dateKey];
-          return _buildDayCell(
-            currentDate,
-            isSelected,
-            isToday,
-            dayModel,
-            () => onDateTap(currentDate),
-          );
+          return _buildDayCell(currentDate, () => onDateTap(currentDate));
         },
       ),
     );
     return SizedBox(height: rowCount * cellHeight, child: canvas);
   }
 
-  Widget _buildDayCell(
-    DateTime day,
-    bool isSelected,
-    bool isToday,
-    CalendardayModel? dayModel,
-    VoidCallback onTap,
-  ) {
+  Widget _buildDayCell(DateTime day, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: CalendarItemView(date: day),

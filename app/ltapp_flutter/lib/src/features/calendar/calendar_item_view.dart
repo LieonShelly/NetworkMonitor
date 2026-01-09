@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:ltapp_flutter/src/core/date_utl.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';

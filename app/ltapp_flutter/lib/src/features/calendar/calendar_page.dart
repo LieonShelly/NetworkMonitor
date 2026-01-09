@@ -194,10 +194,11 @@ class _CalendarContentPageView extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _MonthViewWrapper(
-                monthDate: monthDate,
+              CalendarMonthView(
+                month: monthDate,
                 childAspectRatio: aspectRatio,
                 cellHeight: itemHeight,
+                onDateTap: (date) {},
               ),
               SizedBox(height: spacingH),
               _buildFooterStats(),
@@ -227,42 +228,6 @@ class _CalendarContentPageView extends ConsumerWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _MonthViewWrapper extends ConsumerWidget {
-  final DateTime monthDate;
-  final double childAspectRatio;
-  final double cellHeight;
-
-  const _MonthViewWrapper({
-    required this.monthDate,
-    required this.childAspectRatio,
-    required this.cellHeight,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final reflectionMap = ref.watch(
-      calendarControllerProvider.select((value) => value.reflectionMap.value),
-    );
-
-    final selectedDate = ref.watch(
-      calendarControllerProvider.select((value) => value.selectedDate),
-    );
-
-    final controllerNotifier = ref.read(calendarControllerProvider.notifier);
-
-    return CalendarMonthView(
-      month: monthDate,
-      selectedDate: selectedDate,
-      dataMap: reflectionMap,
-      childAspectRatio: childAspectRatio,
-      cellHeight: cellHeight,
-      onDateTap: (date) {
-        controllerNotifier.setdDate(date);
-      },
     );
   }
 }
