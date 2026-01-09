@@ -9,7 +9,7 @@ import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_controller.dart';
 import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 
-class CalendarItemView extends ConsumerWidget {
+class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
   final DateTime date;
   const CalendarItemView({super.key, required this.date});
 
@@ -280,12 +280,13 @@ class CalendarItemView extends ConsumerWidget {
           width: width,
           height: height,
           fit: BoxFit.contain,
-          memCacheWidth: (width * 3).toInt(),
+          memCacheWidth: (150 * 3).toInt(),
           placeholder: (context, url) => placehoder,
           errorWidget: (context, url, error) => placehoder,
           fadeInDuration: Duration.zero,
           fadeOutDuration: Duration.zero,
-          key: ValueKey(icon.url ?? ""),
+          key: ValueKey(cacheKey(icon.url ?? "")),
+          cacheKey: cacheKey(icon.url ?? ""),
         );
       default:
         return placehoder;
@@ -342,5 +343,16 @@ class CalendarItemView extends ConsumerWidget {
         },
       ),
     );
+  }
+}
+
+mixin ImageCacheKeyType {
+  String cacheKey(String url) {
+    try {
+      final uri = Uri.parse(url);
+      return uri.pathSegments.last;
+    } catch (e) {
+      return url;
+    }
   }
 }
