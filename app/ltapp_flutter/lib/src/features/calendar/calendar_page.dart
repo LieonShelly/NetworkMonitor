@@ -177,6 +177,9 @@ class _CalendarContentPageView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final aspectRatio = itemWidth / itemHeight;
     final spacingH = 20.0;
+    final reflectionMap = ref.watch(
+      calendarControllerProvider.select((state) => state.reflectionMap.value),
+    );
     return PageView.builder(
       controller: pageController,
       onPageChanged: (index) {
@@ -189,21 +192,19 @@ class _CalendarContentPageView extends ConsumerWidget {
         final monthDifference = index - initPage;
         final now = DateTime.now();
         final monthDate = DateTime(now.year, now.month + monthDifference);
-        return KeepAlivePage(
-          key: ValueKey(monthDate.microsecondsSinceEpoch),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CalendarMonthView(
-                month: monthDate,
-                childAspectRatio: aspectRatio,
-                cellHeight: itemHeight,
-                onDateTap: (date) {},
-              ),
-              SizedBox(height: spacingH),
-              _buildFooterStats(),
-            ],
-          ),
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CalendarMonthView(
+              month: monthDate,
+              childAspectRatio: aspectRatio,
+              cellHeight: itemHeight,
+              dataMap: reflectionMap,
+              onDateTap: (date) {},
+            ),
+            SizedBox(height: spacingH),
+            _buildFooterStats(),
+          ],
         );
       },
     );

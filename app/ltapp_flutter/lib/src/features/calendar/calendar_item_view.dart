@@ -2,26 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
-import 'package:ltapp_flutter/src/features/calendar/calendar_controller.dart';
 import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 
 class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
   final DateTime date;
-  const CalendarItemView({super.key, required this.date});
+  final CalendardayModel? item;
+  const CalendarItemView({super.key, required this.date, this.item});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final item = ref.watch(
-      calendarControllerProvider.select((state) {
-        final map = state.reflectionMap.value;
-        final key = DateFormat('yyyy-MM-dd').format(date);
-        return map?[key];
-      }),
-    );
     if (item == null) {
       return _buildNoneIconView(item);
     }

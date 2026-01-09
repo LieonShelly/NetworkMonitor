@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/date_utl.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_item_view.dart';
+import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 
 class CalendarMonthView extends StatelessWidget {
   final DateTime month;
   final Function(DateTime) onDateTap;
   final double childAspectRatio;
   final double cellHeight;
+  final Map<String, CalendardayModel>? dataMap;
 
   const CalendarMonthView({
     super.key,
@@ -14,6 +17,7 @@ class CalendarMonthView extends StatelessWidget {
     required this.onDateTap,
     required this.cellHeight,
     required this.childAspectRatio,
+    this.dataMap,
   });
 
   @override
@@ -48,17 +52,23 @@ class CalendarMonthView extends StatelessWidget {
           }
           final day = index - firstDayOffset + 1;
           final currentDate = DateTime(month.year, month.month, day);
-          return _buildDayCell(currentDate, () => onDateTap(currentDate));
+          final key = DateFormat('yyyy-MM-dd').format(currentDate);
+          final item = dataMap?[key];
+          return _buildDayCell(currentDate, item, () => onDateTap(currentDate));
         },
       ),
     );
     return SizedBox(height: rowCount * cellHeight, child: canvas);
   }
 
-  Widget _buildDayCell(DateTime day, VoidCallback onTap) {
+  Widget _buildDayCell(
+    DateTime day,
+    CalendardayModel? item,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
-      child: CalendarItemView(date: day),
+      child: CalendarItemView(date: day, item: item),
     );
   }
 }
