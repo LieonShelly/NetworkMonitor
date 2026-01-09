@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/date_utl.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
+import 'package:ltapp_flutter/src/core/ui_component/keep_alive_page.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_month_view.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_controller.dart';
@@ -120,21 +121,20 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   }
 
   Widget _buildCustomTableCalendar() {
-    final calendarState = ref.watch(calendarControllerProvider);
-    final controller = ref.read(calendarControllerProvider.notifier);
-    final reflectionMap = calendarState.reflectionMap.value;
+    final focusedMonth = ref.watch(
+      calendarControllerProvider.select((value) => value.focusedMonth),
+    );
     return LayoutBuilder(
       builder: (context, constrains) {
         final width = constrains.maxWidth;
         final hp = 0;
         final itemWith = (width - hp * 6) / 7;
-        final currentMonth = calendarState.focusedMonth;
+        final currentMonth = focusedMonth;
         final int rowCount = DateUtl.getRowCount(
           currentMonth.year,
           currentMonth.month,
         );
         final double cellH = 88.0;
-        final aspectRatio = itemWith / cellH;
         final gridH = cellH * rowCount;
         final spacingH = 20.0;
         final footerH = 55 * 3;
@@ -143,41 +143,66 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
           height: totalH,
-          child: PageView.builder(
-            controller: _pageController,
-            onPageChanged: (index) {
-              final monthDifference = index - _initPage;
-              final now = DateTime.now();
-              final newMonth = DateTime(now.year, now.month + monthDifference);
-              controller.onPageChanged(newMonth);
-            },
-            itemBuilder: (context, index) {
-              final monthDifference = index - _initPage;
-              final now = DateTime.now();
-              final monthDate = DateTime(now.year, now.month + monthDifference);
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CalendarMonthView(
-                    month: monthDate,
-                    selectedDate: calendarState.selectedDate,
-                    dataMap: reflectionMap,
-                    childAspectRatio: aspectRatio,
-                    cellHeight: cellH,
-                    onDateTap: (date) {
-                      controller.setdDate(date);
-                    },
-                  ),
-                  SizedBox(height: spacingH),
-                  _buildFooterStats(),
-                ],
-              );
-            },
+          child: _CalendarContentPageView(
+            pageController: _pageController,
+            itemWidth: itemWith,
+            itemHeight: cellH,
+            initPage: _initPage,
           ),
         );
         return SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: content,
+        );
+      },
+    );
+  }
+}
+
+class _CalendarContentPageView extends ConsumerWidget {
+  final PageController pageController;
+  final double itemWidth;
+  final double itemHeight;
+  final int initPage;
+
+  const _CalendarContentPageView({
+    super.key,
+    required this.pageController,
+    required this.itemWidth,
+    required this.itemHeight,
+    required this.initPage,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final aspectRatio = itemWidth / itemHeight;
+    final spacingH = 20.0;
+    return PageView.builder(
+      controller: pageController,
+      onPageChanged: (index) {
+        final monthDifference = index - initPage;
+        final now = DateTime.now();
+        final newMonth = DateTime(now.year, now.month + monthDifference);
+        ref.read(calendarControllerProvider.notifier).onPageChanged(newMonth);
+      },
+      itemBuilder: (context, index) {
+        final monthDifference = index - initPage;
+        final now = DateTime.now();
+        final monthDate = DateTime(now.year, now.month + monthDifference);
+        return KeepAlivePage(
+          key: ValueKey(monthDate.microsecondsSinceEpoch),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _MonthViewWrapper(
+                monthDate: monthDate,
+                childAspectRatio: aspectRatio,
+                cellHeight: itemHeight,
+              ),
+              SizedBox(height: spacingH),
+              _buildFooterStats(),
+            ],
+          ),
         );
       },
     );
@@ -202,6 +227,42 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _MonthViewWrapper extends ConsumerWidget {
+  final DateTime monthDate;
+  final double childAspectRatio;
+  final double cellHeight;
+
+  const _MonthViewWrapper({
+    required this.monthDate,
+    required this.childAspectRatio,
+    required this.cellHeight,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final reflectionMap = ref.watch(
+      calendarControllerProvider.select((value) => value.reflectionMap.value),
+    );
+
+    final selectedDate = ref.watch(
+      calendarControllerProvider.select((value) => value.selectedDate),
+    );
+
+    final controllerNotifier = ref.read(calendarControllerProvider.notifier);
+
+    return CalendarMonthView(
+      month: monthDate,
+      selectedDate: selectedDate,
+      dataMap: reflectionMap,
+      childAspectRatio: childAspectRatio,
+      cellHeight: cellHeight,
+      onDateTap: (date) {
+        controllerNotifier.setdDate(date);
+      },
     );
   }
 }

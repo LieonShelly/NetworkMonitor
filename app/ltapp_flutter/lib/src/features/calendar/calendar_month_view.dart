@@ -80,7 +80,7 @@ class CalendarMonthView extends StatelessWidget {
   ) {
     return GestureDetector(
       onTap: onTap,
-      child: CalendarItemView(date: day, item: dayModel),
+      child: CalendarItemView(date: day),
     );
   }
 }

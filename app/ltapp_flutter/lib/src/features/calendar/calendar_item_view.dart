@@ -1,36 +1,49 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:ltapp_flutter/src/core/date_utl.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
+import 'package:ltapp_flutter/src/features/calendar/calendar_controller.dart';
 import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 
-class CalendarItemView extends StatelessWidget {
-  final CalendardayModel? item;
+class CalendarItemView extends ConsumerWidget {
   final DateTime date;
-  const CalendarItemView({super.key, required this.date, this.item});
+  const CalendarItemView({super.key, required this.date});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final item = ref.watch(
+      calendarControllerProvider.select((state) {
+        final map = state.reflectionMap.value;
+        final key = DateFormat('yyyy-MM-dd').format(date);
+        return map?[key];
+      }),
+    );
     if (item == null) {
-      return Stack(
-        children: [Positioned(left: 4, top: 4, child: buildDateView())],
-      );
+      return _buildNoneIconView(item);
     }
     final relfections = item!.reflections;
     if (relfections.length == 1) {
-      return buildOneIconView();
+      return buildOneIconView(item);
     } else if (relfections.length == 2) {
-      return buildTwoIconView();
+      return buildTwoIconView(item);
     } else if (relfections.length == 3) {
-      return buildThreeIconView();
+      return buildThreeIconView(item);
     } else if (relfections.length >= 3) {
-      return buildMoreThanThreeIconView();
+      return buildMoreThanThreeIconView(item);
     } else {
-      return Stack(
-        children: [Positioned(left: 4, top: 4, child: buildDateView())],
-      );
+      return _buildNoneIconView(item);
     }
+  }
+
+  Widget _buildNoneIconView(CalendardayModel? item) {
+    return Stack(
+      children: [Positioned(left: 4, top: 4, child: buildDateView())],
+    );
   }
 
   Widget buildDateView() {
@@ -44,7 +57,7 @@ class CalendarItemView extends StatelessWidget {
     );
   }
 
-  Widget buildOneIconView() {
+  Widget buildOneIconView(CalendardayModel? item) {
     final icon = item?.reflections.last.icon;
     const double top = 18;
     const double bottom = 10;
@@ -53,18 +66,16 @@ class CalendarItemView extends StatelessWidget {
         Positioned(left: 4, top: 4, child: buildDateView()),
         Padding(
           padding: EdgeInsets.only(top: top, bottom: bottom),
-          child: Expanded(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: iconView(icon, 24, 24),
-            ),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: iconView(icon, 24, 24),
           ),
         ),
       ],
     );
   }
 
-  Widget buildTwoIconView() {
+  Widget buildTwoIconView(CalendardayModel? item) {
     final icon1 = item?.reflections.first.icon;
     final icon2 = item?.reflections.last.icon;
     const double top = 18;
@@ -118,7 +129,7 @@ class CalendarItemView extends StatelessWidget {
     );
   }
 
-  Widget buildThreeIconView() {
+  Widget buildThreeIconView(CalendardayModel? item) {
     final icon1 = item?.reflections.first.icon;
     final icon2 = item?.reflections[1].icon;
     final icon3 = item?.reflections.last.icon;
@@ -191,7 +202,7 @@ class CalendarItemView extends StatelessWidget {
     );
   }
 
-  Widget buildMoreThanThreeIconView() {
+  Widget buildMoreThanThreeIconView(CalendardayModel? item) {
     final icon1 = item?.reflections.first.icon;
     final icon2 = item?.reflections[1].icon;
     final icon3 = item?.reflections.last.icon;
@@ -258,19 +269,27 @@ class CalendarItemView extends StatelessWidget {
   }
 
   Widget iconView(IconModel? icon, double width, double height) {
-    switch (icon?.status) {
+    final placehoder = SvgAsset(IconName.star, width: width, height: height);
+    if (icon == null) {
+      return placehoder;
+    }
+
+    switch (icon.status) {
       case IconStatus.generated:
-        return Image.network(
-          icon?.url ?? "",
+        return CachedNetworkImage(
+          imageUrl: icon.url ?? "",
           width: width,
           height: height,
           fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) {
-            return SvgAsset(IconName.star, width: width, height: height);
-          },
+          memCacheWidth: (width * 3).toInt(),
+          placeholder: (context, url) => placehoder,
+          errorWidget: (context, url, error) => placehoder,
+          fadeInDuration: Duration.zero,
+          fadeOutDuration: Duration.zero,
+          key: ValueKey(icon.url ?? ""),
         );
       default:
-        return SvgAsset(IconName.star, width: height, height: height);
+        return placehoder;
     }
   }
 

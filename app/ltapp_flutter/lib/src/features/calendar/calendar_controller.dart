@@ -58,7 +58,12 @@ class CalendarController extends _$CalendarController {
       if (!ref.mounted) return;
       if (state.focusedMonth.year == month.year &&
           state.focusedMonth.month == month.month) {
-        state = state.copyWith(reflectionMap: AsyncValue.data(data));
+        final currentMap = state.reflectionMap.value ?? {};
+        final mergedMap = Map<String, CalendardayModel>.from(currentMap);
+        mergedMap.addAll(data);
+        if (ref.mounted) {
+          state = state.copyWith(reflectionMap: AsyncValue.data(mergedMap));
+        }
       }
     } catch (e, stack) {
       if (!ref.mounted) return;
