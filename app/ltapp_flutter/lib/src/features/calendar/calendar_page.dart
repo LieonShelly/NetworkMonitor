@@ -5,6 +5,7 @@ import 'package:ltapp_flutter/src/core/date_utl.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
+import 'package:ltapp_flutter/src/features/calendar/calendar_month_header_view.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_month_view.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_controller.dart';
 
@@ -98,6 +99,11 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
             color: Color(0xFF000000),
             fontFamily: 'FeltTipSeniorRegular',
           ),
+        ),
+
+        CalendarMonthHeaderView(
+          initPage: _initPage,
+          onMonthSelected: (index) {},
         ),
       ],
     );
