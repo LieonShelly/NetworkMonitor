@@ -19,16 +19,31 @@ class CalendarFetchReflectionUseCase
   ) async {
     final list = await repository.fetchCalendarView(start: start, end: end);
     final Map<String, CalendarDayItem> resultMap = {};
-    final startDay = start.day;
-    final endDay = end.day;
     final datefromt = DateFormat('yyyy-MM-dd');
-    for (int index = startDay; index <= endDay; index++) {
-      final date = DateTime(start.year, start.month, index);
-      final key = datefromt.format(date);
-      resultMap[key] = CalendarDayItem(
-        date: key,
-        style: CalendarDayDashlineStyle(),
-      );
+    DateTime currentDay;
+    DateTime targetEnday;
+    if (list.isEmpty) {
+      currentDay = DateTime(start.year, start.month, start.day);
+      targetEnday = DateTime(end.year, end.month, end.day);
+    } else {
+      currentDay = DateTime.parse(list.first.date);
+      targetEnday = DateTime.parse(list.last.date);
+    }
+
+    while (!currentDay.isAfter(targetEnday)) {
+      final key = datefromt.format(currentDay);
+      if (list.isEmpty) {
+        resultMap[key] = CalendarDayItem(
+          date: key,
+          style: const CalendarDayOnlyDateStyle(),
+        );
+      } else {
+        resultMap[key] = CalendarDayItem(
+          date: key,
+          style: const CalendarDayDashlineStyle(),
+        );
+      }
+      currentDay = currentDay.add(const Duration(days: 1));
     }
     for (var item in list) {
       resultMap[item.date] = CalendarDayItem(

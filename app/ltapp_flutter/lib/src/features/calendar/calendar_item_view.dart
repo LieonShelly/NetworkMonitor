@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
+import 'package:ltapp_flutter/src/features/calendar/diagonal_line.dart';
 import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 
 class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
@@ -22,7 +23,7 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
       CalendarReflectionsStyle(reflections: var list) => _buildReflectionView(
         list,
       ),
-      CalendarDayDashlineStyle() => _buildNoneIconView(),
+      CalendarDayDashlineStyle() => _buildDashLineView(),
     };
   }
 
@@ -344,6 +345,23 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
           );
         },
       ),
+    );
+  }
+
+  Widget _buildDashLineView() {
+    const double top = 18;
+    const double bottom = 12;
+    return Stack(
+      children: [
+        Positioned(left: 4, top: 4, child: buildDateView()),
+        Padding(
+          padding: const EdgeInsets.only(top: top, bottom: bottom),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(width: 12, height: 12, child: DiagonalLine()),
+          ),
+        ),
+      ],
     );
   }
 }
