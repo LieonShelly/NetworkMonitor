@@ -72,12 +72,21 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
             SvgAsset(IconName.downArrowFill, width: 24, height: 24),
 
             Spacer(),
-            Text(
-              DateFormat('dd').format(calendarState.focusedMonth),
-              style: AppTextStyle.feltTipSeniorRegular(
-                fontSize: 18,
-                color: Color(0xff000000),
+            GestureDetector(
+              child: Text(
+                DateFormat('dd').format(DateTime.now()),
+                style: AppTextStyle.feltTipSeniorRegular(
+                  fontSize: 18,
+                  color: Color(0xff000000),
+                ),
               ),
+              onTap: () {
+                _pageController.animateToPage(
+                  _initPage,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              },
             ),
           ],
         ),
