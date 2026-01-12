@@ -28,7 +28,9 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToCurrentFocusedMonth(aniamte: false);
+    });
   }
 
   @override
@@ -37,8 +39,41 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
     super.dispose();
   }
 
+  void _scrollToIndex(int idnex, {bool animate = true}) {
+    if (_scrollController.hasClients) return;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final targetOffset =
+        (idnex * _itemWidth) - (screenWidth / 2) + (_itemWidth / 2);
+    if (animate) {
+      _scrollController.animateTo(
+        targetOffset,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      _scrollController.jumpTo(targetOffset);
+    }
+  }
+
+  void _scrollToCurrentFocusedMonth({bool aniamte = true}) {
+    final focusedMonth = ref.watch(calendarControllerProvider).focusedMonth;
+    final now = DateTime.now();
+    final monthDiff =
+        (focusedMonth.year - now.year) * 12 + (focusedMonth.month - now.month);
+    final targetIndex = widget.initPage + monthDiff;
+    _scrollToIndex(targetIndex, animate: aniamte);
+  }
+
   @override
   Widget build(BuildContext context) {
+    ref.listen(
+      calendarControllerProvider.select((value) => value.focusedMonth),
+      (previous, next) {
+        if (previous?.month != next.month || previous?.year != next.year) {
+          _scrollToCurrentFocusedMonth(aniamte: true);
+        }
+      },
+    );
     final focusedMonth = ref.watch(
       calendarControllerProvider.select((value) => value.focusedMonth),
     );
@@ -47,6 +82,7 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
       child: ListView.builder(
         controller: _scrollController,
         scrollDirection: Axis.horizontal,
+        itemExtent: _itemWidth,
         itemCount: 20000,
         itemBuilder: (context, index) {
           final monthDifference = index - widget.initPage;
@@ -57,7 +93,9 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
               itemDate.month == focusedMonth.month;
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () {},
+            onTap: () {
+              widget.onMonthSelected(index);
+            },
             child: _buildMonthItem(itemDate, isSelected),
           );
         },

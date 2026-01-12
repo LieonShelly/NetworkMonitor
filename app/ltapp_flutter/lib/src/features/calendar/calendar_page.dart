@@ -103,7 +103,13 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
         CalendarMonthHeaderView(
           initPage: _initPage,
-          onMonthSelected: (index) {},
+          onMonthSelected: (index) {
+            _pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          },
         ),
       ],
     );
