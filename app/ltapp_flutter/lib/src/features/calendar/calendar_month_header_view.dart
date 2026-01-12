@@ -29,7 +29,7 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
     super.initState();
     _scrollController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollToCurrentFocusedMonth(aniamte: false);
+      _scrollToCurrentFocusedMonth(animate: false);
     });
   }
 
@@ -40,7 +40,7 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
   }
 
   void _scrollToIndex(int idnex, {bool animate = true}) {
-    if (_scrollController.hasClients) return;
+    if (!_scrollController.hasClients) return;
     final screenWidth = MediaQuery.of(context).size.width;
     final targetOffset =
         (idnex * _itemWidth) - (screenWidth / 2) + (_itemWidth / 2);
@@ -55,13 +55,13 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
     }
   }
 
-  void _scrollToCurrentFocusedMonth({bool aniamte = true}) {
+  void _scrollToCurrentFocusedMonth({bool animate = true}) {
     final focusedMonth = ref.watch(calendarControllerProvider).focusedMonth;
     final now = DateTime.now();
     final monthDiff =
         (focusedMonth.year - now.year) * 12 + (focusedMonth.month - now.month);
     final targetIndex = widget.initPage + monthDiff;
-    _scrollToIndex(targetIndex, animate: aniamte);
+    _scrollToIndex(targetIndex, animate: animate);
   }
 
   @override
@@ -70,7 +70,7 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
       calendarControllerProvider.select((value) => value.focusedMonth),
       (previous, next) {
         if (previous?.month != next.month || previous?.year != next.year) {
-          _scrollToCurrentFocusedMonth(aniamte: true);
+          _scrollToCurrentFocusedMonth(animate: true);
         }
       },
     );
@@ -105,7 +105,7 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
 
   Widget _buildMonthItem(DateTime date, [bool isSelected = true]) {
     final text = Padding(
-      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
       child: Text(
         DateFormat('MMM').format(date),
         textAlign: TextAlign.center,
@@ -120,11 +120,11 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
       borderRadius: BorderRadius.circular(12),
     );
     final unSelctedDecoration = BoxDecoration(
-      border: BoxBorder.all(color: Color(0xff000000), width: 1),
+      border: Border.all(color: Color(0xff000000), width: 1),
       borderRadius: BorderRadius.circular(12),
     );
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
       child: Container(
         alignment: Alignment.center,
         decoration: isSelected ? selectedDecoration : unSelctedDecoration,
