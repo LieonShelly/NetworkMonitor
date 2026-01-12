@@ -17,7 +17,7 @@ class CalendarPage extends ConsumerStatefulWidget {
 }
 
 class _CalendarPageState extends ConsumerState<CalendarPage> {
-  static const int _initPage = 10000;
+  static const int _initPage = 1000;
   late PageController _pageController;
 
   @override

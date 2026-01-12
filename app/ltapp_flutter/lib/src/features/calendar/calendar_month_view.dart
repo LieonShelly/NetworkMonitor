@@ -9,7 +9,7 @@ class CalendarMonthView extends StatelessWidget {
   final Function(DateTime) onDateTap;
   final double childAspectRatio;
   final double cellHeight;
-  final Map<String, CalendardayModel>? dataMap;
+  final Map<String, CalendarDayItem>? dataMap;
 
   const CalendarMonthView({
     super.key,
@@ -63,7 +63,7 @@ class CalendarMonthView extends StatelessWidget {
 
   Widget _buildDayCell(
     DateTime day,
-    CalendardayModel? item,
+    CalendarDayItem? item,
     VoidCallback onTap,
   ) {
     return GestureDetector(

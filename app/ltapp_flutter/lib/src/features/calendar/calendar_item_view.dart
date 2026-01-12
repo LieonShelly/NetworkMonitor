@@ -9,29 +9,39 @@ import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 
 class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
   final DateTime date;
-  final CalendardayModel? item;
+  final CalendarDayItem? item;
   const CalendarItemView({super.key, required this.date, this.item});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (item == null) {
-      return _buildNoneIconView(item);
+      return _buildNoneIconView();
     }
-    final relfections = item!.reflections;
+    return switch (item!.style) {
+      CalendarDayOnlyDateStyle() => _buildNoneIconView(),
+      CalendarReflectionsStyle(reflections: var list) => _buildReflectionView(
+        list,
+      ),
+      CalendarDayDashlineStyle() => _buildNoneIconView(),
+    };
+  }
+
+  Widget _buildReflectionView(List<ReflectionModel> reflections) {
+    final relfections = reflections;
     if (relfections.length == 1) {
-      return buildOneIconView(item);
+      return buildOneIconView(reflections);
     } else if (relfections.length == 2) {
-      return buildTwoIconView(item);
+      return buildTwoIconView(reflections);
     } else if (relfections.length == 3) {
-      return buildThreeIconView(item);
+      return buildThreeIconView(reflections);
     } else if (relfections.length >= 3) {
-      return buildMoreThanThreeIconView(item);
+      return buildMoreThanThreeIconView(reflections);
     } else {
-      return _buildNoneIconView(item);
+      return _buildNoneIconView();
     }
   }
 
-  Widget _buildNoneIconView(CalendardayModel? item) {
+  Widget _buildNoneIconView() {
     return Stack(
       children: [Positioned(left: 4, top: 4, child: buildDateView())],
     );
@@ -48,8 +58,8 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
     );
   }
 
-  Widget buildOneIconView(CalendardayModel? item) {
-    final icon = item?.reflections.last.icon;
+  Widget buildOneIconView(List<ReflectionModel> reflections) {
+    final icon = reflections.last.icon;
     const double top = 18;
     const double bottom = 10;
     return Stack(
@@ -66,9 +76,9 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
     );
   }
 
-  Widget buildTwoIconView(CalendardayModel? item) {
-    final icon1 = item?.reflections.first.icon;
-    final icon2 = item?.reflections.last.icon;
+  Widget buildTwoIconView(List<ReflectionModel> reflections) {
+    final icon1 = reflections.first.icon;
+    final icon2 = reflections.last.icon;
     const double top = 18;
     const double bottom = 10;
     return Stack(
@@ -120,10 +130,10 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
     );
   }
 
-  Widget buildThreeIconView(CalendardayModel? item) {
-    final icon1 = item?.reflections.first.icon;
-    final icon2 = item?.reflections[1].icon;
-    final icon3 = item?.reflections.last.icon;
+  Widget buildThreeIconView(List<ReflectionModel> reflections) {
+    final icon1 = reflections.first.icon;
+    final icon2 = reflections[1].icon;
+    final icon3 = reflections.last.icon;
     const double top = 18;
     const double bottom = 1;
     return Stack(
@@ -193,11 +203,11 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
     );
   }
 
-  Widget buildMoreThanThreeIconView(CalendardayModel? item) {
-    final icon1 = item?.reflections.first.icon;
-    final icon2 = item?.reflections[1].icon;
-    final icon3 = item?.reflections.last.icon;
-    final remaining = (item?.reflections.length ?? 0) - 3;
+  Widget buildMoreThanThreeIconView(List<ReflectionModel> reflections) {
+    final icon1 = reflections.first.icon;
+    final icon2 = reflections[1].icon;
+    final icon3 = reflections.last.icon;
+    final remaining = (reflections.length) - 3;
     const double top = 20;
     const double bottom = 0;
     const double hp = 2;

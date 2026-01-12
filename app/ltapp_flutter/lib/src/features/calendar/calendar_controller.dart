@@ -6,7 +6,7 @@ part 'calendar_controller.g.dart';
 class CalendarState {
   final DateTime focusedMonth;
   final DateTime selectedDate;
-  final AsyncValue<Map<String, CalendardayModel>> reflectionMap;
+  final AsyncValue<Map<String, CalendarDayItem>> reflectionMap;
 
   CalendarState({
     required this.focusedMonth,
@@ -17,7 +17,7 @@ class CalendarState {
   CalendarState copyWith({
     DateTime? focusedMonth,
     DateTime? selectedDate,
-    AsyncValue<Map<String, CalendardayModel>>? reflectionMap,
+    AsyncValue<Map<String, CalendarDayItem>>? reflectionMap,
   }) {
     return CalendarState(
       focusedMonth: focusedMonth ?? this.focusedMonth,
@@ -59,7 +59,7 @@ class CalendarController extends _$CalendarController {
       if (state.focusedMonth.year == month.year &&
           state.focusedMonth.month == month.month) {
         final currentMap = state.reflectionMap.value ?? {};
-        final mergedMap = Map<String, CalendardayModel>.from(currentMap);
+        final mergedMap = Map<String, CalendarDayItem>.from(currentMap);
         mergedMap.addAll(data);
         if (ref.mounted) {
           state = state.copyWith(reflectionMap: AsyncValue.data(mergedMap));

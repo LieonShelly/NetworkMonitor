@@ -10,7 +10,7 @@ class ReflectionRepository implements ReflectionRepositoryType {
     : _apiClient = apiClient;
 
   @override
-  Future<List<CalendardayModel>> fetchCalendarView({
+  Future<List<CalendardayDto>> fetchCalendarView({
     required DateTime start,
     required DateTime end,
   }) async {
@@ -24,7 +24,7 @@ class ReflectionRepository implements ReflectionRepositoryType {
     );
     final data = response['data'];
     if (data is List) {
-      return data.map((e) => CalendardayModel.fromJson(e)).toList();
+      return data.map((e) => CalendardayDto.fromJson(e)).toList();
     } else {
       return [];
     }

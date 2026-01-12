@@ -93,18 +93,43 @@ class ReflectionModel {
   }
 }
 
-class CalendardayModel {
+class CalendardayDto {
   final String date;
   final List<ReflectionModel> reflections;
 
-  CalendardayModel({required this.date, required this.reflections});
+  CalendardayDto({required this.date, required this.reflections});
 
-  factory CalendardayModel.fromJson(Map<String, dynamic> json) {
-    return CalendardayModel(
+  factory CalendardayDto.fromJson(Map<String, dynamic> json) {
+    return CalendardayDto(
       date: json['date'],
       reflections: (json['reflections'] as List)
           .map((e) => ReflectionModel.fromJson(e))
           .toList(),
     );
   }
+}
+
+sealed class CalendarDayItemStyle {
+  const CalendarDayItemStyle();
+}
+
+final class CalendarDayOnlyDateStyle extends CalendarDayItemStyle {
+  const CalendarDayOnlyDateStyle();
+}
+
+final class CalendarReflectionsStyle extends CalendarDayItemStyle {
+  final String date;
+  final List<ReflectionModel> reflections;
+  const CalendarReflectionsStyle(this.date, this.reflections);
+}
+
+final class CalendarDayDashlineStyle extends CalendarDayItemStyle {
+  const CalendarDayDashlineStyle();
+}
+
+class CalendarDayItem {
+  final String date;
+  final CalendarDayItemStyle style;
+
+  const CalendarDayItem({required this.date, required this.style});
 }
