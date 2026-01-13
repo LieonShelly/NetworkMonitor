@@ -5,8 +5,8 @@ import 'package:ltapp_flutter/src/core/date_utl.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
+import 'package:ltapp_flutter/src/features/calendar/calendar_content_view.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_month_header_view.dart';
-import 'package:ltapp_flutter/src/features/calendar/calendar_month_view.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_controller.dart';
 
 class CalendarPage extends ConsumerStatefulWidget {
@@ -188,7 +188,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
           height: totalH,
-          child: _CalendarContentPageView(
+          child: CalendarContentView(
             pageController: _pageController,
             itemWidth: itemWith,
             itemHeight: cellH,
@@ -209,85 +209,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           child: scrollContent,
         );
       },
-    );
-  }
-}
-
-class _CalendarContentPageView extends ConsumerWidget {
-  final PageController pageController;
-  final double itemWidth;
-  final double itemHeight;
-
-  const _CalendarContentPageView({
-    super.key,
-    required this.pageController,
-    required this.itemWidth,
-    required this.itemHeight,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final aspectRatio = itemWidth / itemHeight;
-    final spacingH = 20.0;
-    final reflectionMap = ref.watch(
-      calendarControllerProvider.select((state) => state.reflectionMap.value),
-    );
-    final monthList = ref.watch(
-      calendarControllerProvider.select(
-        (state) => state.monthList
-            .where((month) => month.style == CalendarMonthItemStyle.normal)
-            .toList(),
-      ),
-    );
-    return PageView.builder(
-      controller: pageController,
-      itemCount: monthList.length,
-      onPageChanged: (index) {
-        final newMonth = monthList[index].month;
-        ref.read(calendarControllerProvider.notifier).onPageChanged(newMonth);
-      },
-      itemBuilder: (context, index) {
-        if (index >= monthList.length) {
-          return null;
-        }
-        final monthDate = monthList[index].month;
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CalendarMonthView(
-              month: monthDate,
-              childAspectRatio: aspectRatio,
-              cellHeight: itemHeight,
-              dataMap: reflectionMap,
-              onDateTap: (date) {},
-            ),
-            SizedBox(height: spacingH),
-            _buildFooterStats(),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildFooterStats() {
-    return Column(
-      children: [
-        Text(
-          '9 icons created this month',
-          style: AppTextStyle.feltTipSeniorRegular(
-            color: Color(0xff000000),
-            fontSize: 18,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          '20 more days to go!',
-          style: AppTextStyle.feltTipSeniorRegular(
-            color: Color(0xff000000),
-            fontSize: 18,
-          ),
-        ),
-      ],
     );
   }
 }
