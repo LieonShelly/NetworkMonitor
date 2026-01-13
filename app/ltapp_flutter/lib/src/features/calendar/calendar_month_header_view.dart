@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_controller.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 class CalendarMonthHeaderView extends ConsumerStatefulWidget {
   final Function(int pageIndex) onMonthSelected;
@@ -16,13 +17,16 @@ class CalendarMonthHeaderView extends ConsumerStatefulWidget {
 }
 
 class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
-  late ScrollController _scrollController;
+  late AutoScrollController _scrollController;
   final double _itemWidth = 70;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
+
+    _scrollController = AutoScrollController(
+      viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, 0),
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToCurrentFocusedMonth(animate: false);
     });
@@ -34,24 +38,16 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
     super.dispose();
   }
 
-  void _scrollToIndex(int idnex, {bool animate = true}) {
-    if (!_scrollController.hasClients) return;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final targetOffset = (idnex * _itemWidth) - _itemWidth * 0.5;
-    print(targetOffset);
-    if (animate) {
-      _scrollController.animateTo(
-        targetOffset,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    } else {
-      _scrollController.jumpTo(targetOffset);
-    }
+  Future<void> _scrollToIndex(int index, {bool animate = true}) async {
+    await _scrollController.scrollToIndex(
+      index,
+      preferPosition: AutoScrollPosition.middle,
+      duration: animate ? const Duration(milliseconds: 300) : Duration.zero,
+    );
   }
 
   void _scrollToCurrentFocusedMonth({bool animate = true}) {
-    final focusedMonth = ref.watch(calendarControllerProvider).focusedMonth;
+    final focusedMonth = ref.read(calendarControllerProvider).focusedMonth;
     final monthList = ref.read(calendarControllerProvider).monthList;
     final index = monthList.indexWhere(
       (month) =>
@@ -75,9 +71,7 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
     final focusedMonth = ref.watch(
       calendarControllerProvider.select((value) => value.focusedMonth),
     );
-    final monthList = ref.watch(
-      calendarControllerProvider.select((value) => value.monthList),
-    );
+    final monthList = ref.read(calendarControllerProvider).monthList;
     return SizedBox(
       height: 42,
       child: ListView.builder(
@@ -89,9 +83,10 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
           final isSelected =
               itemDate.year == focusedMonth.year &&
               itemDate.month == focusedMonth.month;
+          Widget monthWidget;
           switch (monthList[index].style) {
             case CalendarMonthItemStyle.normal:
-              return GestureDetector(
+              monthWidget = GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   widget.onMonthSelected(index);
@@ -99,8 +94,14 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
                 child: _buildNormalMonthItem(itemDate, isSelected),
               );
             case CalendarMonthItemStyle.showYear:
-              return _buildYearMonthItem(itemDate);
+              monthWidget = _buildYearMonthItem(itemDate);
           }
+          return AutoScrollTag(
+            key: ValueKey(index),
+            controller: _scrollController,
+            index: index,
+            child: monthWidget,
+          );
         },
       ),
     );

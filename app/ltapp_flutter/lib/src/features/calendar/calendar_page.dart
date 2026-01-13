@@ -23,7 +23,16 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 0);
+    final controller = ref.read(calendarControllerProvider.notifier);
+    final state = ref.read(calendarControllerProvider);
+    final normalMonths = controller.normalMonths;
+    int initialIndex = normalMonths.indexWhere(
+      (e) =>
+          e.month.year == state.focusedMonth.year &&
+          e.month.month == state.focusedMonth.month,
+    );
+    if (initialIndex == -1) initialIndex = 0;
+    _pageController = PageController(initialPage: initialIndex);
   }
 
   @override
@@ -54,6 +63,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
   Widget _buildHeader() {
     final calendarState = ref.watch(calendarControllerProvider);
+    final calendarController = ref.watch(calendarControllerProvider.notifier);
     final Widget column = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 0,
@@ -81,11 +91,18 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
                 ),
               ),
               onTap: () {
-                _pageController.animateToPage(
-                  0,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
+                final now = DateTime.now();
+                final normalMonths = calendarController.normalMonths;
+                int index = normalMonths.indexWhere(
+                  (e) => e.month.year == now.year && e.month.month == now.month,
                 );
+                if (index != -1) {
+                  _pageController.animateToPage(
+                    index,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                }
               },
             ),
           ],
@@ -102,11 +119,21 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
 
         CalendarMonthHeaderView(
           onMonthSelected: (index) {
-            _pageController.animateToPage(
-              index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-            );
+            final fullList = ref.read(calendarControllerProvider).monthList;
+            final selectedItem = fullList[index];
+            if (selectedItem.style == CalendarMonthItemStyle.normal) {
+              final normalMonths = calendarController.normalMonths;
+              final bodyIndex = normalMonths.indexWhere(
+                (e) => e == selectedItem,
+              );
+              if (bodyIndex != -1) {
+                _pageController.animateToPage(
+                  bodyIndex,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              }
+            }
           },
         ),
       ],
@@ -207,13 +234,14 @@ class _CalendarContentPageView extends ConsumerWidget {
     );
     final monthList = ref.watch(
       calendarControllerProvider.select(
-        (state) =>
-            state.monthList
-              ..where((month) => month.style == CalendarMonthItemStyle.normal),
+        (state) => state.monthList
+            .where((month) => month.style == CalendarMonthItemStyle.normal)
+            .toList(),
       ),
     );
     return PageView.builder(
       controller: pageController,
+      itemCount: monthList.length,
       onPageChanged: (index) {
         final newMonth = monthList[index].month;
         ref.read(calendarControllerProvider.notifier).onPageChanged(newMonth);

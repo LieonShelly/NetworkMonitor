@@ -33,6 +33,12 @@ class CalendarState {
 
 @riverpod
 class CalendarController extends _$CalendarController {
+  List<CalendarMonthItem> get normalMonths {
+    return state.monthList
+        .where((e) => e.style == CalendarMonthItemStyle.normal)
+        .toList();
+  }
+
   @override
   CalendarState build() {
     final now = DateTime.now();
