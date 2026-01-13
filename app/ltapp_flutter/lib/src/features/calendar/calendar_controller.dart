@@ -94,23 +94,26 @@ class CalendarController extends _$CalendarController {
     DateTime now = DateTime.now();
     List<CalendarMonthItem> moths = [];
 
-    moths.add(
-      CalendarMonthItem(
-        month: DateTime(now.year, 1),
-        days: [],
-        style: CalendarMonthItemStyle.showYear,
-      ),
-    );
-    for (var index = 1; index <= 12; index++) {
-      final month = DateTime(now.year, index);
+    for (var year = 2025; year <= now.year + 10; year++) {
       moths.add(
         CalendarMonthItem(
-          month: month,
+          month: DateTime(year, 1),
           days: [],
-          style: CalendarMonthItemStyle.normal,
+          style: CalendarMonthItemStyle.showYear,
         ),
       );
+      for (var index = 1; index <= 12; index++) {
+        final month = DateTime(year, index);
+        moths.add(
+          CalendarMonthItem(
+            month: month,
+            days: [],
+            style: CalendarMonthItemStyle.normal,
+          ),
+        );
+      }
     }
+
     return moths;
   }
 }

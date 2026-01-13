@@ -18,7 +18,6 @@ class CalendarMonthHeaderView extends ConsumerStatefulWidget {
 
 class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
   late AutoScrollController _scrollController;
-  final double _itemWidth = 70;
 
   @override
   void initState() {
