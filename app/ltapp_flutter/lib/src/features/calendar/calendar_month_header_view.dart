@@ -26,6 +26,7 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
 
     _scrollController = AutoScrollController(
       viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, 0),
+      axis: Axis.horizontal,
     );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToCurrentFocusedMonth(animate: false);
@@ -39,11 +40,18 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
   }
 
   Future<void> _scrollToIndex(int index, {bool animate = true}) async {
-    await _scrollController.scrollToIndex(
-      index,
-      preferPosition: AutoScrollPosition.middle,
-      duration: animate ? const Duration(milliseconds: 300) : Duration.zero,
-    );
+    if (animate) {
+      await _scrollController.scrollToIndex(
+        index,
+        preferPosition: AutoScrollPosition.middle,
+        duration: const Duration(milliseconds: 300),
+      );
+    } else {
+      await _scrollController.scrollToIndex(
+        index,
+        preferPosition: AutoScrollPosition.middle,
+      );
+    }
   }
 
   void _scrollToCurrentFocusedMonth({bool animate = true}) {
