@@ -19,6 +19,7 @@ class CalendarPage extends ConsumerStatefulWidget {
 
 class _CalendarPageState extends ConsumerState<CalendarPage> {
   late PageController _pageController;
+  bool _isHeaderExpanded = true;
 
   @override
   void initState() {
@@ -64,6 +65,87 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
   Widget _buildHeader() {
     final calendarState = ref.watch(calendarControllerProvider);
     final calendarController = ref.watch(calendarControllerProvider.notifier);
+
+    final month = GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        setState(() {
+          _isHeaderExpanded = !_isHeaderExpanded;
+        });
+      },
+      child: Row(
+        children: [
+          Text(
+            DateFormat('MMMM').format(calendarState.focusedMonth),
+            style: AppTextStyle.feltTipSeniorRegular(
+              fontSize: 36,
+              color: Color(0xff000000),
+            ),
+          ),
+          AnimatedRotation(
+            turns: _isHeaderExpanded ? 0 : -0.5,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            child: SvgAsset(IconName.downArrowFill, width: 24, height: 24),
+          ),
+        ],
+      ),
+    );
+    final day = GestureDetector(
+      child: Text(
+        DateFormat('dd').format(DateTime.now()),
+        style: AppTextStyle.feltTipSeniorRegular(
+          fontSize: 18,
+          color: Color(0xff000000),
+        ),
+      ),
+      onTap: () {
+        final now = DateTime.now();
+        final normalMonths = calendarController.normalMonths;
+        int index = normalMonths.indexWhere(
+          (e) => e.month.year == now.year && e.month.month == now.month,
+        );
+        if (index != -1) {
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        }
+      },
+    );
+    final year = Text(
+      DateFormat('yyyy').format(calendarState.focusedMonth),
+      style: TextStyle(
+        fontSize: 24,
+        color: Color(0xFF000000),
+        fontFamily: 'FeltTipSeniorRegular',
+      ),
+    );
+    final montherList = AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      height: _isHeaderExpanded ? 42 : 0,
+      clipBehavior: Clip.hardEdge,
+      decoration: const BoxDecoration(),
+      child: CalendarMonthHeaderView(
+        onMonthSelected: (index) {
+          final fullList = ref.read(calendarControllerProvider).monthList;
+          final selectedItem = fullList[index];
+          if (selectedItem.style == CalendarMonthItemStyle.normal) {
+            final normalMonths = calendarController.normalMonths;
+            final bodyIndex = normalMonths.indexWhere((e) => e == selectedItem);
+            if (bodyIndex != -1) {
+              _pageController.animateToPage(
+                bodyIndex,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            }
+          }
+        },
+      ),
+    );
     final Widget column = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 0,
@@ -71,71 +153,10 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           textBaseline: TextBaseline.alphabetic,
-          children: [
-            Text(
-              DateFormat('MMMM').format(calendarState.focusedMonth),
-              style: AppTextStyle.feltTipSeniorRegular(
-                fontSize: 36,
-                color: Color(0xff000000),
-              ),
-            ),
-            SvgAsset(IconName.downArrowFill, width: 24, height: 24),
-
-            Spacer(),
-            GestureDetector(
-              child: Text(
-                DateFormat('dd').format(DateTime.now()),
-                style: AppTextStyle.feltTipSeniorRegular(
-                  fontSize: 18,
-                  color: Color(0xff000000),
-                ),
-              ),
-              onTap: () {
-                final now = DateTime.now();
-                final normalMonths = calendarController.normalMonths;
-                int index = normalMonths.indexWhere(
-                  (e) => e.month.year == now.year && e.month.month == now.month,
-                );
-                if (index != -1) {
-                  _pageController.animateToPage(
-                    index,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                }
-              },
-            ),
-          ],
+          children: [month, Spacer(), day],
         ),
-
-        Text(
-          DateFormat('yyyy').format(calendarState.focusedMonth),
-          style: TextStyle(
-            fontSize: 24,
-            color: Color(0xFF000000),
-            fontFamily: 'FeltTipSeniorRegular',
-          ),
-        ),
-
-        CalendarMonthHeaderView(
-          onMonthSelected: (index) {
-            final fullList = ref.read(calendarControllerProvider).monthList;
-            final selectedItem = fullList[index];
-            if (selectedItem.style == CalendarMonthItemStyle.normal) {
-              final normalMonths = calendarController.normalMonths;
-              final bodyIndex = normalMonths.indexWhere(
-                (e) => e == selectedItem,
-              );
-              if (bodyIndex != -1) {
-                _pageController.animateToPage(
-                  bodyIndex,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
-              }
-            }
-          },
-        ),
+        year,
+        montherList,
       ],
     );
     return Container(
