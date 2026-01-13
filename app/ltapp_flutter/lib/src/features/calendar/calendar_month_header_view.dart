@@ -37,8 +37,8 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
   void _scrollToIndex(int idnex, {bool animate = true}) {
     if (!_scrollController.hasClients) return;
     final screenWidth = MediaQuery.of(context).size.width;
-    final targetOffset =
-        (idnex * _itemWidth) - (screenWidth / 2) + (_itemWidth / 2);
+    final targetOffset = (idnex * _itemWidth) - _itemWidth * 0.5;
+    print(targetOffset);
     if (animate) {
       _scrollController.animateTo(
         targetOffset,
@@ -52,10 +52,13 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
 
   void _scrollToCurrentFocusedMonth({bool animate = true}) {
     final focusedMonth = ref.watch(calendarControllerProvider).focusedMonth;
-    final now = DateTime.now();
-    final monthDiff =
-        (focusedMonth.year - now.year) * 12 + (focusedMonth.month - now.month);
-    final targetIndex = monthDiff;
+    final monthList = ref.read(calendarControllerProvider).monthList;
+    final index = monthList.indexWhere(
+      (month) =>
+          month.month.month == focusedMonth.month &&
+          month.month.year == focusedMonth.year,
+    );
+    final targetIndex = index;
     _scrollToIndex(targetIndex, animate: animate);
   }
 
