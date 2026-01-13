@@ -5,14 +5,9 @@ import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_controller.dart';
 
 class CalendarMonthHeaderView extends ConsumerStatefulWidget {
-  final int initPage;
   final Function(int pageIndex) onMonthSelected;
 
-  const CalendarMonthHeaderView({
-    super.key,
-    required this.initPage,
-    required this.onMonthSelected,
-  });
+  const CalendarMonthHeaderView({super.key, required this.onMonthSelected});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
@@ -60,7 +55,7 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
     final now = DateTime.now();
     final monthDiff =
         (focusedMonth.year - now.year) * 12 + (focusedMonth.month - now.month);
-    final targetIndex = widget.initPage + monthDiff;
+    final targetIndex = monthDiff;
     _scrollToIndex(targetIndex, animate: animate);
   }
 
@@ -77,35 +72,40 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
     final focusedMonth = ref.watch(
       calendarControllerProvider.select((value) => value.focusedMonth),
     );
+    final monthList = ref.watch(
+      calendarControllerProvider.select((value) => value.monthList),
+    );
     return SizedBox(
       height: 42,
       child: ListView.builder(
         controller: _scrollController,
         scrollDirection: Axis.horizontal,
-        itemExtent: _itemWidth,
-        itemCount: 20000,
+        itemCount: monthList.length,
         itemBuilder: (context, index) {
-          final monthDifference = index - widget.initPage;
-          final now = DateTime.now();
-          final itemDate = DateTime(now.year, now.month + monthDifference);
+          final itemDate = monthList[index].month;
           final isSelected =
               itemDate.year == focusedMonth.year &&
               itemDate.month == focusedMonth.month;
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              widget.onMonthSelected(index);
-            },
-            child: _buildMonthItem(itemDate, isSelected),
-          );
+          switch (monthList[index].style) {
+            case CalendarMonthItemStyle.normal:
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  widget.onMonthSelected(index);
+                },
+                child: _buildNormalMonthItem(itemDate, isSelected),
+              );
+            case CalendarMonthItemStyle.showYear:
+              return _buildYearMonthItem(itemDate);
+          }
         },
       ),
     );
   }
 
-  Widget _buildMonthItem(DateTime date, [bool isSelected = true]) {
+  Widget _buildNormalMonthItem(DateTime date, [bool isSelected = true]) {
     final text = Padding(
-      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 12),
       child: Text(
         DateFormat('MMM').format(date),
         textAlign: TextAlign.center,
@@ -129,6 +129,20 @@ class _CalendarMonthHeaderView extends ConsumerState<CalendarMonthHeaderView> {
         alignment: Alignment.center,
         decoration: isSelected ? selectedDecoration : unSelctedDecoration,
         child: text,
+      ),
+    );
+  }
+
+  Widget _buildYearMonthItem(DateTime date) {
+    final year = date.year;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+      child: Text(
+        '$year',
+        style: AppTextStyle.feltTipSeniorRegular(
+          fontSize: 20,
+          color: Color(0xff000000),
+        ),
       ),
     );
   }

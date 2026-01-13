@@ -18,13 +18,12 @@ class CalendarPage extends ConsumerStatefulWidget {
 }
 
 class _CalendarPageState extends ConsumerState<CalendarPage> {
-  static const int _initPage = 1000;
   late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: _initPage);
+    _pageController = PageController(initialPage: 0);
   }
 
   @override
@@ -83,7 +82,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
               ),
               onTap: () {
                 _pageController.animateToPage(
-                  _initPage,
+                  0,
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
                 );
@@ -102,7 +101,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         ),
 
         CalendarMonthHeaderView(
-          initPage: _initPage,
           onMonthSelected: (index) {
             _pageController.animateToPage(
               index,
@@ -167,7 +165,6 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
             pageController: _pageController,
             itemWidth: itemWith,
             itemHeight: cellH,
-            initPage: _initPage,
           ),
         );
         final scrollContent = SingleChildScrollView(
@@ -193,14 +190,12 @@ class _CalendarContentPageView extends ConsumerWidget {
   final PageController pageController;
   final double itemWidth;
   final double itemHeight;
-  final int initPage;
 
   const _CalendarContentPageView({
     super.key,
     required this.pageController,
     required this.itemWidth,
     required this.itemHeight,
-    required this.initPage,
   });
 
   @override
@@ -210,18 +205,24 @@ class _CalendarContentPageView extends ConsumerWidget {
     final reflectionMap = ref.watch(
       calendarControllerProvider.select((state) => state.reflectionMap.value),
     );
+    final monthList = ref.watch(
+      calendarControllerProvider.select(
+        (state) =>
+            state.monthList
+              ..where((month) => month.style == CalendarMonthItemStyle.normal),
+      ),
+    );
     return PageView.builder(
       controller: pageController,
       onPageChanged: (index) {
-        final monthDifference = index - initPage;
-        final now = DateTime.now();
-        final newMonth = DateTime(now.year, now.month + monthDifference);
+        final newMonth = monthList[index].month;
         ref.read(calendarControllerProvider.notifier).onPageChanged(newMonth);
       },
       itemBuilder: (context, index) {
-        final monthDifference = index - initPage;
-        final now = DateTime.now();
-        final monthDate = DateTime(now.year, now.month + monthDifference);
+        if (index >= monthList.length) {
+          return null;
+        }
+        final monthDate = monthList[index].month;
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
