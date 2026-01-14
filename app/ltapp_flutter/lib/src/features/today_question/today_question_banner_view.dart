@@ -15,7 +15,31 @@ class TodayQuestionBannerView extends ConsumerStatefulWidget {
 }
 
 class _TodayQuestionBannerViewState
-    extends ConsumerState<TodayQuestionBannerView> {
+    extends ConsumerState<TodayQuestionBannerView>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    );
+    _scaleAnimation = Tween<double>(
+      begin: 1,
+      end: 1.1,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+    _controller.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final cross = SvgAsset(IconName.smallCross, width: 20, height: 20);
@@ -46,9 +70,17 @@ class _TodayQuestionBannerViewState
       ],
     );
 
+    final animatedContent = ScaleTransition(
+      scale: _scaleAnimation,
+      child: gradientContainer,
+    );
     final btn = GestureDetector(
       onTap: () {},
-      child: SizedBox(width: 50, height: 50, child: gradientContainer),
+      child: SizedBox(
+        width: 50,
+        height: 50,
+        child: Center(child: animatedContent),
+      ),
     );
 
     final container = Container(
