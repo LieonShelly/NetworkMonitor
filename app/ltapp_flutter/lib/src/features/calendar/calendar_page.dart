@@ -217,7 +217,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         );
         final scrollContent = SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: content,
+          child: Column(children: [content, const SizedBox(height: 200)]),
         );
         return RefreshIndicator(
           color: Colors.black,

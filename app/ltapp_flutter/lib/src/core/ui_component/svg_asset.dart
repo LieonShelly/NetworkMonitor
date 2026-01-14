@@ -13,7 +13,7 @@ class SvgAsset extends StatelessWidget {
     this.width,
     this.height,
     this.color,
-    this.fit = BoxFit.none,
+    this.fit = BoxFit.contain,
     super.key,
   });
 

@@ -98,18 +98,13 @@ class CalendarController extends _$CalendarController {
       moths.add(
         CalendarMonthItem(
           month: DateTime(year, 1),
-          days: [],
           style: CalendarMonthItemStyle.showYear,
         ),
       );
       for (var index = 1; index <= 12; index++) {
         final month = DateTime(year, index);
         moths.add(
-          CalendarMonthItem(
-            month: month,
-            days: [],
-            style: CalendarMonthItemStyle.normal,
-          ),
+          CalendarMonthItem(month: month, style: CalendarMonthItemStyle.normal),
         );
       }
     }
@@ -122,12 +117,7 @@ enum CalendarMonthItemStyle { normal, showYear }
 
 class CalendarMonthItem {
   final DateTime month;
-  final List<CalendarDayItem> days;
   final CalendarMonthItemStyle style;
 
-  const CalendarMonthItem({
-    required this.month,
-    required this.days,
-    required this.style,
-  });
+  const CalendarMonthItem({required this.month, required this.style});
 }

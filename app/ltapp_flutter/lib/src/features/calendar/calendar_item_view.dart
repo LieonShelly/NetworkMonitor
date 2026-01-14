@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';

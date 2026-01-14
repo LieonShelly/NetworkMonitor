@@ -1,0 +1,104 @@
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ltapp_flutter/src/core/theme/app_style.dart';
+import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
+import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
+
+class TodayQuestionBannerView extends ConsumerStatefulWidget {
+  const TodayQuestionBannerView({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _TodayQuestionBannerViewState();
+  }
+}
+
+class _TodayQuestionBannerViewState
+    extends ConsumerState<TodayQuestionBannerView> {
+  @override
+  Widget build(BuildContext context) {
+    final cross = SvgAsset(IconName.smallCross, width: 20, height: 20);
+    final gradient = Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFF040404), Color(0xFF656565)],
+        ),
+        borderRadius: BorderRadius.circular(20),
+      ),
+    );
+
+    final gradientContainer = Stack(
+      alignment: Alignment.center,
+      children: [
+        gradient,
+        ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 2.0),
+            child: Container(color: Colors.transparent),
+          ),
+        ),
+        cross,
+      ],
+    );
+
+    final btn = GestureDetector(
+      onTap: () {},
+      child: SizedBox(width: 50, height: 50, child: gradientContainer),
+    );
+
+    final container = Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Color(0xffFFFEFD),
+        boxShadow: [
+          BoxShadow(color: Color(0xffcccccc).withOpacity(0.25), blurRadius: 20),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Question of the day",
+              style: AppTextStyle.poppins(
+                fontSize: 12,
+                color: Color(0xff6f6f6f),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Text2
+                Expanded(
+                  child: Text(
+                    "What small moment of peace did you experience today?",
+                    textAlign: TextAlign.left,
+                    style: AppTextStyle.vividlyRegular(
+                      fontSize: 24,
+                      color: Color(0xff000000),
+                      height: 0.8,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 14),
+                btn,
+              ],
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      child: container,
+    );
+  }
+}
