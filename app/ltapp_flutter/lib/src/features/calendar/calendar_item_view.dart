@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -15,6 +17,9 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (DateUtils.isSameDay(date, DateTime.now())) {
+      return _buildAddBtnView();
+    }
     if (item == null) {
       return _buildNoneIconView();
     }
@@ -29,7 +34,9 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
 
   Widget _buildReflectionView(List<ReflectionModel> reflections) {
     final relfections = reflections;
-    if (relfections.length == 1) {
+    if (reflections.isEmpty && DateUtils.isSameDay(date, DateTime.now())) {
+      return _buildAddBtnView();
+    } else if (relfections.length == 1) {
       return buildOneIconView(reflections);
     } else if (relfections.length == 2) {
       return buildTwoIconView(reflections);
@@ -360,6 +367,52 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
             alignment: Alignment.bottomCenter,
             child: SizedBox(width: 12, height: 12, child: DiagonalLine()),
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAddBtnView() {
+    final cross = SvgAsset(IconName.smallCross, width: 10, height: 10);
+    final gradient = Container(
+      width: 20,
+      height: 20,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFF040404), Color(0xFF656565)],
+        ),
+        borderRadius: BorderRadius.circular(20),
+      ),
+    );
+
+    final gradientContainer = Stack(
+      alignment: Alignment.center,
+      children: [
+        gradient,
+        ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 1.0),
+            child: Container(color: Colors.transparent),
+          ),
+        ),
+        cross,
+      ],
+    );
+
+    final btn = GestureDetector(
+      onTap: () {},
+      child: SizedBox(width: 30, height: 30, child: gradientContainer),
+    );
+    const double top = 18;
+    const double bottom = 5;
+    return Stack(
+      children: [
+        Positioned(left: 4, top: 4, child: buildDateView()),
+        Padding(
+          padding: const EdgeInsets.only(top: top, bottom: bottom),
+          child: Align(alignment: Alignment.bottomCenter, child: btn),
         ),
       ],
     );
