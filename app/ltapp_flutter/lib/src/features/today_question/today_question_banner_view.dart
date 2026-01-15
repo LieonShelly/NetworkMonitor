@@ -36,6 +36,16 @@ class _TodayQuestionBannerViewState
   }
 
   @override
+  void didUpdateWidget(covariant TodayQuestionBannerView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
