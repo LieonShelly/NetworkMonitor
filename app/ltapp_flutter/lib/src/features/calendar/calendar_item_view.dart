@@ -3,11 +3,13 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
 import 'package:ltapp_flutter/src/features/calendar/diagonal_line.dart';
 import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
+import 'package:ltapp_flutter/src/core/core.dart';
 
 class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
   final DateTime date;
@@ -25,24 +27,28 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
     return switch (item!.style) {
       CalendarDayOnlyDateStyle() => _buildNoneIconView(),
       CalendarReflectionsStyle(reflections: var list) => _buildReflectionView(
+        context,
         list,
       ),
       CalendarDayDashlineStyle() => _buildDashLineView(),
     };
   }
 
-  Widget _buildReflectionView(List<ReflectionModel> reflections) {
+  Widget _buildReflectionView(
+    BuildContext context,
+    List<AnswerModel> reflections,
+  ) {
     final relfections = reflections;
     if (reflections.isEmpty && DateUtils.isSameDay(date, DateTime.now())) {
       return _buildAddBtnView();
     } else if (relfections.length == 1) {
-      return buildOneIconView(reflections);
+      return buildOneIconView(context, reflections);
     } else if (relfections.length == 2) {
-      return buildTwoIconView(reflections);
+      return buildTwoIconView(context, reflections);
     } else if (relfections.length == 3) {
-      return buildThreeIconView(reflections);
+      return buildThreeIconView(context, reflections);
     } else if (relfections.length >= 3) {
-      return buildMoreThanThreeIconView(reflections);
+      return buildMoreThanThreeIconView(context, reflections);
     } else {
       return _buildNoneIconView();
     }
@@ -65,8 +71,7 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
     );
   }
 
-  Widget buildOneIconView(List<ReflectionModel> reflections) {
-    final icon = reflections.last.icon;
+  Widget buildOneIconView(BuildContext context, List<AnswerModel> reflections) {
     const double top = 18;
     const double bottom = 10;
     return Stack(
@@ -76,16 +81,16 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
           padding: EdgeInsets.only(top: top, bottom: bottom),
           child: Align(
             alignment: Alignment.bottomCenter,
-            child: iconView(icon, 24, 24),
+            child: iconView(context, reflections.last, 24, 24),
           ),
         ),
       ],
     );
   }
 
-  Widget buildTwoIconView(List<ReflectionModel> reflections) {
-    final icon1 = reflections.first.icon;
-    final icon2 = reflections.last.icon;
+  Widget buildTwoIconView(BuildContext context, List<AnswerModel> reflections) {
+    final icon1 = reflections.first;
+    final icon2 = reflections.last;
     const double top = 18;
     const double bottom = 10;
     return Stack(
@@ -107,7 +112,7 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
                             constraints.maxHeight < constraints.maxWidth
                             ? constraints.maxHeight
                             : constraints.maxWidth;
-                        return iconView(icon1, size, size);
+                        return iconView(context, icon1, size, size);
                       },
                     ),
                   ),
@@ -124,7 +129,7 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
                             constraints.maxHeight < constraints.maxWidth
                             ? constraints.maxHeight
                             : constraints.maxWidth;
-                        return iconView(icon2, size, size);
+                        return iconView(context, icon2, size, size);
                       },
                     ),
                   ),
@@ -137,10 +142,13 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
     );
   }
 
-  Widget buildThreeIconView(List<ReflectionModel> reflections) {
-    final icon1 = reflections.first.icon;
-    final icon2 = reflections[1].icon;
-    final icon3 = reflections.last.icon;
+  Widget buildThreeIconView(
+    BuildContext context,
+    List<AnswerModel> reflections,
+  ) {
+    final icon1 = reflections.first;
+    final icon2 = reflections[1];
+    final icon3 = reflections.last;
     const double top = 18;
     const double bottom = 1;
     return Stack(
@@ -161,7 +169,7 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
                             constraints.maxHeight < constraints.maxWidth
                             ? constraints.maxHeight
                             : constraints.maxWidth;
-                        return iconView(icon1, size, size);
+                        return iconView(context, icon1, size, size);
                       },
                     ),
                   ),
@@ -179,7 +187,7 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
                             constraints.maxHeight < constraints.maxWidth
                             ? constraints.maxHeight
                             : constraints.maxWidth;
-                        return iconView(icon2, size, size);
+                        return iconView(context, icon2, size, size);
                       },
                     ),
                   ),
@@ -197,7 +205,7 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
                             constraints.maxHeight < constraints.maxWidth
                             ? constraints.maxHeight
                             : constraints.maxWidth;
-                        return iconView(icon3, size, size);
+                        return iconView(context, icon3, size, size);
                       },
                     ),
                   ),
@@ -210,10 +218,13 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
     );
   }
 
-  Widget buildMoreThanThreeIconView(List<ReflectionModel> reflections) {
-    final icon1 = reflections.first.icon;
-    final icon2 = reflections[1].icon;
-    final icon3 = reflections.last.icon;
+  Widget buildMoreThanThreeIconView(
+    BuildContext context,
+    List<AnswerModel> reflections,
+  ) {
+    final icon1 = reflections.first;
+    final icon2 = reflections[1];
+    final icon3 = reflections.last;
     final remaining = (reflections.length) - 3;
     const double top = 20;
     const double bottom = 0;
@@ -276,7 +287,13 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
     );
   }
 
-  Widget iconView(IconModel? icon, double width, double height) {
+  Widget iconView(
+    BuildContext context,
+    AnswerModel? answert,
+    double width,
+    double height,
+  ) {
+    final icon = answert?.icon;
     final placehoder = SvgAsset(IconName.star, width: width, height: height);
     if (icon == null) {
       return placehoder;
@@ -284,18 +301,26 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
 
     switch (icon.status) {
       case IconStatus.generated:
-        return CachedNetworkImage(
-          imageUrl: icon.url ?? "",
-          width: width,
-          height: height,
-          fit: BoxFit.contain,
-          memCacheWidth: (150 * 3).toInt(),
-          placeholder: (context, url) => placehoder,
-          errorWidget: (context, url, error) => placehoder,
-          fadeInDuration: Duration.zero,
-          fadeOutDuration: Duration.zero,
-          key: ValueKey(cacheKey(icon.url ?? "")),
-          cacheKey: cacheKey(icon.url ?? ""),
+        return GestureDetector(
+          onTap: () {
+            context.push('/answer_detail', extra: answert);
+          },
+          child: Hero(
+            tag: 'answer_icon_${answert?.id ?? ""}',
+            child: CachedNetworkImage(
+              imageUrl: icon.url ?? "",
+              width: width,
+              height: height,
+              fit: BoxFit.contain,
+              memCacheWidth: (150 * 3).toInt(),
+              placeholder: (context, url) => placehoder,
+              errorWidget: (context, url, error) => placehoder,
+              fadeInDuration: Duration.zero,
+              fadeOutDuration: Duration.zero,
+              key: ValueKey(cacheKey(icon.url ?? "")),
+              cacheKey: cacheKey(icon.url ?? ""),
+            ),
+          ),
         );
       default:
         return placehoder;
@@ -303,7 +328,7 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
   }
 
   Widget _buildGridItem(
-    IconModel? icon, {
+    AnswerModel? icon, {
     Alignment alignment = Alignment.bottomCenter,
   }) {
     // if (icon == null) return const SizedBox();
@@ -318,7 +343,7 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
           return SizedBox(
             width: size,
             height: size,
-            child: iconView(icon, size, size),
+            child: iconView(context, icon, size, size),
           );
         },
       ),
@@ -415,16 +440,5 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
         ),
       ],
     );
-  }
-}
-
-mixin ImageCacheKeyType {
-  String cacheKey(String url) {
-    try {
-      final uri = Uri.parse(url);
-      return uri.pathSegments.last;
-    } catch (e) {
-      return url;
-    }
   }
 }

@@ -67,14 +67,14 @@ class QuestionModel {
   }
 }
 
-class ReflectionModel {
+class AnswerModel {
   final String id;
   final String content;
   final String createdYmd;
   final QuestionModel question;
   final IconModel? icon;
 
-  ReflectionModel({
+  AnswerModel({
     required this.id,
     required this.content,
     required this.createdYmd,
@@ -82,8 +82,8 @@ class ReflectionModel {
     this.icon,
   });
 
-  factory ReflectionModel.fromJson(Map<String, dynamic> json) {
-    return ReflectionModel(
+  factory AnswerModel.fromJson(Map<String, dynamic> json) {
+    return AnswerModel(
       id: json['id'] as String,
       content: json['content'] as String,
       createdYmd: json['created_ymd'] as String,
@@ -95,7 +95,7 @@ class ReflectionModel {
 
 class CalendardayDto {
   final String date;
-  final List<ReflectionModel> reflections;
+  final List<AnswerModel> reflections;
 
   CalendardayDto({required this.date, required this.reflections});
 
@@ -103,7 +103,7 @@ class CalendardayDto {
     return CalendardayDto(
       date: json['date'],
       reflections: (json['reflections'] as List)
-          .map((e) => ReflectionModel.fromJson(e))
+          .map((e) => AnswerModel.fromJson(e))
           .toList(),
     );
   }
@@ -119,7 +119,7 @@ final class CalendarDayOnlyDateStyle extends CalendarDayItemStyle {
 
 final class CalendarReflectionsStyle extends CalendarDayItemStyle {
   final String date;
-  final List<ReflectionModel> reflections;
+  final List<AnswerModel> reflections;
   const CalendarReflectionsStyle(this.date, this.reflections);
 }
 
