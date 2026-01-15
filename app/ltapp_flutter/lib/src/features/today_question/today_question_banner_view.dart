@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
+import 'package:ltapp_flutter/src/service/dto/dto_model.dart';
 
 class TodayQuestionBannerView extends ConsumerStatefulWidget {
   const TodayQuestionBannerView({super.key});

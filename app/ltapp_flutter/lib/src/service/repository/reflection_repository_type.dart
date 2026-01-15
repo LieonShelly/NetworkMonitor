@@ -5,4 +5,6 @@ abstract interface class ReflectionRepositoryType {
     required DateTime start,
     required DateTime end,
   });
+
+  Future<List<QuestionModel>> fetchTodayQuestions();
 }

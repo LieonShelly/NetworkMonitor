@@ -122,7 +122,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
         fontFamily: 'FeltTipSeniorRegular',
       ),
     );
-    final montherList = AnimatedContainer(
+    final montheaderList = AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
       height: _isHeaderExpanded ? 42 : 0,
@@ -156,7 +156,7 @@ class _CalendarPageState extends ConsumerState<CalendarPage> {
           children: [month, Spacer(), day],
         ),
         year,
-        montherList,
+        montheaderList,
       ],
     );
     return Container(

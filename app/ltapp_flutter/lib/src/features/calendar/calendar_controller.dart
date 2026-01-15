@@ -1,5 +1,5 @@
 import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
-import 'package:ltapp_flutter/src/service/providers/reflection_providers.dart';
+import 'package:ltapp_flutter/src/service/providers/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'calendar_controller.g.dart';
 
@@ -8,12 +8,14 @@ class CalendarState {
   final DateTime selectedDate;
   final List<CalendarMonthItem> monthList;
   final AsyncValue<Map<String, CalendarDayItem>> reflectionMap;
+  final AsyncValue<List<QuestionModel>> todayQuestions;
 
   CalendarState({
     required this.monthList,
     required this.focusedMonth,
     required this.selectedDate,
     this.reflectionMap = const AsyncValue.loading(),
+    this.todayQuestions = const AsyncValue.loading(),
   });
 
   CalendarState copyWith({
@@ -21,12 +23,14 @@ class CalendarState {
     DateTime? focusedMonth,
     DateTime? selectedDate,
     AsyncValue<Map<String, CalendarDayItem>>? reflectionMap,
+    AsyncValue<List<QuestionModel>>? todayQuestions,
   }) {
     return CalendarState(
       monthList: monthList ?? this.monthList,
       focusedMonth: focusedMonth ?? this.focusedMonth,
       selectedDate: selectedDate ?? this.selectedDate,
       reflectionMap: reflectionMap ?? this.reflectionMap,
+      todayQuestions: todayQuestions ?? this.todayQuestions,
     );
   }
 }
@@ -42,8 +46,8 @@ class CalendarController extends _$CalendarController {
   @override
   CalendarState build() {
     final now = DateTime.now();
-    final monthList = generateMonthList();
-    _fetchData(now);
+    final monthList = _generateMonthList();
+    _fetchCalendarData(now);
     return CalendarState(
       monthList: monthList,
       focusedMonth: now,
@@ -53,14 +57,18 @@ class CalendarController extends _$CalendarController {
 
   void onPageChanged(DateTime newMonth) {
     state = state.copyWith(focusedMonth: newMonth);
-    _fetchData(newMonth);
+    _fetchCalendarData(newMonth);
   }
 
   void setdDate(DateTime date) {
     state = state.copyWith(selectedDate: date);
   }
 
-  Future<void> _fetchData(DateTime month) async {
+  Future<void> refreshCurrentMonth() async {
+    await _fetchCalendarData(state.focusedMonth);
+  }
+
+  Future<void> _fetchCalendarData(DateTime month) async {
     final useCase = ref.read(calendarFetchReflectionUseCaseProvider);
     final start = DateTime(month.year, month.month, 1);
     final end = DateTime(month.year, month.month + 1, 0);
@@ -86,11 +94,7 @@ class CalendarController extends _$CalendarController {
     }
   }
 
-  Future<void> refreshCurrentMonth() async {
-    await _fetchData(state.focusedMonth);
-  }
-
-  List<CalendarMonthItem> generateMonthList() {
+  List<CalendarMonthItem> _generateMonthList() {
     DateTime now = DateTime.now();
     List<CalendarMonthItem> moths = [];
 

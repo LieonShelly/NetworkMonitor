@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
-import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
-import 'package:ltapp_flutter/src/service/repository/reflection_repository_type.dart';
+import 'package:ltapp_flutter/src/service/dto/dto_model.dart';
+import 'package:ltapp_flutter/src/service/repository/repository.dart';
 
 abstract interface class CalendarFetchReflectionUseCaseType {
   Future<Map<String, CalendarDayItem>> execute(DateTime start, DateTime end);
