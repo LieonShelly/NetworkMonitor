@@ -18,7 +18,7 @@ class MyApp extends ConsumerWidget {
       title: 'Little Thing',
       theme: ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFFFFAF4),
+        scaffoldBackgroundColor: const Color(0xFFFFFDF8),
       ),
     );
   }

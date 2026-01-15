@@ -8,42 +8,55 @@ part 'app_router.g.dart';
 
 // 私有 key 用于获取 context
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
-
 @riverpod
 GoRouter router(Ref ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/calendar',
     routes: [
-      ShellRoute(
-        navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) {
-          return HomeView(child: child);
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return HomeView(navigationShell: navigationShell);
         },
-        routes: [
-          GoRoute(
-            path: '/calendar',
-            pageBuilder: (context, state) =>
-                const NoTransitionPage(child: CalendarPage()),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/calendar',
+                pageBuilder: (context, state) =>
+                    const NoTransitionPage(child: CalendarPage()),
+              ),
+            ],
           ),
-          GoRoute(
-            path: '/thread',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: Scaffold(body: Center(child: Text("Thread page"))),
-            ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/thread',
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: Scaffold(body: Center(child: Text("Thread page"))),
+                ),
+              ),
+            ],
           ),
-          GoRoute(
-            path: '/insights',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: Scaffold(body: Center(child: Text("insights page"))),
-            ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/insights',
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: Scaffold(body: Center(child: Text("insights page"))),
+                ),
+              ),
+            ],
           ),
-          GoRoute(
-            path: '/user',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: Scaffold(body: Center(child: Text("user page"))),
-            ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/user',
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: Scaffold(body: Center(child: Text("user page"))),
+                ),
+              ),
+            ],
           ),
         ],
       ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ltapp_flutter/src/core/ui_component/app_tabbar.dart';
 import 'package:ltapp_flutter/src/features/today_question/today_question_banner_view.dart';
 
 class HomeView extends StatelessWidget {
-  final Widget child;
+  final StatefulNavigationShell navigationShell;
 
-  const HomeView({super.key, required this.child});
+  const HomeView({super.key, required this.navigationShell});
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +17,19 @@ class HomeView extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Positioned.fill(child: child),
+            Positioned.fill(child: navigationShell),
             Positioned(
               left: 0,
               right: 0,
               bottom: tabarH + tabbarTop,
               child: TodayQuestionBannerView(),
             ),
-            Positioned(left: 0, right: 0, bottom: 0, child: AppTabbar()),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: AppTabbar(navigationShell: navigationShell),
+            ),
           ],
         ),
       ),

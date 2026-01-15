@@ -115,6 +115,7 @@ class _TodayQuestionBannerViewState
         padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 8,
           children: [
             Text(
               "Question of the day",
@@ -125,6 +126,7 @@ class _TodayQuestionBannerViewState
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Text2
                 Expanded(

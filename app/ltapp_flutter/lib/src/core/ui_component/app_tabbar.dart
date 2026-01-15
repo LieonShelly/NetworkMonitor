@@ -4,15 +4,20 @@ import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
 
 class AppTabbar extends StatelessWidget {
-  const AppTabbar({super.key});
+  final StatefulNavigationShell navigationShell;
+
+  const AppTabbar({super.key, required this.navigationShell});
 
   @override
   Widget build(BuildContext context) {
     final String location = GoRouterState.of(context).uri.path;
+    final currentIndex = navigationShell.currentIndex;
+
     final row = Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _buildTabbarItem(
+          0,
           context,
           Icons.calendar_today_outlined,
           '/calendar',
@@ -21,6 +26,7 @@ class AppTabbar extends StatelessWidget {
           IconName.deselectedCalendar,
         ),
         _buildTabbarItem(
+          1,
           context,
           Icons.all_inclusive,
           '/thread',
@@ -29,6 +35,7 @@ class AppTabbar extends StatelessWidget {
           IconName.deselectedThread,
         ),
         _buildTabbarItem(
+          2,
           context,
           Icons.lightbulb_outline,
           '/insights',
@@ -37,6 +44,7 @@ class AppTabbar extends StatelessWidget {
           IconName.deselectedInsights,
         ),
         _buildTabbarItem(
+          3,
           context,
           Icons.person_outline,
           '/user',
@@ -68,6 +76,7 @@ class AppTabbar extends StatelessWidget {
   }
 
   Widget _buildTabbarItem(
+    int index,
     BuildContext context,
     IconData icon,
     String targetPath,
@@ -78,7 +87,10 @@ class AppTabbar extends StatelessWidget {
     final bool isActive = targetPath == currentPath;
     return IconButton(
       onPressed: () {
-        context.go(targetPath);
+        navigationShell.goBranch(
+          index,
+          initialLocation: index == navigationShell.currentIndex,
+        );
       },
       icon: isActive
           ? SvgAsset(activeIcon, width: 40, height: 40)
