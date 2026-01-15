@@ -30,7 +30,7 @@ class TodayQuestionBannerController extends _$TodayQuestionBannerController {
     try {
       final list = await usecase.execute();
       if (!ref.mounted) return;
-      state.copyWith(todayQuestions: AsyncValue.data(list));
+      state = state.copyWith(todayQuestions: AsyncValue.data(list));
     } catch (e, stack) {
       if (!ref.mounted) return;
       state = state.copyWith(todayQuestions: AsyncValue.error(e, stack));

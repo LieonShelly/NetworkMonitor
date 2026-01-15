@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
-import 'package:ltapp_flutter/src/service/dto/dto_model.dart';
+import 'package:ltapp_flutter/src/features/today_question/today_question_banner_controller.dart';
 
 class TodayQuestionBannerView extends ConsumerStatefulWidget {
   const TodayQuestionBannerView({super.key});
@@ -43,6 +43,15 @@ class _TodayQuestionBannerViewState
 
   @override
   Widget build(BuildContext context) {
+    final todayQuestions = ref.watch(
+      todayQuestionBannerControllerProvider.select(
+        (state) => state.todayQuestions.value,
+      ),
+    );
+    final latestQueistion = todayQuestions?.last;
+    if (latestQueistion == null) {
+      return SizedBox();
+    }
     final cross = SvgAsset(IconName.smallCross, width: 20, height: 20);
     final gradient = Container(
       width: 40,
@@ -110,7 +119,7 @@ class _TodayQuestionBannerViewState
                 // Text2
                 Expanded(
                   child: Text(
-                    "What small moment of peace did you experience today?",
+                    latestQueistion?.title ?? "",
                     textAlign: TextAlign.left,
                     style: AppTextStyle.vividlyRegular(
                       fontSize: 24,
