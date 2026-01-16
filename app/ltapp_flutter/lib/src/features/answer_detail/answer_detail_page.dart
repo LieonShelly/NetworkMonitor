@@ -23,6 +23,8 @@ class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage>
   late AnimationController _controller;
   late Animation<double> _scaleYAnimation;
   bool _hasTiggeredAnimation = false;
+  bool _isImageReady = false;
+  bool _isTansitionCompleted = false;
 
   @override
   void initState() {
@@ -42,6 +44,35 @@ class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (route != null && route.animation != null) {
+      if (route.animation!.status == AnimationStatus.completed) {
+        _isTansitionCompleted = true;
+      } else {
+        route.animation!.addStatusListener(_handleRouteAnimationStatus);
+      }
+    }
+  }
+
+  void _handleRouteAnimationStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      _isTansitionCompleted = true;
+      _checkAndStartAnimation();
+    }
+  }
+
+  void _checkAndStartAnimation() {
+    if (_isImageReady && _isTansitionCompleted && !_hasTiggeredAnimation) {
+      if (context.mounted) {
+        _controller.forward();
+        _hasTiggeredAnimation = true;
+      }
+    }
   }
 
   @override
@@ -116,17 +147,14 @@ class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage>
           if (!_hasTiggeredAnimation) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (context.mounted) {
-                _controller.forward();
-                _hasTiggeredAnimation = true;
+                _isImageReady = true;
+                _checkAndStartAnimation();
               }
             });
           }
           return Image(image: imageProvider);
         },
-        placeholder: (context, url) => const SizedBox(
-          height: 100,
-          child: Center(child: CircularProgressIndicator()),
-        ),
+        placeholder: (context, url) => const SizedBox(height: 100),
       ),
     );
   }
