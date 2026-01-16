@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
+import 'package:ltapp_flutter/src/app_router.dart';
 
 class AppTabbar extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
@@ -11,8 +12,6 @@ class AppTabbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String location = GoRouterState.of(context).uri.path;
-    final currentIndex = navigationShell.currentIndex;
-
     final row = Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -20,7 +19,7 @@ class AppTabbar extends StatelessWidget {
           0,
           context,
           Icons.calendar_today_outlined,
-          '/calendar',
+          AppRoutePath.calendar,
           location,
           IconName.calendar,
           IconName.deselectedCalendar,
@@ -29,7 +28,7 @@ class AppTabbar extends StatelessWidget {
           1,
           context,
           Icons.all_inclusive,
-          '/thread',
+          AppRoutePath.thread,
           location,
           IconName.threads,
           IconName.deselectedThread,
@@ -38,7 +37,7 @@ class AppTabbar extends StatelessWidget {
           2,
           context,
           Icons.lightbulb_outline,
-          '/insights',
+          AppRoutePath.insights,
           location,
           IconName.insights,
           IconName.deselectedInsights,
@@ -47,7 +46,7 @@ class AppTabbar extends StatelessWidget {
           3,
           context,
           Icons.person_outline,
-          '/user',
+          AppRoutePath.user,
           location,
           IconName.user,
           IconName.deselectedUser,

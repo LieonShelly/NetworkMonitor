@@ -8,13 +8,22 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_router.g.dart';
 
+class AppRoutePath {
+  static const calendar = "/calendar";
+  static const thread = "/thread";
+  static const insights = "/insights";
+  static const user = "/user";
+  static const answerDetail = "/answer_detail";
+  static const addAnswer = "/add_answer";
+}
+
 // 私有 key 用于获取 context
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 @riverpod
 GoRouter router(Ref ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: '/calendar',
+    initialLocation: AppRoutePath.calendar,
     routes: [
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -24,7 +33,7 @@ GoRouter router(Ref ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/calendar',
+                path: AppRoutePath.calendar,
                 pageBuilder: (context, state) =>
                     const NoTransitionPage(child: CalendarPage()),
               ),
@@ -33,7 +42,7 @@ GoRouter router(Ref ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/thread',
+                path: AppRoutePath.thread,
                 pageBuilder: (context, state) => const NoTransitionPage(
                   child: Scaffold(body: Center(child: Text("Thread page"))),
                 ),
@@ -43,7 +52,7 @@ GoRouter router(Ref ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/insights',
+                path: AppRoutePath.insights,
                 pageBuilder: (context, state) => const NoTransitionPage(
                   child: Scaffold(body: Center(child: Text("insights page"))),
                 ),
@@ -53,7 +62,7 @@ GoRouter router(Ref ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/user',
+                path: AppRoutePath.user,
                 pageBuilder: (context, state) => const NoTransitionPage(
                   child: Scaffold(body: Center(child: Text("user page"))),
                 ),
@@ -65,7 +74,7 @@ GoRouter router(Ref ref) {
 
       GoRoute(
         parentNavigatorKey: _rootNavigatorKey,
-        path: '/answer_detail',
+        path: AppRoutePath.answerDetail,
         pageBuilder: (context, state) {
           final answer = state.extra as AnswerModel;
           return CustomTransitionPage(
