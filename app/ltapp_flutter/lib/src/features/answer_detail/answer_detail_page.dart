@@ -18,7 +18,32 @@ class AnswerDetailPage extends ConsumerStatefulWidget with ImageCacheKeyType {
   }
 }
 
-class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage> {
+class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleYAnimation;
+  bool _hasTiggeredAnimation = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+
+    _scaleYAnimation = Tween<double>(
+      begin: 1,
+      end: 0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +67,7 @@ class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage> {
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: [_buildIconView(), _buildAnswerContentView()],
+            children: [_buildIconView(context), _buildAnswerContentView()],
           ),
           _buildCoverView(),
         ],
@@ -51,7 +76,19 @@ class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage> {
   }
 
   Widget _buildCoverView() {
-    return Container(color: Colors.red.withAlpha(100));
+    return AnimatedBuilder(
+      animation: _scaleYAnimation,
+      builder: (context, child) {
+        if (_scaleYAnimation.value == 0) {
+          return const SizedBox.shrink();
+        }
+        return Transform(
+          transform: Matrix4.diagonal3Values(1.0, _scaleYAnimation.value, 1.0),
+          alignment: Alignment.bottomCenter,
+          child: Container(color: Colors.red.withAlpha(100)),
+        );
+      },
+    );
   }
 
   Widget _buildHeader() {
@@ -69,12 +106,27 @@ class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage> {
     );
   }
 
-  Widget _buildIconView() {
+  Widget _buildIconView(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 48, vertical: 50),
       child: CachedNetworkImage(
         imageUrl: widget.answer.icon?.url ?? "",
         cacheKey: widget.answer.icon?.url,
+        imageBuilder: (context, imageProvider) {
+          if (!_hasTiggeredAnimation) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (context.mounted) {
+                _controller.forward();
+                _hasTiggeredAnimation = true;
+              }
+            });
+          }
+          return Image(image: imageProvider);
+        },
+        placeholder: (context, url) => const SizedBox(
+          height: 100,
+          child: Center(child: CircularProgressIndicator()),
+        ),
       ),
     );
   }
@@ -82,14 +134,12 @@ class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage> {
   Widget _buildQuestionView() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Expanded(
-        child: Text(
-          widget.answer.question.title,
-          style: AppTextStyle.vividlyRegular(
-            fontSize: 32,
-            color: Color(0xff000000),
-            height: 0.9,
-          ),
+      child: Text(
+        widget.answer.question.title,
+        style: AppTextStyle.vividlyRegular(
+          fontSize: 32,
+          color: Color(0xff000000),
+          height: 0.9,
         ),
       ),
     );
@@ -107,7 +157,7 @@ class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage> {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: BoxBorder.all(width: 1, color: Color(0xffebebeb)),
+        border: Border.all(width: 1, color: Color(0xffebebeb)),
       ),
       child: text,
     );
