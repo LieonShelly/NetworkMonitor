@@ -10,6 +10,7 @@ enum IconName {
   deselectedUser,
   star,
   smallCross,
+  close,
 }
 
 extension IconNameExtension on IconName {
@@ -37,6 +38,8 @@ extension IconNameExtension on IconName {
         return "Star.svg";
       case IconName.smallCross:
         return "small_cross.svg";
+      case IconName.close:
+        return "close.svg";
     }
   }
 }
