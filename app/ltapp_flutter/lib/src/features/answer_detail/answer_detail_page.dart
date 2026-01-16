@@ -116,7 +116,15 @@ class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage>
         return Transform(
           transform: Matrix4.diagonal3Values(1.0, _scaleYAnimation.value, 1.0),
           alignment: Alignment.bottomCenter,
-          child: Container(color: Colors.red.withAlpha(100)),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFFFFFDF8), Color(0xFFFFFDF8)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+          ),
         );
       },
     );
@@ -148,7 +156,9 @@ class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage>
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (context.mounted) {
                 _isImageReady = true;
-                _checkAndStartAnimation();
+                Future.delayed(const Duration(milliseconds: 500), () {
+                  _checkAndStartAnimation();
+                });
               }
             });
           }
