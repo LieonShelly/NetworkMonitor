@@ -56,47 +56,17 @@ struct ThreadView: View {
     func section(_ question: ThreadQuestionItem) -> some View {
         VStack(alignment: .leading, spacing: .zero) {
             questionRow(question.title)
-            let columnCount: Int = 7
-            let colums = (0 ..< columnCount).map { _ in GridItem(.fixed(32), spacing: 8) }
             VStack(spacing: .zero) {
-                LazyVGrid(columns: colums, spacing: 8) {
-                    ForEach(question.answerItems) { answer in
-                        let _ = print(":\(answer.type)")
-                        switch answer.type {
-                        case .addBtn:
-                            addNewBtn
-                        case let .noraml(answer):
-                            IconView(answer: answer)
-                        case .placeholder:
-                            Rectangle()
-                                .fill(Color.clear)
-                                .frame(width: 32, height: 32)
-                        }
-                    }
+                if let didTapShowMore = viewModel.showHandlingMap[question.id] {
+                    iconListView(question: question, didTapShowMore: didTapShowMore)
+                    showMoreOrLessView(didTapShowMore)
+                } else {
+                    iconListView(question: question)
                 }
-                HStack(spacing: 8, content: {
-                    ForEach( 1 ... 7, id: \.self) { index in
-                        if index == 7 {
-                            addNewBtn
-                        } else {
-                            Rectangle()
-                                .fill(Color.clear)
-                                .frame(width: 32, height: 32)
-                        }
-                    }
-                })
-                .overlay(alignment: .leading, content: {
-                    Text("show more")
-                        .textStyle(size: 10, color: AppColor.color(hex: 0xBFBFBF), fontFamily: .poppinsRegular)
-                })
-                .padding(.top, 8)
             }
-         
+            .padding(.bottom, 32)
             .padding(.leading, 20)
             .padding(.top, 8)
-            
-          
-            
         }
         .overlay(alignment: .leading) {
             line()
@@ -111,6 +81,50 @@ struct ThreadView: View {
         }
     }
     
+    @ViewBuilder
+    func iconListView(question: ThreadQuestionItem, didTapShowMore: Bool? = nil) -> some View {
+        let columnCount: Int = 7
+        let colums = (0 ..< columnCount).map { _ in GridItem(.fixed(32), spacing: 8) }
+        let answerItems = (didTapShowMore ?? true) ? question.answerItems : Array(question.answerItems[0 ..< viewModel.limit])
+        LazyVGrid(columns: colums, spacing: 8) {
+            ForEach(answerItems) { answer in
+                let _ = print(":\(answer.type)")
+                switch answer.type {
+                case .addBtn:
+                    addNewBtn
+                case let .noraml(answer):
+                    IconView(answer: answer)
+                case .placeholder:
+                    Rectangle()
+                        .fill(Color.clear)
+                        .frame(width: 32, height: 32)
+                }
+            }
+        }
+    }
+    
+    func showMoreOrLessView(_ didTapShowMore: Bool) -> some View {
+        HStack(spacing: 8, content: {
+            ForEach( 1 ... 7, id: \.self) { index in
+                if index == 7 {
+                    addNewBtn
+                } else {
+                    Rectangle()
+                        .fill(Color.clear)
+                        .frame(width: 32, height: 32)
+                }
+            }
+            .opacity(didTapShowMore ? 0 : 1)
+        })
+        .overlay(alignment: .leading, content: {
+            Text(didTapShowMore ? "show less" : "show more")
+                .textStyle(size: 10, color: AppColor.color(hex: 0xBFBFBF), fontFamily: .poppinsRegular)
+                .onTapGesture {
+                    
+                }
+        })
+        .padding(.top, 8)
+    }
           
     func questionRow(_ value: String) -> some View {
         HStack(alignment: .top) {

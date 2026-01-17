@@ -19,16 +19,7 @@ public enum ThreadAnswerItemType: Sendable {
 public struct ThreadAnswerItem: Sendable, Identifiable {
     let type: ThreadAnswerItemType
     
-    public var id: String {
-        switch type {
-        case .noraml(let answer):
-            return answer.id
-        case .placeholder:
-            return "placeholder"
-        case .addBtn:
-            return "addBtn"
-        }
-    }
+    public var id: String = UUID().uuidString
 }
 
 
