@@ -13,7 +13,7 @@ struct ThreadQuestionDTO: Decodable {
 extension ThreadQuestionDTO {
     func toDomain() -> ThreadQuestion {
         return ThreadQuestion(
-            id: id,
+            id: UUID().uuidString,
             title: title,
             answers: answers.map { $0.toDomain() }
         )

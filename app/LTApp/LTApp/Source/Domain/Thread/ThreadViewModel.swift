@@ -6,7 +6,7 @@ import Combine
 
 final class ThreadViewModel: ObservableObject, @unchecked Sendable {
     private let service: any AppDataWithAuthorizationServiceful
-    @MainActor @Published var questionList: [ThreadQuestion] = []
+    @MainActor @Published var questionList: [ThreadQuestionItem] = []
     
     init(service: any AppDataWithAuthorizationServiceful) {
         self.service = service

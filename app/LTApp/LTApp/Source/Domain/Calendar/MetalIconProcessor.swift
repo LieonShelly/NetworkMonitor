@@ -15,17 +15,17 @@ struct MetalIconProcessor: ImageProcessor {
     
     init(thickness: Int = 1) {
         self.thickness = thickness
-        self.identifier = "com.metal.icon.processor.v3_thicknes1s_\(thickness)"
+        self.identifier = "com.metal.icon.processor.v3_thickness_\(thickness)"
     }
     
     func process(item: ImageProcessItem, options: KingfisherParsedOptionsInfo) -> KFCrossPlatformImage? {
         switch item {
         case .image(let image):
-            return MetalImageProcessor.shared.processSync(UIImage(resource: .test), thickness: thickness) ?? image
+            return MetalImageProcessor.shared.processSync(image, thickness: thickness) ?? image
             
         case let .data(data):
             guard let image = UIImage(data: data) else { return nil }
-            return MetalImageProcessor.shared.processSync(UIImage(resource: .test), thickness: thickness) ?? image
+            return MetalImageProcessor.shared.processSync(image, thickness: thickness) ?? image
         }
     }
 }
