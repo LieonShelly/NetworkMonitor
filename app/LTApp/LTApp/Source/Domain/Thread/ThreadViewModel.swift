@@ -24,10 +24,15 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable {
             self.questionList = questionList
             for question in questionList {
                 if question.answerItems.count > limit {
-                    showHandlingMap[question.id] = false
+                    showHandlingMap[question.id] = showHandlingMap[question.id] ?? false
                 }
             }
         }
+    }
+    
+    @MainActor
+    func didTapShowMore(_ question: ThreadQuestionItem) {
+        showHandlingMap[question.id] = !(showHandlingMap[question.id] ?? false)
     }
     
     deinit {

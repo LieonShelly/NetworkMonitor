@@ -16,7 +16,6 @@ struct ThreadView: View {
     }
     
     var body: some View {
-        
         VStack(spacing: .zero) {
             titleView
             ScrollView(showsIndicators: false) {
@@ -59,11 +58,12 @@ struct ThreadView: View {
             VStack(spacing: .zero) {
                 if let didTapShowMore = viewModel.showHandlingMap[question.id] {
                     iconListView(question: question, didTapShowMore: didTapShowMore)
-                    showMoreOrLessView(didTapShowMore)
+                    showMoreOrLessView(question: question, didTapShowMore: didTapShowMore)
                 } else {
                     iconListView(question: question)
                 }
             }
+            .transition(.scale)
             .padding(.bottom, 32)
             .padding(.leading, 20)
             .padding(.top, 8)
@@ -103,7 +103,39 @@ struct ThreadView: View {
         }
     }
     
-    func showMoreOrLessView(_ didTapShowMore: Bool) -> some View {
+    @ViewBuilder
+    func showMoreOrLessView(question: ThreadQuestionItem, didTapShowMore: Bool) -> some View {
+        if question.hasExactDivided {
+            specialShowLessView(question: question, didTapShowMore: didTapShowMore)
+        } else {
+            HStack(spacing: 8, content: {
+                ForEach( 1 ... 7, id: \.self) { index in
+                    if index == 7 {
+                        addNewBtn
+                    } else {
+                        Rectangle()
+                            .fill(Color.clear)
+                            .frame(width: 32, height: 32)
+                    }
+                }
+                .opacity(didTapShowMore ? 0 : 1)
+            })
+            .overlay(alignment: .leading, content: {
+                Text(didTapShowMore ? "show less" : "show more")
+                    .textStyle(size: 10, color: AppColor.color(hex: 0xBFBFBF), fontFamily: .poppinsRegular)
+                    .onTapGesture {
+                        withAnimation(.easeInOut) {
+                            viewModel.didTapShowMore(question)
+                        }
+                    }
+            })
+            .padding(.top, 8)
+        }
+     
+    }
+    
+    
+    func specialShowLessView(question: ThreadQuestionItem, didTapShowMore: Bool) -> some View {
         HStack(spacing: 8, content: {
             ForEach( 1 ... 7, id: \.self) { index in
                 if index == 7 {
@@ -114,13 +146,14 @@ struct ThreadView: View {
                         .frame(width: 32, height: 32)
                 }
             }
-            .opacity(didTapShowMore ? 0 : 1)
         })
         .overlay(alignment: .leading, content: {
             Text(didTapShowMore ? "show less" : "show more")
                 .textStyle(size: 10, color: AppColor.color(hex: 0xBFBFBF), fontFamily: .poppinsRegular)
                 .onTapGesture {
-                    
+                    withAnimation(.easeInOut) {
+                        viewModel.didTapShowMore(question)
+                    }
                 }
         })
         .padding(.top, 8)
@@ -160,23 +193,23 @@ struct ThreadView: View {
     }
     
     var titleView: some View {
-        ZStack(alignment: .leading) {
+        ZStack(alignment: .trailing) {
             Button {
                 homeCoordinator.push(HomeRoute.questionLib)
             } label: {
-                Image(.menu)
+                Image(.library)
                     .resizable()
                     .frame(width: 32, height: 32)
             }
             HStack(spacing: .zero) {
                 Spacer()
-                Text("The Little Things")
-                    .textStyle(size: 32)
+                Text("Threads")
+                    .textStyle(size: 32, fontFamily: .feltTipSeniorRegular)
                 Spacer()
 
             }
         }
-        .padding(.leading, 24)
+        .padding(.horizontal, 24)
     }
     
     var footer: some View {
@@ -195,77 +228,4 @@ struct ThreadView: View {
             .aspectRatio(contentMode: .fit)
             .frame(width: 24, height: 24)
     }
-    
-    @ViewBuilder func addNewBtn(answerCount: Int, question: ThreadQuestion) -> some View {
-       let answerCount = max(answerCount, 1)
-       Button {
-           homeCoordinator.push(HomeRoute.addNewAnswer(question: question.toQuestion()))
-       } label: {
-           Text("+ add new")
-               .textStyle(size: 12, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
-               .padding(.horizontal, 12)
-               .padding(.vertical, 4)
-               .background {
-                   RoundedRectangle(cornerRadius: 12)
-                       .fill(AppColor.color(hex: 0x000000))
-               }
-       }
-       .padding(.top, 5)
-       .padding(.bottom, 76 / CGFloat(answerCount))
-       .padding(.leading, 54)
-
-    }
-}
-
-
-
-struct IconView: View {
-    let answer: Answer
-    var size: CGSize = .init(width: 24, height: 24)
-    
-    var body: some View {
-        iconView(answer, size: size)
-    }
-    
-    @ViewBuilder
-    func iconView(_ answer: Answer, size: CGSize = .init(width: 24, height: 24)) -> some View {
-      
-        if let icon = answer.icon {
-            switch icon.status {
-            case .pending:
-                Image(.lock)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: size.width, height: size.height)
-            default:
-                placeholderIcon
-                    .frame(width: size.width, height: size.height)
-                
-//                if let url = icon.url {
-//                    ThumbnailIconImageView(url: url) {
-//                        placeholderIcon
-//                    }
-//                    .frame(width: size.width, height: size.height)
-//                } else {
-//                    placeholderIcon
-//                        .frame(width: size.width, height: size.height)
-//                }
-            }
-        } else {
-            placeholderIcon
-                .frame(width: size.width, height: size.height)
-        }
-    }
-    
-    var placeholderIcon: some View {
-        Circle()
-            .fill(Color.clear)
-            .overlay(content: {
-                Image(.calendarDripper)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            })
-    }
-    
-    
 }
