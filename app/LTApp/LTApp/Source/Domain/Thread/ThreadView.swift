@@ -14,6 +14,11 @@ struct ThreadView: View {
     let addAnswerAction: ((Question?) -> Void)?
     enum Constants {
         static let iconSize: CGFloat = 24
+        static let iconItemSpacing: CGFloat = 8
+        static let iconColumns: Int = 7
+        static let listHP: CGFloat = 24
+        static let pinIconW: CGFloat = 24
+        static let quesiontTilteHp: CGFloat = 24
     }
     init(viewModel: ThreadViewModel,
          addAnswerAction: ((Question?) -> Void)?,
@@ -24,19 +29,31 @@ struct ThreadView: View {
     }
     
     var body: some View {
-        VStack(spacing: .zero) {
-            titleView
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: .zero) {
-                    listContent
-                    if !viewModel.questionList.isEmpty {
-                        footer
+        GeometryReader { proxy in
+            VStack(spacing: .zero) {
+                titleView
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: .zero) {
+                        ForEach(viewModel.questionList, id: \.id) { question in
+                          section(question, paraent: proxy)
+                        }
+                        if !viewModel.questionList.isEmpty {
+                            footer
+                        }
+                    }
+                    .padding(.top, 16)
+                }
+                .padding(.horizontal, Constants.listHP)
+                .refreshable {
+                    do {
+                        try await viewModel.fetchData()
+                    } catch {
+                        print("threadView:\(error)")
                     }
                 }
-                .padding(.top, 16)
             }
-            .padding(.horizontal, 24)
-            .refreshable {
+            .innerPageRoute($viewModel.subPageRoute)
+            .task {
                 do {
                     try await viewModel.fetchData()
                 } catch {
@@ -44,39 +61,23 @@ struct ThreadView: View {
                 }
             }
         }
-        .innerPageRoute($viewModel.subPageRoute)
-        .task {
-            do {
-                try await viewModel.fetchData()
-            } catch {
-                print("threadView:\(error)")
-            }
-        }
     }
     
-    @ViewBuilder
-    var listContent: some View {
-        ForEach(viewModel.questionList, id: \.id) { question in
-          section(question)
-        }
-    }
-    
-    func section(_ question: ThreadQuestionItem) -> some View {
+    func section(_ question: ThreadQuestionItem, paraent: GeometryProxy) -> some View {
         VStack(alignment: .leading, spacing: .zero) {
             questionRow(question)
-                .background(Color.random)
             VStack(spacing: .zero) {
                 if let didTapShowMore = viewModel.showHandlingMap[question.id] {
-                    iconListView(question: question, didTapShowMore: didTapShowMore)
-                    showMoreOrLessView(question: question, didTapShowMore: didTapShowMore)
+                    iconListView(question: question, didTapShowMore: didTapShowMore, proxy: paraent)
+                    showMoreOrLessView(question: question, didTapShowMore: didTapShowMore, proxy: paraent)
                 } else {
-                    iconListView(question: question)
+                    iconListView(question: question, proxy: paraent)
                 }
             }
             .transition(.scale)
             .padding(.bottom, 32)
-            .padding(.leading, 24 + 24)
-            .padding(.trailing, 24)
+            .padding(.leading, Constants.quesiontTilteHp + Constants.pinIconW)
+            .padding(.trailing, Constants.quesiontTilteHp)
             .padding(.top, 8)
         }
         .overlay(alignment: .leading) {
@@ -85,45 +86,56 @@ struct ThreadView: View {
     }
     
     @ViewBuilder
-    func iconListView(question: ThreadQuestionItem, didTapShowMore: Bool? = nil) -> some View {
-        let columnCount: Int = 7
-        let colums = (0 ..< columnCount).map { _ in GridItem(.fixed(Constants.iconSize), spacing: 8) }
-        let answerItems = (didTapShowMore ?? true) ? question.answerItems : Array(question.answerItems[0 ..< viewModel.limit])
-        LazyVGrid(columns: colums, spacing: 8) {
+    func iconListView(question: ThreadQuestionItem, didTapShowMore: Bool? = nil,  proxy: GeometryProxy) -> some View {
+        let columnCount: Int = Constants.iconColumns
+        let spacing: CGFloat = Constants.iconItemSpacing
+        let iconListW = proxy.size.width - Constants.listHP * 2 - Constants.pinIconW - Constants.quesiontTilteHp * 2
+        let itemWidth: CGFloat = (iconListW - (spacing * CGFloat(columnCount - 1))) / CGFloat(columnCount)
+        let colums = (0 ..< columnCount).map { _ in GridItem(.fixed(itemWidth), spacing: spacing) }
+        let limit = viewModel.limit >= question.answerItems.count ? question.answerItems.count : viewModel.limit
+        let answerItems = (didTapShowMore ?? true) ? question.answerItems : Array(question.answerItems[0 ..< limit])
+        LazyVGrid(columns: colums, alignment: .leading, spacing: spacing) {
             ForEach(answerItems) { answer in
-                
-                switch answer.type {
-                case .addBtn:
-                    addNewBtn(question)
-                case let .noraml(answer):
-                    IconView(answer: answer, size: .init(width: Constants.iconSize, height: Constants.iconSize))
-                        .onTapGesture {
-                            onTapAnswerAction?(.init(answer: answer, question: .init(id: question.id, title: question.title), service: viewModel.service))
-                        }
-                case .placeholder:
-                    Rectangle()
-                        .fill(Color.clear)
-                        .frame(width: Constants.iconSize, height: Constants.iconSize)
-                }
-            }
-        }
-        .background(Color.random)
-    }
-    
-    @ViewBuilder
-    func showMoreOrLessView(question: ThreadQuestionItem, didTapShowMore: Bool) -> some View {
-        if question.hasExactDivided {
-            specialShowLessView(question: question, didTapShowMore: didTapShowMore)
-        } else {
-            HStack(spacing: 8, content: {
-                ForEach( 1 ... 7, id: \.self) { index in
-                    if index == 7 {
+                HStack {
+                    switch answer.type {
+                    case .addBtn:
                         addNewBtn(question)
-                    } else {
+                    case let .noraml(answer):
+                        IconView(answer: answer, size: .init(width: Constants.iconSize, height: Constants.iconSize))
+                            .onTapGesture {
+                                onTapAnswerAction?(.init(answer: answer, question: .init(id: question.id, title: question.title), service: viewModel.service))
+                            }
+                    case .placeholder:
                         Rectangle()
                             .fill(Color.clear)
                             .frame(width: Constants.iconSize, height: Constants.iconSize)
                     }
+                }.frame(width: itemWidth, height: itemWidth)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func showMoreOrLessView(question: ThreadQuestionItem, didTapShowMore: Bool, proxy: GeometryProxy) -> some View {
+        let columnCount: Int = Constants.iconColumns
+        let spacing: CGFloat = Constants.iconItemSpacing
+        let iconListW = proxy.size.width - Constants.listHP * 2 - Constants.pinIconW - Constants.quesiontTilteHp * 2
+        let itemWidth: CGFloat = (iconListW - (spacing * CGFloat(columnCount - 1))) / CGFloat(columnCount)
+        if question.hasExactDivided {
+            specialShowLessView(question: question, didTapShowMore: didTapShowMore, proxy: proxy)
+        } else {
+            HStack(spacing: Constants.iconItemSpacing, content: {
+                ForEach( 1 ... Constants.iconColumns, id: \.self) { index in
+                    HStack {
+                        if index == Constants.iconColumns {
+                            addNewBtn(question)
+                        } else {
+                            Rectangle()
+                                .fill(Color.clear)
+                                .frame(width: Constants.iconSize, height: Constants.iconSize)
+                        }
+                    }
+                    .frame(width: itemWidth, height: itemWidth)
                 }
                 .opacity(didTapShowMore ? 0 : 1)
             })
@@ -142,16 +154,24 @@ struct ThreadView: View {
     }
     
     
-    func specialShowLessView(question: ThreadQuestionItem, didTapShowMore: Bool) -> some View {
-        HStack(spacing: 8, content: {
-            ForEach( 1 ... 7, id: \.self) { index in
-                if index == 7 {
-                    addNewBtn(question)
-                } else {
-                    Rectangle()
-                        .fill(Color.clear)
-                        .frame(width: Constants.iconSize, height: Constants.iconSize)
+    @ViewBuilder
+    func specialShowLessView(question: ThreadQuestionItem, didTapShowMore: Bool, proxy: GeometryProxy) -> some View {
+        let columnCount: Int = Constants.iconColumns
+        let spacing: CGFloat = Constants.iconItemSpacing
+        let iconListW = proxy.size.width - Constants.listHP * 2 - Constants.pinIconW - Constants.quesiontTilteHp * 2
+        let itemWidth: CGFloat = (iconListW - (spacing * CGFloat(columnCount - 1))) / CGFloat(columnCount)
+        HStack(spacing: Constants.iconItemSpacing, content: {
+            ForEach( 1 ... Constants.iconColumns, id: \.self) { index in
+                HStack {
+                    if index == Constants.iconColumns {
+                        addNewBtn(question)
+                    } else {
+                        Rectangle()
+                            .fill(Color.clear)
+                            .frame(width: Constants.iconSize, height: Constants.iconSize)
+                    }
                 }
+                .frame(width: itemWidth, height: itemWidth)
             }
         })
         .overlay(alignment: .leading, content: {
@@ -171,16 +191,15 @@ struct ThreadView: View {
             Image(.pinnedStar)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 24, height: 24)
+                .frame(width: Constants.pinIconW, height: Constants.pinIconW)
                 .padding(.top, 4)
             
             Text(question.title)
                 .lineLimit(5)
+                .multilineTextAlignment(.leading)
                 .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
-                .background(Color.random)
-                .padding(.horizontal, 24)
-               
-            Spacer()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, Constants.quesiontTilteHp)
         }
         .onTapGesture {
             homeCoordinator.push(
