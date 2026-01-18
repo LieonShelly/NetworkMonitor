@@ -6,8 +6,14 @@ import SwiftUI
 
 struct AppScrollContentView: View {
     @ObservedObject var viewModel: AppScrollContentViewModel
-    let addAction: (() -> Void)
+    let addAction: ((Question?) -> Void)?
     let onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?
+    
+    init(viewModel: AppScrollContentViewModel, addAction: ((Question?) -> Void)?, onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?) {
+        self.viewModel = viewModel
+        self.addAction = addAction
+        self.onTapAnswerAction = onTapAnswerAction
+    }
     
     var body: some View {
         GeometryReader { proxy in
@@ -16,7 +22,9 @@ struct AppScrollContentView: View {
                     CalendarView(viewModel: viewModel.calendarViewModel, addAction: addAction, onTapAnswerAction: onTapAnswerAction)
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(0)
-                    ThreadView(viewModel: viewModel.threadViewModel)
+                    ThreadView(viewModel: viewModel.threadViewModel,
+                               addAnswerAction: addAction,
+                               onTapAnswerAction: onTapAnswerAction, )
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(1)
                     InsightsView()
@@ -26,9 +34,6 @@ struct AppScrollContentView: View {
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(3)
                 }
-//                .overlay {
-//                    horizontalLine
-//                }
             }
             .scrollPosition($viewModel.scrollPosition)
             .animation(.easeInOut, value: viewModel.scrollPosition)

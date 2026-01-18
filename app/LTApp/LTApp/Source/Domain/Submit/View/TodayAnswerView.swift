@@ -21,7 +21,7 @@ struct TodayAnswerView: View {
     var body: some View {
         ZStack(alignment: .top) {
             AppColor.backgroundPage
-                .opacity(opacity)
+                .opacity(opacity).ignoresSafeArea()
             switch viewModel.pageState {
             case .unsubmit:
                 naviBar

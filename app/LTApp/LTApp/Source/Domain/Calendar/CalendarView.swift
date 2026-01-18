@@ -17,11 +17,11 @@ struct CalendarView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @StateObject var viewModel: CalendarViewModel
     @State var showMonthList: Bool = false
-    let addAction: (() -> Void)
+    let addAction: ((Question?) -> Void)?
     let onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?
     
     init(viewModel: CalendarViewModel,
-         addAction:  @escaping (() -> Void),
+         addAction: ((Question?) -> Void)?,
          onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?,
     ) {
         self._viewModel = .init(wrappedValue: viewModel)
@@ -151,7 +151,7 @@ struct CalendarView: View {
                     ClendarItemView(
                         day: day,
                         addAction: {
-                            addAction()
+                            addAction?(nil)
                         }, didTapIcon: { answer in
                             onTapAnswerAction?(viewModel.generateAnswerDetailViewModel(answer))
                         }

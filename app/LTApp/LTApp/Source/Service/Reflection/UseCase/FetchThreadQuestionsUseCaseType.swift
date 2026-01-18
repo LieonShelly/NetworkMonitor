@@ -28,6 +28,10 @@ public struct ThreadQuestionItem: Sendable {
     let title: String
     var answerItems: [ThreadAnswerItem]
     var hasExactDivided: Bool =  false
+    
+    func toQuestion() -> Question {
+        .init(id: id, title: title, pinned: true)
+    }
 
 }
 

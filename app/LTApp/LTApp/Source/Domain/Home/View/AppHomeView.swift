@@ -23,13 +23,16 @@ struct AppHomeView: View {
     }
     
     fileprivate func scrollContentView() -> AppScrollContentView {
-        return AppScrollContentView(viewModel: viewModel.contentViewModel) {
-            viewModel.pushToAddTodayAnsnwer()
-        } onTapAnswerAction: { answerDetailViewModel in
-            if let answerDetailViewModel {
-                viewModel.route(.answerDetail(answerDetailViewModel))
-            }
-        }
+        return AppScrollContentView(
+            viewModel: viewModel.contentViewModel,
+            addAction: { question in
+                viewModel.pushToAddTodayAnsnwer(question)
+            },
+            onTapAnswerAction: {answerDetailViewModel in
+                if let answerDetailViewModel {
+                    viewModel.route(.answerDetail(answerDetailViewModel))
+                }
+            })
     }
     
     fileprivate func tabbar() -> ZStack<TupleView<(some View, (some View)?)>> {

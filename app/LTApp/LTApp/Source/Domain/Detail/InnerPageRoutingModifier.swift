@@ -20,6 +20,10 @@ struct InnerPageRoutingModifier: ViewModifier {
                 TodayAnswerView(viewModel: todayAnswerViewModel, presented: $subPagePrensented)
                     .transition(
                         .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
+            case .addSingleAnswer(let todayAnswerViewModel):
+                TodayAnswerView(viewModel: todayAnswerViewModel, presented: $subPagePrensented)
+                    .transition(
+                        .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
             case .answerDetail(let todayAnswerSubmittedViewModel):
                 AnswerDetailView(viewModel: todayAnswerSubmittedViewModel, dismissed: {
                     print("onDisappear")

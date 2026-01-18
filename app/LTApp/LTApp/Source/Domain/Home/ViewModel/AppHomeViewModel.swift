@@ -102,8 +102,8 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
     }
     
     @MainActor
-    func generateTodayViewModel() -> TodayAnswerViewModel {
-        let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: todayQuestions, submitted: {[weak self] iconId in
+    func generateTodayViewModel(_ questions: [Question]) -> TodayAnswerViewModel {
+        let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
             Task {
                 self?.contentViewModel.calendarViewModel.queryCurrenntIconStatus(iconId)
                 self?.showTodayQuestion = false
@@ -118,16 +118,21 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
     }
     
     
-    @MainActor func pushToAddTodayAnsnwer() {
-        route(.todayAnswer(generateTodayViewModel()))
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-            self.selected(0)
-        })
+    @MainActor func pushToAddTodayAnsnwer(_ question: Question? = nil) {
+        if let question {
+            route(.addSingleAnswer(generateTodayViewModel([question])))
+        } else {
+            route(.todayAnswer(generateTodayViewModel(todayQuestions)))
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+                self.selected(0)
+            })
+        }
     }
 }
 
 enum InnerPageRouteState: Equatable {
     case todayAnswer(TodayAnswerViewModel)
+    case addSingleAnswer(TodayAnswerViewModel)
     case answerDetail(TodayAnswerSubmittedViewModel)
     case none
     
@@ -138,6 +143,8 @@ enum InnerPageRouteState: Equatable {
         case  (.answerDetail, .answerDetail):
             return true
         case  (.none, .none):
+            return true
+        case (.addSingleAnswer, .addSingleAnswer):
             return true
         default:
             return false

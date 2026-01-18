@@ -10,9 +10,15 @@ struct ThreadView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject var viewModel: ThreadViewModel
+    let onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?
+    let addAnswerAction: ((Question?) -> Void)?
     
-    init(viewModel: ThreadViewModel) {
+    init(viewModel: ThreadViewModel,
+         addAnswerAction: ((Question?) -> Void)?,
+         onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?,) {
         self._viewModel = .init(wrappedValue: viewModel)
+        self.onTapAnswerAction = onTapAnswerAction
+        self.addAnswerAction = addAnswerAction
     }
     
     var body: some View {
@@ -36,6 +42,7 @@ struct ThreadView: View {
                 }
             }
         }
+        .innerPageRoute($viewModel.subPageRoute)
         .task {
             do {
                 try await viewModel.fetchData()
@@ -54,7 +61,7 @@ struct ThreadView: View {
     
     func section(_ question: ThreadQuestionItem) -> some View {
         VStack(alignment: .leading, spacing: .zero) {
-            questionRow(question.title)
+            questionRow(question)
             VStack(spacing: .zero) {
                 if let didTapShowMore = viewModel.showHandlingMap[question.id] {
                     iconListView(question: question, didTapShowMore: didTapShowMore)
@@ -71,14 +78,6 @@ struct ThreadView: View {
         .overlay(alignment: .leading) {
             line()
         }
-        .onTapGesture {
-            homeCoordinator.push(
-                HomeRoute.reflectionDetail(
-                    questionId: question.id,
-                    title: question.title
-                )
-            )
-        }
     }
     
     @ViewBuilder
@@ -91,9 +90,12 @@ struct ThreadView: View {
                 let _ = print(":\(answer.type)")
                 switch answer.type {
                 case .addBtn:
-                    addNewBtn
+                    addNewBtn(question)
                 case let .noraml(answer):
                     IconView(answer: answer)
+                        .onTapGesture {
+                            onTapAnswerAction?(.init(answer: answer, question: .init(id: question.id, title: question.title), service: viewModel.service))
+                        }
                 case .placeholder:
                     Rectangle()
                         .fill(Color.clear)
@@ -111,7 +113,7 @@ struct ThreadView: View {
             HStack(spacing: 8, content: {
                 ForEach( 1 ... 7, id: \.self) { index in
                     if index == 7 {
-                        addNewBtn
+                        addNewBtn(question)
                     } else {
                         Rectangle()
                             .fill(Color.clear)
@@ -139,7 +141,7 @@ struct ThreadView: View {
         HStack(spacing: 8, content: {
             ForEach( 1 ... 7, id: \.self) { index in
                 if index == 7 {
-                    addNewBtn
+                    addNewBtn(question)
                 } else {
                     Rectangle()
                         .fill(Color.clear)
@@ -159,7 +161,7 @@ struct ThreadView: View {
         .padding(.top, 8)
     }
           
-    func questionRow(_ value: String) -> some View {
+    func questionRow(_ question: ThreadQuestionItem) -> some View {
         HStack(alignment: .top) {
             Image(.pinnedStar)
                 .resizable()
@@ -167,11 +169,19 @@ struct ThreadView: View {
                 .frame(width: 24, height: 24)
                 .padding(.top, 4)
             
-            Text(value)
+            Text(question.title)
                 .lineLimit(5)
                 .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
                 .padding(.leading, 20)
             Spacer()
+        }
+        .onTapGesture {
+            homeCoordinator.push(
+                HomeRoute.reflectionDetail(
+                    questionId: question.id,
+                    title: question.title
+                )
+            )
         }
     
     }
@@ -222,10 +232,13 @@ struct ThreadView: View {
             .padding(.bottom, 200)
     }
     
-    var addNewBtn: some View {
+    func addNewBtn(_ question: ThreadQuestionItem) -> some View {
         Image(.threadAdd)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 24, height: 24)
+            .onTapGesture {
+                addAnswerAction?(question.toQuestion())
+            }
     }
 }

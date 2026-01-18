@@ -26,18 +26,15 @@ struct IconView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: size.width, height: size.height)
             default:
-                placeholderIcon
+                if let url = icon.url {
+                    ThumbnailIconImageView(url: url) {
+                        placeholderIcon
+                    }
                     .frame(width: size.width, height: size.height)
-                
-//                if let url = icon.url {
-//                    ThumbnailIconImageView(url: url) {
-//                        placeholderIcon
-//                    }
-//                    .frame(width: size.width, height: size.height)
-//                } else {
-//                    placeholderIcon
-//                        .frame(width: size.width, height: size.height)
-//                }
+                } else {
+                    placeholderIcon
+                        .frame(width: size.width, height: size.height)
+                }
             }
         } else {
             placeholderIcon
