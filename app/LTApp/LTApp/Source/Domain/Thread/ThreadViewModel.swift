@@ -26,7 +26,11 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
             self.questionList = questionList
             for question in questionList {
                 if question.answerItems.count > limit {
-                    showHandlingMap[question.id] = showHandlingMap[question.id] ?? false
+                    if question.answerItems.count > 21 {
+                        showHandlingMap[question.id] = showHandlingMap[question.id] ?? false
+                    } else {
+                        showHandlingMap[question.id] = nil
+                    }
                 }
             }
         }
