@@ -12,7 +12,9 @@ struct ThreadView: View {
     @StateObject var viewModel: ThreadViewModel
     let onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?
     let addAnswerAction: ((Question?) -> Void)?
-    
+    enum Constants {
+        static let iconSize: CGFloat = 24
+    }
     init(viewModel: ThreadViewModel,
          addAnswerAction: ((Question?) -> Void)?,
          onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?,) {
@@ -62,6 +64,7 @@ struct ThreadView: View {
     func section(_ question: ThreadQuestionItem) -> some View {
         VStack(alignment: .leading, spacing: .zero) {
             questionRow(question)
+                .background(Color.random)
             VStack(spacing: .zero) {
                 if let didTapShowMore = viewModel.showHandlingMap[question.id] {
                     iconListView(question: question, didTapShowMore: didTapShowMore)
@@ -72,7 +75,8 @@ struct ThreadView: View {
             }
             .transition(.scale)
             .padding(.bottom, 32)
-            .padding(.leading, 20)
+            .padding(.leading, 24 + 24)
+            .padding(.trailing, 24)
             .padding(.top, 8)
         }
         .overlay(alignment: .leading) {
@@ -83,26 +87,27 @@ struct ThreadView: View {
     @ViewBuilder
     func iconListView(question: ThreadQuestionItem, didTapShowMore: Bool? = nil) -> some View {
         let columnCount: Int = 7
-        let colums = (0 ..< columnCount).map { _ in GridItem(.fixed(32), spacing: 8) }
+        let colums = (0 ..< columnCount).map { _ in GridItem(.fixed(Constants.iconSize), spacing: 8) }
         let answerItems = (didTapShowMore ?? true) ? question.answerItems : Array(question.answerItems[0 ..< viewModel.limit])
         LazyVGrid(columns: colums, spacing: 8) {
             ForEach(answerItems) { answer in
-                let _ = print(":\(answer.type)")
+                
                 switch answer.type {
                 case .addBtn:
                     addNewBtn(question)
                 case let .noraml(answer):
-                    IconView(answer: answer)
+                    IconView(answer: answer, size: .init(width: Constants.iconSize, height: Constants.iconSize))
                         .onTapGesture {
                             onTapAnswerAction?(.init(answer: answer, question: .init(id: question.id, title: question.title), service: viewModel.service))
                         }
                 case .placeholder:
                     Rectangle()
                         .fill(Color.clear)
-                        .frame(width: 32, height: 32)
+                        .frame(width: Constants.iconSize, height: Constants.iconSize)
                 }
             }
         }
+        .background(Color.random)
     }
     
     @ViewBuilder
@@ -117,7 +122,7 @@ struct ThreadView: View {
                     } else {
                         Rectangle()
                             .fill(Color.clear)
-                            .frame(width: 32, height: 32)
+                            .frame(width: Constants.iconSize, height: Constants.iconSize)
                     }
                 }
                 .opacity(didTapShowMore ? 0 : 1)
@@ -145,7 +150,7 @@ struct ThreadView: View {
                 } else {
                     Rectangle()
                         .fill(Color.clear)
-                        .frame(width: 32, height: 32)
+                        .frame(width: Constants.iconSize, height: Constants.iconSize)
                 }
             }
         })
@@ -162,7 +167,7 @@ struct ThreadView: View {
     }
           
     func questionRow(_ question: ThreadQuestionItem) -> some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .top, spacing: .zero) {
             Image(.pinnedStar)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -172,7 +177,9 @@ struct ThreadView: View {
             Text(question.title)
                 .lineLimit(5)
                 .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
-                .padding(.leading, 20)
+                .background(Color.random)
+                .padding(.horizontal, 24)
+               
             Spacer()
         }
         .onTapGesture {
@@ -236,7 +243,7 @@ struct ThreadView: View {
         Image(.threadAdd)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: 24, height: 24)
+            .frame(width: Constants.iconSize, height: Constants.iconSize)
             .onTapGesture {
                 addAnswerAction?(question.toQuestion())
             }
