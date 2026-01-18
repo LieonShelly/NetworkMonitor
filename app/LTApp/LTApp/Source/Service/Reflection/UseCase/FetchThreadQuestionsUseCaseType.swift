@@ -57,21 +57,16 @@ public class FetchThreadQuestionsUseCase: FetchThreadQuestionsUseCaseType, @unch
             let answerCount = item.answerItems.count
             let remainnings =  column - Float(answerCount).truncatingRemainder(dividingBy: column)
             
-            if Int(remainnings) == Int(column) {
-                item.hasExactDivided = true
-            } else {
-                var answerItems = item.answerItems
-                var placeholderCount = 6
-                if remainnings > 0 {
-                    placeholderCount = Int(remainnings) - 1
-                }
-                for _ in (0 ..< placeholderCount) {
-                    answerItems.append(.init(type: .placeholder))
-                }
-                answerItems.append(.init(type: .addBtn))
-                item.answerItems = answerItems
+            var answerItems = item.answerItems
+            var placeholderCount = 6
+            if remainnings > 0 {
+                placeholderCount = Int(remainnings) - 1
             }
-           
+            for _ in (0 ..< placeholderCount) {
+                answerItems.append(.init(type: .placeholder))
+            }
+            answerItems.append(.init(type: .addBtn))
+            item.answerItems = answerItems
             items[index] = item
         }
         return items
