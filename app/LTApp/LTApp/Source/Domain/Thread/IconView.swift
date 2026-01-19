@@ -7,12 +7,55 @@
 
 import SwiftUI
 
+class IconViewModel: ObservableObject, @unchecked Sendable {
+    @Published var answer: Answer
+    let qustion: Question
+    let service: any AppDataWithAuthorizationServiceful
+    @Published var iconStates: [String: IconDto] = [:]
+    private var monitoringTasks: [String: Task<Void, Never>] = [:]
+    
+    init(answer: Answer, qustion: Question, service: any AppDataWithAuthorizationServiceful) {
+        self.answer = answer
+        self.service = service
+        self.qustion = qustion
+    }
+    
+    func monitorSingleIcon(_ iconId: String,  didFinish:  (@MainActor @Sendable (Question, Answer) -> Void)?) {
+        guard monitoringTasks[iconId] != nil else { return }
+        service.queryIconStatusUseCase.startMonitoring(iconId)
+        let task = Task {
+            let stream = service.queryIconStatusUseCase.statusStream(for: iconId)
+            for await dto in stream {
+                if dto.status == .generated || dto.status == .failed {
+                    var newAnswer = answer
+                    newAnswer.icon = dto.toDomain()
+                    self.answer = newAnswer
+                    self.monitoringTasks.removeValue(forKey: iconId)
+                    await didFinish?(qustion, newAnswer)
+                    return
+                }
+            }
+        }
+        monitoringTasks[iconId] = task
+    }
+    
+    deinit {
+        print("IconViewModel-deinit:\(answer.id)")
+    }
+}
+
 struct IconView: View {
-    let answer: Answer
+    @StateObject var viewModel: IconViewModel
     var size: CGSize = .init(width: 24, height: 24)
     
+    
+    init(viewModel: IconViewModel, size: CGSize) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+        self.size = size
+    }
+    
     var body: some View {
-        iconView(answer, size: size)
+        iconView(viewModel.answer, size: size)
     }
     
     @ViewBuilder

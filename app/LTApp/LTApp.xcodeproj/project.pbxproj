@@ -122,6 +122,7 @@
 		F86ECACB2EF3A11C007EEA24 /* NotificationFlagUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86ECACA2EF3A11C007EEA24 /* NotificationFlagUseCase.swift */; };
 		F86ECACD2EF3B5AA007EEA24 /* NotificationTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86ECACC2EF3B5AA007EEA24 /* NotificationTopic.swift */; };
 		F86ECACF2EF3B5B4007EEA24 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86ECACE2EF3B5B4007EEA24 /* NotificationHandler.swift */; };
+		F875E80B2F1DE7D00050BD23 /* CancellableBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875E80A2F1DE7D00050BD23 /* CancellableBox.swift */; };
 		F88E5FFE060A4CDAD0021795 /* UniversalResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FF8161A8C18829BAA0967 /* UniversalResponse.swift */; };
 		F8A22C4C3D1795B392850452 /* FirstQuestionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5700C32AD3048D4D735EFB /* FirstQuestionViewModel.swift */; };
 		F8BE5EC22EE1640C009206C2 /* IconImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BE5EC12EE1640B009206C2 /* IconImageView.swift */; };
@@ -276,6 +277,7 @@
 		F86ECACA2EF3A11C007EEA24 /* NotificationFlagUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationFlagUseCase.swift; sourceTree = "<group>"; };
 		F86ECACC2EF3B5AA007EEA24 /* NotificationTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTopic.swift; sourceTree = "<group>"; };
 		F86ECACE2EF3B5B4007EEA24 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
+		F875E80A2F1DE7D00050BD23 /* CancellableBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellableBox.swift; sourceTree = "<group>"; };
 		F8BE5EC12EE1640B009206C2 /* IconImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImageView.swift; sourceTree = "<group>"; };
 		F8C266512EF285EE0000F5D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8C266532EF286030000F5D6 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -462,6 +464,7 @@
 		766057894908B56C57D21697 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				F875E80A2F1DE7D00050BD23 /* CancellableBox.swift */,
 				F8C266532EF286030000F5D6 /* NotificationService.swift */,
 				77AB288D2282CC28AF1D391D /* AppDataService.swift */,
 				20E6733D5B9E8DC22AA2588F /* AppDataWithAuthorizationService.swift */,
@@ -936,6 +939,7 @@
 				D44714238B00562078E69A75 /* SummaryView.swift in Sources */,
 				42D99842A51E63130D7CCA07 /* ThreadQuestionDTO.swift in Sources */,
 				F85859F42EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift in Sources */,
+				F875E80B2F1DE7D00050BD23 /* CancellableBox.swift in Sources */,
 				F84409E72EE32B33004A40B2 /* InnerPageRoutingModifier.swift in Sources */,
 				3FE852BF220DC18C0B275302 /* ThreadView.swift in Sources */,
 				E46B1C2E180B7A881B8C45F8 /* ThreadViewModel.swift in Sources */,

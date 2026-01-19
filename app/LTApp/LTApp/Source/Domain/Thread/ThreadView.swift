@@ -101,7 +101,8 @@ struct ThreadView: View {
                     case .addBtn:
                         addNewBtn(question)
                     case let .noraml(answer):
-                        IconView(answer: answer, size: .init(width: Constants.iconSize, height: Constants.iconSize))
+                        IconView(viewModel: viewModel.generateIconViewModel(question: question.toQuestion(), answer: answer),
+                                 size: .init(width: Constants.iconSize, height: Constants.iconSize))
                             .onTapGesture {
                                 onTapAnswerAction?(.init(answer: answer, question: .init(id: question.id, title: question.title), service: viewModel.service))
                             }

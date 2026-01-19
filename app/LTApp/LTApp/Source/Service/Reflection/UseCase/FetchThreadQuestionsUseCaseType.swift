@@ -12,8 +12,6 @@ public enum ThreadAnswerItemType: Sendable {
     case noraml(Answer)
     case placeholder
     case addBtn
-    
-  
 }
 
 public struct ThreadAnswerItem: Sendable, Identifiable {
@@ -37,7 +35,11 @@ public struct ThreadQuestionItem: Sendable {
 
 extension ThreadQuestion {
     func toThreadItem() -> ThreadQuestionItem {
-        ThreadQuestionItem(id: id, title: title, answerItems: answers.map { .init(type: .noraml($0))})
+        ThreadQuestionItem(
+            id: id,
+            title: title,
+            answerItems: answers.map { .init(type: .noraml($0), id: $0.id)}
+        )
     }
 }
 
