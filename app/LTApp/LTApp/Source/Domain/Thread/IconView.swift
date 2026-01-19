@@ -38,19 +38,15 @@ class IconViewModel: ObservableObject, @unchecked Sendable {
         }
         monitoringTasks[iconId] = task
     }
-    
-    deinit {
-        print("IconViewModel-deinit:\(answer.id)")
-    }
 }
 
 struct IconView: View {
-    @StateObject var viewModel: IconViewModel
+    @ObservedObject var viewModel: IconViewModel
     var size: CGSize = .init(width: 24, height: 24)
     
     
     init(viewModel: IconViewModel, size: CGSize) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
+        self.viewModel = viewModel
         self.size = size
     }
     
