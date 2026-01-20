@@ -30,6 +30,7 @@ public struct DayReflections: Sendable {
 public struct ThreadQuestion: Sendable {
     let id: String
     let title: String
+    let pinned: Bool
     let answers: [Answer]
     
 }

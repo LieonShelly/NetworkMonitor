@@ -8,7 +8,7 @@
 import SwiftUI
 
 class IconViewModel: ObservableObject, @unchecked Sendable {
-    @Published var answer: Answer
+    var answer: Answer
     let qustion: Question
     let service: any AppDataWithAuthorizationServiceful
     @Published var iconStates: [String: IconDto] = [:]
@@ -21,37 +21,44 @@ class IconViewModel: ObservableObject, @unchecked Sendable {
     }
     
     func monitorSingleIcon(_ iconId: String,  didFinish:  (@MainActor @Sendable (Question, Answer) -> Void)?) {
-        guard monitoringTasks[iconId] != nil else { return }
-        service.queryIconStatusUseCase.startMonitoring(iconId)
-        let task = Task {
-            let stream = service.queryIconStatusUseCase.statusStream(for: iconId)
-            for await dto in stream {
-                if dto.status == .generated || dto.status == .failed {
-                    var newAnswer = answer
-                    newAnswer.icon = dto.toDomain()
-                    self.answer = newAnswer
-                    self.monitoringTasks.removeValue(forKey: iconId)
-                    await didFinish?(qustion, newAnswer)
-                    return
+        guard monitoringTasks[iconId] == nil else { return }
+        let task = Task.detached {
+            let stream = self.service.queryIconStatusUseCase.execute(iconId)
+            do {
+                for try await dto in stream {
+                    if dto.status == .generated || dto.status == .failed {
+                       
+                        self.monitoringTasks.removeValue(forKey: iconId)
+                        await MainActor.run {
+                            var newAnswer = self.answer
+                            newAnswer.icon = dto.toDomain()
+                            self.answer = newAnswer
+                            didFinish?(self.qustion, newAnswer)
+                        }
+                        return
+                    }
                 }
+            } catch {
+                
             }
+          
         }
         monitoringTasks[iconId] = task
     }
 }
 
 struct IconView: View {
-    @ObservedObject var viewModel: IconViewModel
+    var answer: Answer
     var size: CGSize = .init(width: 24, height: 24)
     
     
-    init(viewModel: IconViewModel, size: CGSize) {
-        self.viewModel = viewModel
+    init(answer: Answer, size: CGSize) {
+        self.answer = answer
         self.size = size
     }
     
     var body: some View {
-        iconView(viewModel.answer, size: size)
+        iconView(answer, size: size)
     }
     
     @ViewBuilder

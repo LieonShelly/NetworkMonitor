@@ -3,16 +3,17 @@
 //
 
 import Combine
+import Foundation
 
 typealias QuestionID = String
 typealias DidTapShowMore = Bool
-
+typealias IconID = String
 final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurrency BaseViewModelType {
     let service: any AppDataWithAuthorizationServiceful
     @MainActor @Published var subPageRoute: InnerPageRouteState = .none
     @MainActor @Published var questionList: [ThreadQuestionItem] = []
     @MainActor @Published var showHandlingMap: [QuestionID: DidTapShowMore] = [:]
-    var iconViewModels: [String: IconViewModel] = [:]
+    var iconViewModels: [IconID: IconViewModel] = [:]
     
     let limit = 21
     
@@ -22,7 +23,7 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
     
     func fetchData() async throws {
         let questionList = try await service.threadQuestionsUseCase.execute()
-       
+        
         await MainActor.run {
             self.questionList = questionList
             for question in questionList {
@@ -34,7 +35,10 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
                     }
                 }
             }
+           
         }
+        
+       self.checkIconStatusInCurrentQuestionList(questionList)
     }
     
 
@@ -44,19 +48,26 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
     }
     
     
-    func generateIconViewModel(question: Question, answer: Answer) -> IconViewModel {
-        guard let iconId = answer.icon?.iconId else {
-            return IconViewModel(answer: answer, qustion: question, service: service)
+    func checkIconStatusInCurrentQuestionList(_ questionList: [ThreadQuestionItem]) {
+        for questionIndex in 0 ..< questionList.count {
+            for answerIndex in 0 ..< questionList[questionIndex].answerItems.count {
+                let questionItem = questionList[questionIndex]
+                let answer = questionList[questionIndex].answerItems[answerIndex]
+                switch answer.type {
+                case .noraml(let answer):
+                    if let icon = answer.icon, icon.status == .pending,
+                       let iconId = answer.icon?.iconId {
+                        if iconViewModels[iconId] == nil {
+                            let iconViewModel = IconViewModel(answer: answer, qustion: questionItem.toQuestion(), service: service)
+                            iconViewModel.monitorSingleIcon(iconId) { @MainActor currentQuestion, answert in
+                                self.updateIconData(currentQuestion: currentQuestion, newAnswer: answert)
+                            }
+                        }
+                    }
+                default: break
+                }
+            }
         }
-        if let viewModel = iconViewModels[iconId] {
-            return viewModel
-        }
-        let viewModel = IconViewModel(answer: answer, qustion: question, service: service)
-        viewModel.monitorSingleIcon(iconId) {  (currentQuestion, currentAnswer) in
-            self.updateIconData(currentQuestion: currentQuestion, newAnswer: currentAnswer)
-        }
-        iconViewModels[iconId] = viewModel
-        return viewModel
     }
     
     
@@ -64,8 +75,8 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
     private func updateIconData(currentQuestion: Question, newAnswer: Answer) {
         guard let questionIndex =  self.questionList.firstIndex(where: { $0.id == currentQuestion.id }) else { return }
         var newQuestion = questionList[questionIndex]
-        guard let answerIndex = newQuestion.answerItems.firstIndex(where: { $0.id == newAnswer.id }) else { return }
-        newQuestion.answerItems[answerIndex] = .init(type: .noraml(newAnswer), id: newAnswer.id)
+        guard let answerIndex = newQuestion.answerItems.firstIndex(where: { $0.answer?.id == newAnswer.id }) else { return }
+        newQuestion.answerItems[answerIndex] = .init(type: .noraml(newAnswer))
         questionList[questionIndex] = newQuestion
     }
     deinit {

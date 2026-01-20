@@ -7,6 +7,7 @@ import Foundation
 struct ThreadQuestionDTO: Decodable {
     let id: String
     let title: String
+    let pinned: Bool
     let answers: [AnswerDTO]
 }
 
@@ -15,6 +16,7 @@ extension ThreadQuestionDTO {
         return ThreadQuestion(
             id: id,
             title: title,
+            pinned: pinned,
             answers: answers.map { $0.toDomain() }
         )
     }

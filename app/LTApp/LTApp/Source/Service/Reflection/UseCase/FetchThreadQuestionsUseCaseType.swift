@@ -17,7 +17,18 @@ public enum ThreadAnswerItemType: Sendable {
 public struct ThreadAnswerItem: Sendable, Identifiable {
     let type: ThreadAnswerItemType
     
-    public var id: String = UUID().uuidString
+    public private(set) var id: String = UUID().uuidString
+    
+    var answer: Answer? {
+        switch type {
+        case .noraml(let answer):
+            return answer
+        case .placeholder:
+            return nil
+        case .addBtn:
+            return nil
+        }
+    }
 }
 
 
@@ -26,9 +37,10 @@ public struct ThreadQuestionItem: Sendable {
     let title: String
     var answerItems: [ThreadAnswerItem]
     var hasExactDivided: Bool =  false
+    let pinned: Bool
     
     func toQuestion() -> Question {
-        .init(id: id, title: title, pinned: true)
+        .init(id: id, title: title, pinned: pinned)
     }
 
 }
@@ -38,7 +50,8 @@ extension ThreadQuestion {
         ThreadQuestionItem(
             id: id,
             title: title,
-            answerItems: answers.map { .init(type: .noraml($0), id: $0.id)}
+            answerItems: answers.map { .init(type: .noraml($0))},
+            pinned: pinned
         )
     }
 }

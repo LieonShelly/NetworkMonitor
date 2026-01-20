@@ -101,7 +101,7 @@ struct ThreadView: View {
                     case .addBtn:
                         addNewBtn(question)
                     case let .noraml(answer):
-                        IconView(viewModel: viewModel.generateIconViewModel(question: question.toQuestion(), answer: answer),
+                        IconView(answer: answer,
                                  size: .init(width: Constants.iconSize, height: Constants.iconSize))
                             .onTapGesture {
                                 onTapAnswerAction?(.init(answer: answer, question: .init(id: question.id, title: question.title), service: viewModel.service))
@@ -189,11 +189,13 @@ struct ThreadView: View {
           
     func questionRow(_ question: ThreadQuestionItem) -> some View {
         HStack(alignment: .top, spacing: .zero) {
+            
             Image(.pinnedStar)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: Constants.pinIconW, height: Constants.pinIconW)
                 .padding(.top, 4)
+                .opacity(question.pinned ? 1 : 0)
             
             Text(question.title)
                 .lineLimit(5)
