@@ -52,7 +52,7 @@ struct IconView: View {
     var size: CGSize = .init(width: 24, height: 24)
     
     
-    init(answer: Answer, size: CGSize) {
+    init(answer: Answer, size: CGSize = .init(width: 24, height: 24)) {
         self.answer = answer
         self.size = size
     }

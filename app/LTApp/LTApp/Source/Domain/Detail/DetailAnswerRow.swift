@@ -26,26 +26,12 @@ struct DetailAnswerRow: View {
                 .textStyle(size: 20, color: AppColor.color(hex: 0x000000), fontFamily: .feltTipSeniorRegular)
             
         }
-//        .frame(width: 30)
         .padding(.top, 42)
     }
     
     var iconView: some View {
         VStack(spacing: .zero) {
-            if let url = answer.icon?.url {
-                ThumbnailIconImageView(url: url) {
-                    Image(.calendarDripper)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                }
-                .frame(width: 24, height: 24)
-            } else {
-                Image(.calendarDripper)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 24, height: 24)
-            }
+            IconView(answer: answer)
             line(answer)
                 .padding(.vertical, 8)
         }

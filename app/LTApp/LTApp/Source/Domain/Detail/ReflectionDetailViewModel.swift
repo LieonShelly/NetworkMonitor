@@ -14,6 +14,7 @@ final class ReflectionDetailViewModel: @preconcurrency BaseViewModelType, Observ
     let question: Question
     let service: any AppDataWithAuthorizationServiceful
     private let questionId: String
+    var iconViewModels: [IconID: IconViewModel] = [:]
     
     @MainActor
     init(
@@ -37,6 +38,7 @@ final class ReflectionDetailViewModel: @preconcurrency BaseViewModelType, Observ
             self.history = history
             self.answers = history.answers
             self.sumary = history.summary
+            self.checkIconStatusInCurrentQuestionList(answers)
         }
     }
     
@@ -48,6 +50,26 @@ final class ReflectionDetailViewModel: @preconcurrency BaseViewModelType, Observ
             
         })
         return todayAnswerViewModel
+    }
+    
+    func checkIconStatusInCurrentQuestionList(_ answers: [Answer]) {
+        for answer in answers {
+            if let icon = answer.icon, icon.status == .pending,
+               let iconId = answer.icon?.iconId {
+                if iconViewModels[iconId] == nil {
+                    let iconViewModel = IconViewModel(answer: answer, qustion: question, service: service)
+                    iconViewModel.monitorSingleIcon(iconId) { @MainActor currentQuestion, answert in
+                        self.updateIconData(currentQuestion: currentQuestion, newAnswer: answert)
+                    }
+                }
+            }
+        }
+    }
+    
+    @MainActor
+    private func updateIconData(currentQuestion: Question, newAnswer: Answer) {
+        guard let answerIndex = answers.firstIndex(where: { $0.id == newAnswer.id }) else { return }
+        answers[answerIndex] = newAnswer
     }
     
 }
