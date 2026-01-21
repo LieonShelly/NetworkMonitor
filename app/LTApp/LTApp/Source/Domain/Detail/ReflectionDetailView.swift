@@ -15,6 +15,8 @@ struct ReflectionDetailView: View {
     
     enum Constants {
         static let navibarH: CGFloat = 85
+        static let backBtnSize: CGFloat = 32
+        static let navibarTop: CGFloat = 20
     }
     
     init(viewModel: ReflectionDetailViewModel) {
@@ -28,7 +30,6 @@ struct ReflectionDetailView: View {
                 contentView(proxy)
                 summaryView
             }
-            .ignoresSafeArea(edges: .top)
             .toolbarVisibility(.hidden, for: .navigationBar)
             .animation(.easeInOut, value: showSummary)
             .innerPageRoute($viewModel.subPageRoute)
@@ -54,7 +55,7 @@ struct ReflectionDetailView: View {
     func contentView(_ proxy: GeometryProxy) -> some View {
         ScrollView {
             LazyVStack(spacing: .zero) {
-                titleView
+                topbar(proxy).opacity(0) // for placeholder
                 totalView
                 LazyVStack(spacing: .zero) {
                     ForEach(viewModel.answers, id: \.id) { answer in
@@ -67,27 +68,8 @@ struct ReflectionDetailView: View {
                 .padding(.horizontal, 32)
             }
         }
-        .contentMargins(.top, .init(top: proxy.safeAreaInsets.top + Constants.navibarH, leading: 0, bottom: 0, trailing: 0), for: .scrollContent)
-        .onScrollGeometryChange(for: CGFloat.self, of: { $0.contentOffset.y }, action: { oldValue, newValue in
-            if newValue < 0 {
-                navibarOpacity = 1 - abs(newValue) / (proxy.safeAreaInsets.top + Constants.navibarH)
-            } else {
-                withAnimation(.easeInOut) {
-                    navibarOpacity = 1
-                }
-            }
-            
-        })
         .defaultBackground()
         .zIndex(1)
-    }
-    
-    var titleView: some View {
-        Text(viewModel.title)
-            .textStyle(size: 32)
-            .padding(.horizontal, 42)
-            .padding(.top, 10)
-            .opacity(1 - navibarOpacity)
     }
     
     @ViewBuilder var totalView: some View {
@@ -104,46 +86,42 @@ struct ReflectionDetailView: View {
                             .fill(AppColor.color(hex: 0x000000))
                     }
             }
-            .padding(.top, 27)
-            .padding(.bottom, 24)
+            .padding(.bottom, 20)
             
         }
     }
     
     func topbar(_ proxy: GeometryProxy) -> some View {
-        
-         VStack(spacing: .zero) {
-             AppColor.backgroundPage
-                 .frame(height: proxy.safeAreaInsets.top)
-             
-             HStack(spacing: .zero) {
-                 Button {
-                     homeCoordinator.pop()
-                 } label: {
-                     Image(.back)
-                         .padding(.leading, 25)
-                 }
-                 Text(viewModel.title)
-                     .lineLimit(2)
-                     .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
-                     .padding(.vertical, 14)
-                     .padding(.leading, 15)
-                     .padding(.trailing, 24)
-                     .opacity(navibarOpacity)
-                 
-                 Spacer()
-             }
-             
-             Rectangle()
-                 .fill(AppColor.color(hex: 0xCDCDCD))
-                 .frame(height: 1)
-                 .opacity(navibarOpacity)
-         }
-         .background(AppColor.backgroundPage.opacity(navibarOpacity))
-         .frame(height: Constants.navibarH + proxy.safeAreaInsets.top)
+        VStack(spacing: .zero) {
+            HStack(alignment: .top, spacing: .zero) {
+                Button {
+                    homeCoordinator.pop()
+                } label: {
+                    Image(.back)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: Constants.backBtnSize, height: Constants.backBtnSize)
+                        .padding(.leading, 25)
+                }
+                Text(viewModel.title)
+                    .lineLimit(5)
+                    .textStyle(size: 32, fontFamily: .feltTipSeniorRegular)
+                    .padding(.leading, 12)
+                    .padding(.trailing, 24)
+                
+                Spacer()
+            }
+            .padding(.top, 20)
+            .background(AppColor.backgroundPage)
+            
+            LinearGradient(gradient: .init(colors: [
+                AppColor.color(hex: 0xFFFDF8).opacity(0),
+                AppColor.color(hex: 0xFFFDF8),
+            ]), startPoint: .init(x: 0.5, y: 1), endPoint: .init(x: 0.5, y: 0))
+            .frame(height: 20)
+        }
+      
          .zIndex(2)
-        
-        
     }
 }
 
