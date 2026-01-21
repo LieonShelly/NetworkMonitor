@@ -43,7 +43,7 @@ struct ReflectionDetailView: View {
         }
     }
     
-   @ViewBuilder var summaryView: some View {
+    @ViewBuilder var summaryView: some View {
         
         if showSummary, let sumary = viewModel.sumary {
             SummaryView(summary: sumary, isPresented: $showSummary)
@@ -52,6 +52,17 @@ struct ReflectionDetailView: View {
         }
     }
     
+    var addBtn: some View {
+        AddBtnView(
+            addAction: {
+                viewModel.route(.addSingleAnswer(viewModel.generateTodayViewModel([viewModel.question])))
+            },
+            addIconsize: .init(width: 18, height: 18),
+            blurBgSize: .init(width: 48, height: 48)
+        )
+        .padding(.trailing, 30)
+        .padding(.bottom, 30)
+    }
     func contentView(_ proxy: GeometryProxy) -> some View {
         ScrollView {
             LazyVStack(spacing: .zero) {
@@ -70,6 +81,12 @@ struct ReflectionDetailView: View {
         }
         .defaultBackground()
         .zIndex(1)
+        .refreshable(action: {
+            try? await viewModel.fetchData()
+        })
+        .overlay(alignment: .bottomTrailing) {
+            addBtn
+        }
     }
     
     @ViewBuilder var totalView: some View {
@@ -120,8 +137,8 @@ struct ReflectionDetailView: View {
             ]), startPoint: .init(x: 0.5, y: 1), endPoint: .init(x: 0.5, y: 0))
             .frame(height: 20)
         }
-      
-         .zIndex(2)
+        
+        .zIndex(2)
     }
 }
 

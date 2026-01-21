@@ -33,12 +33,21 @@ final class ReflectionDetailViewModel: @preconcurrency BaseViewModelType, Observ
             limit: nil,
             cursor: nil
         )
-        print("history:\(history)")
         await MainActor.run {
             self.history = history
             self.answers = history.answers
             self.sumary = history.summary
         }
+    }
+    
+    @MainActor
+    func generateTodayViewModel(_ questions: [Question]) -> TodayAnswerViewModel {
+        let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
+            Task {
+            }
+            
+        })
+        return todayAnswerViewModel
     }
     
 }
