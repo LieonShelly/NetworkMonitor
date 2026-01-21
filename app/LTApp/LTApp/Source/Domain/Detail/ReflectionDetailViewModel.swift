@@ -69,28 +69,7 @@ final class ReflectionDetailViewModel: @preconcurrency BaseViewModelType, Observ
     @MainActor
     private func updateIconData(currentQuestion: Question, newAnswer: Answer) {
         guard let answerIndex = answers.firstIndex(where: { $0.id == newAnswer.id }) else { return }
-        answers[answerIndex] = newAnswer
-    }
-    
-}
-
-
-import SwiftUI
-
-protocol BaseViewModelType: AnyObject {
-    var subPageRoute: InnerPageRouteState { get set }
-    
-    func route(_ route: InnerPageRouteState)
-}
-
-
-extension BaseViewModelType {
-    
-    @MainActor
-    func route(_ route: InnerPageRouteState) {
-        guard subPageRoute != route else { return }
-        withAnimation(.easeInOut) {
-            subPageRoute = route
-        }
+        answers[answerIndex] = newAnswer.copy()
     }
 }
+

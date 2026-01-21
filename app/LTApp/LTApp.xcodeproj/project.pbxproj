@@ -134,6 +134,8 @@
 		F8D8886A2EF12D5200D4E14F /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D888692EF12D5200D4E14F /* NotificationView.swift */; };
 		F8DC77C42EDFE53200B68A61 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = F8DC77C32EDFE53200B68A61 /* Shaders.metal */; };
 		F8F2F9302F01069F00936ECD /* CalendarSlashLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */; };
+		F8FE2C322F20B82200B8A266 /* BaseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FE2C312F20B82100B8A266 /* BaseViewModelType.swift */; };
+		F8FE2C342F20B8E400B8A266 /* DeleteAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FE2C332F20B8E400B8A266 /* DeleteAnswerView.swift */; };
 		FA51BF2C6E9391EC6BDEAD4F /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE6F66A04E6E854AA39FECE /* AppCoordinator.swift */; };
 		FAA6D2B8FB0286BEE0D9140C /* AppleIDSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F26996D055177D80D1143B /* AppleIDSignInView.swift */; };
 		FC384158B10A64A8B751A47A /* UserRowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A664918C535A01D715CF5A0 /* UserRowItem.swift */; };
@@ -286,6 +288,8 @@
 		F8D888692EF12D5200D4E14F /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		F8DC77C32EDFE53200B68A61 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSlashLine.swift; sourceTree = "<group>"; };
+		F8FE2C312F20B82100B8A266 /* BaseViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModelType.swift; sourceTree = "<group>"; };
+		F8FE2C332F20B8E400B8A266 /* DeleteAnswerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAnswerView.swift; sourceTree = "<group>"; };
 		F99FD6DBD2BE11AB7830C23C /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		FC3BB1A5F6EF38CD8369837F /* ThreadQuestionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadQuestionDTO.swift; sourceTree = "<group>"; };
 		FC921C66811B73642A86CE1A /* ReflectionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionDetailView.swift; sourceTree = "<group>"; };
@@ -750,6 +754,8 @@
 		FD333A3186D34F70B64890FB /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				F8FE2C332F20B8E400B8A266 /* DeleteAnswerView.swift */,
+				F8FE2C312F20B82100B8A266 /* BaseViewModelType.swift */,
 				F84409E62EE32B33004A40B2 /* InnerPageRoutingModifier.swift */,
 				F80E7DA62EDED0E300CBC678 /* AnswerDetailView.swift */,
 				720D34B624D4284E08047075 /* DetailAnswerRow.swift */,
@@ -846,6 +852,7 @@
 				23150AA037BD8C1CF86D6515 /* AnwserQuestionViewModel.swift in Sources */,
 				FA51BF2C6E9391EC6BDEAD4F /* AppCoordinator.swift in Sources */,
 				FE1586C04C6B5797BA88B10A /* AppDataService.swift in Sources */,
+				F8FE2C342F20B8E400B8A266 /* DeleteAnswerView.swift in Sources */,
 				527AE96C0AAF06A8BD53EA7B /* AppDataWithAuthorizationService.swift in Sources */,
 				B94E852EB4C83A226D8F2BC9 /* AppHomeRootView.swift in Sources */,
 				F8C266582EF2973F0000F5D6 /* NotificationViewModel.swift in Sources */,
@@ -902,6 +909,7 @@
 				F81AAB2F2EFA4E6900F1680F /* CalendarGridLines.swift in Sources */,
 				ED6B9CE126E3CFB5306162CB /* LogoutInterceptor.swift in Sources */,
 				F8642C902EE04EF000D92A07 /* MetalIconProcessor.swift in Sources */,
+				F8FE2C322F20B82200B8A266 /* BaseViewModelType.swift in Sources */,
 				77BA7C884C2D706C5876FFDF /* LoopingStackCardView.swift in Sources */,
 				A53173906931B98B4452965C /* NaviBar.swift in Sources */,
 				4CD1D65B6A56A9633F0DF5A4 /* OnboardingAccessUseCaseType.swift in Sources */,

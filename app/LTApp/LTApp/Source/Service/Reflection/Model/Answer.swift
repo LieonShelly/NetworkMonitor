@@ -11,6 +11,7 @@ public struct Answer: Sendable, Equatable, Hashable {
     let createYmd: Date?
     var icon: IconData?
     var question: Question?
+    var uid: UUID = UUID()
     
     public static func == (lhs: Answer, rhs: Answer) -> Bool {
         lhs.id == rhs.id
@@ -19,6 +20,18 @@ public struct Answer: Sendable, Equatable, Hashable {
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+    }
+    
+    func copy(with uid: UUID = UUID()) -> Answer {
+        return .init(
+            id: id,
+            content: content,
+            createTms: createTms,
+            createYmd: createYmd,
+            icon: icon,
+            question: question,
+            uid: uid
+        )
     }
 }
 

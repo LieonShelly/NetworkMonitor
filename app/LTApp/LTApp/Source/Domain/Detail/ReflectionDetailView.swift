@@ -10,8 +10,10 @@ struct ReflectionDetailView: View {
     @StateObject var viewModel: ReflectionDetailViewModel
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @State var showSummary: Bool = false
+    @State var showDelete: Bool = false
     @State var navibarOpacity: CGFloat = 0
     @State var subPagePrensented: Bool = false
+    @State var longPressAnswer: Answer?
     
     enum Constants {
         static let navibarH: CGFloat = 85
@@ -29,9 +31,11 @@ struct ReflectionDetailView: View {
                 topbar(proxy)
                 contentView(proxy)
                 summaryView
+                deleteView
             }
             .toolbarVisibility(.hidden, for: .navigationBar)
             .animation(.easeInOut, value: showSummary)
+            .animation(.easeInOut, value: showDelete)
             .innerPageRoute($viewModel.subPageRoute)
         }
         .task {
@@ -52,6 +56,16 @@ struct ReflectionDetailView: View {
         }
     }
     
+    @ViewBuilder var deleteView: some View {
+        if showDelete {
+            DeleteAnswerView(isPresented: $showDelete) {
+                
+            }
+                .transition(.opacity)
+                .zIndex(4)
+        }
+    }
+    
     var addBtn: some View {
         AddBtnView(
             addAction: {
@@ -63,16 +77,23 @@ struct ReflectionDetailView: View {
         .padding(.trailing, 30)
         .padding(.bottom, 30)
     }
+    
     func contentView(_ proxy: GeometryProxy) -> some View {
         ScrollView {
             LazyVStack(spacing: .zero) {
                 topbar(proxy).opacity(0) // for placeholder
                 totalView
                 LazyVStack(spacing: .zero) {
-                    ForEach(viewModel.answers, id: \.id) { answer in
+                    ForEach(viewModel.answers, id: \.uid) { answer in
                         DetailAnswerRow(answer: answer)
+                            .contentShape(.rect)
                             .onTapGesture {
                                 viewModel.route(.answerDetail(.init(answer: answer, question: viewModel.question, service: viewModel.service)))
+                            }
+                           
+                            .onLongPressGesture(minimumDuration: 0.5) {
+                                showDelete = true
+                                longPressAnswer = answer
                             }
                     }
                 }
