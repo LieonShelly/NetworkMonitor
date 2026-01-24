@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ltapp_flutter/src/features/add_answer/add_answer_page.dart';
 import 'package:ltapp_flutter/src/features/answer_detail/answer_detail_page.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_page.dart';
 import 'package:ltapp_flutter/src/features/home_view.dart';
@@ -97,6 +98,15 @@ GoRouter router(Ref ref) {
                   );
                 },
           );
+        },
+      ),
+
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: AppRoutePath.addAnswer,
+        pageBuilder: (context, state) {
+          final page = AddAnswerPage(key: state.pageKey);
+          return MaterialPage(key: state.pageKey, child: page);
         },
       ),
     ],

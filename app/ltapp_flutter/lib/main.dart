@@ -4,8 +4,7 @@ import 'package:ltapp_flutter/src/features/render_spike/custom_circle_wrapper.da
 import 'src/app_router.dart';
 
 void main() {
-  runApp(const MaterialApp(home: DemoPage()));
-  //runApp(const ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
