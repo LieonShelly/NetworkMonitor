@@ -11,6 +11,7 @@ enum IconName {
   star,
   smallCross,
   close,
+  refresh,
 }
 
 extension IconNameExtension on IconName {
@@ -40,6 +41,8 @@ extension IconNameExtension on IconName {
         return "small_cross.svg";
       case IconName.close:
         return "close.svg";
+      case IconName.refresh:
+        return "refresh.svg";
     }
   }
 }
