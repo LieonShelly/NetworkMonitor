@@ -123,9 +123,6 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
             route(.addSingleAnswer(generateTodayViewModel([question])))
         } else {
             route(.todayAnswer(generateTodayViewModel(todayQuestions)))
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
-                self.selected(0)
-            })
         }
     }
 }

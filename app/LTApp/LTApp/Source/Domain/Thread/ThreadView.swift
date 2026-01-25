@@ -34,9 +34,17 @@ struct ThreadView: View {
                 titleView
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: .zero) {
-                        ForEach(viewModel.questionList, id: \.id) { question in
-                          section(question, paraent: proxy)
+                        if viewModel.questionList.count <= 1 {
+                            ForEach(viewModel.questionList, id: \.id) { question in
+                              section(question, paraent: proxy, bottom: 56)
+                            }
+                            emptyList()
+                        } else {
+                            ForEach(viewModel.questionList, id: \.id) { question in
+                              section(question, paraent: proxy)
+                            }
                         }
+                        
                         if !viewModel.questionList.isEmpty {
                             footer
                         }
@@ -63,7 +71,9 @@ struct ThreadView: View {
         }
     }
     
-    func section(_ question: ThreadQuestionItem, paraent: GeometryProxy) -> some View {
+    func section(_ question: ThreadQuestionItem,
+                 paraent: GeometryProxy,
+                 bottom: CGFloat = 32) -> some View {
         VStack(alignment: .leading, spacing: .zero) {
             questionRow(question)
             VStack(spacing: .zero) {
@@ -75,7 +85,7 @@ struct ThreadView: View {
                 }
             }
             .transition(.scale)
-            .padding(.bottom, 32)
+            .padding(.bottom, bottom)
             .padding(.leading, Constants.quesiontTilteHp + Constants.pinIconW)
             .padding(.trailing, Constants.quesiontTilteHp)
             .padding(.top, 8)
@@ -224,7 +234,7 @@ struct ThreadView: View {
                 .padding(.leading, 32)
             if showball {
                 Image(.union)
-                    .padding(.leading, 30)
+                    .padding(.leading, 20)
                     .offset(y: -14)
             }
         }
@@ -239,6 +249,7 @@ struct ThreadView: View {
                 Image(.library)
                     .resizable()
                     .frame(width: 32, height: 32)
+                    .foregroundStyle(AppColor.color(hex: 0x000000))
             }
             HStack(spacing: .zero) {
                 Spacer()
@@ -266,8 +277,61 @@ struct ThreadView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: Constants.iconSize, height: Constants.iconSize)
+            .foregroundStyle(AppColor.color(hex: 0x000000))
             .onTapGesture {
                 addAnswerAction?(question.toQuestion())
             }
     }
+    
+    
+    func emptyStateLibSection(title: String,
+                              icon: ImageResource,
+                              btnTitle: String,
+                              ontapAction: (() -> Void)?) -> some View {
+        VStack(alignment: .leading, spacing: .zero) {
+            Text(title)
+                .textStyle(size: 24, color: AppColor.color(hex: 0xcdcdcd), fontFamily: .feltTipSeniorRegular)
+                .padding(.horizontal, Constants.quesiontTilteHp + Constants.pinIconW)
+            
+            Button {
+                ontapAction?()
+            } label: {
+                HStack(spacing: .zero) {
+                    Image(icon)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 16, height: 16)
+                        .foregroundStyle(AppColor.color(hex: 0xffffff))
+                    
+                    Text(btnTitle)
+                        .textStyle(size: 12, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
+                        .padding(.leading, 6)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 7)
+                .background {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(AppColor.color(hex: 0x000000))
+                }
+            }
+            .padding(.bottom, 56)
+            .padding(.leading, Constants.quesiontTilteHp + Constants.pinIconW)
+            .padding(.trailing, Constants.quesiontTilteHp)
+            .padding(.top, 8)
+        }
+        .overlay(alignment: .leading) {
+            line()
+        }
+    }
+    
+    @ViewBuilder
+    func emptyList() -> some View {
+        emptyStateLibSection(title: "Pin your fav question here for easy access!", icon: .library, btnTitle: "browse question library ") {
+            homeCoordinator.push(HomeRoute.questionLib)
+        }
+        emptyStateLibSection(title: "Start writing to make your own thread", icon: .threadAdd, btnTitle: "view question of the day ") {
+            addAnswerAction?(nil)
+        }
+    }
 }
+
