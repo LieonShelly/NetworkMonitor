@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -15,20 +17,65 @@ class AddAnswerPage extends ConsumerStatefulWidget {
   }
 }
 
-class _AddAnswerPageState extends ConsumerState<AddAnswerPage> {
+class _AddAnswerPageState extends ConsumerState<AddAnswerPage>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _textEditingController = TextEditingController();
   bool _isSubmitEnabled = false;
+
+  late List<QuestionModel> _displayQuestions;
+  late AnimationController _animationController;
+  late Animation<Offset> _slideAnimation;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
     super.initState();
     _textEditingController.addListener(_onTextChanged);
+    _displayQuestions = List.from(widget.questions);
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+    _slideAnimation =
+        Tween<Offset>(begin: Offset.zero, end: const Offset(1.0, -0.5)).animate(
+          CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
+        );
+
+    _fadeAnimation = Tween<double>(begin: 1, end: 0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
+    );
+
+    _scaleAnimation = Tween<double>(begin: 1, end: 0.9).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
+    );
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _rotateQuestions();
+        _animationController.reset();
+      }
+    });
+  }
+
+  void _rotateQuestions() {
+    setState(() {
+      if (_displayQuestions.isNotEmpty) {
+        final first = _displayQuestions.removeAt(0);
+        _displayQuestions.add(first);
+      }
+    });
+  }
+
+  void _onSwithCard() {
+    if (_animationController.isAnimating || _displayQuestions.isEmpty) return;
+    _animationController.forward();
   }
 
   @override
   void dispose() {
     _textEditingController.removeListener(_onTextChanged);
     _textEditingController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -84,7 +131,7 @@ class _AddAnswerPageState extends ConsumerState<AddAnswerPage> {
   }
 
   Widget _buildCardSection() {
-    final questions = widget.questions;
+    final questions = _displayQuestions;
     if (questions.isEmpty) return const SizedBox();
     final int visibleCount = questions.length > 3 ? 3 : questions.length;
     List<Widget> stackChildren = [];
@@ -93,13 +140,24 @@ class _AddAnswerPageState extends ConsumerState<AddAnswerPage> {
       double angle = 0.0;
       if (index == 1) angle = -0.06;
       if (index == 2) angle = 0.06;
-      stackChildren.add(
-        Transform.rotate(
-          angle: angle,
-          key: ValueKey(question.id),
-          child: _buildCardView(question),
-        ),
+      Widget card = Transform.rotate(
+        angle: angle,
+        key: ValueKey(question.id),
+        child: _buildCardView(question),
       );
+      if (index == 0) {
+        card = GestureDetector(
+          onTap: _onSwithCard,
+          child: SlideTransition(
+            position: _slideAnimation,
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: ScaleTransition(scale: _scaleAnimation, child: card),
+            ),
+          ),
+        );
+      }
+      stackChildren.add(card);
     }
     return Stack(children: stackChildren);
   }
