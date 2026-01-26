@@ -1,5 +1,7 @@
 import 'dart:ffi';
+import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -130,36 +132,65 @@ class _AddAnswerPageState extends ConsumerState<AddAnswerPage>
     );
   }
 
+  double _getCardAngle(int index) {
+    switch (index) {
+      case 0:
+        return 0.0;
+      case 1:
+        return -0.06;
+      case 2:
+        return 0.06;
+      default:
+        return 0.0;
+    }
+  }
+
   Widget _buildCardSection() {
     final questions = _displayQuestions;
     if (questions.isEmpty) return const SizedBox();
-    final int visibleCount = questions.length > 3 ? 3 : questions.length;
-    List<Widget> stackChildren = [];
-    for (int index = visibleCount - 1; index >= 0; index--) {
-      final question = questions[index];
-      double angle = 0.0;
-      if (index == 1) angle = -0.06;
-      if (index == 2) angle = 0.06;
-      Widget card = Transform.rotate(
-        angle: angle,
-        key: ValueKey(question.id),
-        child: _buildCardView(question),
-      );
-      if (index == 0) {
-        card = GestureDetector(
-          onTap: _onSwithCard,
-          child: SlideTransition(
-            position: _slideAnimation,
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: ScaleTransition(scale: _scaleAnimation, child: card),
-            ),
-          ),
-        );
-      }
-      stackChildren.add(card);
-    }
-    return Stack(children: stackChildren);
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, child) {
+        final int visibleCount = questions.length > 3 ? 3 : questions.length;
+        List<Widget> stackChildren = [];
+        for (int index = visibleCount - 1; index >= 0; index--) {
+          final question = questions[index];
+          double currentAngle;
+          if (index == 0) {
+            currentAngle = 0;
+          } else {
+            double startAngle = _getCardAngle(index);
+            double targetAngle = _getCardAngle(index - 1);
+            currentAngle =
+                lerpDouble(
+                  startAngle,
+                  targetAngle,
+                  _animationController.value,
+                ) ??
+                0.0;
+          }
+          Widget card = Transform.rotate(
+            angle: currentAngle,
+            key: ValueKey(question.id),
+            child: _buildCardView(question),
+          );
+          if (index == 0) {
+            card = GestureDetector(
+              onTap: _onSwithCard,
+              child: SlideTransition(
+                position: _slideAnimation,
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: ScaleTransition(scale: _scaleAnimation, child: card),
+                ),
+              ),
+            );
+          }
+          stackChildren.add(card);
+        }
+        return Stack(children: stackChildren);
+      },
+    );
   }
 
   Widget _buildCardView(QuestionModel question) {
@@ -218,7 +249,10 @@ class _AddAnswerPageState extends ConsumerState<AddAnswerPage>
   }
 
   Widget _buildRefreshButton() {
-    return IconButton(onPressed: () {}, icon: SvgAsset(IconName.refresh));
+    return IconButton(
+      onPressed: _onSwithCard,
+      icon: SvgAsset(IconName.refresh),
+    );
   }
 
   Widget _buildInputSection() {
