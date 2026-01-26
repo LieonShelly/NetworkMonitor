@@ -19,3 +19,8 @@ final fethTodayQuestionUseCaseProvider =
       final repository = ref.watch(reflectionRepositoryProvider);
       return FetchTodayQuestionUseCase(repository: repository);
     });
+
+final submitAnswerUsecaseProvider = Provider<SubmitAnswerUsecaseType>((ref) {
+  final repository = ref.watch(reflectionRepositoryProvider);
+  return SubmitAnswerUsecase(repository: repository);
+});

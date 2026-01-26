@@ -1,13 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ltapp_flutter/src/core/theme/app_style.dart';
+import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/theme/theme.dart';
 import 'package:ltapp_flutter/src/core/ui_component/uicomponent.dart';
+import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 
 class AddAnswerPage extends ConsumerStatefulWidget {
-  const AddAnswerPage({super.key});
+  final List<QuestionModel> questions;
+  const AddAnswerPage({super.key, required this.questions});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
@@ -51,7 +51,7 @@ class _AddAnswerPageState extends ConsumerState<AddAnswerPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _buildCardHeaderSection(),
+              _buildCardSection(),
               _buildRefreshButton(),
               Expanded(child: _buildInputSection()),
               _buildSubmitButton(),
@@ -63,22 +63,49 @@ class _AddAnswerPageState extends ConsumerState<AddAnswerPage> {
   }
 
   PreferredSizeWidget _buildAppBar() {
+    final now = DateTime.now();
+    final format = DateFormat.MMMd('en_US');
+    final dateStr = format.format(now);
     return AppBar(
       backgroundColor: Color(0xFFFFFDF8),
       elevation: 0,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
       centerTitle: true,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.black),
         onPressed: () => Navigator.of(context).pop(),
       ),
       title: Text(
-        'September 18',
+        dateStr,
         style: AppTextStyle.poppins(color: Color(0xFF423d3d), fontSize: 12),
       ),
     );
   }
 
-  Widget _buildCardHeaderSection() {
+  Widget _buildCardSection() {
+    final questions = widget.questions;
+    if (questions.isEmpty) return const SizedBox();
+    final int visibleCount = questions.length > 3 ? 3 : questions.length;
+    List<Widget> stackChildren = [];
+    for (int index = visibleCount - 1; index >= 0; index--) {
+      final question = questions[index];
+      double angle = 0.0;
+      if (index == 1) angle = -0.06;
+      if (index == 2) angle = 0.06;
+      stackChildren.add(
+        Transform.rotate(
+          angle: angle,
+          key: ValueKey(question.id),
+          child: _buildCardView(question),
+        ),
+      );
+    }
+    return Stack(children: stackChildren);
+  }
+
+  Widget _buildCardView(QuestionModel question) {
+    final categoryTitle = question.category.name;
     final contaienr = Container(
       decoration: BoxDecoration(
         color: Color(0xFFFFFAEE),
@@ -98,7 +125,7 @@ class _AddAnswerPageState extends ConsumerState<AddAnswerPage> {
                 border: BoxBorder.all(width: 1, color: Color(0xFFEBEBEB)),
               ),
               child: Text(
-                '#Simple joys',
+                '#$categoryTitle',
                 style: AppTextStyle.poppins(
                   fontSize: 10,
                   color: Color(0xff000000),
@@ -114,7 +141,7 @@ class _AddAnswerPageState extends ConsumerState<AddAnswerPage> {
               bottom: 20,
             ),
             child: Text(
-              "What small moment of peace did you experience today?",
+              question.title,
               textAlign: TextAlign.center,
               style: AppTextStyle.vividlyRegular(
                 fontSize: 36,

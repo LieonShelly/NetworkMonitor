@@ -105,7 +105,8 @@ GoRouter router(Ref ref) {
         parentNavigatorKey: _rootNavigatorKey,
         path: AppRoutePath.addAnswer,
         pageBuilder: (context, state) {
-          final page = AddAnswerPage(key: state.pageKey);
+          final questions = state.extra as List<QuestionModel>;
+          final page = AddAnswerPage(key: state.pageKey, questions: questions);
           return MaterialPage(key: state.pageKey, child: page);
         },
       ),

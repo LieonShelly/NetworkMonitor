@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/network/api_client.dart';
+import 'package:ltapp_flutter/src/service/dto/answer_submitted_param.dart';
 import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 import 'package:ltapp_flutter/src/service/repository/reflection_repository_type.dart';
 
@@ -39,5 +42,15 @@ class ReflectionRepository implements ReflectionRepositoryType {
     } else {
       return [];
     }
+  }
+
+  @override
+  Future<AnswerModel> submit({required AnswerSubmittedParam param}) async {
+    final response = await _apiClient.post(
+      '/api/answers',
+      data: param.mapToJson(),
+    );
+    final data = response["data"];
+    return AnswerModel.fromJson(data);
   }
 }

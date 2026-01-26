@@ -98,7 +98,13 @@ class _TodayQuestionBannerViewState
     );
     final btn = GestureDetector(
       onTap: () {
-        context.push(AppRoutePath.addAnswer);
+        final questions = ref
+            .read(todayQuestionBannerControllerProvider)
+            .todayQuestions
+            .value;
+        if (questions != null) {
+          context.push(AppRoutePath.addAnswer, extra: questions);
+        }
       },
       child: SizedBox(
         width: 50,

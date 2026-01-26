@@ -44,7 +44,7 @@ final class TodayQuestionBannerControllerProvider
 }
 
 String _$todayQuestionBannerControllerHash() =>
-    r'607d3c666325d704b16af10807dc122411387333';
+    r'aa35d34de50d9e6ffbc676520302e3dc842ace9d';
 
 abstract class _$TodayQuestionBannerController
     extends $Notifier<TodayQuestionState> {
