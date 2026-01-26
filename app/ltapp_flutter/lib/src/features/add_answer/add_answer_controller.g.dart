@@ -13,7 +13,7 @@ part of 'add_answer_controller.dart';
 final addAnswerControllerProvider = AddAnswerControllerProvider._();
 
 final class AddAnswerControllerProvider
-    extends $NotifierProvider<AddAnswerController, AddAnswerState> {
+    extends $AsyncNotifierProvider<AddAnswerController, void> {
   AddAnswerControllerProvider._()
     : super(
         from: null,
@@ -31,30 +31,22 @@ final class AddAnswerControllerProvider
   @$internal
   @override
   AddAnswerController create() => AddAnswerController();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AddAnswerState value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<AddAnswerState>(value),
-    );
-  }
 }
 
 String _$addAnswerControllerHash() =>
-    r'305224c994b717baba499fd46785fffd73cd922a';
+    r'dbe69fe36c409945b6e5d0f3e68cb5454f1a31ad';
 
-abstract class _$AddAnswerController extends $Notifier<AddAnswerState> {
-  AddAnswerState build();
+abstract class _$AddAnswerController extends $AsyncNotifier<void> {
+  FutureOr<void> build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<AddAnswerState, AddAnswerState>;
+    final ref = this.ref as $Ref<AsyncValue<void>, void>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AddAnswerState, AddAnswerState>,
-              AddAnswerState,
+              AnyNotifier<AsyncValue<void>, void>,
+              AsyncValue<void>,
               Object?,
               Object?
             >;

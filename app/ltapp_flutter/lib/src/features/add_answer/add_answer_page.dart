@@ -4,9 +4,11 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/theme/theme.dart';
 import 'package:ltapp_flutter/src/core/ui_component/uicomponent.dart';
+import 'package:ltapp_flutter/src/features/add_answer/add_answer_controller.dart';
 import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 
 class AddAnswerPage extends ConsumerStatefulWidget {
@@ -92,6 +94,17 @@ class _AddAnswerPageState extends ConsumerState<AddAnswerPage>
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(addAnswerControllerProvider, (previous, next) {
+      if (next is AsyncError) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed: ${next.error}')));
+      } else if (next is AsyncData && !next.isLoading) {
+        if (mounted) {
+          context.pop();
+        }
+      }
+    });
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -286,12 +299,14 @@ class _AddAnswerPageState extends ConsumerState<AddAnswerPage>
   }
 
   Widget _buildSubmitButton() {
+    final submitState = ref.watch(addAnswerControllerProvider);
+    final isLoading = submitState.isLoading;
     return Container(
       width: double.infinity,
       height: 62,
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
       child: ElevatedButton(
-        onPressed: _isSubmitEnabled ? () {} : null,
+        onPressed: (_isSubmitEnabled && !isLoading) ? _onSubmit : null,
         style: ElevatedButton.styleFrom(
           backgroundColor: Color(0xFF000000),
           disabledBackgroundColor: const Color(0xFF9D9D9D),
@@ -305,10 +320,21 @@ class _AddAnswerPageState extends ConsumerState<AddAnswerPage>
           'OK',
           style: AppTextStyle.feltTipSeniorRegular(
             fontSize: 32,
-            color: _isSubmitEnabled ? Colors.white : Color(0xFF000000),
+            color: (_isSubmitEnabled && !isLoading)
+                ? Colors.white
+                : Color(0xFF000000),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _onSubmit() async {
+    final content = _textEditingController.text.trim();
+    if (content.isEmpty) return;
+    if (_displayQuestions.isEmpty) return;
+    ref
+        .read(addAnswerControllerProvider.notifier)
+        .submitAnswer(questionId: _displayQuestions[0].id, content: content);
   }
 }

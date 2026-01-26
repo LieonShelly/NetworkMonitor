@@ -1,23 +1,32 @@
+import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/service/dto/dto_model.dart';
+import 'package:ltapp_flutter/src/service/providers/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'add_answer_controller.g.dart';
-
-class AddAnswerState {
-  final AnswerSubmittedParam? param;
-
-  const AddAnswerState({this.param});
-
-  AddAnswerState copyWith(AnswerSubmittedParam? param) {
-    return AddAnswerState(param: param ?? this.param);
-  }
-}
 
 @riverpod
 class AddAnswerController extends _$AddAnswerController {
   @override
-  AddAnswerState build() {
-    return AddAnswerState();
+  FutureOr<void> build() {
+    return null;
   }
 
-  // Future<void> submitAnswer() {}
+  Future<void> submitAnswer({
+    required String questionId,
+    required String content,
+  }) async {
+    final useCase = ref.read(submitAnswerUsecaseProvider);
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      final DateFormat formt = DateFormat("yyyy-MM-dd HH:mm:ss");
+      final createdAt = formt.format(DateTime.now());
+      await useCase.execute(
+        AnswerSubmittedParam(
+          questionId: questionId,
+          content: content,
+          createdAt: createdAt,
+        ),
+      );
+    });
+  }
 }
