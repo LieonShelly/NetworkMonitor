@@ -122,6 +122,7 @@ struct ThreadView: View {
                             .frame(width: Constants.iconSize, height: Constants.iconSize)
                     }
                 }.frame(width: itemWidth, height: itemWidth)
+                    .transition(.opacity.animation(.easeInOut))
             }
         }
     }

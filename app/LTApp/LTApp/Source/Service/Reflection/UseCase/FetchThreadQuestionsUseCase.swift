@@ -32,7 +32,7 @@ public struct ThreadAnswerItem: Sendable, Identifiable {
 }
 
 
-public struct ThreadQuestionItem: Sendable {
+public struct ThreadQuestionItem: Sendable, Equatable {
     let id: String
     let title: String
     var answerItems: [ThreadAnswerItem]
@@ -43,7 +43,10 @@ public struct ThreadQuestionItem: Sendable {
     func toQuestion() -> Question {
         .init(id: id, title: title, pinned: pinned, category: category)
     }
-
+    
+    public static func == (lhs: ThreadQuestionItem, rhs: ThreadQuestionItem) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 extension ThreadQuestion {

@@ -35,7 +35,6 @@ struct ReflectionDetailView: View {
             .toolbarVisibility(.hidden, for: .navigationBar)
             .animation(.easeInOut, value: showSummary)
             .animation(.easeInOut, value: showDelete)
-            .animation(.easeInOut, value: viewModel.answers)
             .innerPageRoute($viewModel.subPageRoute)
         }
         .task {
@@ -89,7 +88,7 @@ struct ReflectionDetailView: View {
                     ForEach(viewModel.answers, id: \.uid) { answer in
                         DetailAnswerRow(answer: answer)
                             .contentShape(.rect)
-                            .transition(.scale)
+                            .transition(.opacity.animation(.easeInOut))
                             .onTapGesture {
                                 viewModel.route(.answerDetail(.init(answer: answer, question: viewModel.question, service: viewModel.service)))
                             }
