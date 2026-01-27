@@ -15,7 +15,7 @@ struct ThumbnailIconImageView<Placeholder: View>: View, ImageCacheKeyType {
     var body: some View {
         KFImage(source: imageResource.map { .network($0) })
             .cacheOriginalImage()
-            .setProcessor(MetalIconProcessor(thickness: 4))
+            .setProcessor(MetalIconProcessor(thickness: 2))
             .serialize(by: FormatIndicatedCacheSerializer.png)
             .cacheMemoryOnly(false)
             .placeholder { _ in

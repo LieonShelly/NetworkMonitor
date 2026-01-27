@@ -8,3 +8,5 @@ mixin ImageCacheKeyType {
     }
   }
 }
+
+class ImageCacheKey with ImageCacheKeyType {}

@@ -8,6 +8,7 @@ import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/core/theme/icon_name.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
 import 'package:ltapp_flutter/src/features/calendar/diagonal_line.dart';
+import 'package:ltapp_flutter/src/features/common/processed_icon_view.dart';
 import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 import 'package:ltapp_flutter/src/core/core.dart';
 
@@ -294,9 +295,9 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
     double height,
   ) {
     final icon = answert?.icon;
-    final placehoder = SvgAsset(IconName.star, width: width, height: height);
+    final placeholder = SvgAsset(IconName.star, width: width, height: height);
     if (icon == null) {
-      return placehoder;
+      return placeholder;
     }
 
     switch (icon.status) {
@@ -305,25 +306,16 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
           onTap: () {
             context.push('/answer_detail', extra: answert);
           },
-          child: Hero(
-            tag: 'answer_icon_${answert?.id ?? ""}',
-            child: CachedNetworkImage(
-              imageUrl: icon.url ?? "",
-              width: width,
-              height: height,
-              fit: BoxFit.contain,
-              memCacheWidth: (150 * 3).toInt(),
-              placeholder: (context, url) => placehoder,
-              errorWidget: (context, url, error) => placehoder,
-              fadeInDuration: Duration.zero,
-              fadeOutDuration: Duration.zero,
-              key: ValueKey(cacheKey(icon.url ?? "")),
-              cacheKey: cacheKey(icon.url ?? ""),
-            ),
+          child: ProcessedIconView(
+            imageUrl: icon.url ?? "",
+            width: width,
+            height: height,
+            placeholder: placeholder,
+            herTag: answert?.id ?? "",
           ),
         );
       default:
-        return placehoder;
+        return placeholder;
     }
   }
 

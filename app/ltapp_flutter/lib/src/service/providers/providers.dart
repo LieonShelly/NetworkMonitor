@@ -1,7 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ltapp_flutter/src/core/image_processor/image_processor.dart';
 import 'package:ltapp_flutter/src/core/network/network_provider.dart';
+import 'package:ltapp_flutter/src/core/ui_component/uicomponent.dart';
 import 'package:ltapp_flutter/src/service/repository/repository.dart';
 import 'package:ltapp_flutter/src/service/usecase/usecase.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 final reflectionRepositoryProvider = Provider<ReflectionRepositoryType>((ref) {
   final apiClient = ref.watch(apiClientProvider);
@@ -23,4 +28,25 @@ final fethTodayQuestionUseCaseProvider =
 final submitAnswerUsecaseProvider = Provider<SubmitAnswerUsecaseType>((ref) {
   final repository = ref.watch(reflectionRepositoryProvider);
   return SubmitAnswerUsecase(repository: repository);
+});
+
+final processedIconProvider = FutureProvider.family<Uint8List?, String>((
+  ref,
+  imageUrl,
+) async {
+  if (imageUrl.isEmpty) return null;
+  try {
+    final iconId = ImageCacheKey().cacheKey(imageUrl);
+
+    final file = await DefaultCacheManager().getSingleFile(
+      imageUrl,
+      key: iconId,
+    );
+    final originalBytes = await file.readAsBytes();
+    final processedBytes = await ImageProcessor.processIcon(originalBytes);
+    return processedBytes;
+  } catch (e) {
+    print("error processing icon: $e");
+    return null;
+  }
 });
