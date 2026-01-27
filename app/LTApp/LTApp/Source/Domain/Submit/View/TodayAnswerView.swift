@@ -42,7 +42,7 @@ struct TodayAnswerView: View {
         .animation(.easeInOut, value: presented)
         .task {
             viewModel.pageState = .unsubmit
-//            await viewModel.initializeData()
+            //            await viewModel.initializeData()
             guard viewModel.cardViewModels.isEmpty else { return }
             try? await viewModel.fetchData()
         }
@@ -114,7 +114,7 @@ struct TodayAnswerView: View {
     
     @ViewBuilder
     var refreshBtn: some View {
-        if keyboardObserver.keyboardHeight <= 0  {
+        if keyboardObserver.keyboardHeight <= 0, viewModel.cardViewModels.count > 1 {
             Button {
                 viewModel.refresh()
             } label: {
