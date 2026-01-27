@@ -11,9 +11,9 @@ class AnswerSubmittedParam {
 
   Map<String, String> mapToJson() {
     return {
-      "questionId": questionId,
+      "question_id": questionId,
       "content": content,
-      "createdAt": createdAt,
+      "created_tms": createdAt,
     };
   }
 }

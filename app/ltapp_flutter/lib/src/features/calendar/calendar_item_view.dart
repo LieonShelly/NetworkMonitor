@@ -18,10 +18,10 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (DateUtils.isSameDay(date, DateTime.now())) {
-      return _buildAddBtnView();
-    }
     if (item == null) {
+      if (DateUtils.isSameDay(date, DateTime.now())) {
+        return _buildAddBtnView();
+      }
       return _buildNoneIconView();
     }
     return switch (item!.style) {

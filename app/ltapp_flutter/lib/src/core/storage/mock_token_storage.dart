@@ -3,7 +3,7 @@ import 'package:ltapp_flutter/src/core/network/token_storage.dart';
 class MockTokenStorage implements TokenStorage {
   @override
   Future<String?> getAccessToken() async {
-    return r"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWdyam1tN20wMDAwcHBweHZoZXhuMm1tIiwiYXBwbGVJZCI6IjAwMTc3NC5mYjZiNjFiMjk5MmU0NjgzOGJlZTM0ZTc4MWE2YTExNC4xMDIxIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2OTM5ODA5NywiZXhwIjoxNzY5NDg0NDk3fQ.UcC7CETHIgjt_xl7TfbAz_GL7NIIWOhYLsfWGh8220I";
+    return r" eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWdyam1tN20wMDAwcHBweHZoZXhuMm1tIiwiYXBwbGVJZCI6IjAwMTc3NC5mYjZiNjFiMjk5MmU0NjgzOGJlZTM0ZTc4MWE2YTExNC4xMDIxIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2OTQ5OTg2NSwiZXhwIjoxNzY5NTg2MjY1fQ.fH1pRLUziEKHXDsz6mMZA7ZBqDKn3KAprAf1t9HEH3k";
   }
 
   @override
