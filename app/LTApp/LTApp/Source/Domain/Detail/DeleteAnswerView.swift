@@ -61,6 +61,7 @@ struct DeleteAnswerView: View {
     var deleteBtn: some View {
         Button {
             show.toggle()
+            deleteAction?()
         } label: {
             RoundedRectangle(cornerRadius: 12)
                 .fill(AppColor.color(hex: 0xE75C06))

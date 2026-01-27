@@ -22,6 +22,7 @@ public protocol AppDataWithAuthorizationServiceful {
     var userManagementService: any UserManagementServiceful { get }
     var postNotificationDeviceTokenUseCase: any PostNotificationDeviceTokenUseCaseType { get }
     var notificationFlagUseCase: any NotificationFlagUseCaseType { get }
+    var deleteAnswerUseCase: any DeleteAnswersUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
@@ -106,5 +107,9 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var notificationFlagUseCase: any NotificationFlagUseCaseType = {
         NotificationFlagUseCase(storage: keyDataStorage)
+    }()
+    
+    public lazy var deleteAnswerUseCase: any DeleteAnswersUseCaseType = {
+        DeleteAnswersUseCase(repository: reflectionRepository)
     }()
 }

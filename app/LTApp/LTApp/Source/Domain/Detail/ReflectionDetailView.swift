@@ -13,7 +13,6 @@ struct ReflectionDetailView: View {
     @State var showDelete: Bool = false
     @State var navibarOpacity: CGFloat = 0
     @State var subPagePrensented: Bool = false
-    @State var longPressAnswer: Answer?
     
     enum Constants {
         static let navibarH: CGFloat = 85
@@ -36,6 +35,7 @@ struct ReflectionDetailView: View {
             .toolbarVisibility(.hidden, for: .navigationBar)
             .animation(.easeInOut, value: showSummary)
             .animation(.easeInOut, value: showDelete)
+            .animation(.easeInOut, value: viewModel.answers)
             .innerPageRoute($viewModel.subPageRoute)
         }
         .task {
@@ -59,7 +59,9 @@ struct ReflectionDetailView: View {
     @ViewBuilder var deleteView: some View {
         if showDelete {
             DeleteAnswerView(isPresented: $showDelete) {
-                
+                Task {
+                   try? await viewModel.deleteAnswer()
+                }
             }
                 .transition(.opacity)
                 .zIndex(4)
@@ -87,13 +89,14 @@ struct ReflectionDetailView: View {
                     ForEach(viewModel.answers, id: \.uid) { answer in
                         DetailAnswerRow(answer: answer)
                             .contentShape(.rect)
+                            .transition(.scale)
                             .onTapGesture {
                                 viewModel.route(.answerDetail(.init(answer: answer, question: viewModel.question, service: viewModel.service)))
                             }
                            
                             .onLongPressGesture(minimumDuration: 0.5) {
                                 showDelete = true
-                                longPressAnswer = answer
+                                viewModel.longPressAnswer = answer
                             }
                     }
                 }

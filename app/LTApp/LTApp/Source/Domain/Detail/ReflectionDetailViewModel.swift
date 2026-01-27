@@ -11,6 +11,7 @@ final class ReflectionDetailViewModel: @preconcurrency BaseViewModelType, Observ
     @MainActor @Published var answers: [Answer] = []
     @MainActor @Published var title: String = ""
     @MainActor @Published var subPageRoute: InnerPageRouteState = .none
+    var longPressAnswer: Answer?
     let question: Question
     let service: any AppDataWithAuthorizationServiceful
     private let questionId: String
@@ -70,6 +71,13 @@ final class ReflectionDetailViewModel: @preconcurrency BaseViewModelType, Observ
     private func updateIconData(currentQuestion: Question, newAnswer: Answer) {
         guard let answerIndex = answers.firstIndex(where: { $0.id == newAnswer.id }) else { return }
         answers[answerIndex] = newAnswer.copy()
+    }
+    
+    func deleteAnswer() async throws {
+        if let longPressAnswer {
+            try await service.deleteAnswerUseCase.execute(answerId: longPressAnswer.id)
+            try await fetchData()
+        }
     }
 }
 

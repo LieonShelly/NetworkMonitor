@@ -43,6 +43,8 @@ public protocol ReflectionRepositoryType {
     func fetchHistory(questionId: String, limit: Int?, cursor: Int?) async throws -> History
     
     func fetchTodayQuestions() async throws -> [Question]
+    
+    func deleteAnswer(_ answerId: String) async throws
 }
 
 public final class ReflectionRepository: ReflectionRepositoryType {
@@ -123,5 +125,12 @@ public final class ReflectionRepository: ReflectionRepositoryType {
         let response = try await apiClient.sendRequest(request)
         let dto: UniversalListResponse<QuestionDTO> = try response.parseJson()
         return (dto.data ?? []).map { $0.toDomain() }
+    }
+    
+    public func deleteAnswer(_ answerId: String) async throws {
+        let request = ReflectionRequest.deleteAnswer(answerId: answerId)
+        let response = try await apiClient.sendRequest(request)
+        let _: UniversalEmptyResponse = try response.parseJson()
+        return ()
     }
 }

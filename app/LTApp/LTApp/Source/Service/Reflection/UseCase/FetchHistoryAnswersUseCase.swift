@@ -19,3 +19,4 @@ public class FetchHistoryAnswersUseCase: FetchHistoryAnswersUseCaseType, @unchec
         try await repository.fetchHistory(questionId: questionId, limit: limit, cursor: cursor)
     }
 }
+

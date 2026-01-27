@@ -104,7 +104,7 @@
 		EA36E3C0AF3849BFE0986450 /* QuestionCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87216B9ACF82845B585A0B88 /* QuestionCardViewModel.swift */; };
 		EAEE0A40DC9D8080566E01AB /* PinQuestionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCCEDD7C0D9E4209FD9A015A /* PinQuestionUseCase.swift */; };
 		ED6B9CE126E3CFB5306162CB /* LogoutInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA14C5747FBE99D911A634F /* LogoutInterceptor.swift */; };
-		EFC187983F274A3E98DC55A4 /* FetchThreadQuestionsUseCaseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275858D84F27880CE5767708 /* FetchThreadQuestionsUseCaseType.swift */; };
+		EFC187983F274A3E98DC55A4 /* FetchThreadQuestionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275858D84F27880CE5767708 /* FetchThreadQuestionsUseCase.swift */; };
 		F0083B5ACFA2CDE8498A47E5 /* AuthRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DAB8550C5F8FE713E8C905 /* AuthRequest.swift */; };
 		F1B48CC86B724385430FEC21 /* CalendarDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB376B93C7F5FF4B131FD9F /* CalendarDay.swift */; };
 		F30FC501E337AB0B4B0C0D18 /* IconRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB18B18DB1403A5E4F474A33 /* IconRequest.swift */; };
@@ -133,6 +133,7 @@
 		F8C266582EF2973F0000F5D6 /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C266572EF2973F0000F5D6 /* NotificationViewModel.swift */; };
 		F8D8886A2EF12D5200D4E14F /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D888692EF12D5200D4E14F /* NotificationView.swift */; };
 		F8DC77C42EDFE53200B68A61 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = F8DC77C32EDFE53200B68A61 /* Shaders.metal */; };
+		F8F122D02F289AA5008DB4AB /* DeleteAnswersUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F122CF2F289AA5008DB4AB /* DeleteAnswersUseCase.swift */; };
 		F8F2F9302F01069F00936ECD /* CalendarSlashLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */; };
 		F8FE2C322F20B82200B8A266 /* BaseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FE2C312F20B82100B8A266 /* BaseViewModelType.swift */; };
 		F8FE2C342F20B8E400B8A266 /* DeleteAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FE2C332F20B8E400B8A266 /* DeleteAnswerView.swift */; };
@@ -183,7 +184,7 @@
 		20E6733D5B9E8DC22AA2588F /* AppDataWithAuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataWithAuthorizationService.swift; sourceTree = "<group>"; };
 		219D684CCFDCB31471CECDCB /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		273FF8161A8C18829BAA0967 /* UniversalResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalResponse.swift; sourceTree = "<group>"; };
-		275858D84F27880CE5767708 /* FetchThreadQuestionsUseCaseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchThreadQuestionsUseCaseType.swift; sourceTree = "<group>"; };
+		275858D84F27880CE5767708 /* FetchThreadQuestionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchThreadQuestionsUseCase.swift; sourceTree = "<group>"; };
 		27DAB8550C5F8FE713E8C905 /* AuthRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRequest.swift; sourceTree = "<group>"; };
 		28E191E045EC8DC024A505D9 /* IconData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconData.swift; sourceTree = "<group>"; };
 		2A88B483E3D66499FDB5A75D /* UIComponent.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UIComponent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -287,6 +288,7 @@
 		F8C266572EF2973F0000F5D6 /* NotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
 		F8D888692EF12D5200D4E14F /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		F8DC77C32EDFE53200B68A61 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		F8F122CF2F289AA5008DB4AB /* DeleteAnswersUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAnswersUseCase.swift; sourceTree = "<group>"; };
 		F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSlashLine.swift; sourceTree = "<group>"; };
 		F8FE2C312F20B82100B8A266 /* BaseViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModelType.swift; sourceTree = "<group>"; };
 		F8FE2C332F20B8E400B8A266 /* DeleteAnswerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAnswerView.swift; sourceTree = "<group>"; };
@@ -652,6 +654,7 @@
 		E81C9A699055A08036CC26C8 /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
+				F8F122CF2F289AA5008DB4AB /* DeleteAnswersUseCase.swift */,
 				F86ECACA2EF3A11C007EEA24 /* NotificationFlagUseCase.swift */,
 				F86ECAC82EF39F4E007EEA24 /* PostNotificationUseCase.swift */,
 				A2AC3ECD67EDD0DA13A5CABC /* CalendarReflectionsUseCase.swift */,
@@ -660,7 +663,7 @@
 				DA9FA0345317AA96420FAC3B /* FetchHistoryAnswersUseCase.swift */,
 				6C73B50298BF20B069EA0DED /* FetchOnboardingSentenceUseCase.swift */,
 				E80AA3AD5E1713D6DAB4206C /* FetchQuestionsWithCategoryUseCase.swift */,
-				275858D84F27880CE5767708 /* FetchThreadQuestionsUseCaseType.swift */,
+				275858D84F27880CE5767708 /* FetchThreadQuestionsUseCase.swift */,
 				E5FEB5FAA303C4FDD9CFA9D9 /* FetchTodayQuestionsUseCase.swift */,
 				FCCEDD7C0D9E4209FD9A015A /* PinQuestionUseCase.swift */,
 				40FA1164BA74B596155811F0 /* SubmitAnswerUseCase.swift */,
@@ -890,7 +893,7 @@
 				4C2D6F94C5E08D9A7FAD2E76 /* FetchHistoryAnswersUseCase.swift in Sources */,
 				F8653D158C566ADBE66E781E /* FetchOnboardingSentenceUseCase.swift in Sources */,
 				1D8107E406D3EF6E9BDF7835 /* FetchQuestionsWithCategoryUseCase.swift in Sources */,
-				EFC187983F274A3E98DC55A4 /* FetchThreadQuestionsUseCaseType.swift in Sources */,
+				EFC187983F274A3E98DC55A4 /* FetchThreadQuestionsUseCase.swift in Sources */,
 				3BAC2EF102159C39527C4A9B /* FetchTodayQuestionsUseCase.swift in Sources */,
 				F8C266522EF285EE0000F5D6 /* AppDelegate.swift in Sources */,
 				91D8E50CA05A244503C0A3C2 /* FirstQuestionSubmittedView.swift in Sources */,
@@ -945,6 +948,7 @@
 				8A41FA61D325E6DCB94CD259 /* SplashViewModel.swift in Sources */,
 				C88E6B0B3706500FB48F8597 /* SubmitAnswerUseCase.swift in Sources */,
 				D44714238B00562078E69A75 /* SummaryView.swift in Sources */,
+				F8F122D02F289AA5008DB4AB /* DeleteAnswersUseCase.swift in Sources */,
 				42D99842A51E63130D7CCA07 /* ThreadQuestionDTO.swift in Sources */,
 				F85859F42EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift in Sources */,
 				F875E80B2F1DE7D00050BD23 /* CancellableBox.swift in Sources */,
