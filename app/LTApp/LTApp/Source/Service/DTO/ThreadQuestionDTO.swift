@@ -9,6 +9,7 @@ struct ThreadQuestionDTO: Decodable {
     let title: String
     let pinned: Bool
     let answers: [AnswerDTO]
+    let category: CategoryDTO
 }
 
 extension ThreadQuestionDTO {
@@ -17,7 +18,8 @@ extension ThreadQuestionDTO {
             id: id,
             title: title,
             pinned: pinned,
-            answers: answers.map { $0.toDomain() }
+            answers: answers.map { $0.toDomain() },
+            category: category.toDomain()
         )
     }
 }

@@ -45,6 +45,7 @@ public struct ThreadQuestion: Sendable {
     let title: String
     let pinned: Bool
     let answers: [Answer]
+    let category: Category
     
 }
 

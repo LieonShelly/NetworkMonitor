@@ -38,9 +38,10 @@ public struct ThreadQuestionItem: Sendable {
     var answerItems: [ThreadAnswerItem]
     var hasExactDivided: Bool =  false
     let pinned: Bool
+    let category: Category?
     
     func toQuestion() -> Question {
-        .init(id: id, title: title, pinned: pinned)
+        .init(id: id, title: title, pinned: pinned, category: category)
     }
 
 }
@@ -51,7 +52,8 @@ extension ThreadQuestion {
             id: id,
             title: title,
             answerItems: answers.map { .init(type: .noraml($0))},
-            pinned: pinned
+            pinned: pinned,
+            category: category
         )
     }
 }
