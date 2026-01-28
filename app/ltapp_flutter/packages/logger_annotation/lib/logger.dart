@@ -1,1 +1,7 @@
-export './logger/my_log.dart';
+class Log {
+  final String prefix;
+
+  const Log(this.prefix);
+}
+
+const log = Log("DEBUG");

@@ -3,9 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ltapp_flutter/src/core/theme/app_style.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_month_view.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_controller.dart';
-import 'package:logger_annotation/logger.dart';
 
-@myLog
 class CalendarContentView extends ConsumerWidget {
   final PageController pageController;
   final double itemWidth;
