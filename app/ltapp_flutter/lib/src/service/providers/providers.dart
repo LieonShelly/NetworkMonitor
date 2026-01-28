@@ -30,17 +30,15 @@ final submitAnswerUsecaseProvider = Provider<SubmitAnswerUsecaseType>((ref) {
   return SubmitAnswerUsecase(repository: repository);
 });
 
-final processedIconProvider = FutureProvider.family<Uint8List?, String>((
+final processedIconProvider = FutureProvider.family<Uint8List?, IconParams>((
   ref,
-  imageUrl,
+  parmas,
 ) async {
-  if (imageUrl.isEmpty) return null;
+  if (parmas.imageUrl.isEmpty) return null;
   try {
-    final iconId = ImageCacheKey().cacheKey(imageUrl);
-
     final file = await DefaultCacheManager().getSingleFile(
-      imageUrl,
-      key: iconId,
+      parmas.imageUrl,
+      key: parmas.iconId,
     );
     final originalBytes = await file.readAsBytes();
     final processedBytes = await ImageProcessor.processIcon(originalBytes);
