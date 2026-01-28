@@ -22,7 +22,6 @@ enum IconStatus {
   }
 }
 
-@ltDeserialization
 class IconModel {
   final String? url;
   final IconStatus status;
@@ -37,18 +36,15 @@ class IconModel {
   }
 }
 
+@ltDeserialization
 class CategoryModel {
   final String? id;
   final String name;
 
   CategoryModel({this.id, required this.name});
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) {
-    return CategoryModel(
-      id: json['id'] as String?,
-      name: json['name'] as String,
-    );
-  }
+  factory CategoryModel.fromJson(Map<String, dynamic> json) =>
+      _$CategoryModelFromJson(json);
 }
 
 class QuestionModel {

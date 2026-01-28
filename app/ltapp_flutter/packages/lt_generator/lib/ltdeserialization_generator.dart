@@ -37,7 +37,7 @@ class LtDeserializationGenerator
       final jsonKey = _camelToSnake(fieldName);
 
       buffer.writeln(
-        " $fieldName: ${_generateDeserialization(fieldType, jsonKey)}",
+        " $fieldName: ${_generateDeserialization(fieldType, jsonKey)},",
       );
     }
 
@@ -55,10 +55,10 @@ class LtDeserializationGenerator
         type.isDartCoreInt ||
         type.isDartCoreDouble ||
         type.isDartCoreBool) {
-      return "json[$jsonKey] as ${type.getDisplayString()}";
+      return "json['$jsonKey'] as ${type.getDisplayString()}";
     }
     final typeName = type.element3!.name3;
-    return "json[$jsonKey] == null ? null : $typeName.fromJson(json['$jsonKey'])";
+    return "json['$jsonKey'] == null ? null : $typeName.fromJson(json['$jsonKey'])";
   }
 
   String _camelToSnake(String input) {
