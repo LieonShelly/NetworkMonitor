@@ -2,7 +2,9 @@ mixin ImageCacheKeyType {
   String cacheKey(String url) {
     try {
       final uri = Uri.parse(url);
-      return uri.pathSegments.last;
+      final lastPath = uri.pathSegments.last;
+      final lastPaths = lastPath.split('.');
+      return lastPaths.first;
     } catch (e) {
       return url;
     }

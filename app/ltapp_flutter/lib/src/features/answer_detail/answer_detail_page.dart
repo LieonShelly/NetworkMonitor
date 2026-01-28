@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/core.dart';
 import 'package:ltapp_flutter/src/core/theme/theme.dart';
 import 'package:ltapp_flutter/src/core/ui_component/svg_asset.dart';
+import 'package:ltapp_flutter/src/features/common/processed_icon_view.dart';
 import 'package:ltapp_flutter/src/service/dto/dto_model.dart';
 
 class AnswerDetailPage extends ConsumerStatefulWidget with ImageCacheKeyType {
@@ -146,26 +146,28 @@ class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage>
   }
 
   Widget _buildIconView(BuildContext context) {
+    final icon = ProcessedIconView(
+      imageUrl: widget.answer.icon?.url ?? "",
+      width: double.infinity,
+      height: 300,
+      placeholder: const SizedBox(height: 100),
+      herTag: 'answer_icon_${widget.answer.id}',
+      onImageLoaded: () {
+        if (!_hasTiggeredAnimation) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (context.mounted) {
+              _isImageReady = true;
+              Future.delayed(const Duration(milliseconds: 500), () {
+                _checkAndStartAnimation();
+              });
+            }
+          });
+        }
+      },
+    );
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 48, vertical: 50),
-      child: CachedNetworkImage(
-        imageUrl: widget.answer.icon?.url ?? "",
-        cacheKey: widget.answer.icon?.url,
-        imageBuilder: (context, imageProvider) {
-          if (!_hasTiggeredAnimation) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (context.mounted) {
-                _isImageReady = true;
-                Future.delayed(const Duration(milliseconds: 500), () {
-                  _checkAndStartAnimation();
-                });
-              }
-            });
-          }
-          return Image(image: imageProvider);
-        },
-        placeholder: (context, url) => const SizedBox(height: 100),
-      ),
+      child: icon,
     );
   }
 

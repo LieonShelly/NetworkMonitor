@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/network/api_client.dart';
 import 'package:ltapp_flutter/src/service/dto/answer_submitted_param.dart';
