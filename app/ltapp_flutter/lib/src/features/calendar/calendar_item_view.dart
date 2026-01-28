@@ -306,12 +306,16 @@ class CalendarItemView extends ConsumerWidget with ImageCacheKeyType {
           onTap: () {
             context.push('/answer_detail', extra: answert);
           },
-          child: ProcessedIconView(
-            imageUrl: icon.url ?? "",
-            width: width,
-            height: height,
-            placeholder: placeholder,
-            herTag: answert?.id ?? "",
+          child: Container(
+            // color: Colors.red,
+            padding: EdgeInsets.all(3),
+            child: ProcessedIconView(
+              imageUrl: icon.url ?? "",
+              width: width,
+              height: height,
+              placeholder: placeholder,
+              herTag: answert?.id ?? "",
+            ),
           ),
         );
       default:
