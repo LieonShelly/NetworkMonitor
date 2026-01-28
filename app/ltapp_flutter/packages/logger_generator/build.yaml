@@ -1,0 +1,6 @@
+builders:
+  logger_generator:
+    import: "package:generator_package/builder.dart"
+    builder_factories: [myLogBuilder]
+    build_extensions: {".dart" : [".g.dart"]}
+    auto_apply: dependents
