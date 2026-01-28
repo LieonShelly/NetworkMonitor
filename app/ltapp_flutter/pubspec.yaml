@@ -22,8 +22,8 @@ dependencies:
   flutter_secure_storage: ^10.0.0
   cached_network_image: ^3.4.1
   scroll_to_index: ^3.0.1
-  logger_annotation:
-    path: 'packages/logger_annotation'
+  lt_annotation:
+    path: 'packages/lt_annotation'
 
 
 dev_dependencies:
@@ -34,8 +34,8 @@ dev_dependencies:
   riverpod_generator: ^4.0.0+1
   freezed: ^3.2.3
   json_serializable: ^6.7.1
-  logger_generator:
-    path: 'packages/logger_generator'
+  lt_generator:
+    path: 'packages/lt_generator'
 
 flutter:
   uses-material-design: true

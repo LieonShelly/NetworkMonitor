@@ -1,3 +1,6 @@
+import 'package:lt_annotation/ltdeserialization.dart';
+part 'calendar_reflection_model.g.dart';
+
 enum IconStatus {
   generated,
   pending,
@@ -19,6 +22,7 @@ enum IconStatus {
   }
 }
 
+@ltDeserialization
 class IconModel {
   final String? url;
   final IconStatus status;
