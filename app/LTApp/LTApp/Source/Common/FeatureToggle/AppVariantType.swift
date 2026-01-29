@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct AppVariant {
-    let currentStage: FeatureRolloutStage
+protocol AppVariantType {
+    var currentStage: FeatureRolloutStage { get }
 }

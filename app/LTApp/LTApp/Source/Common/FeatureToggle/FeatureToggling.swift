@@ -11,5 +11,7 @@ import Foundation
 protocol FeatureToggling {
     
     func isEnabled(for rolloutStage: FeatureRolloutStage) -> Bool
+    
+    func isEnabled(for featutre: FeatureConfig) -> Bool
 }
 

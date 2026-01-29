@@ -8,13 +8,17 @@
 import Foundation
 
 class FeatureToggle: FeatureToggling {
-    private let appVariant: AppVariant
+    private let appVariant: AppVariantType
     
-    init(appVariant: AppVariant) {
+    init(appVariant: AppVariantType) {
         self.appVariant = appVariant
     }
     
     func isEnabled(for rolloutStage: FeatureRolloutStage) -> Bool {
         rolloutStage >= appVariant.currentStage
+    }
+    
+    func isEnabled(for featutre: FeatureConfig) -> Bool {
+        isEnabled(for: featutre.stage)
     }
 }

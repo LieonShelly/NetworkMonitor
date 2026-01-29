@@ -64,6 +64,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
             tokenExpired: logoutInterceptor
         )
         self.notificationHandler = NotificationHandler()
+        self.inject()
         self.launch()
     }
     
@@ -86,6 +87,12 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
                 self?.root = root
             }
             .store(in: &cancellables)
+    }
+    
+    func inject() {
+        let appVariant = AppVariant(currentStage: .release)
+        let featureToggle = FeatureToggle(appVariant: appVariant)
+        InjectionValues.register(FeatureToggling.self, component: featureToggle)
     }
 }
 

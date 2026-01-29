@@ -7,6 +7,6 @@
 
 
 
-protocol FetureConfig {
+protocol FeatureConfig {
     var stage: FeatureRolloutStage { get }
 }
