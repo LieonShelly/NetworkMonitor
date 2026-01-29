@@ -26,3 +26,15 @@ enum LTAppFeatureConfig: FeatureConfig {
         }
     }
 }
+
+struct FeatureToggleKey: InjectionKey {
+    nonisolated(unsafe)
+    static var currentValue: FeatureToggling = FeatureToggle(appVariant: AppVariant(currentStage: .underDevelopment))
+}
+
+extension InjectionValues {
+    var featureToggle: FeatureToggling {
+        get { Self[FeatureToggleKey.self]}
+        set { Self[FeatureToggleKey.self] = newValue }
+    }
+}

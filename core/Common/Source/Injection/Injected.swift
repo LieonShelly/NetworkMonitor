@@ -15,7 +15,7 @@ public struct Injected<T> {
         self.keyPath = keyPath
     }
     
-    public  init() {
+    public init() {
         self.keyPath = nil
     }
     

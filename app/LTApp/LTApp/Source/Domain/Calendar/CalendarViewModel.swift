@@ -28,11 +28,9 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     
     private let service: any AppDataWithAuthorizationServiceful
     private var didTapMontHeaderItem: Bool = false
-    @Injected var featureToggle: any FeatureToggling
     
     init(service: any AppDataWithAuthorizationServiceful) {
         self.service = service
-       print("featureToggle:", featureToggle.isEnabled(for: LTAppFeatureConfig.calendarView))
     }
     
     func queryCurrenntIconStatus(_ iconId: String) {
