@@ -8,9 +8,6 @@
 import Foundation
 
 public struct InjectionValues {
-    nonisolated(unsafe)
-    private static var current = InjectionValues()
-    
     public init() { }
     
     public static subscript<K>(key: K.Type) -> K.Value where K: InjectionKey {
@@ -19,23 +16,52 @@ public struct InjectionValues {
     }
     
     public static subscript<T>(_ keyPath: WritableKeyPath<InjectionValues, T>) -> T {
-        get { current[keyPath: keyPath] }
-        set { current[keyPath: keyPath] = newValue }
+        get {
+            let proxy = InjectionValues()
+            return proxy[keyPath: keyPath]
+        }
+        set {
+            var proxy = InjectionValues()
+             proxy[keyPath: keyPath] = newValue
+        }
     }
     
-    nonisolated(unsafe)
-    private static var typeProviders: [ObjectIdentifier: Any] = [:]
-    
     public static func register<T>(_ type: T.Type, component: T) {
-        let key = ObjectIdentifier(type)
-        typeProviders[key] = component
+        Storage.shared.register(type, component: component)
     }
     
     public static func resolve<T>() -> T {
-        let key = ObjectIdentifier(T.self)
-        guard let component = typeProviders[key] as? T else {
+        guard let component: T = Storage.shared.resolve() else {
             fatalError()
         }
         return component
+    }
+}
+
+private final class Storage: @unchecked Sendable {
+    private let lock = NSRecursiveLock()
+    private var typeProviders: [ObjectIdentifier: Any] = [:]
+    static let shared = Storage()
+    
+    func register<T>(_ type: T.Type, component: T) {
+        lock.withLock {
+            let key = ObjectIdentifier(type)
+            typeProviders[key] = component
+        }
+    }
+    
+    func resolve<T>() -> T? {
+        lock.withLock {
+            let key = ObjectIdentifier(T.self)
+            return typeProviders[key] as? T
+        }
+    }
+}
+
+extension NSLocking {
+    func withLock<T> (_ body: () throws -> T) rethrows -> T {
+        lock()
+        defer { unlock() }
+        return try body()
     }
 }

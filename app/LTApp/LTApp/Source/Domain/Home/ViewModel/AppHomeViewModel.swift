@@ -96,7 +96,7 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
     @MainActor
     func organize() -> [Question] {
         let count = self.todayQuestions.count
-        var questions = self.todayQuestions
+        let questions = self.todayQuestions
         guard let head = questions.first else { return [] }
        return [head] + questions[1 ..< count]
     }
