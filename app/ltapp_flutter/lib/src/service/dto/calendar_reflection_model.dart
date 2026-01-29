@@ -22,6 +22,7 @@ enum IconStatus {
   }
 }
 
+@ltDeserialization
 class IconModel {
   final String? url;
   final IconStatus status;
@@ -39,6 +40,7 @@ class IconModel {
 @ltDeserialization
 class CategoryModel {
   final String? id;
+
   final String name;
 
   CategoryModel({this.id, required this.name});
@@ -47,6 +49,7 @@ class CategoryModel {
       _$CategoryModelFromJson(json);
 }
 
+@ltDeserialization
 class QuestionModel {
   final String id;
   final String title;
@@ -67,9 +70,11 @@ class QuestionModel {
   }
 }
 
+@ltDeserialization
 class AnswerModel {
   final String id;
   final String content;
+  @JsonKey('created_ymd')
   final String createdYmd;
   final QuestionModel question;
   final IconModel? icon;
@@ -93,6 +98,7 @@ class AnswerModel {
   }
 }
 
+@ltDeserialization
 class CalendardayDto {
   final String date;
   final List<AnswerModel> reflections;
