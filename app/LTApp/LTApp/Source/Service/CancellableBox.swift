@@ -18,3 +18,23 @@ public final class CancellableBox: @unchecked Sendable {
         value?.cancel()
     }
 }
+
+enum LTAppFeatureConfig: FetureConfig {
+    case logout
+    case insights
+    case calendarView
+    case thread
+    
+    var stage: FeatureRolloutStage {
+        switch self {
+        case .logout:
+            return .underDevelopment
+        case .insights:
+            return .internal
+        case .calendarView:
+            return .release
+        case .thread:
+            return .release
+        }
+    }
+}

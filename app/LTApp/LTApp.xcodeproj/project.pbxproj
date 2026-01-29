@@ -124,6 +124,11 @@
 		F86ECACF2EF3B5B4007EEA24 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86ECACE2EF3B5B4007EEA24 /* NotificationHandler.swift */; };
 		F875E80B2F1DE7D00050BD23 /* CancellableBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875E80A2F1DE7D00050BD23 /* CancellableBox.swift */; };
 		F88E5FFE060A4CDAD0021795 /* UniversalResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FF8161A8C18829BAA0967 /* UniversalResponse.swift */; };
+		F8A0C80A2F2B44B8005D231D /* FeatureRolloutStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A0C8092F2B44B8005D231D /* FeatureRolloutStage.swift */; };
+		F8A0C80C2F2B44BF005D231D /* FeatureToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A0C80B2F2B44BF005D231D /* FeatureToggle.swift */; };
+		F8A0C80E2F2B44CA005D231D /* AppVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A0C80D2F2B44CA005D231D /* AppVariant.swift */; };
+		F8A0C8102F2B461C005D231D /* FetureConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A0C80F2F2B461C005D231D /* FetureConfig.swift */; };
+		F8A0C8122F2B4620005D231D /* FeatureToggling.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A0C8112F2B4620005D231D /* FeatureToggling.swift */; };
 		F8A22C4C3D1795B392850452 /* FirstQuestionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5700C32AD3048D4D735EFB /* FirstQuestionViewModel.swift */; };
 		F8BE5EC22EE1640C009206C2 /* IconImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BE5EC12EE1640B009206C2 /* IconImageView.swift */; };
 		F8C07D0E2EF13C17001C5E84 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F8C07D0D2EF13C17001C5E84 /* Kingfisher */; };
@@ -281,6 +286,11 @@
 		F86ECACC2EF3B5AA007EEA24 /* NotificationTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTopic.swift; sourceTree = "<group>"; };
 		F86ECACE2EF3B5B4007EEA24 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		F875E80A2F1DE7D00050BD23 /* CancellableBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellableBox.swift; sourceTree = "<group>"; };
+		F8A0C8092F2B44B8005D231D /* FeatureRolloutStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureRolloutStage.swift; sourceTree = "<group>"; };
+		F8A0C80B2F2B44BF005D231D /* FeatureToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureToggle.swift; sourceTree = "<group>"; };
+		F8A0C80D2F2B44CA005D231D /* AppVariant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVariant.swift; sourceTree = "<group>"; };
+		F8A0C80F2F2B461C005D231D /* FetureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetureConfig.swift; sourceTree = "<group>"; };
+		F8A0C8112F2B4620005D231D /* FeatureToggling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureToggling.swift; sourceTree = "<group>"; };
 		F8BE5EC12EE1640B009206C2 /* IconImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImageView.swift; sourceTree = "<group>"; };
 		F8C266512EF285EE0000F5D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8C266532EF286030000F5D6 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -693,8 +703,8 @@
 		F55B695BA829CC64D30C8BE3 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				F8C266512EF285EE0000F5D6 /* AppDelegate.swift */,
-				3C1DE5AD119F64E04C77E10C /* LTAppApp.swift */,
+				F8A0C8152F2B4898005D231D /* App */,
+				F8A0C8142F2B486D005D231D /* Common */,
 				4B3DA03708E2D809FF31D354 /* Domain */,
 				F7B08D554646B8D495C616E9 /* Extensions */,
 				766057894908B56C57D21697 /* Service */,
@@ -731,6 +741,35 @@
 				E81C9A699055A08036CC26C8 /* UseCase */,
 			);
 			path = Reflection;
+			sourceTree = "<group>";
+		};
+		F8A0C8132F2B46E7005D231D /* FeatureToggle */ = {
+			isa = PBXGroup;
+			children = (
+				F8A0C8112F2B4620005D231D /* FeatureToggling.swift */,
+				F8A0C80F2F2B461C005D231D /* FetureConfig.swift */,
+				F8A0C8092F2B44B8005D231D /* FeatureRolloutStage.swift */,
+				F8A0C80D2F2B44CA005D231D /* AppVariant.swift */,
+				F8A0C80B2F2B44BF005D231D /* FeatureToggle.swift */,
+			);
+			path = FeatureToggle;
+			sourceTree = "<group>";
+		};
+		F8A0C8142F2B486D005D231D /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				F8A0C8132F2B46E7005D231D /* FeatureToggle */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		F8A0C8152F2B4898005D231D /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F8C266512EF285EE0000F5D6 /* AppDelegate.swift */,
+				3C1DE5AD119F64E04C77E10C /* LTAppApp.swift */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 		F8D888682EF12C6E00D4E14F /* Notification */ = {
@@ -883,11 +922,13 @@
 				F8DC77C42EDFE53200B68A61 /* Shaders.metal in Sources */,
 				3D8214F0F78A07CAEBD7D865 /* CategoryDTO.swift in Sources */,
 				B4383FD8FDC52AA006BA4FE8 /* Coordinator.swift in Sources */,
+				F8A0C80A2F2B44B8005D231D /* FeatureRolloutStage.swift in Sources */,
 				961DF519B9273BCA5ADFB8EE /* DateExtension.swift in Sources */,
 				F86ECACF2EF3B5B4007EEA24 /* NotificationHandler.swift in Sources */,
 				251D83036C1C4D45618B91DF /* DayReflectionsDTO.swift in Sources */,
 				0DF096C53022D08153C5E810 /* DefaultEndPoint.swift in Sources */,
 				C15DEB64381AC3730DC90088 /* DetailAnswerRow.swift in Sources */,
+				F8A0C80E2F2B44CA005D231D /* AppVariant.swift in Sources */,
 				82559EEE9E2A3A7222B3B14D /* FetchCategoriesUseCase.swift in Sources */,
 				1BBB9345163663DCE612F662 /* FetchHeadQuestionUseCase.swift in Sources */,
 				4C2D6F94C5E08D9A7FAD2E76 /* FetchHistoryAnswersUseCase.swift in Sources */,
@@ -907,6 +948,8 @@
 				6C17CABCCE04D8F14C3A279A /* IconRepository.swift in Sources */,
 				F30FC501E337AB0B4B0C0D18 /* IconRequest.swift in Sources */,
 				F8598A842EF9292C0044ABCB /* ClendarItemView.swift in Sources */,
+				F8A0C8122F2B4620005D231D /* FeatureToggling.swift in Sources */,
+				F8A0C80C2F2B44BF005D231D /* FeatureToggle.swift in Sources */,
 				4DC39F6F61376BAAF1156EB2 /* InsightsView.swift in Sources */,
 				7126B63ED6C7C11ABB3BEC34 /* LTAppApp.swift in Sources */,
 				F81AAB2F2EFA4E6900F1680F /* CalendarGridLines.swift in Sources */,
@@ -926,6 +969,7 @@
 				8697AFA60826403C11D24130 /* QueryIconGeneratingStatusUseCase.swift in Sources */,
 				70E2DF7DFDA4CEB51E8A4367 /* Question.swift in Sources */,
 				870E4E9529AA560778050A4E /* QuestionCardView.swift in Sources */,
+				F8A0C8102F2B461C005D231D /* FetureConfig.swift in Sources */,
 				F8BE5EC22EE1640C009206C2 /* IconImageView.swift in Sources */,
 				EA36E3C0AF3849BFE0986450 /* QuestionCardViewModel.swift in Sources */,
 				3FFC599735C72F8E7C4C14AD /* QuestionDTO.swift in Sources */,
