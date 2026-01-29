@@ -5,6 +5,7 @@
 import Foundation
 import SwiftUI
 import Kingfisher
+import LTCommon
 
 final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var weekdays: [WeekDay] = [

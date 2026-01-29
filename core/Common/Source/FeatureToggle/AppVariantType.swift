@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol AppVariantType {
+public protocol AppVariantType {
     var currentStage: FeatureRolloutStage { get }
 }

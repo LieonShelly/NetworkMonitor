@@ -8,18 +8,18 @@
 import Foundation
 
 @propertyWrapper
-struct Injected<T> {
+public struct Injected<T> {
     private let keyPath: WritableKeyPath<InjectionValues, T>?
     
-    init(_ keyPath: WritableKeyPath<InjectionValues, T>) {
+    public init(_ keyPath: WritableKeyPath<InjectionValues, T>) {
         self.keyPath = keyPath
     }
     
-    init() {
+    public  init() {
         self.keyPath = nil
     }
     
-    var wrappedValue: T {
+    public var wrappedValue: T {
         if let keyPath {
             return InjectionValues[keyPath]
         } else {

@@ -1,0 +1,25 @@
+---
+include: 
+  - ../../fastlane/project/settings.yml
+
+name: Common
+
+settings:
+  groups:
+    - BaseProjectSetting
+
+targets:
+  LTCommon:
+    type: framework
+    platform: iOS
+    sources:
+      - Source
+    settings:
+      groups:
+        - BaseTargetSetting
+shemes:
+  LTCommon:
+    templates:
+      - DefaultSchemeTemplate
+    templateArributes:
+      testTargetName: LTCommon

@@ -7,12 +7,12 @@
 
 import Foundation
 
-enum FeatureRolloutStage: Int, Comparable {
+public enum FeatureRolloutStage: Int, Comparable {
     case underDevelopment = 0
     case `internal` = 1
     case release = 2
     
-    static func < (lhs: FeatureRolloutStage, rhs: FeatureRolloutStage) -> Bool {
+    public static func < (lhs: FeatureRolloutStage, rhs: FeatureRolloutStage) -> Bool {
         return lhs.rawValue < rhs.rawValue
     }
 }

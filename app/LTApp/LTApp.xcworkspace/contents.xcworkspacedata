@@ -16,5 +16,8 @@
        <FileRef
          location = "group:../../core/UIComponent/UIComponent.xcodeproj">
       </FileRef>
+       <FileRef
+         location = "group:../../core/Common/Common.xcodeproj">
+      </FileRef>
    </Group>
 </Workspace>

@@ -5,8 +5,8 @@
 //  Created by Renjun Li on 2026/1/29.
 //
 
+import Foundation
 
-
-protocol FeatureConfig {
+public protocol FeatureConfig {
     var stage: FeatureRolloutStage { get }
 }

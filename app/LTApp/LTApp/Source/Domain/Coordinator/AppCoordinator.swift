@@ -6,6 +6,7 @@ import SwiftUI
 import LTNetwork
 import Persistence
 import Combine
+import LTCommon
 
 @MainActor
 final class AppCoordinator: ObservableObject, @unchecked Sendable {
