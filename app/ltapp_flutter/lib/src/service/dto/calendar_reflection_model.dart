@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:lt_annotation/ltdeserialization.dart';
 part 'calendar_reflection_model.g.dart';
 
@@ -50,11 +52,18 @@ class QuestionModel {
   final String id;
   final String title;
   final CategoryModel category;
+  final bool? pinned;
+  @JsonKey('sub_category')
+  final CategoryModel? subCategory;
+  final List<AnswerModel>? answers;
 
   QuestionModel({
     required this.id,
     required this.title,
     required this.category,
+    this.pinned,
+    this.subCategory,
+    this.answers,
   });
 
   factory QuestionModel.fromJson(Map<String, dynamic> json) =>

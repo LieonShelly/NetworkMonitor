@@ -22,6 +22,13 @@ QuestionModel _$QuestionModelFromJson(Map<String, dynamic> json) {
     id: json['id'] as String,
     title: json['title'] as String,
     category: CategoryModel.fromJson(json['category']),
+    pinned: json['pinned'] as bool?,
+    subCategory: json['sub_category'] == null
+        ? null
+        : CategoryModel.fromJson(json['sub_category']),
+    answers: (json['answers'] as List)
+        .map((e) => AnswerModel.fromJson(e))
+        .toList(),
   );
 }
 

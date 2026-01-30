@@ -4,6 +4,7 @@ import 'package:ltapp_flutter/src/features/add_answer/add_answer_page.dart';
 import 'package:ltapp_flutter/src/features/answer_detail/answer_detail_page.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_page.dart';
 import 'package:ltapp_flutter/src/features/home_view.dart';
+import 'package:ltapp_flutter/src/features/thread/thread_page.dart';
 import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -18,13 +19,12 @@ class AppRoutePath {
   static const addAnswer = "/add_answer";
 }
 
-// 私有 key 用于获取 context
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 @riverpod
 GoRouter router(Ref ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: AppRoutePath.calendar,
+    initialLocation: AppRoutePath.thread,
     routes: [
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -44,9 +44,8 @@ GoRouter router(Ref ref) {
             routes: [
               GoRoute(
                 path: AppRoutePath.thread,
-                pageBuilder: (context, state) => const NoTransitionPage(
-                  child: Scaffold(body: Center(child: Text("Thread page"))),
-                ),
+                pageBuilder: (context, state) =>
+                    const NoTransitionPage(child: ThreadPage()),
               ),
             ],
           ),
