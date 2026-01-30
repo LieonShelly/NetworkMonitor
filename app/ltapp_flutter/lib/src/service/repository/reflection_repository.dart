@@ -51,4 +51,15 @@ class ReflectionRepository implements ReflectionRepositoryType {
     final data = response["data"];
     return AnswerModel.fromJson(data);
   }
+
+  @override
+  Future<List<QuestionModel>> fetchThreadQuestions() async {
+    final response = await _apiClient.get('/api/thread-view');
+    final data = response['data'];
+    if (data is List) {
+      return data.map((e) => QuestionModel.fromJson(e)).toList();
+    } else {
+      return [];
+    }
+  }
 }

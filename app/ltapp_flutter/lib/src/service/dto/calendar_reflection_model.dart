@@ -76,7 +76,7 @@ class AnswerModel {
   final String content;
   @JsonKey('created_ymd')
   final String createdYmd;
-  final QuestionModel question;
+  final QuestionModel? question;
   final IconModel? icon;
 
   AnswerModel({

@@ -175,7 +175,7 @@ class _AnswerDetailPageState extends ConsumerState<AnswerDetailPage>
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Text(
-        widget.answer.question.title,
+        widget.answer.question?.title ?? "",
         style: AppTextStyle.vividlyRegular(
           fontSize: 32,
           color: Color(0xff000000),

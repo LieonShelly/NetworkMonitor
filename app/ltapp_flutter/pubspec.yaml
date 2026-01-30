@@ -24,6 +24,8 @@ dependencies:
   scroll_to_index: ^3.0.1
   lt_annotation:
     path: 'packages/lt_annotation'
+  flutter_cache_manager: ^3.4.1
+  path_provider: ^2.1.5
 
 
 dev_dependencies:

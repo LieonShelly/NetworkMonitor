@@ -55,7 +55,13 @@ final processedIconProvider = FutureProvider.family<Uint8List?, IconParams>((
     }
     return processedBytes;
   } catch (e) {
-    print("error processing icon: $e");
     return null;
   }
 });
+
+final fetchThreadQuestionsUseCaseProvider =
+    Provider<FetchThreadQuestionsUseCaseType>((ref) {
+      final repository = ref.watch(reflectionRepositoryProvider);
+      final usecase = FetchThreadQuestionsUseCase(repository: repository);
+      return usecase;
+    });

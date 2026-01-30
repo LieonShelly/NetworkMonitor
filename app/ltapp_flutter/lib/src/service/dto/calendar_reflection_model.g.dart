@@ -37,7 +37,9 @@ AnswerModel _$AnswerModelFromJson(Map<String, dynamic> json) {
     id: json['id'] as String,
     content: json['content'] as String,
     createdYmd: json['created_ymd'] as String,
-    question: QuestionModel.fromJson(json['question']),
+    question: json['question'] == null
+        ? null
+        : QuestionModel.fromJson(json['question']),
     icon: json['icon'] == null ? null : IconModel.fromJson(json['icon']),
   );
 }

@@ -9,5 +9,7 @@ abstract interface class ReflectionRepositoryType {
 
   Future<List<QuestionModel>> fetchTodayQuestions();
 
+  Future<List<QuestionModel>> fetchThreadQuestions();
+
   Future<AnswerModel> submit({required AnswerSubmittedParam param});
 }
