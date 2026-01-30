@@ -29,12 +29,8 @@ class IconModel {
 
   IconModel({this.url, this.status = IconStatus.unknown});
 
-  factory IconModel.fromJson(Map<String, dynamic> json) {
-    return IconModel(
-      url: json['url'] as String?,
-      status: IconStatus.fromString(json['status'] as String?),
-    );
-  }
+  factory IconModel.fromJson(Map<String, dynamic> json) =>
+      _$IconModelFromJson(json);
 }
 
 @ltDeserialization
@@ -61,13 +57,8 @@ class QuestionModel {
     required this.category,
   });
 
-  factory QuestionModel.fromJson(Map<String, dynamic> json) {
-    return QuestionModel(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      category: CategoryModel.fromJson(json['category']),
-    );
-  }
+  factory QuestionModel.fromJson(Map<String, dynamic> json) =>
+      _$QuestionModelFromJson(json);
 }
 
 @ltDeserialization
@@ -87,15 +78,8 @@ class AnswerModel {
     this.icon,
   });
 
-  factory AnswerModel.fromJson(Map<String, dynamic> json) {
-    return AnswerModel(
-      id: json['id'] as String,
-      content: json['content'] as String,
-      createdYmd: json['created_ymd'] as String,
-      question: QuestionModel.fromJson(json['question']),
-      icon: json['icon'] != null ? IconModel.fromJson(json['icon']) : null,
-    );
-  }
+  factory AnswerModel.fromJson(Map<String, dynamic> json) =>
+      _$AnswerModelFromJson(json);
 }
 
 @ltDeserialization
@@ -105,14 +89,8 @@ class CalendardayDto {
 
   CalendardayDto({required this.date, required this.reflections});
 
-  factory CalendardayDto.fromJson(Map<String, dynamic> json) {
-    return CalendardayDto(
-      date: json['date'],
-      reflections: (json['reflections'] as List)
-          .map((e) => AnswerModel.fromJson(e))
-          .toList(),
-    );
-  }
+  factory CalendardayDto.fromJson(Map<String, dynamic> json) =>
+      _$CalendardayDtoFromJson(json);
 }
 
 sealed class CalendarDayItemStyle {

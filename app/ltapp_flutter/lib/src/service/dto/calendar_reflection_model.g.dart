@@ -6,6 +6,13 @@ part of 'calendar_reflection_model.dart';
 // LtDeserializationGenerator
 // **************************************************************************
 
+IconModel _$IconModelFromJson(Map<String, dynamic> json) {
+  return IconModel(
+    url: json['url'] as String?,
+    status: IconStatus.fromString(json['status'] as String?),
+  );
+}
+
 CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) {
   return CategoryModel(id: json['id'] as String?, name: json['name'] as String);
 }

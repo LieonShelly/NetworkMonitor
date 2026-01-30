@@ -61,6 +61,32 @@ class LtDeserializationGenerator
         type.isDartCoreBool) {
       return "json['$jsonKey'] as ${type.getDisplayString()}";
     }
+
+    if (type.element3 is EnumElement2) {
+      final enumElement = type.element3 as EnumElement2;
+      final typeName = enumElement.name3;
+
+      final hasFromString = enumElement.methods2.any(
+        (m) => m.name3 == 'fromString' && m.isStatic,
+      );
+      final hasFromInt = enumElement.methods2.any(
+        (m) => m.name3 == 'fromInt' && m.isStatic,
+      );
+      final hasFromJson = enumElement.methods2.any(
+        (m) => m.name3 == 'fromJson' && m.isStatic,
+      );
+      if (hasFromInt) {
+        return "$typeName.fromInt(json['$jsonKey'] as String?)";
+      }
+      if (hasFromString) {
+        return "$typeName.fromString(json['$jsonKey'] as String?)";
+      }
+      if (hasFromJson) {
+        return "$typeName.fromJson(json['$jsonKey'] as String?)";
+      }
+      return "$typeName.fromString(json['$jsonKey'] as String?)";
+    }
+
     final typeName = type.element3!.name3;
     if (type.nullabilitySuffix == NullabilitySuffix.question) {
       return "json['$jsonKey'] == null ? null : $typeName.fromJson(json['$jsonKey'])";
