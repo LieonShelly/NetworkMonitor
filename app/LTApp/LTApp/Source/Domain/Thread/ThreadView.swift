@@ -364,10 +364,12 @@ struct ThreadView: View {
             items: viewModel.categories,
             selectedIndex: viewModel.selectedCategoryIndex,
             onTap: { index in
-                viewModel.selecteCategory(index)
+                Task {
+                   await viewModel.selecteCategory(index)
+                }
             })
             .padding(.top, 30)
-            .padding(.bottom, 25)
+            .padding(.bottom, 20)
             .padding(.horizontal, Constants.listHP)
     }
 }

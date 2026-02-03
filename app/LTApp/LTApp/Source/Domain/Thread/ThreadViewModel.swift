@@ -24,15 +24,25 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
     }
     
     func fetchData() async throws {
+        try await fetchCategories()
+        try await fetchDataWitCategory(categories.first?.category.id)
+    }
+    
+    func fetchCategories() async throws {
         let categories = try await service.fetchCategoriesUseCase.execute()
-        let questionList = try await service.threadQuestionsUseCase.execute(categoryId: categories.first?.id)
-        
         await MainActor.run {
-            self.questionList = questionList
-            self.categories = categories.map { ThreadCategoryItem(category: $0, selected: false)}
             if !categories.isEmpty {
+                self.categories = categories.map { ThreadCategoryItem(category: $0, selected: false)}
                 self.categories[selectedCategoryIndex] = self.categories[selectedCategoryIndex].copyWith(selected: true)
             }
+        }
+    }
+    
+    func fetchDataWitCategory(_ categoryId: String?) async throws {
+        let questionList = try await service.threadQuestionsUseCase.execute(categoryId: categoryId)
+        await MainActor.run {
+            self.questionList = questionList
+           
             for question in questionList {
                 if question.answerItems.count > limit {
                     if question.answerItems.count > 21 {
@@ -54,15 +64,15 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
     }
     
     @MainActor
-    func selecteCategory(_ index: Int) {
+    func selecteCategory(_ index: Int) async {
         guard index < categories.count else {
             return
         }
         categories[selectedCategoryIndex] = categories[selectedCategoryIndex].copyWith(selected: false)
         self.selectedCategoryIndex = index
         categories[index] = categories[index].copyWith(selected: true)
+        try? await fetchDataWitCategory(categories[index].category.id)
     }
-    
     
     func checkIconStatusInCurrentQuestionList(_ questionList: [ThreadQuestionItem]) {
         for questionIndex in 0 ..< questionList.count {

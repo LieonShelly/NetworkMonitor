@@ -41,6 +41,7 @@ struct ThreadCategoryView: View {
             }
         }
         .frame(height: 60)
+        .animation(.easeInOut, value: selectedIndex)
        
     }
     
