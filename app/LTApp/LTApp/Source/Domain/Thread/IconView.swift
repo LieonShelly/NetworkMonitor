@@ -47,7 +47,7 @@ class IconViewModel: ObservableObject, @unchecked Sendable {
     }
 }
 
-struct IconView: View {
+struct AnswerIconView: View {
     var answer: Answer
     var size: CGSize = .init(width: 24, height: 24)
     

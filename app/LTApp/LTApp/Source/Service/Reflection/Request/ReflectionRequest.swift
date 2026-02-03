@@ -5,13 +5,13 @@
 import Foundation
 import LTNetwork
 
-enum ReflectionRequest: Request {
+enum ReflectionRequest: Request, @unchecked Sendable{
     case onboardingSentences
     case categories
     case headQuestion(_ categoryId: String)
     case answerQuestion(_ param: AnswerParam)
     case calendar(startDate: String, endDate: String)
-    case thread
+    case thread(categoryId: String? = nil)
     case questionList
     case pinQuestion(id: String, pinned: Bool)
     case answers(questionId: String, limit: Int? = nil, cursor: Int? = nil)
@@ -67,6 +67,11 @@ enum ReflectionRequest: Request {
     
     var payload: HttpPayload {
         switch self {
+        case let .thread(categoryId):
+            if let categoryId {
+                return .urlEncoding([("categoryId", categoryId)])
+            }
+            return .empty
         case let .answerQuestion(param):
             return .json(body: param.json(), urlParameter: nil)
         case let .pinQuestion(id, pinned):

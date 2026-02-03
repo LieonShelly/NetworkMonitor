@@ -8,6 +8,28 @@
 import SwiftUI
 import Kingfisher
 
+
+struct DefaultThumbnailIconImageView: View {
+    let url: String
+    
+    var body: some View {
+        ThumbnailIconImageView(url: url) {
+            placeholderIcon
+        }
+    }
+    
+    
+    var placeholderIcon: some View {
+        Circle()
+            .fill(Color.clear)
+            .overlay(content: {
+                Image(.calendarDripper)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            })
+    }
+}
+
 struct ThumbnailIconImageView<Placeholder: View>: View, ImageCacheKeyType {
     let url: String
     @ViewBuilder let placeholder:  () -> Placeholder

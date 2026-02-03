@@ -32,6 +32,7 @@ struct ThreadView: View {
         GeometryReader { proxy in
             VStack(spacing: .zero) {
                 titleView
+                categoryView()
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: .zero) {
                         if viewModel.questionList.count <= 1 {
@@ -113,7 +114,7 @@ struct ThreadView: View {
                     case .addBtn:
                         addNewBtn(question)
                     case let .noraml(answer):
-                        IconView(answer: answer,
+                        AnswerIconView(answer: answer,
                                  size: .init(width: Constants.iconSize, height: Constants.iconSize))
                             .onTapGesture {
                                 onTapAnswerAction?(.init(answer: answer, question: .init(id: question.id, title: question.title), service: viewModel.service))
@@ -341,7 +342,7 @@ struct ThreadView: View {
     func latestAnserView(question: ThreadQuestionItem) -> some View {
         if let answerItem = question.answerItems.first, let answer = answerItem.answer {
             HStack(alignment: .top, spacing: .zero) {
-                IconView(answer: answer,
+                AnswerIconView(answer: answer,
                          size: .init(width: Constants.iconSize, height: Constants.iconSize))
                     .onTapGesture {
                         let question = question.toQuestion()
@@ -357,5 +358,11 @@ struct ThreadView: View {
             .padding(.top, 8)
         }
     }
+    
+    @ViewBuilder func categoryView() -> some View {
+        ThreadCategoryView(items: viewModel.categories)
+            .padding(.top, 30)
+            .padding(.bottom, 25)
+            .padding(.horizontal, Constants.listHP)
+    }
 }
-

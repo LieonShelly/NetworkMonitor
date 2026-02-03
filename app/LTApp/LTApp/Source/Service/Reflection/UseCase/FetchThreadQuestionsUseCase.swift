@@ -5,7 +5,7 @@
 import Foundation
 
 public protocol FetchThreadQuestionsUseCaseType: Sendable {
-    func execute() async throws -> [ThreadQuestionItem]
+    func execute(categoryId: String?) async throws -> [ThreadQuestionItem]
 }
 
 public enum ThreadAnswerItemType: Sendable {
@@ -68,8 +68,8 @@ public class FetchThreadQuestionsUseCase: FetchThreadQuestionsUseCaseType, @unch
         self.repository = repository
     }
     
-    public func execute() async throws -> [ThreadQuestionItem] {
-        let questions = try await repository.fetchThreadPinnedQuestions()
+    public func execute(categoryId: String?) async throws -> [ThreadQuestionItem] {
+        let questions = try await repository.fetchThreadPinnedQuestions(categoryId: categoryId)
         let column: Float = 7
         var items = questions.map { $0.toThreadItem() }
         for index in ( 0 ..< items.count) {

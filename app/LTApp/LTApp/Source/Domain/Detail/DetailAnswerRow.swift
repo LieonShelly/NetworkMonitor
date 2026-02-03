@@ -31,7 +31,7 @@ struct DetailAnswerRow: View {
     
     var iconView: some View {
         VStack(spacing: .zero) {
-            IconView(answer: answer)
+            AnswerIconView(answer: answer)
             line(answer)
                 .padding(.vertical, 8)
         }

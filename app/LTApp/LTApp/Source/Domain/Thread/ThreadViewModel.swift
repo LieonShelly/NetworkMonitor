@@ -13,6 +13,8 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
     @MainActor @Published var subPageRoute: InnerPageRouteState = .none
     @MainActor @Published var questionList: [ThreadQuestionItem] = []
     @MainActor @Published var showHandlingMap: [QuestionID: DidTapShowMore] = [:]
+    @MainActor @Published var categories: [ThreadCategoryItem] = []
+    
     var iconViewModels: [IconID: IconViewModel] = [:]
     
     let limit = 21
@@ -22,10 +24,15 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
     }
     
     func fetchData() async throws {
-        let questionList = try await service.threadQuestionsUseCase.execute()
+        let categories = try await service.fetchCategoriesUseCase.execute()
+        let questionList = try await service.threadQuestionsUseCase.execute(categoryId: categories.first?.id)
         
         await MainActor.run {
             self.questionList = questionList
+            self.categories = categories.map { ThreadCategoryItem(category: $0, selected: false)}
+            if !categories.isEmpty {
+                self.categories[0] = self.categories[0].copyWith(selected: true)
+            }
             for question in questionList {
                 if question.answerItems.count > limit {
                     if question.answerItems.count > 21 {
@@ -35,7 +42,6 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
                     }
                 }
             }
-           
         }
         
        self.checkIconStatusInCurrentQuestionList(questionList)
