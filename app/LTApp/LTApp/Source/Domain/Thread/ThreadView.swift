@@ -76,6 +76,8 @@ struct ThreadView: View {
                  bottom: CGFloat = 32) -> some View {
         VStack(alignment: .leading, spacing: .zero) {
             questionRow(question)
+            latestAnserView(question: question)
+            
             VStack(spacing: .zero) {
                 if let didTapShowMore = viewModel.showHandlingMap[question.id] {
                     iconListView(question: question, didTapShowMore: didTapShowMore, proxy: paraent)
@@ -88,7 +90,7 @@ struct ThreadView: View {
             .padding(.bottom, bottom)
             .padding(.leading, Constants.quesiontTilteHp + Constants.pinIconW)
             .padding(.trailing, Constants.quesiontTilteHp)
-            .padding(.top, 8)
+            .padding(.top, 12)
         }
         .overlay(alignment: .leading) {
             line()
@@ -332,6 +334,27 @@ struct ThreadView: View {
         }
         emptyStateLibSection(title: "Start writing to make your own thread", icon: .threadAdd, btnTitle: "view question of the day ") {
             addAnswerAction?(nil)
+        }
+    }
+    
+    @ViewBuilder
+    func latestAnserView(question: ThreadQuestionItem) -> some View {
+        if let answerItem = question.answerItems.first, let answer = answerItem.answer {
+            HStack(alignment: .top, spacing: .zero) {
+                IconView(answer: answer,
+                         size: .init(width: Constants.iconSize, height: Constants.iconSize))
+                    .onTapGesture {
+                        let question = question.toQuestion()
+                        onTapAnswerAction?(.init(answer: answer, question: .init(id: question.id, title: question.title), service: viewModel.service))
+                    }
+                
+                Text(answer.content)
+                    .multilineTextAlignment(.leading)
+                    .textStyle(size: 13, color: AppColor.color(hex: 0x6F6F6F), fontFamily: .poppinsRegular)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, Constants.quesiontTilteHp)
+            }
+            .padding(.top, 8)
         }
     }
 }
