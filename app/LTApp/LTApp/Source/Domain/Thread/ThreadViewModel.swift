@@ -23,11 +23,7 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
         self.service = service
     }
     
-    func fetchData() async throws {
-        try await fetchCategories()
-        try await fetchDataWitCategory(categories.first?.category.id)
-    }
-    
+   
     func fetchCategories() async throws {
         let categories = try await service.fetchCategoriesUseCase.execute()
         await MainActor.run {
@@ -38,14 +34,21 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
         }
     }
     
+    func fetchDataInCurrentCategory() async throws {
+        guard await selectedCategoryIndex < categories.count else {
+            return
+        }
+        try await fetchDataWitCategory(categories[selectedCategoryIndex].category.id)
+    }
+    
     func fetchDataWitCategory(_ categoryId: String?) async throws {
         let questionList = try await service.threadQuestionsUseCase.execute(categoryId: categoryId)
         await MainActor.run {
             self.questionList = questionList
            
             for question in questionList {
-                if question.answerItems.count > limit {
-                    if question.answerItems.count > 21 {
+                if question.otherAnswerItems.count > limit {
+                    if question.otherAnswerItems.count > 21 {
                         showHandlingMap[question.id] = showHandlingMap[question.id] ?? false
                     } else {
                         showHandlingMap[question.id] = nil
@@ -75,36 +78,47 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
     }
     
     func checkIconStatusInCurrentQuestionList(_ questionList: [ThreadQuestionItem]) {
-        for questionIndex in 0 ..< questionList.count {
-            for answerIndex in 0 ..< questionList[questionIndex].answerItems.count {
-                let questionItem = questionList[questionIndex]
-                let answer = questionList[questionIndex].answerItems[answerIndex]
-                switch answer.type {
-                case .noraml(let answer):
-                    if let icon = answer.icon, icon.status == .pending,
-                       let iconId = answer.icon?.iconId {
-                        if iconViewModels[iconId] == nil {
-                            let iconViewModel = IconViewModel(answer: answer, qustion: questionItem.toQuestion(), service: service)
-                            iconViewModel.monitorSingleIcon(iconId) { @MainActor currentQuestion, answert in
-                                self.updateIconData(currentQuestion: currentQuestion, newAnswer: answert)
-                            }
+        func checkAnswerIcon(answer: ThreadAnswerItem, questionItem: ThreadQuestionItem) {
+            switch answer.type {
+            case .noraml(let answer):
+                if let icon = answer.icon, icon.status == .pending,
+                   let iconId = answer.icon?.iconId {
+                    if iconViewModels[iconId] == nil {
+                        let iconViewModel = IconViewModel(answer: answer, qustion: questionItem.toQuestion(), service: service)
+                        iconViewModel.monitorSingleIcon(iconId) { @MainActor currentQuestion, answert in
+                            self.updateIconData(currentQuestion: currentQuestion, newAnswer: answert)
                         }
                     }
-                default: break
                 }
+            default: break
+            }
+        }
+        
+        for questionIndex in 0 ..< questionList.count {
+            let questionItem = questionList[questionIndex]
+            if let latestAnswerItem = questionList[questionIndex].latestAnswerItem {
+                checkAnswerIcon(answer: latestAnswerItem, questionItem: questionItem)
+            }
+            for answerIndex in 0 ..< questionList[questionIndex].otherAnswerItems.count {
+                let answer = questionList[questionIndex].otherAnswerItems[answerIndex]
+                checkAnswerIcon(answer: answer, questionItem: questionItem)
             }
         }
     }
-    
     
     @MainActor
     private func updateIconData(currentQuestion: Question, newAnswer: Answer) {
         guard let questionIndex =  self.questionList.firstIndex(where: { $0.id == currentQuestion.id }) else { return }
         var newQuestion = questionList[questionIndex]
-        guard let answerIndex = newQuestion.answerItems.firstIndex(where: { $0.answer?.id == newAnswer.id }) else { return }
-        newQuestion.answerItems[answerIndex] = .init(type: .noraml(newAnswer))
+        if newQuestion.latestAnswerItem?.answer?.id == newAnswer.id {
+            newQuestion.latestAnswerItem = .init(type: .noraml(newAnswer))
+        }
+        if let answerIndex = newQuestion.otherAnswerItems.firstIndex(where: { $0.answer?.id == newAnswer.id }) {
+            newQuestion.otherAnswerItems[answerIndex] = .init(type: .noraml(newAnswer))
+        }
         questionList[questionIndex] = newQuestion
     }
+    
     deinit {
         print("ThreadViewModel-deint")
     }

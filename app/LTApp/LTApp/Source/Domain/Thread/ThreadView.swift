@@ -36,12 +36,12 @@ struct ThreadView: View {
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: .zero) {
                         if viewModel.questionList.count <= 1 {
-                            ForEach(viewModel.questionList, id: \.id) { question in
+                            ForEach(viewModel.questionList, id: \.uid) { question in
                               section(question, paraent: proxy, bottom: 56)
                             }
                             emptyList()
                         } else {
-                            ForEach(viewModel.questionList, id: \.id) { question in
+                            ForEach(viewModel.questionList, id: \.uid) { question in
                               section(question, paraent: proxy)
                             }
                         }
@@ -54,17 +54,14 @@ struct ThreadView: View {
                 }
                 .padding(.horizontal, Constants.listHP)
                 .refreshable {
-                    do {
-                        try await viewModel.fetchData()
-                    } catch {
-                        print("threadView:\(error)")
-                    }
+                    try? await viewModel.fetchDataInCurrentCategory()
                 }
             }
             .innerPageRoute($viewModel.subPageRoute)
             .task {
                 do {
-                    try await viewModel.fetchData()
+                    try await viewModel.fetchCategories()
+                    try await viewModel.fetchDataInCurrentCategory()
                 } catch {
                     print("threadView:\(error)")
                 }
@@ -105,8 +102,8 @@ struct ThreadView: View {
         let iconListW = proxy.size.width - Constants.listHP * 2 - Constants.pinIconW - Constants.quesiontTilteHp * 2
         let itemWidth: CGFloat = (iconListW - (spacing * CGFloat(columnCount - 1))) / CGFloat(columnCount)
         let colums = (0 ..< columnCount).map { _ in GridItem(.fixed(itemWidth), spacing: spacing) }
-        let limit = viewModel.limit >= question.answerItems.count ? question.answerItems.count : viewModel.limit
-        let answerItems = (didTapShowMore ?? true) ? question.answerItems : Array(question.answerItems[0 ..< limit])
+        let limit = viewModel.limit >= question.otherAnswerItems.count ? question.otherAnswerItems.count : viewModel.limit
+        let answerItems = (didTapShowMore ?? true) ? question.otherAnswerItems : Array(question.otherAnswerItems[0 ..< limit])
         LazyVGrid(columns: colums, alignment: .leading, spacing: spacing) {
             ForEach(answerItems) { answer in
                 HStack {
@@ -340,7 +337,7 @@ struct ThreadView: View {
     
     @ViewBuilder
     func latestAnserView(question: ThreadQuestionItem) -> some View {
-        if let answerItem = question.answerItems.first, let answer = answerItem.answer {
+        if let answerItem = question.latestAnswerItem, let answer = answerItem.answer {
             HStack(alignment: .top, spacing: .zero) {
                 AnswerIconView(answer: answer,
                          size: .init(width: Constants.iconSize, height: Constants.iconSize))

@@ -35,10 +35,12 @@ public struct ThreadAnswerItem: Sendable, Identifiable {
 public struct ThreadQuestionItem: Sendable, Equatable {
     let id: String
     let title: String
-    var answerItems: [ThreadAnswerItem]
+    var latestAnswerItem: ThreadAnswerItem?
+    var otherAnswerItems: [ThreadAnswerItem]
     var hasExactDivided: Bool =  false
     let pinned: Bool
     let category: Category?
+    let uid: UUID = UUID()
     
     func toQuestion() -> Question {
         .init(id: id, title: title, pinned: pinned, category: category)
@@ -51,13 +53,31 @@ public struct ThreadQuestionItem: Sendable, Equatable {
 
 extension ThreadQuestion {
     func toThreadItem() -> ThreadQuestionItem {
-        ThreadQuestionItem(
-            id: id,
-            title: title,
-            answerItems: answers.map { .init(type: .noraml($0))},
-            pinned: pinned,
-            category: category
-        )
+        if answers.count > 1 {
+            let otherAnswerItems = Array(answers[1 ..< answers.count])
+                .map {ThreadAnswerItem(type: .noraml($0))}
+            return ThreadQuestionItem(
+                id: id,
+                title: title,
+                latestAnswerItem: .init(type: .noraml(answers.first!)),
+                otherAnswerItems: otherAnswerItems,
+                pinned: pinned,
+                category: category
+            )
+        } else {
+            var item: ThreadAnswerItem?
+            if let firstAnswer = answers.first {
+                item = ThreadAnswerItem(type: .noraml(firstAnswer))
+            }
+            return ThreadQuestionItem(
+                id: id,
+                title: title,
+                latestAnswerItem: item,
+                otherAnswerItems: [],
+                pinned: pinned,
+                category: category
+            )
+        }
     }
 }
 
@@ -74,13 +94,13 @@ public class FetchThreadQuestionsUseCase: FetchThreadQuestionsUseCaseType, @unch
         var items = questions.map { $0.toThreadItem() }
         for index in ( 0 ..< items.count) {
             var item = items[index]
-            let answerCount = item.answerItems.count
+            let answerCount = item.otherAnswerItems.count
             let remainnings =  column - Float(answerCount).truncatingRemainder(dividingBy: column)
             
             if Int(remainnings) == Int(column) && answerCount > 21 {
                 item.hasExactDivided = true
             } else {
-                var answerItems = item.answerItems
+                var answerItems = item.otherAnswerItems
                 var placeholderCount = 6
                 if remainnings > 0 {
                     placeholderCount = Int(remainnings) - 1
@@ -89,7 +109,7 @@ public class FetchThreadQuestionsUseCase: FetchThreadQuestionsUseCaseType, @unch
                     answerItems.append(.init(type: .placeholder))
                 }
                 answerItems.append(.init(type: .addBtn))
-                item.answerItems = answerItems
+                item.otherAnswerItems = answerItems
             }
            
             items[index] = item
