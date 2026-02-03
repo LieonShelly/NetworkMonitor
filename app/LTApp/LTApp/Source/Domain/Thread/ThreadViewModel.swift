@@ -109,7 +109,7 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
     @MainActor
     private func updateIconData(currentQuestion: Question, newAnswer: Answer) {
         guard let questionIndex =  self.questionList.firstIndex(where: { $0.id == currentQuestion.id }) else { return }
-        var newQuestion = questionList[questionIndex]
+        var newQuestion = questionList[questionIndex].copy()
         if newQuestion.latestAnswerItem?.answer?.id == newAnswer.id {
             newQuestion.latestAnswerItem = .init(type: .noraml(newAnswer))
         }

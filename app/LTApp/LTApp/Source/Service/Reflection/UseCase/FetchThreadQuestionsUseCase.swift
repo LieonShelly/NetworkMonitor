@@ -49,6 +49,10 @@ public struct ThreadQuestionItem: Sendable, Equatable {
     public static func == (lhs: ThreadQuestionItem, rhs: ThreadQuestionItem) -> Bool {
         lhs.id == rhs.id
     }
+    
+    func copy(uid: UUID = UUID()) -> ThreadQuestionItem {
+       return ThreadQuestionItem(id: id, title: title, latestAnswerItem: latestAnswerItem, otherAnswerItems: otherAnswerItems, hasExactDivided: hasExactDivided, pinned: pinned, category: category)
+    }
 }
 
 extension ThreadQuestion {
