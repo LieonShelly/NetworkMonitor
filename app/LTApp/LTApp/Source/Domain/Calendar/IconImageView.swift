@@ -11,19 +11,20 @@ import Kingfisher
 
 struct DefaultThumbnailIconImageView: View {
     let url: String
+    var renderMode: Image.TemplateRenderingMode?
     
     var body: some View {
-        ThumbnailIconImageView(url: url) {
+        ThumbnailIconImageView(url: url, renderMode: renderMode) {
             placeholderIcon
         }
     }
-    
     
     var placeholderIcon: some View {
         Circle()
             .fill(Color.clear)
             .overlay(content: {
                 Image(.calendarDripper)
+                    .renderingMode(renderMode)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
             })
@@ -32,6 +33,7 @@ struct DefaultThumbnailIconImageView: View {
 
 struct ThumbnailIconImageView<Placeholder: View>: View, ImageCacheKeyType {
     let url: String
+    var renderMode: Image.TemplateRenderingMode?
     @ViewBuilder let placeholder:  () -> Placeholder
     
     var body: some View {
@@ -39,6 +41,7 @@ struct ThumbnailIconImageView<Placeholder: View>: View, ImageCacheKeyType {
             .cacheOriginalImage()
             .setProcessor(MetalIconProcessor(thickness: 2))
             .serialize(by: FormatIndicatedCacheSerializer.png)
+            .renderingMode(renderMode)
             .cacheMemoryOnly(false)
             .placeholder { _ in
                 placeholder()

@@ -25,14 +25,16 @@ struct ThreadCategoryItem: Identifiable {
 }
 
 struct ThreadCategoryView: View {
-    let items: [ThreadCategoryItem]
+    var items: [ThreadCategoryItem]
+    var selectedIndex: Int = 0
+    var onTap: ((Int) -> Void)
     
     var body: some View {
         let count = Int(items.count)
         HStack(spacing: .zero) {
             ForEach(0 ..< count, id: \.self) { index in
                 let category = items[index]
-                item(category)
+                item(category: category, index: index)
                 if index < items.count {
                     Spacer()
                 }
@@ -42,9 +44,10 @@ struct ThreadCategoryView: View {
        
     }
     
-    func item(_ category: ThreadCategoryItem) -> some View {
+    func item(category: ThreadCategoryItem, index: Int) -> some View {
         VStack(spacing: 8) {
-            DefaultThumbnailIconImageView(url: category.category.imageUrl)
+            DefaultThumbnailIconImageView(url: category.category.imageUrl, renderMode: .template)
+                .foregroundStyle(selectedIndex == index ? AppColor.color(hex: 0x000000) : AppColor.color(hex: 0xB8B8B8) )
             
             Text(category.category.name)
                 .textStyle(
@@ -53,6 +56,9 @@ struct ThreadCategoryView: View {
                     fontFamily: .feltTipSeniorRegular
                 )
             
+        }
+        .onTapGesture {
+            onTap(index)
         }
     }
 }

@@ -14,7 +14,7 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
     @MainActor @Published var questionList: [ThreadQuestionItem] = []
     @MainActor @Published var showHandlingMap: [QuestionID: DidTapShowMore] = [:]
     @MainActor @Published var categories: [ThreadCategoryItem] = []
-    
+    @MainActor @Published var selectedCategoryIndex: Int = 0
     var iconViewModels: [IconID: IconViewModel] = [:]
     
     let limit = 21
@@ -31,7 +31,7 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
             self.questionList = questionList
             self.categories = categories.map { ThreadCategoryItem(category: $0, selected: false)}
             if !categories.isEmpty {
-                self.categories[0] = self.categories[0].copyWith(selected: true)
+                self.categories[selectedCategoryIndex] = self.categories[selectedCategoryIndex].copyWith(selected: true)
             }
             for question in questionList {
                 if question.answerItems.count > limit {
@@ -51,6 +51,16 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
     @MainActor
     func didTapShowMore(_ question: ThreadQuestionItem) {
         showHandlingMap[question.id] = !(showHandlingMap[question.id] ?? false)
+    }
+    
+    @MainActor
+    func selecteCategory(_ index: Int) {
+        guard index < categories.count else {
+            return
+        }
+        categories[selectedCategoryIndex] = categories[selectedCategoryIndex].copyWith(selected: false)
+        self.selectedCategoryIndex = index
+        categories[index] = categories[index].copyWith(selected: true)
     }
     
     

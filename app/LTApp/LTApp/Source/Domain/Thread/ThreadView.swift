@@ -360,7 +360,12 @@ struct ThreadView: View {
     }
     
     @ViewBuilder func categoryView() -> some View {
-        ThreadCategoryView(items: viewModel.categories)
+        ThreadCategoryView(
+            items: viewModel.categories,
+            selectedIndex: viewModel.selectedCategoryIndex,
+            onTap: { index in
+                viewModel.selecteCategory(index)
+            })
             .padding(.top, 30)
             .padding(.bottom, 25)
             .padding(.horizontal, Constants.listHP)
