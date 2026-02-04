@@ -22,12 +22,11 @@ struct UserHomeView: View {
                     UserRow(item: .init(icon: Image(.libraryOutlet), title: "Question Library", subTitle: "Pin your favourite questions to the threads"))
                     
                     UserRow(item: .init(icon: Image(.libraryOutlet), title: "Question of the Day", subTitle: "Manage your preferred questions"))
-                    
-                    
-                    UserRow(item: .init(icon: Image(.reminder), title: "Reminder", subTitle: "Personalizaed to your own rhythm"))
                         .onTapGesture {
                             homeCoordinator.push(UserRoute.qustionOfTodaySettings)
                         }
+                    
+                    UserRow(item: .init(icon: Image(.reminder), title: "Reminder", subTitle: "Personalizaed to your own rhythm"))
                 }
                 .padding(.top, 26)
             }
