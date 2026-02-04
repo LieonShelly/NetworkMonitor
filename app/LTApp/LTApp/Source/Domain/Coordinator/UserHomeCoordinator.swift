@@ -26,7 +26,7 @@ final class UserHomeCoordinator: Coordinator, ObservableObject, Sendable {
         }
         switch route {
         case .qustionOfTodaySettings:
-            return AnyView(QuestionOfTodaySettingView())
+            return AnyView(QuestionOfTodaySettingView(viewModel: .init(dataService: appDataService)))
         }
     }
     

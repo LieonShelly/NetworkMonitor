@@ -141,6 +141,7 @@
 		F8DE82392F32F07C00CFD13E /* UserHomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE82382F32F07B00CFD13E /* UserHomeCoordinator.swift */; };
 		F8DE823D2F32F89D00CFD13E /* UserHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE823C2F32F89D00CFD13E /* UserHomeViewModel.swift */; };
 		F8DE823F2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE823E2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift */; };
+		F8DE82412F331C7800CFD13E /* QuestionOfTodaySettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE82402F331C7700CFD13E /* QuestionOfTodaySettingViewModel.swift */; };
 		F8F122D02F289AA5008DB4AB /* DeleteAnswersUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F122CF2F289AA5008DB4AB /* DeleteAnswersUseCase.swift */; };
 		F8F2F9302F01069F00936ECD /* CalendarSlashLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */; };
 		F8FE2C322F20B82200B8A266 /* BaseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FE2C312F20B82100B8A266 /* BaseViewModelType.swift */; };
@@ -304,6 +305,7 @@
 		F8DE82382F32F07B00CFD13E /* UserHomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeCoordinator.swift; sourceTree = "<group>"; };
 		F8DE823C2F32F89D00CFD13E /* UserHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeViewModel.swift; sourceTree = "<group>"; };
 		F8DE823E2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingView.swift; sourceTree = "<group>"; };
+		F8DE82402F331C7700CFD13E /* QuestionOfTodaySettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingViewModel.swift; sourceTree = "<group>"; };
 		F8F122CF2F289AA5008DB4AB /* DeleteAnswersUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAnswersUseCase.swift; sourceTree = "<group>"; };
 		F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSlashLine.swift; sourceTree = "<group>"; };
 		F8FE2C312F20B82100B8A266 /* BaseViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModelType.swift; sourceTree = "<group>"; };
@@ -703,6 +705,7 @@
 		F2B87C1418A6CF83D4B56360 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				F8DE82402F331C7700CFD13E /* QuestionOfTodaySettingViewModel.swift */,
 				F8DE823E2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift */,
 				F8DE823C2F32F89D00CFD13E /* UserHomeViewModel.swift */,
 				185ACB159E87024DC55B8D11 /* UserHomeView.swift */,
@@ -884,6 +887,7 @@
 				D46AB011DB264AC1D42B50C4 /* AnswerParam.swift in Sources */,
 				F8C266542EF286030000F5D6 /* NotificationService.swift in Sources */,
 				9B5FD7757CBCA0C575842D43 /* AnwserQuestionView.swift in Sources */,
+				F8DE82412F331C7800CFD13E /* QuestionOfTodaySettingViewModel.swift in Sources */,
 				23150AA037BD8C1CF86D6515 /* AnwserQuestionViewModel.swift in Sources */,
 				FA51BF2C6E9391EC6BDEAD4F /* AppCoordinator.swift in Sources */,
 				FE1586C04C6B5797BA88B10A /* AppDataService.swift in Sources */,
