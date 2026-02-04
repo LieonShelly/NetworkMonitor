@@ -5,16 +5,27 @@
 import SwiftUI
 import UIComponent
 
+struct PureIconButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .contentShape(Rectangle())
+            .opacity(configuration.isPressed ? 0.5 : 1.0)
+    }
+}
+
 extension View {
     func defaultNavigationBar(_ title: String, backBtnAction: (() -> Void)? = nil) -> some View {
         self
             .navigationBarBackButtonHidden()
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        backBtnAction?()
-                    } label: {
-                        Image(.back)
+                ToolbarItem(placement: .navigation) {
+                    HStack {
+                        Button {
+                            backBtnAction?()
+                        } label: {
+                            Image(.back)
+                        }
+                        .buttonStyle(PureIconButtonStyle())
                     }
                 }
                 ToolbarItem(placement: .principal) {

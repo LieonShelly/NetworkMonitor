@@ -36,7 +36,9 @@ extension Coordinator {
     
     func addChild(_ coordinator: any Coordinator, isSameStack: Bool = true) {
         coordinator.path = path
-        children.append(coordinator)
+        if isSameStack {
+            children.append(coordinator)
+        }
     }
 
     

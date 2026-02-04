@@ -10,14 +10,17 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
     @Published var dripleTransitionData: DrippleTransitionData!
 
     var children: [any Coordinator] = []
-    private let appDataService: any AppDataWithAuthorizationServiceful
-    private let notificationHandler: any NotificationHandlingType
+    let appDataService: any AppDataWithAuthorizationServiceful
+    let notificationHandler: any NotificationHandlingType
     
     init(appDataService: any AppDataWithAuthorizationServiceful, notificationHandler: any NotificationHandlingType) {
         self.appDataService = appDataService
         self.notificationHandler = notificationHandler
-        let historyCoordinator = PreHomeCoordinator(appDataService: appDataService)
-        addChild(historyCoordinator, isSameStack: true)
+        let userHomeCoordinator = UserHomeCoordinator(
+            appDataService: appDataService,
+            notificationHandler: notificationHandler
+        )
+        addChild(userHomeCoordinator, isSameStack: true)
     }
     
     func generateDripleTransitionData(_ namespace: Namespace.ID) {
@@ -63,10 +66,6 @@ enum HomeRoute: Route {
     case addNewAnswer(question: Question)
 }
 
-
-enum HistoryRoute: Route {
-    case list
-}
 
 struct TodayAnswerPageParam: Hashable, Equatable, @unchecked Sendable {
     var id: String = UUID().uuidString

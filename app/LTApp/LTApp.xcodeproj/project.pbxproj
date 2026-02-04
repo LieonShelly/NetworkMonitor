@@ -138,6 +138,9 @@
 		F8D5A80C2F2B55BB003D2D33 /* AppVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5A80B2F2B55BB003D2D33 /* AppVariant.swift */; };
 		F8D8886A2EF12D5200D4E14F /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D888692EF12D5200D4E14F /* NotificationView.swift */; };
 		F8DC77C42EDFE53200B68A61 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = F8DC77C32EDFE53200B68A61 /* Shaders.metal */; };
+		F8DE82392F32F07C00CFD13E /* UserHomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE82382F32F07B00CFD13E /* UserHomeCoordinator.swift */; };
+		F8DE823D2F32F89D00CFD13E /* UserHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE823C2F32F89D00CFD13E /* UserHomeViewModel.swift */; };
+		F8DE823F2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE823E2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift */; };
 		F8F122D02F289AA5008DB4AB /* DeleteAnswersUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F122CF2F289AA5008DB4AB /* DeleteAnswersUseCase.swift */; };
 		F8F2F9302F01069F00936ECD /* CalendarSlashLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */; };
 		F8FE2C322F20B82200B8A266 /* BaseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FE2C312F20B82100B8A266 /* BaseViewModelType.swift */; };
@@ -298,6 +301,9 @@
 		F8D5A80B2F2B55BB003D2D33 /* AppVariant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVariant.swift; sourceTree = "<group>"; };
 		F8D888692EF12D5200D4E14F /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		F8DC77C32EDFE53200B68A61 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		F8DE82382F32F07B00CFD13E /* UserHomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeCoordinator.swift; sourceTree = "<group>"; };
+		F8DE823C2F32F89D00CFD13E /* UserHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeViewModel.swift; sourceTree = "<group>"; };
+		F8DE823E2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingView.swift; sourceTree = "<group>"; };
 		F8F122CF2F289AA5008DB4AB /* DeleteAnswersUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAnswersUseCase.swift; sourceTree = "<group>"; };
 		F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSlashLine.swift; sourceTree = "<group>"; };
 		F8FE2C312F20B82100B8A266 /* BaseViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModelType.swift; sourceTree = "<group>"; };
@@ -440,6 +446,7 @@
 		5E7A3937D4634545E0DCA207 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
+				F8DE82382F32F07B00CFD13E /* UserHomeCoordinator.swift */,
 				5EE6F66A04E6E854AA39FECE /* AppCoordinator.swift */,
 				F99FD6DBD2BE11AB7830C23C /* Coordinator.swift */,
 				2F84B287B9F4833A13313EEC /* HomeCoordinator.swift */,
@@ -696,6 +703,8 @@
 		F2B87C1418A6CF83D4B56360 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				F8DE823E2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift */,
+				F8DE823C2F32F89D00CFD13E /* UserHomeViewModel.swift */,
 				185ACB159E87024DC55B8D11 /* UserHomeView.swift */,
 				8795F76FA7C547B7D8ADF0F2 /* UserRow.swift */,
 				0A664918C535A01D715CF5A0 /* UserRowItem.swift */,
@@ -884,6 +893,7 @@
 				F8C266582EF2973F0000F5D6 /* NotificationViewModel.swift in Sources */,
 				78DF79A388F79FC0EE57251D /* AppHomeRootViewModel.swift in Sources */,
 				050E2E3DD9B3C85C91D82F48 /* AppHomeView.swift in Sources */,
+				F8DE82392F32F07C00CFD13E /* UserHomeCoordinator.swift in Sources */,
 				4FA62600328B6809B6C9C8D8 /* AppHomeViewModel.swift in Sources */,
 				852CE3147946402B34312109 /* AppScrollContentView.swift in Sources */,
 				A9A0644E8593A152539FDEBE /* AppScrollContentViewModel.swift in Sources */,
@@ -910,6 +920,7 @@
 				F826AAFC2F31EEC20043B16D /* ThreadCategoryView.swift in Sources */,
 				F86ECACF2EF3B5B4007EEA24 /* NotificationHandler.swift in Sources */,
 				251D83036C1C4D45618B91DF /* DayReflectionsDTO.swift in Sources */,
+				F8DE823F2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift in Sources */,
 				0DF096C53022D08153C5E810 /* DefaultEndPoint.swift in Sources */,
 				C15DEB64381AC3730DC90088 /* DetailAnswerRow.swift in Sources */,
 				82559EEE9E2A3A7222B3B14D /* FetchCategoriesUseCase.swift in Sources */,
@@ -934,6 +945,7 @@
 				4DC39F6F61376BAAF1156EB2 /* InsightsView.swift in Sources */,
 				7126B63ED6C7C11ABB3BEC34 /* LTAppApp.swift in Sources */,
 				F81AAB2F2EFA4E6900F1680F /* CalendarGridLines.swift in Sources */,
+				F8DE823D2F32F89D00CFD13E /* UserHomeViewModel.swift in Sources */,
 				ED6B9CE126E3CFB5306162CB /* LogoutInterceptor.swift in Sources */,
 				F8642C902EE04EF000D92A07 /* MetalIconProcessor.swift in Sources */,
 				F8FE2C322F20B82200B8A266 /* BaseViewModelType.swift in Sources */,

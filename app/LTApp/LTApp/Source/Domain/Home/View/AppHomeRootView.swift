@@ -24,6 +24,9 @@ struct AppHomeRootView: View {
                 .navigationDestination(for: PreHomeRoute.self) { path  in
                     coordinator.build(path)
                 }
+                .navigationDestination(for: UserRoute.self) { path  in
+                    coordinator.build(path)
+                }
         }
         .overlay(content: {
             if let overLayData = viewModel.overLayData {
