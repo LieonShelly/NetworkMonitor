@@ -36,7 +36,7 @@ class AppTabbarViewModel: ObservableObject {
     }
     
     func updateOpacity(_ value: CGFloat, isToRight: Bool) {
-        print("updateOpacity - selectedIndex:\(selectedIndex)")
+        print("updateOpacity:\(value) - selectedIndex:\(selectedIndex)")
         if isToRight {
             let value = Math.normalize(value: value, lowerBound: CGFloat(selectedIndex), upperBound: CGFloat(selectedIndex) + 1.0)
             let currentIndex = selectedIndex
