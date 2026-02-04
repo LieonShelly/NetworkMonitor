@@ -4,7 +4,7 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:lt_annotation/ltdeserialization.dart';
+import 'package:lt_annotation/src/ltdeserialization.dart';
 
 Builder jsonDeserializationBuilder(BuilderOptions options) {
   return SharedPartBuilder([

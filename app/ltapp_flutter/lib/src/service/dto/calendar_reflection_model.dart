@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-import 'package:lt_annotation/ltdeserialization.dart';
+import 'package:lt_annotation/annotation.dart';
 part 'calendar_reflection_model.g.dart';
 
 enum IconStatus {
