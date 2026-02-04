@@ -89,6 +89,7 @@ struct ThreadView: View {
             .padding(.leading, Constants.quesiontTilteHp + Constants.pinIconW)
             .padding(.trailing, Constants.quesiontTilteHp)
             .padding(.top, 12)
+            .transition(.opacity.animation(.easeInOut))
         }
         .overlay(alignment: .leading) {
             line()
@@ -215,6 +216,7 @@ struct ThreadView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, Constants.quesiontTilteHp)
         }
+        .transition(.opacity.animation(.easeInOut))
         .onTapGesture {
             homeCoordinator.push(
                 HomeRoute.reflectionDetail(
@@ -353,20 +355,25 @@ struct ThreadView: View {
                     .padding(.horizontal, Constants.quesiontTilteHp)
             }
             .padding(.top, 8)
+            .transition(.opacity.animation(.easeInOut))
         }
     }
     
     @ViewBuilder func categoryView() -> some View {
-        ThreadCategoryView(
-            items: viewModel.categories,
-            selectedIndex: viewModel.selectedCategoryIndex,
-            onTap: { index in
-                Task {
-                   await viewModel.selecteCategory(index)
-                }
-            })
-            .padding(.top, 30)
-            .padding(.bottom, 20)
-            .padding(.horizontal, Constants.listHP)
+        if !viewModel.categories.isEmpty {
+            ThreadCategoryView(
+                items: viewModel.categories,
+                selectedIndex: viewModel.selectedCategoryIndex,
+                onTap: { index in
+                    Task {
+                       await viewModel.selecteCategory(index)
+                    }
+                })
+                .padding(.top, 30)
+                .padding(.bottom, 20)
+                .padding(.horizontal, Constants.listHP)
+                .transition(.opacity.animation(.easeInOut))
+        }
+       
     }
 }
