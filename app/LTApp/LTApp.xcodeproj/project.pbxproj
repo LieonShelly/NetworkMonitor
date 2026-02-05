@@ -142,6 +142,9 @@
 		F8DE823D2F32F89D00CFD13E /* UserHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE823C2F32F89D00CFD13E /* UserHomeViewModel.swift */; };
 		F8DE823F2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE823E2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift */; };
 		F8DE82412F331C7800CFD13E /* QuestionOfTodaySettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE82402F331C7700CFD13E /* QuestionOfTodaySettingViewModel.swift */; };
+		F8DF26622F34989A00E91FFF /* UserFlowRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DF26612F34989900E91FFF /* UserFlowRequest.swift */; };
+		F8DF26642F34994200E91FFF /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DF26632F34994200E91FFF /* UserInfo.swift */; };
+		F8DF26662F349B5100E91FFF /* UserFlowRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DF26652F349B5100E91FFF /* UserFlowRepository.swift */; };
 		F8F122D02F289AA5008DB4AB /* DeleteAnswersUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F122CF2F289AA5008DB4AB /* DeleteAnswersUseCase.swift */; };
 		F8F2F9302F01069F00936ECD /* CalendarSlashLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */; };
 		F8FE2C322F20B82200B8A266 /* BaseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FE2C312F20B82100B8A266 /* BaseViewModelType.swift */; };
@@ -306,6 +309,9 @@
 		F8DE823C2F32F89D00CFD13E /* UserHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeViewModel.swift; sourceTree = "<group>"; };
 		F8DE823E2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingView.swift; sourceTree = "<group>"; };
 		F8DE82402F331C7700CFD13E /* QuestionOfTodaySettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingViewModel.swift; sourceTree = "<group>"; };
+		F8DF26612F34989900E91FFF /* UserFlowRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFlowRequest.swift; sourceTree = "<group>"; };
+		F8DF26632F34994200E91FFF /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		F8DF26652F349B5100E91FFF /* UserFlowRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFlowRepository.swift; sourceTree = "<group>"; };
 		F8F122CF2F289AA5008DB4AB /* DeleteAnswersUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAnswersUseCase.swift; sourceTree = "<group>"; };
 		F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSlashLine.swift; sourceTree = "<group>"; };
 		F8FE2C312F20B82100B8A266 /* BaseViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModelType.swift; sourceTree = "<group>"; };
@@ -639,6 +645,7 @@
 		CABF9307229AB1227582DD7E /* DTO */ = {
 			isa = PBXGroup;
 			children = (
+				F8DF26632F34994200E91FFF /* UserInfo.swift */,
 				DD1F88B0511D44095E2B4950 /* AnswerDTO.swift */,
 				9F353E3389A4E275B7135D3E /* CategoryDTO.swift */,
 				CE817C60707A10F2069E3CCD /* DayReflectionsDTO.swift */,
@@ -696,6 +703,8 @@
 		ED681FB3754EAD786C03DDDA /* User */ = {
 			isa = PBXGroup;
 			children = (
+				F8DF26652F349B5100E91FFF /* UserFlowRepository.swift */,
+				F8DF26612F34989900E91FFF /* UserFlowRequest.swift */,
 				1D04D8EB432535FB52F0F20E /* User.swift */,
 				146ED45DD2787D6230E0BDBB /* UserManagementServiceful.swift */,
 			);
@@ -979,6 +988,7 @@
 				B50E9C044696FF0546AAB1D6 /* RefreshTokenInterceptor.swift in Sources */,
 				F8642C8A2EE0330000D92A07 /* MetalImageProcessor.swift in Sources */,
 				B32DD58620F9F1AD5A4748B1 /* RefreshTokenUseCase.swift in Sources */,
+				F8DF26622F34989A00E91FFF /* UserFlowRequest.swift in Sources */,
 				F85F56862F1BC9890066056E /* IconView.swift in Sources */,
 				4ECFA3472B64D8B97ED962F4 /* SessionDataRepository.swift in Sources */,
 				F8D8886A2EF12D5200D4E14F /* NotificationView.swift in Sources */,
@@ -1003,7 +1013,9 @@
 				589FB7DD74717F936712B9AA /* TokenProvider.swift in Sources */,
 				F88E5FFE060A4CDAD0021795 /* UniversalResponse.swift in Sources */,
 				6794C5D9105547EACB9FA0A8 /* User.swift in Sources */,
+				F8DF26662F349B5100E91FFF /* UserFlowRepository.swift in Sources */,
 				F8D5A80C2F2B55BB003D2D33 /* AppVariant.swift in Sources */,
+				F8DF26642F34994200E91FFF /* UserInfo.swift in Sources */,
 				1E9FEF639D7E9255FC28548A /* UserDTO.swift in Sources */,
 				F8A0C81E2F2B50C7005D231D /* LTAppFeatureConfig.swift in Sources */,
 				D5F6161D355BD120DEF44CD1 /* UserHomeView.swift in Sources */,

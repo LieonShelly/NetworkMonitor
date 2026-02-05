@@ -27,11 +27,6 @@ class QuestionOfTodaySettingViewModel: ObservableObject, @unchecked Sendable {
     }
 }
 
-enum QodStrategy: String {
-    case random = "RANDOM"
-    case pinned = "PINNED"
-    case mixed = "MIXED"
-}
 
 struct QuestionOfTodaySettingItem {
     let icon: ImageResource
