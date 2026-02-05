@@ -5,7 +5,7 @@
 import Foundation
 
 public protocol AuthUseCaseType {
-    func execute(authorizationCode: String, identityToken: String) async throws -> User
+    func execute(authorizationCode: String, identityToken: String) async throws
 }
 
 public final class AuthUseCase: AuthUseCaseType {
@@ -15,7 +15,7 @@ public final class AuthUseCase: AuthUseCaseType {
         self.repository = repository
     }
     
-    public func execute(authorizationCode: String, identityToken: String) async throws -> User {
+    public func execute(authorizationCode: String, identityToken: String) async throws {
        try await repository.login(authorizationCode: authorizationCode, identityToken: identityToken)
     }
 }

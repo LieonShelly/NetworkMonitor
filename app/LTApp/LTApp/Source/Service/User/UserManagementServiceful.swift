@@ -28,8 +28,7 @@ public final class UserManagementService: UserManagementServiceful {
     
     public func updateUser(_ user: User) throws {
         userSubject.value = user
-        let data = try JSONEncoder().encode(user)
-        try storage.save(value: data, key: userKey)
+        // TODO
     }
     
     public func clear() throws {

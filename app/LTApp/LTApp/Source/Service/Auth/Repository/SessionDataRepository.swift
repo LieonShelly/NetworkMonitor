@@ -25,7 +25,7 @@ public final class SessionDataRepository: SessionDataRepositoryType {
         }
         let request = AuthRequest.refreshToken(refreshToken)
         let response = try await apiClient.sendRequest(request)
-        let userDto: UniversalResponse<UserDTO> = try response.parseJson()
+        let userDto: UniversalResponse<LoginInfoDTO> = try response.parseJson()
         try authTokenProvider.updateTokens(
             accessToken: userDto.data.accessToken,
             refreshToken: userDto.data.refreshToken

@@ -1,21 +1,10 @@
 //
-//  LTApp, This code is protected by intellectual property rights.
+//  UserInfo.swift
+//  LTApp
 //
-
+//  Created by Renjun Li on 2026/2/5.
+//
 import Foundation
-
-public struct UserDTO: Decodable {
-    let accessToken: String
-    let refreshToken: String
-    let userInfo: UserInfoDTO
-    
-    enum CodingKeys: String, CodingKey {
-        case accessToken = "access_token"
-        case refreshToken = "refresh_token"
-        case userInfo = "user"
-    }
-}
-
 
 struct UserInfoDTO: Decodable {
     let qodStrategy: String

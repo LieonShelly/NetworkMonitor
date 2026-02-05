@@ -19,7 +19,7 @@
 		1AAE92823C8BAF31C7A09E52 /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B206C9175BC9D806D4F87D53 /* AuthUseCase.swift */; };
 		1BBB9345163663DCE612F662 /* FetchHeadQuestionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EA66A0CB3CB6B4CB331EE1 /* FetchHeadQuestionUseCase.swift */; };
 		1D8107E406D3EF6E9BDF7835 /* FetchQuestionsWithCategoryUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80AA3AD5E1713D6DAB4206C /* FetchQuestionsWithCategoryUseCase.swift */; };
-		1E9FEF639D7E9255FC28548A /* UserDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2A303C6121C53C8CCA6C7E /* UserDTO.swift */; };
+		1E9FEF639D7E9255FC28548A /* LoginInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2A303C6121C53C8CCA6C7E /* LoginInfoDTO.swift */; };
 		2018A23F8EF9883556D1BDFF /* UIComponent.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2A88B483E3D66499FDB5A75D /* UIComponent.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		23150AA037BD8C1CF86D6515 /* AnwserQuestionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5779211C705EB8A876BA0358 /* AnwserQuestionViewModel.swift */; };
 		251D83036C1C4D45618B91DF /* DayReflectionsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE817C60707A10F2069E3CCD /* DayReflectionsDTO.swift */; };
@@ -143,7 +143,7 @@
 		F8DE823F2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE823E2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift */; };
 		F8DE82412F331C7800CFD13E /* QuestionOfTodaySettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE82402F331C7700CFD13E /* QuestionOfTodaySettingViewModel.swift */; };
 		F8DF26622F34989A00E91FFF /* UserFlowRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DF26612F34989900E91FFF /* UserFlowRequest.swift */; };
-		F8DF26642F34994200E91FFF /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DF26632F34994200E91FFF /* UserInfo.swift */; };
+		F8DF26642F34994200E91FFF /* UserInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DF26632F34994200E91FFF /* UserInfoDTO.swift */; };
 		F8DF26662F349B5100E91FFF /* UserFlowRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DF26652F349B5100E91FFF /* UserFlowRepository.swift */; };
 		F8F122D02F289AA5008DB4AB /* DeleteAnswersUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F122CF2F289AA5008DB4AB /* DeleteAnswersUseCase.swift */; };
 		F8F2F9302F01069F00936ECD /* CalendarSlashLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */; };
@@ -208,7 +208,7 @@
 		3C06060D729F15E668A04E70 /* TodayQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayQuestionView.swift; sourceTree = "<group>"; };
 		3C1DE5AD119F64E04C77E10C /* LTAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTAppApp.swift; sourceTree = "<group>"; };
 		3D3670EBA2012A0EEEC3429D /* LTApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LTApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3E2A303C6121C53C8CCA6C7E /* UserDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDTO.swift; sourceTree = "<group>"; };
+		3E2A303C6121C53C8CCA6C7E /* LoginInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInfoDTO.swift; sourceTree = "<group>"; };
 		3FBE66502789B64FD8428045 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		40FA1164BA74B596155811F0 /* SubmitAnswerUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitAnswerUseCase.swift; sourceTree = "<group>"; };
 		425B8FFF7F61401121C65FB6 /* AppTabbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabbarView.swift; sourceTree = "<group>"; };
@@ -310,7 +310,7 @@
 		F8DE823E2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingView.swift; sourceTree = "<group>"; };
 		F8DE82402F331C7700CFD13E /* QuestionOfTodaySettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingViewModel.swift; sourceTree = "<group>"; };
 		F8DF26612F34989900E91FFF /* UserFlowRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFlowRequest.swift; sourceTree = "<group>"; };
-		F8DF26632F34994200E91FFF /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		F8DF26632F34994200E91FFF /* UserInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoDTO.swift; sourceTree = "<group>"; };
 		F8DF26652F349B5100E91FFF /* UserFlowRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFlowRepository.swift; sourceTree = "<group>"; };
 		F8F122CF2F289AA5008DB4AB /* DeleteAnswersUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAnswersUseCase.swift; sourceTree = "<group>"; };
 		F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSlashLine.swift; sourceTree = "<group>"; };
@@ -645,7 +645,7 @@
 		CABF9307229AB1227582DD7E /* DTO */ = {
 			isa = PBXGroup;
 			children = (
-				F8DF26632F34994200E91FFF /* UserInfo.swift */,
+				F8DF26632F34994200E91FFF /* UserInfoDTO.swift */,
 				DD1F88B0511D44095E2B4950 /* AnswerDTO.swift */,
 				9F353E3389A4E275B7135D3E /* CategoryDTO.swift */,
 				CE817C60707A10F2069E3CCD /* DayReflectionsDTO.swift */,
@@ -654,7 +654,7 @@
 				BE435CC8EA6E55BBCB6FCB2C /* QuestionDTO.swift */,
 				FC3BB1A5F6EF38CD8369837F /* ThreadQuestionDTO.swift */,
 				273FF8161A8C18829BAA0967 /* UniversalResponse.swift */,
-				3E2A303C6121C53C8CCA6C7E /* UserDTO.swift */,
+				3E2A303C6121C53C8CCA6C7E /* LoginInfoDTO.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -1015,8 +1015,8 @@
 				6794C5D9105547EACB9FA0A8 /* User.swift in Sources */,
 				F8DF26662F349B5100E91FFF /* UserFlowRepository.swift in Sources */,
 				F8D5A80C2F2B55BB003D2D33 /* AppVariant.swift in Sources */,
-				F8DF26642F34994200E91FFF /* UserInfo.swift in Sources */,
-				1E9FEF639D7E9255FC28548A /* UserDTO.swift in Sources */,
+				F8DF26642F34994200E91FFF /* UserInfoDTO.swift in Sources */,
+				1E9FEF639D7E9255FC28548A /* LoginInfoDTO.swift in Sources */,
 				F8A0C81E2F2B50C7005D231D /* LTAppFeatureConfig.swift in Sources */,
 				D5F6161D355BD120DEF44CD1 /* UserHomeView.swift in Sources */,
 				FF7C7736C42D858DEA6687ED /* UserManagementServiceful.swift in Sources */,

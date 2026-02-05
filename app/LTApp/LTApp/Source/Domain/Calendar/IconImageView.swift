@@ -14,7 +14,7 @@ struct DefaultThumbnailIconImageView: View {
     var renderMode: Image.TemplateRenderingMode?
     
     var body: some View {
-        ThumbnailIconImageView(url: url, renderMode: renderMode) {
+        OriginalIconView(url: url, renderMode: renderMode) {
             placeholderIcon
         }
     }
@@ -74,11 +74,13 @@ extension ImageCacheKeyType {
 
 struct OriginalIconView<Placeholder: View>: View, ImageCacheKeyType {
     let url: String
+    var renderMode: Image.TemplateRenderingMode?
     @ViewBuilder let placeholder:  () -> Placeholder
     var onSuccess: (() -> Void)? = nil
     
     var body: some View {
         KFImage(source: imageResource.map { .network($0) })
+            .renderingMode(renderMode)
             .cacheOriginalImage()
             .setProcessor(MetalIconProcessor(thickness: 0))
             .placeholder { _ in
