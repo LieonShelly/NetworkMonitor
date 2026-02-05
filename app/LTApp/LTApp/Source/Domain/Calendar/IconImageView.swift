@@ -9,7 +9,7 @@ import SwiftUI
 import Kingfisher
 
 
-struct DefaultThumbnailIconImageView: View {
+struct DefaultOriginalIconImageView: View {
     let url: String
     var renderMode: Image.TemplateRenderingMode?
     
