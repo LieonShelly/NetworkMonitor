@@ -15,7 +15,7 @@ public protocol UserFlowRepositoryType {
     
 }
 
-public final class UserFlowRepository: UserRepositoryType, @unchecked Sendable {
+public final class UserFlowRepository: UserFlowRepositoryType, @unchecked Sendable {
     private let apiClient: ApiClient
     
     public init(apiClient: ApiClient) {
