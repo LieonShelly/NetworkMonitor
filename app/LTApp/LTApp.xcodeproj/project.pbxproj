@@ -114,6 +114,9 @@
 		F826AAFC2F31EEC20043B16D /* ThreadCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F826AAFB2F31EEC10043B16D /* ThreadCategoryView.swift */; };
 		F82BB7762F39C0B900F9DB49 /* QuestionOfTodaySettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82BB7752F39C0B800F9DB49 /* QuestionOfTodaySettingItem.swift */; };
 		F82BB7782F39C72C00F9DB49 /* UpdateStrategyUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82BB7772F39C72C00F9DB49 /* UpdateStrategyUseCase.swift */; };
+		F82BB77B2F39D68600F9DB49 /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = F82BB77A2F39D68600F9DB49 /* SVGKit */; };
+		F82BB77D2F39D68600F9DB49 /* SVGKitSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F82BB77C2F39D68600F9DB49 /* SVGKitSwift */; };
+		F82BB77F2F39D73C00F9DB49 /* SVGIconProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82BB77E2F39D73C00F9DB49 /* SVGIconProcessor.swift */; };
 		F84409E72EE32B33004A40B2 /* InnerPageRoutingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84409E62EE32B33004A40B2 /* InnerPageRoutingModifier.swift */; };
 		F85859F42EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85859F32EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift */; };
 		F8598A842EF9292C0044ABCB /* ClendarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8598A832EF9292C0044ABCB /* ClendarItemView.swift */; };
@@ -288,6 +291,7 @@
 		F826AAFB2F31EEC10043B16D /* ThreadCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadCategoryView.swift; sourceTree = "<group>"; };
 		F82BB7752F39C0B800F9DB49 /* QuestionOfTodaySettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingItem.swift; sourceTree = "<group>"; };
 		F82BB7772F39C72C00F9DB49 /* UpdateStrategyUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStrategyUseCase.swift; sourceTree = "<group>"; };
+		F82BB77E2F39D73C00F9DB49 /* SVGIconProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGIconProcessor.swift; sourceTree = "<group>"; };
 		F84409E62EE32B33004A40B2 /* InnerPageRoutingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerPageRoutingModifier.swift; sourceTree = "<group>"; };
 		F85859F32EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayAnswerSubmittedViewModel.swift; sourceTree = "<group>"; };
 		F8598A832EF9292C0044ABCB /* ClendarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClendarItemView.swift; sourceTree = "<group>"; };
@@ -332,9 +336,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F82BB77B2F39D68600F9DB49 /* SVGKit in Frameworks */,
 				F8C07D0E2EF13C17001C5E84 /* Kingfisher in Frameworks */,
 				1839021BEAE2CE1AEBF0C209 /* LTNetwork.framework in Frameworks */,
 				89904D6029B5AB3D488D6000 /* Persistence.framework in Frameworks */,
+				F82BB77D2F39D68600F9DB49 /* SVGKitSwift in Frameworks */,
 				F8D5A8092F2B54FB003D2D33 /* LTCommon.framework in Frameworks */,
 				30DADA89529C20B4B71D5352 /* UIComponent.framework in Frameworks */,
 			);
@@ -576,6 +582,7 @@
 		A003F063569C9ED12070D111 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				F82BB77E2F39D73C00F9DB49 /* SVGIconProcessor.swift */,
 				F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */,
 				F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */,
 				F8598A832EF9292C0044ABCB /* ClendarItemView.swift */,
@@ -838,6 +845,8 @@
 			name = LTApp;
 			packageProductDependencies = (
 				F8C07D0D2EF13C17001C5E84 /* Kingfisher */,
+				F82BB77A2F39D68600F9DB49 /* SVGKit */,
+				F82BB77C2F39D68600F9DB49 /* SVGKitSwift */,
 			);
 			productName = LTApp;
 			productReference = 3D3670EBA2012A0EEEC3429D /* LTApp.app */;
@@ -870,6 +879,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				F8C07D0C2EF13C17001C5E84 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				F82BB7792F39D68600F9DB49 /* XCRemoteSwiftPackageReference "SVGKit" */,
 			);
 			projectDirPath = "";
 			projectRoot = "";
@@ -910,6 +920,7 @@
 				527AE96C0AAF06A8BD53EA7B /* AppDataWithAuthorizationService.swift in Sources */,
 				B94E852EB4C83A226D8F2BC9 /* AppHomeRootView.swift in Sources */,
 				F8C266582EF2973F0000F5D6 /* NotificationViewModel.swift in Sources */,
+				F82BB77F2F39D73C00F9DB49 /* SVGIconProcessor.swift in Sources */,
 				78DF79A388F79FC0EE57251D /* AppHomeRootViewModel.swift in Sources */,
 				050E2E3DD9B3C85C91D82F48 /* AppHomeView.swift in Sources */,
 				F8DE82392F32F07C00CFD13E /* UserHomeCoordinator.swift in Sources */,
@@ -1332,6 +1343,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		F82BB7792F39D68600F9DB49 /* XCRemoteSwiftPackageReference "SVGKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SVGKit/SVGKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		F8C07D0C2EF13C17001C5E84 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -1343,6 +1362,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		F82BB77A2F39D68600F9DB49 /* SVGKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F82BB7792F39D68600F9DB49 /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKit;
+		};
+		F82BB77C2F39D68600F9DB49 /* SVGKitSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F82BB7792F39D68600F9DB49 /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKitSwift;
+		};
 		F8C07D0D2EF13C17001C5E84 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F8C07D0C2EF13C17001C5E84 /* XCRemoteSwiftPackageReference "Kingfisher" */;

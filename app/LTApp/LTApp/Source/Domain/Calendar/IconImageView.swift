@@ -8,6 +8,42 @@
 import SwiftUI
 import Kingfisher
 
+struct SVGImageView: View, ImageCacheKeyType {
+    let url: String
+    var renderMode: Image.TemplateRenderingMode?
+    
+    var imageResource: KF.ImageResource? {
+        guard let url = URL(string: url) else { return nil }
+        return KF.ImageResource(downloadURL: url, cacheKey: cacheKey(self.url))
+    }
+    
+    var body: some View {
+        KFImage(source: imageResource.map { .network($0) })
+            .renderingMode(renderMode)
+            .cacheOriginalImage()
+            .setProcessor(SVGIconProcessor())
+            .placeholder { _ in
+                placeholderIcon
+            }
+            .onSuccess({ _ in
+            })
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .id(cacheKey(url))
+    }
+    
+    var placeholderIcon: some View {
+        Circle()
+            .fill(Color.clear)
+            .overlay(content: {
+                Image(.calendarDripper)
+                    .renderingMode(renderMode)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            })
+    }
+}
+
 
 struct DefaultOriginalIconImageView: View {
     let url: String

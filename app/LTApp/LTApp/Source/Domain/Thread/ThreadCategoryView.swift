@@ -47,7 +47,7 @@ struct ThreadCategoryView: View {
     
     func item(category: ThreadCategoryItem, index: Int) -> some View {
         VStack(spacing: 8) {
-            DefaultOriginalIconImageView(url: category.category.imageUrl, renderMode: .template)
+            SVGImageView(url: category.category.imageUrl, renderMode: .template)
                 .foregroundStyle(selectedIndex == index ? AppColor.color(hex: 0x000000) : AppColor.color(hex: 0xB8B8B8) )
             
             Text(category.category.name)
