@@ -117,6 +117,7 @@
 		F82BB77B2F39D68600F9DB49 /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = F82BB77A2F39D68600F9DB49 /* SVGKit */; };
 		F82BB77D2F39D68600F9DB49 /* SVGKitSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F82BB77C2F39D68600F9DB49 /* SVGKitSwift */; };
 		F82BB77F2F39D73C00F9DB49 /* SVGIconProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82BB77E2F39D73C00F9DB49 /* SVGIconProcessor.swift */; };
+		F82BB7812F39DFED00F9DB49 /* FetchQodStrategyOptionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82BB7802F39DFED00F9DB49 /* FetchQodStrategyOptionsUseCase.swift */; };
 		F84409E72EE32B33004A40B2 /* InnerPageRoutingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84409E62EE32B33004A40B2 /* InnerPageRoutingModifier.swift */; };
 		F85859F42EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85859F32EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift */; };
 		F8598A842EF9292C0044ABCB /* ClendarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8598A832EF9292C0044ABCB /* ClendarItemView.swift */; };
@@ -292,6 +293,7 @@
 		F82BB7752F39C0B800F9DB49 /* QuestionOfTodaySettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingItem.swift; sourceTree = "<group>"; };
 		F82BB7772F39C72C00F9DB49 /* UpdateStrategyUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStrategyUseCase.swift; sourceTree = "<group>"; };
 		F82BB77E2F39D73C00F9DB49 /* SVGIconProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGIconProcessor.swift; sourceTree = "<group>"; };
+		F82BB7802F39DFED00F9DB49 /* FetchQodStrategyOptionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchQodStrategyOptionsUseCase.swift; sourceTree = "<group>"; };
 		F84409E62EE32B33004A40B2 /* InnerPageRoutingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerPageRoutingModifier.swift; sourceTree = "<group>"; };
 		F85859F32EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayAnswerSubmittedViewModel.swift; sourceTree = "<group>"; };
 		F8598A832EF9292C0044ABCB /* ClendarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClendarItemView.swift; sourceTree = "<group>"; };
@@ -714,6 +716,7 @@
 		ED681FB3754EAD786C03DDDA /* User */ = {
 			isa = PBXGroup;
 			children = (
+				F82BB7802F39DFED00F9DB49 /* FetchQodStrategyOptionsUseCase.swift */,
 				F82BB7772F39C72C00F9DB49 /* UpdateStrategyUseCase.swift */,
 				F8DF26652F349B5100E91FFF /* UserFlowRepository.swift */,
 				F8DF26612F34989900E91FFF /* UserFlowRequest.swift */,
@@ -1040,6 +1043,7 @@
 				D5F6161D355BD120DEF44CD1 /* UserHomeView.swift in Sources */,
 				FF7C7736C42D858DEA6687ED /* UserManagementServiceful.swift in Sources */,
 				5A9B569CECC17045B80790DD /* UserRow.swift in Sources */,
+				F82BB7812F39DFED00F9DB49 /* FetchQodStrategyOptionsUseCase.swift in Sources */,
 				FC384158B10A64A8B751A47A /* UserRowItem.swift in Sources */,
 				F86ECAC92EF39F4E007EEA24 /* PostNotificationUseCase.swift in Sources */,
 				4EECAD353BB7BC9928A7AC4B /* ViewExtension.swift in Sources */,

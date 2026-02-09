@@ -15,29 +15,31 @@ class QuestionOfTodaySettingViewModel: ObservableObject, @unchecked Sendable {
     
     init(dataService: any AppDataWithAuthorizationServiceful) {
         self.dataService = dataService
+    }
+    
+    @MainActor
+    func fetchData() async throws {
+        var list = await dataService.fetchQodStrategyOptionsUseCase.execute()
         dataService
             .userManagementService
             .user
-            .map { $0?.qodStrategy }
-            .sink { strategy in
-                Task { @MainActor in
-                    var list: [QuestionOfTodaySettingItem] = [
-                        .init(icon: .random, selected: false, title: "Random", description: "Prompt randomly from question library ", qodStrategy: .random),
-                        .init(icon: .star, selected: false, title: "Pinned", description: "Only prompt from pinned questions ", qodStrategy: .pinned),
-                        .init(icon: .combine, selected: false, title: "Mixed", description: "Prompt from pinned questions & library ",  qodStrategy: .mixed),
-                    ]
-                    if let index = list.firstIndex(where: { $0.qodStrategy == strategy}) {
-                        list[index] = list[index].copyWith(selected: true)
-                    }
-                    self.list = list
+            .sink { userInfo in
+                if let index = list.firstIndex(where: {$0.qodStrategyValue == userInfo?.qodStrategy.rawValue}) {
+                    list[index] = list[index].copyWith(selected: true)
                 }
+                self.list = list
             }
             .store(in: &cancellables)
     }
     
-    
     func onTap(_ item: QuestionOfTodaySettingItem) async {
-       await dataService.updateStrategyUseCase.execute(item.qodStrategy)
-        try? await dataService.userManagementService.fetchUserInfo()
+        await dataService.updateStrategyUseCase.execute(item.qodStrategyValue)
+        await MainActor.run {
+            if let index = list.firstIndex(where: { $0.id == item.id }) {
+                var list = self.list.map { $0.copyWith(selected: false )}
+                list[index] = list[index].copyWith(selected: true)
+                self.list = list
+            }
+        }
     }
 }

@@ -24,6 +24,8 @@ public protocol AppDataWithAuthorizationServiceful {
     var notificationFlagUseCase: any NotificationFlagUseCaseType { get }
     var deleteAnswerUseCase: any DeleteAnswersUseCaseType { get }
     var updateStrategyUseCase: any UpdateStrategyUseCaseType { get }
+    
+    var fetchQodStrategyOptionsUseCase: any FetchQodStrategyOptionsUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
@@ -121,4 +123,7 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
         UpdateStrategyUseCase(repository: userFlowRepository)
     }()
     
+    public lazy var fetchQodStrategyOptionsUseCase: any FetchQodStrategyOptionsUseCaseType = {
+        FetchQodStrategyOptionsUseCase(repository: userFlowRepository)
+    }()
 }

@@ -10,6 +10,7 @@ import LTNetwork
 
 enum UserFlowRequest: Request, @unchecked Sendable{
     case userInfo
+    case qodStrategyOptions
     case updateQodStrategy(_ strategy: String)
     
     var endPoint: any EndPoint {
@@ -19,6 +20,8 @@ enum UserFlowRequest: Request, @unchecked Sendable{
             path += "/me"
         case .updateQodStrategy:
             path += "/qod-strategy"
+        case .qodStrategyOptions:
+            path += "/qod-strategy-options"
         }
         return DefaultEndPoint.baseURL(path: path)
     }
@@ -29,12 +32,14 @@ enum UserFlowRequest: Request, @unchecked Sendable{
             return .get
         case .updateQodStrategy:
             return .post
+        case .qodStrategyOptions:
+            return .get
         }
     }
     
     var payload: HttpPayload {
         switch self {
-        case .userInfo:
+        case .userInfo, .qodStrategyOptions:
             return .empty
         case let .updateQodStrategy(strategy):
             return .json(body: ["qod_strategy": strategy], urlParameter: nil)

@@ -31,8 +31,10 @@ struct UserHomeView: View {
                 .padding(.top, 26)
             }
         }
-        .task {
-            try? await viewModel.featchData()
+        .onFirstAppear {
+            Task {
+                try? await viewModel.featchData()
+            }
         }
     }
     

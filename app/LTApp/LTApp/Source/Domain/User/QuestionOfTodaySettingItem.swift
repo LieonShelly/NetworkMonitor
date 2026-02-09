@@ -8,15 +8,34 @@
 import Foundation
 import SwiftUI
 
-struct QuestionOfTodaySettingItem: Sendable {
-    let icon: ImageResource
+public struct QuestionOfTodaySettingItem: Sendable {
     let selected: Bool
+    let disabled: Bool
     let title: String
     let description: String
     var id: UUID = UUID()
-    let qodStrategy: QodStrategy
+    let qodStrategyValue: String
+    let svgIconURL: String?
     
-    func copyWith(selected: Bool? = nil) -> QuestionOfTodaySettingItem {
-        QuestionOfTodaySettingItem(icon: icon, selected: selected ?? self.selected, title: title, description: description, qodStrategy: qodStrategy)
+    public init(selected: Bool, disabled: Bool, title: String, description: String, id: UUID, qodStrategyValue: String, svgIconURL: String?) {
+        self.selected = selected
+        self.title = title
+        self.description = description
+        self.id = id
+        self.qodStrategyValue = qodStrategyValue
+        self.svgIconURL = svgIconURL
+        self.disabled = disabled
+    }
+    
+    public func copyWith(selected: Bool? = nil, id: UUID = UUID()) -> QuestionOfTodaySettingItem {
+        QuestionOfTodaySettingItem(
+            selected: selected ?? self.selected,
+            disabled: disabled,
+            title: title,
+            description: description,
+            id: id,
+            qodStrategyValue: qodStrategyValue,
+            svgIconURL: svgIconURL
+        )
     }
 }

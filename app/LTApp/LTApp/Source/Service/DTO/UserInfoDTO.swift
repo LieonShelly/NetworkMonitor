@@ -32,3 +32,24 @@ extension UserInfoDTO {
         )
     }
 }
+
+
+struct QodStrategyOptions: Decodable {
+    let value: String
+    let label: String
+    let description: String
+    let disabled: Bool
+    let url: String?
+}
+
+extension QodStrategyOptions {
+    func toDomain() -> QuestionOfTodaySettingItem {
+        .init(selected: false,
+              disabled: disabled,
+              title: label,
+              description: description,
+              id: UUID(),
+              qodStrategyValue: value,
+              svgIconURL: url)
+    }
+}

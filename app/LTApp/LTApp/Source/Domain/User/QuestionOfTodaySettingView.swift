@@ -39,16 +39,16 @@ struct QuestionOfTodaySettingView: View {
                 homeCoordinator.pop()
             }
             .defaultBackground()
+            .task {
+               try? await viewModel.fetchData()
+            }
     }
     
     func row(_ item: QuestionOfTodaySettingItem) -> some View {
         VStack(alignment: .leading, spacing: .zero) {
             HStack {
-                Image(item.icon)
-                    .resizable()
-                    .renderingMode(.template)
-                    .aspectRatio(contentMode: .fit)
-                    .foregroundStyle(item.selected ? AppColor.color(hex: 0x000000) : AppColor.color(hex: 0x6f6f6f))
+                SVGImageView(url: item.svgIconURL ?? "", renderMode: .template)
+                    .foregroundStyle(!item.disabled ? AppColor.color(hex: 0x000000) : AppColor.color(hex: 0x6f6f6f))
                     .frame(width: 32, height: 32)
                 
                 Spacer()
@@ -62,7 +62,7 @@ struct QuestionOfTodaySettingView: View {
             }
             
             Text(item.title)
-                .textStyle(size: 16, color: item.selected ? AppColor.color(hex: 0x000000) : AppColor.color(hex: 0x6f6f6f), fontFamily: .poppinsRegular)
+                .textStyle(size: 16, color: !item.disabled ? AppColor.color(hex: 0x000000) : AppColor.color(hex: 0x6f6f6f), fontFamily: .poppinsRegular)
                 .padding(.top, 7)
             
             Text(item.description)
@@ -74,7 +74,7 @@ struct QuestionOfTodaySettingView: View {
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .stroke(style: .init(lineWidth: 1))
-                .foregroundStyle(item.selected ? AppColor.color(hex: 0x1E1E1E) : AppColor.color(hex: 0x6f6f6f))
+                .foregroundStyle(!item.disabled ? AppColor.color(hex: 0x1E1E1E) : AppColor.color(hex: 0x6f6f6f))
         )
         .contentShape(.rect)
         .transition(.opacity.animation(.easeInOut))

@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol UpdateStrategyUseCaseType {
-    func execute(_ strategy: QodStrategy) async
+    func execute(_ strategy: String) async
 }
 
 public class UpdateStrategyUseCase: UpdateStrategyUseCaseType, @unchecked Sendable {
@@ -18,7 +18,7 @@ public class UpdateStrategyUseCase: UpdateStrategyUseCaseType, @unchecked Sendab
         self.repository = repository
     }
     
-    public func execute(_ strategy: QodStrategy) async {
-        try?await repository.updateQodStrategy(strategy.rawValue)
+    public func execute(_ strategy: String) async {
+        try? await repository.updateQodStrategy(strategy)
     }
 }
