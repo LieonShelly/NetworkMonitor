@@ -31,6 +31,9 @@ struct UserHomeView: View {
                 .padding(.top, 26)
             }
         }
+        .task {
+            try? await viewModel.featchData()
+        }
     }
     
     var titleView: some View {

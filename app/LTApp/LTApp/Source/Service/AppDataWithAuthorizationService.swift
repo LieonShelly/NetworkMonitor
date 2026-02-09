@@ -23,6 +23,7 @@ public protocol AppDataWithAuthorizationServiceful {
     var postNotificationDeviceTokenUseCase: any PostNotificationDeviceTokenUseCaseType { get }
     var notificationFlagUseCase: any NotificationFlagUseCaseType { get }
     var deleteAnswerUseCase: any DeleteAnswersUseCaseType { get }
+    var updateStrategyUseCase: any UpdateStrategyUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
@@ -33,18 +34,21 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     private let keyDataStorage: any KeyDataStorageType
     public let userManagementService: any UserManagementServiceful
     private let notificationRepository: any NotificationRepositoryType
+    private let userFlowRepository: any UserFlowRepositoryType
     
     public init(authRepository: any AuthRepositoryType,
                 reflectionRepository: any ReflectionRepositoryType,
+                userFlowRepository: any UserFlowRepositoryType,
                 iconRepositroy: any IconRepositoryType,
                 notificationRepository: any NotificationRepositoryType,
                 storage: any KeyValueStorageType,
                 keyDataStorage: any KeyDataStorageType) {
         self.authRepository = authRepository
         self.reflectionRepository = reflectionRepository
+        self.userFlowRepository = userFlowRepository
         self.storage = storage
         self.iconRepositroy = iconRepositroy
-        self.userManagementService = UserManagementService()
+        self.userManagementService = UserManagementService(repository: userFlowRepository)
         self.notificationRepository = notificationRepository
         self.keyDataStorage = keyDataStorage
     }
@@ -112,4 +116,9 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     public lazy var deleteAnswerUseCase: any DeleteAnswersUseCaseType = {
         DeleteAnswersUseCase(repository: reflectionRepository)
     }()
+    
+    public lazy var updateStrategyUseCase: any UpdateStrategyUseCaseType = {
+        UpdateStrategyUseCase(repository: userFlowRepository)
+    }()
+    
 }

@@ -15,6 +15,10 @@ final class UserHomeViewModel: @preconcurrency BaseViewModelType, ObservableObje
     init(dataService: any AppDataWithAuthorizationServiceful) {
         self.dataService = dataService
     }
+    
+    func featchData() async throws {
+       try await dataService.userManagementService.fetchUserInfo()
+    }
 
     
 }

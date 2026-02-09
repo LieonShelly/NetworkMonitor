@@ -11,7 +11,7 @@ public struct User: Sendable {
     let email: String?
 }
 
-enum QodStrategy: String, Sendable {
+public enum QodStrategy: String, Sendable, Equatable {
     case random = "RANDOM"
     case pinned = "PINNED"
     case mixed = "MIXED"

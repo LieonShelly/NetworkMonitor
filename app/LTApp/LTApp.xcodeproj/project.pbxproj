@@ -112,6 +112,8 @@
 		F80E7DA72EDED0E400CBC678 /* AnswerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80E7DA62EDED0E300CBC678 /* AnswerDetailView.swift */; };
 		F81AAB2F2EFA4E6900F1680F /* CalendarGridLines.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */; };
 		F826AAFC2F31EEC20043B16D /* ThreadCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F826AAFB2F31EEC10043B16D /* ThreadCategoryView.swift */; };
+		F82BB7762F39C0B900F9DB49 /* QuestionOfTodaySettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82BB7752F39C0B800F9DB49 /* QuestionOfTodaySettingItem.swift */; };
+		F82BB7782F39C72C00F9DB49 /* UpdateStrategyUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82BB7772F39C72C00F9DB49 /* UpdateStrategyUseCase.swift */; };
 		F84409E72EE32B33004A40B2 /* InnerPageRoutingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84409E62EE32B33004A40B2 /* InnerPageRoutingModifier.swift */; };
 		F85859F42EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85859F32EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift */; };
 		F8598A842EF9292C0044ABCB /* ClendarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8598A832EF9292C0044ABCB /* ClendarItemView.swift */; };
@@ -284,6 +286,8 @@
 		F819405F06FE6217721A71E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridLines.swift; sourceTree = "<group>"; };
 		F826AAFB2F31EEC10043B16D /* ThreadCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadCategoryView.swift; sourceTree = "<group>"; };
+		F82BB7752F39C0B800F9DB49 /* QuestionOfTodaySettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingItem.swift; sourceTree = "<group>"; };
+		F82BB7772F39C72C00F9DB49 /* UpdateStrategyUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStrategyUseCase.swift; sourceTree = "<group>"; };
 		F84409E62EE32B33004A40B2 /* InnerPageRoutingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnerPageRoutingModifier.swift; sourceTree = "<group>"; };
 		F85859F32EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayAnswerSubmittedViewModel.swift; sourceTree = "<group>"; };
 		F8598A832EF9292C0044ABCB /* ClendarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClendarItemView.swift; sourceTree = "<group>"; };
@@ -703,6 +707,7 @@
 		ED681FB3754EAD786C03DDDA /* User */ = {
 			isa = PBXGroup;
 			children = (
+				F82BB7772F39C72C00F9DB49 /* UpdateStrategyUseCase.swift */,
 				F8DF26652F349B5100E91FFF /* UserFlowRepository.swift */,
 				F8DF26612F34989900E91FFF /* UserFlowRequest.swift */,
 				1D04D8EB432535FB52F0F20E /* User.swift */,
@@ -714,6 +719,7 @@
 		F2B87C1418A6CF83D4B56360 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				F82BB7752F39C0B800F9DB49 /* QuestionOfTodaySettingItem.swift */,
 				F8DE82402F331C7700CFD13E /* QuestionOfTodaySettingViewModel.swift */,
 				F8DE823E2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift */,
 				F8DE823C2F32F89D00CFD13E /* UserHomeViewModel.swift */,
@@ -974,6 +980,7 @@
 				D85E2BC7EBA68FECD95EBFF8 /* PreHomeCoordinator.swift in Sources */,
 				8697AFA60826403C11D24130 /* QueryIconGeneratingStatusUseCase.swift in Sources */,
 				70E2DF7DFDA4CEB51E8A4367 /* Question.swift in Sources */,
+				F82BB7782F39C72C00F9DB49 /* UpdateStrategyUseCase.swift in Sources */,
 				870E4E9529AA560778050A4E /* QuestionCardView.swift in Sources */,
 				F8BE5EC22EE1640C009206C2 /* IconImageView.swift in Sources */,
 				EA36E3C0AF3849BFE0986450 /* QuestionCardViewModel.swift in Sources */,
@@ -998,6 +1005,7 @@
 				8A41FA61D325E6DCB94CD259 /* SplashViewModel.swift in Sources */,
 				C88E6B0B3706500FB48F8597 /* SubmitAnswerUseCase.swift in Sources */,
 				D44714238B00562078E69A75 /* SummaryView.swift in Sources */,
+				F82BB7762F39C0B900F9DB49 /* QuestionOfTodaySettingItem.swift in Sources */,
 				F8F122D02F289AA5008DB4AB /* DeleteAnswersUseCase.swift in Sources */,
 				42D99842A51E63130D7CCA07 /* ThreadQuestionDTO.swift in Sources */,
 				F85859F42EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift in Sources */,

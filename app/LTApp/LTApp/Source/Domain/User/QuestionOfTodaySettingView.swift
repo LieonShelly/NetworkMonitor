@@ -39,9 +39,6 @@ struct QuestionOfTodaySettingView: View {
                 homeCoordinator.pop()
             }
             .defaultBackground()
-            .task {
-                await viewModel.fetchData()
-            }
     }
     
     func row(_ item: QuestionOfTodaySettingItem) -> some View {
@@ -56,10 +53,12 @@ struct QuestionOfTodaySettingView: View {
                 
                 Spacer()
                 
-                Image(item.icon)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 24, height: 24)
+                if item.selected {
+                    Image(.hook)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                }
             }
             
             Text(item.title)
@@ -77,5 +76,12 @@ struct QuestionOfTodaySettingView: View {
                 .stroke(style: .init(lineWidth: 1))
                 .foregroundStyle(item.selected ? AppColor.color(hex: 0x1E1E1E) : AppColor.color(hex: 0x6f6f6f))
         )
+        .contentShape(.rect)
+        .transition(.opacity.animation(.easeInOut))
+        .onTapGesture {
+            Task.detached {
+               await viewModel.onTap(item)
+            }
+        }
     }
 }

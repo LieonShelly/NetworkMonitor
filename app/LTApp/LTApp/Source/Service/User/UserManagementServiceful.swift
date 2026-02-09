@@ -7,8 +7,9 @@ import Combine
 import Persistence
 
 public protocol UserManagementServiceful {
-    var isLogin: AnyPublisher<Bool?, Never> { get }
     var user: AnyPublisher<User?, Never> { get }
+    
+    func fetchUserInfo() async throws
     
     func updateUser(_ user: User) throws
     
@@ -16,23 +17,32 @@ public protocol UserManagementServiceful {
 }
 
 public final class UserManagementService: UserManagementServiceful {
-    public var isLogin: AnyPublisher<Bool?, Never> {
-        return user.map { $0 != nil }.eraseToAnyPublisher()
-    }
+
     public var user: AnyPublisher<User?, Never> {
         userSubject.eraseToAnyPublisher()
     }
     private var userKey = "user.little.thing"
     private let userSubject: CurrentValueSubject<User?, Never> = .init(nil)
     let storage: UserDefaultStorage = .init()
+    let repository: any UserFlowRepositoryType
+    
+    public init(repository: any UserFlowRepositoryType) {
+        
+        self.repository = repository
+    }
     
     public func updateUser(_ user: User) throws {
         userSubject.value = user
-        // TODO
+        // TODO: To cache User info into local database
     }
     
     public func clear() throws {
         storage.delete(userKey)
         userSubject.value = nil
+    }
+    
+    public func fetchUserInfo() async throws {
+       let userInfo = try await repository.fetchUserInfo()
+       try updateUser(userInfo)
     }
 }
