@@ -20,6 +20,9 @@ struct UserHomeView: View {
                     UserRow(item: .init(icon: Image(.userOutlet), title: "Name", subTitle: viewModel.userName))
                     
                     UserRow(item: .init(icon: Image(.libraryOutlet), title: "Question Library", subTitle: "Pin your favourite questions to the threads"))
+                        .onTapGesture {
+                            homeCoordinator.push(HomeRoute.questionLib)
+                        }
                     
                     UserRow(item: .init(icon: Image(.libraryOutlet), title: "Question of the Day", subTitle: "Manage your preferred questions"))
                         .onTapGesture {

@@ -150,8 +150,7 @@ extension CalendarViewModel {
 extension CalendarViewModel {
     func generateMonthForYear(_ year: Int) async -> [CalendarMonth] {
         let calendar = AppCalendar.current
-        var component = DateComponents()
-        component.year = year
+        var component = DateComponents(timeZone: .current, year: year)
         var calendarMonths: [CalendarMonth] = []
         if let monthDate = calendar.date(from: component) {
             let zeroMonth = CalendarMonth(date: monthDate, itemType: .yearPlaceholder)
