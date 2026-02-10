@@ -10,6 +10,8 @@ struct ThreadView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @EnvironmentObject var appCoordinator: AppCoordinator
     @StateObject var viewModel: ThreadViewModel
+    @State private var showCategory: Bool = true
+    
     let onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?
     let addAnswerAction: ((Question?) -> Void)?
     enum Constants {
@@ -19,7 +21,9 @@ struct ThreadView: View {
         static let listHP: CGFloat = 24
         static let pinIconW: CGFloat = 24
         static let quesiontTilteHp: CGFloat = 24
+        static let categoryHeight: CGFloat = 88
     }
+    
     init(viewModel: ThreadViewModel,
          addAnswerAction: ((Question?) -> Void)?,
          onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?,) {
@@ -32,38 +36,61 @@ struct ThreadView: View {
         GeometryReader { proxy in
             VStack(spacing: .zero) {
                 titleView
-                categoryView()
-                ScrollView(showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: .zero) {
-                        if viewModel.questionList.count <= 1 {
-                            ForEach(viewModel.questionList, id: \.uid) { question in
-                              section(question, paraent: proxy, bottom: 56)
-                            }
-                            emptyList()
-                        } else {
-                            ForEach(viewModel.questionList, id: \.uid) { question in
-                              section(question, paraent: proxy)
-                            }
-                        }
-                        
-                        if !viewModel.questionList.isEmpty {
-                            footer
-                        }
+                ZStack(alignment: .top) {
+                    listView(proxy)
+                    if showCategory {
+                        categoryView()
+                            .background(AppColor.backgroundPage)
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                            .zIndex(1)
                     }
-                    .padding(.top, 16)
-                }
-                .padding(.horizontal, Constants.listHP)
-                .refreshable {
-                    try? await viewModel.fetchDataInCurrentCategory()
                 }
             }
             .innerPageRoute($viewModel.subPageRoute)
             .task {
-                do {
-                    try await viewModel.fetchCategories()
-                    try await viewModel.fetchDataInCurrentCategory()
-                } catch {
-                    print("threadView:\(error)")
+                try? await viewModel.fetchCategories()
+                try? await viewModel.fetchDataInCurrentCategory()
+            }
+        }
+    }
+    
+    func listView(_ proxy: GeometryProxy) -> some View {
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading, spacing: .zero) {
+                if viewModel.questionList.count <= 1 {
+                    ForEach(viewModel.questionList, id: \.uid) { question in
+                      section(question, paraent: proxy, bottom: 56)
+                    }
+                    emptyList()
+                } else {
+                    ForEach(viewModel.questionList, id: \.uid) { question in
+                      section(question, paraent: proxy)
+                    }
+                }
+                
+                if !viewModel.questionList.isEmpty {
+                    footer
+                }
+            }
+            .padding(.top, 16)
+            .padding(.top, Constants.categoryHeight)
+        }
+        .padding(.horizontal, Constants.listHP)
+        .refreshable {
+            try? await viewModel.fetchDataInCurrentCategory()
+        }
+        .onScrollGeometryChange(for: CGFloat.self) { proxy in
+            proxy.contentOffset.y
+        } action: { oldValue, newValue in
+            let diff = newValue - oldValue
+            let threshhold: CGFloat = 5
+            withAnimation(.easeInOut) {
+                if newValue <= 0 {
+                    showCategory = true
+                } else if diff > threshhold {
+                    showCategory = false
+                } else if diff < -threshhold {
+                    showCategory = true
                 }
             }
         }
@@ -366,14 +393,13 @@ struct ThreadView: View {
                 selectedIndex: viewModel.selectedCategoryIndex,
                 onTap: { index in
                     Task {
-                       await viewModel.selecteCategory(index)
+                        await viewModel.selecteCategory(index)
                     }
                 })
-                .padding(.top, 30)
-                .padding(.bottom, 20)
-                .padding(.horizontal, Constants.listHP)
-                .transition(.opacity.animation(.easeInOut))
+            .frame(height: 58)
+            .padding(.horizontal, Constants.listHP)
+            .transition(.opacity.animation(.easeInOut))
+            .frame(height: Constants.categoryHeight)
         }
-       
     }
 }
