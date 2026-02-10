@@ -148,72 +148,95 @@ extension CalendarViewModel {
 
 
 extension CalendarViewModel {
-    func generateMonthForYear(_ year: Int) async -> [CalendarMonth] {
-        let calendar = AppCalendar.current
-        var component = DateComponents(timeZone: .current, year: year)
-        var calendarMonths: [CalendarMonth] = []
-        if let monthDate = calendar.date(from: component) {
-            let zeroMonth = CalendarMonth(date: monthDate, itemType: .yearPlaceholder)
-            calendarMonths.append(zeroMonth)
-        }
-        
-        for month in 1 ... 12 {
-            component.month = month
-            
-            guard let monthDate = calendar.date(from: component),
-                  let range = calendar.range(of: .day, in: .month, for: monthDate) else {
-                continue
-            }
-            
-            guard let firstDayInMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: monthDate)) else {
-                continue
-            }
-            var days: [CalendarDay] = []
-            let weekdayOffset = calendar.component(.weekday, from: firstDayInMonth) - calendar.firstWeekday
-            let totalDays = range.count
-            guard weekdayOffset >= 0 else { continue }
-            for index in 0 ..< weekdayOffset {
-                if let date = calendar.date(byAdding: .day, value: -weekdayOffset + index, to: firstDayInMonth) {
-                    days.append(
-                        CalendarDay(
-                            date: date,
-                            isCurrentMonth: false,
-                            isToday: false,
-                            isAbsent: true
-                        )
-                    )
-                }
-            }
-            guard totalDays >= 1 else { continue }
-            for day in 1...totalDays {
-                if let date = calendar.date(byAdding: .day, value: day - 1, to: firstDayInMonth) {
-                    days.append(
-                        CalendarDay(
-                            date: date,
-                            isCurrentMonth: true,
-                            isToday: calendar.isDateInToday(date),
-                            isAbsent: true
-                        )
-                    )
-                }
-            }
-            let calendarMonth = CalendarMonth(date: monthDate, days: days, iconCount: 0, moreDaysTogo: 0)
-            calendarMonths.append(calendarMonth)
-        }
-        return calendarMonths
-    }
     
     func generateMonths() async {
-        var months = [CalendarMonth]()
-        months.append(contentsOf: await generateMonthForYear(2025))
-        months.append(contentsOf: await generateMonthForYear(2026))
+        let calendar = Calendar.current
+        var startComponents = DateComponents()
+        startComponents.year = 2025
+        startComponents.month = 1
+        startComponents.day = 1
+        let startDate = calendar.date(from: startComponents) ?? Date()
+        
+        let now = Date()
+        let endDate = calendar.date(byAdding: .month, value: 1, to: now) ?? now
+        let newMonths = await generateMonthsInRange(from: startDate, to: endDate)
+        
         await MainActor.run {
-            self.months = months
+            self.months = newMonths
         }
     }
     
     func generateAnswerDetailViewModel(_ answer: Answer) -> TodayAnswerSubmittedViewModel? {
         guard let question = answer.question else { return nil }
         return .init(answer: answer, question: question, service: service)
+    }
+    
+    func generateMonthsInRange(from startDate: Date, to endDate: Date) async -> [CalendarMonth] {
+        let calendar = Calendar.current
+        var months: [CalendarMonth] = []
+        guard let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: startDate)),
+              let endOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: endDate)) else {
+            return []
+        }
+        var currentDateIterator = startOfMonth
+        while currentDateIterator <= endOfMonth {
+            let currentMonth = calendar.component(.month, from: currentDateIterator)
+            if currentMonth == 1 || currentDateIterator == startOfMonth {
+                let zeroMonth = CalendarMonth(date: currentDateIterator, itemType: .yearPlaceholder)
+                months.append(zeroMonth)
+            }
+            if let monthData = await generateSingleMonthData(for: currentDateIterator) {
+                months.append(monthData)
+            }
+            guard let nextMonth = calendar.date(byAdding: .month, value: 1, to: currentDateIterator) else {
+                break
+            }
+            currentDateIterator = nextMonth
+        }
+        return months
+    }
+    
+    func generateSingleMonthData(for date: Date) async -> CalendarMonth? {
+        let calendar = Calendar.current
+        guard let range = calendar.range(of: .day, in: .month, for: date) else {
+            return nil
+        }
+        
+        guard let firstDayInMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date)) else {
+            return nil
+        }
+        var days: [CalendarDay] = []
+        var weekdayOffset = calendar.component(.weekday, from: firstDayInMonth) - calendar.firstWeekday
+        let totalDays = range.count
+        if weekdayOffset < 0 {
+            weekdayOffset += 7
+        }
+        for index in 0 ..< weekdayOffset {
+            if let date = calendar.date(byAdding: .day, value: -weekdayOffset + index, to: firstDayInMonth) {
+                days.append(
+                    CalendarDay(
+                        date: date,
+                        isCurrentMonth: false,
+                        isToday: false,
+                        isAbsent: true
+                    )
+                )
+            }
+        }
+        guard totalDays >= 1 else { return nil }
+        for day in 1...totalDays {
+            if let date = calendar.date(byAdding: .day, value: day - 1, to: firstDayInMonth) {
+                days.append(
+                    CalendarDay(
+                        date: date,
+                        isCurrentMonth: true,
+                        isToday: calendar.isDateInToday(date),
+                        isAbsent: true
+                    )
+                )
+            }
+        }
+        let calendarMonth = CalendarMonth(date: date, days: days, iconCount: 0, moreDaysTogo: 0)
+        return calendarMonth
     }
 }
