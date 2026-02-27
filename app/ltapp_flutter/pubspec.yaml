@@ -26,6 +26,10 @@ dependencies:
     path: 'packages/lt_annotation'
   flutter_cache_manager: ^3.4.1
   path_provider: ^2.1.5
+  web3dart: ^2.7.3
+  http: ^1.6.0
+
+
 
 
 dev_dependencies:

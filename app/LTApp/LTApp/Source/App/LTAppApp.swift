@@ -28,7 +28,7 @@ struct LTAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            coordinator.rootView()
+            TestView()// coordinator.rootView()
         }
         .environmentObject(homeCoordinator)
         .environmentObject(coordinator)

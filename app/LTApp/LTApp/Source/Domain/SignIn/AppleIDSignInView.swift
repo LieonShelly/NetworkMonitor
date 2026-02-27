@@ -98,3 +98,29 @@ struct AppleIDSignInView: View {
         }
     }
 }
+
+
+struct TestView: View {
+    var body: some View {
+        ScrollView {
+            
+            VStack {
+                offsetMonitorView
+                ForEach(0 ..< 10) { index in
+                    Rectangle()
+                        .frame(height: 30)
+                }
+            }
+        }
+        .coordinateSpace(.named("scroll"))
+       
+    }
+    
+    var offsetMonitorView: some View {
+        Color.clear
+            .onGeometryChange(for: CGFloat.self, of: { $0.frame(in: .named("scroll")).minY }, action: { newValue in
+                print(newValue)
+            })
+            .frame(height: 0)
+    }
+}
