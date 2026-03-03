@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/src/core.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:ltapp_flutter/src/core/core.dart';
@@ -15,6 +16,12 @@ class AnswerDetailPage extends ConsumerStatefulWidget with ImageCacheKeyType {
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
     return _AnswerDetailPageState();
+  }
+
+  @override
+  ConsumerStatefulElement createElement() {
+    // TODO: implement createElement
+    return super.createElement();
   }
 }
 

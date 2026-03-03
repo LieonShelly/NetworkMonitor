@@ -28,5 +28,7 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   @override
-  Widget build(BuildContext context) {}
+  Widget build(BuildContext context) {
+    return Center(child: Text("data"));
+  }
 }
