@@ -52,12 +52,14 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
         let iconRepository = IconRepository(apiClient: apiClient)
         let notificationRepository = NotificationRepository(apiClient: apiClient)
         let userFlowRepository = UserFlowRepository(apiClient: apiClient)
+        let reportRepository = ReportRepository(apiClient: apiClient)
         let appDataWithAuthorizationService = AppDataWithAuthorizationService(
             authRepository: authRepository,
             reflectionRepository: reflectionRepository,
             userFlowRepository: userFlowRepository,
             iconRepositroy: iconRepository,
             notificationRepository: notificationRepository,
+            reportRepository: reportRepository,
             storage: keyChain,
             keyDataStorage: userDefaultStorage
         )

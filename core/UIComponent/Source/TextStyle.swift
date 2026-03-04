@@ -33,6 +33,9 @@ public extension View {
         case .poppinsMediumItalic:
             return self.foregroundStyle(color)
                 .font(AppFont.poppins(size: size, fontWeight: .mediumItalic))
+        case .ibmPlexMonoRegular:
+            return self.foregroundStyle(color)
+                .font(AppFont.ibmPlexMono(size: size, fontWeight: .regular))
         }
     }
 }

@@ -7,13 +7,24 @@ import SwiftUI
 public struct WavyLine: Shape {
     let segmentCount: Int
     let seed: Int
+    let axis: Axis
     
-    public init(segmentCount: Int, seed: Int) {
+    public init(segmentCount: Int, seed: Int, axis: Axis = .vertical) {
         self.segmentCount = segmentCount
         self.seed = seed
+        self.axis = axis
     }
     
     public func path(in rect: CGRect) -> Path {
+        switch axis {
+        case .horizontal:
+            horizontal(in: rect)
+        case .vertical:
+            vertical(in: rect)
+        }
+    }
+    
+    func vertical(in rect: CGRect) -> Path {
         var path = Path()
         var random = SeededGenerator(seed: seed)
         
@@ -40,6 +51,38 @@ public struct WavyLine: Shape {
             }
             
             y = nextY
+        }
+        
+        return path
+    }
+    
+    func horizontal(in rect: CGRect) -> Path {
+        var path = Path()
+        var random = SeededGenerator(seed: seed)
+        
+        var x: CGFloat = rect.minX
+        let step = rect.width / CGFloat(segmentCount)
+        
+        path.move(to: CGPoint(x: x, y: rect.midY))
+        
+        for _ in 0..<segmentCount {
+            let isWave = Bool.random(using: &random)
+            let nextX = x + step
+            
+            if isWave {
+                let amplitude: CGFloat = CGFloat.random(in: 1...3, using: &random)
+                let controlX = x + step / 2
+                let direction: CGFloat = Bool.random(using: &random) ? 1 : -1
+                
+                path.addQuadCurve(
+                    to: CGPoint(x: nextX, y: rect.midY),
+                    control: CGPoint(x: controlX, y: rect.midY + amplitude * direction)
+                )
+            } else {
+                path.addLine(to: CGPoint(x: nextX, y: rect.midY))
+            }
+            
+            x = nextX
         }
         
         return path

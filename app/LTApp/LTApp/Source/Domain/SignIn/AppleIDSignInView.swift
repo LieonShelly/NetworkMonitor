@@ -76,7 +76,7 @@ struct AppleIDSignInView: View {
 //       .onTapGesture {
 //            Task.detached {
 //                do {
-//                    try await viewModel.login(authorizationCode: "", identityToken: ")
+//                    try await viewModel.login(authorizationCode: "", identityToken: "")
 //                    await route()
 //                } catch {
 //                  await MainActor.run {

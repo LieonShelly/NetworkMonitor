@@ -64,7 +64,28 @@ struct AnswerIconView: View {
     @ViewBuilder
     func iconView(_ answer: Answer, size: CGSize = .init(width: 24, height: 24)) -> some View {
       
-        if let icon = answer.icon {
+        IconView(iconData: answer.icon, size: size)
+    }
+}
+
+struct IconView: View {
+    var iconData: IconData?
+    var size: CGSize = .init(width: 24, height: 24)
+    
+    
+    init(iconData: IconData?, size: CGSize = .init(width: 24, height: 24)) {
+        self.iconData = iconData
+        self.size = size
+    }
+    
+    var body: some View {
+        iconView(iconData, size: size)
+    }
+    
+    @ViewBuilder
+    func iconView(_ iconData: IconData?, size: CGSize = .init(width: 24, height: 24)) -> some View {
+      
+        if let icon = iconData {
             switch icon.status {
             case .pending:
                 Image(.lock)

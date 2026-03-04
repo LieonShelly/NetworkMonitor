@@ -77,6 +77,21 @@ public class AppFont {
         }
     }
     
+    public static func ibmPlexMono(size: CGFloat, fontWeight: AppFontWeight = .regular) -> Font {
+        switch fontWeight {
+        case .regular:
+            return Font.custom(AppFontType.ibmPlexMonoRegular.fontName, size: size)
+        case .medium:
+            return Font.custom(AppFontType.ibmPlexMonoRegular.fontName, size: size)
+        case .bold:
+            return Font.custom(AppFontType.ibmPlexMonoRegular.fontName, size: size)
+        case .heavy:
+            return Font.custom(AppFontType.ibmPlexMonoRegular.fontName, size: size)
+        case .mediumItalic:
+            return Font.custom(AppFontType.ibmPlexMonoRegular.fontName, size: size)
+        }
+    }
+    
     
     public static func vividly(size: CGFloat, fontWeight: AppFontWeight = .regular) -> UIFont {
         switch fontWeight {

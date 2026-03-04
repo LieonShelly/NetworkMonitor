@@ -31,6 +31,7 @@
 		E61E4B18A20E04EF18CE32D7 /* AppButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B87CE1CD2907F3CFFF2D66 /* AppButton.swift */; };
 		E6745AE6C90BD250C57E4639 /* SFPRODISPLAYBOLD.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 6CF13718EA0B087EDE8DFFF1 /* SFPRODISPLAYBOLD.OTF */; };
 		E9E65CDB07211204207C03EF /* SFPRODISPLAYREGULAR.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 6D8DBA0614E81655B6DA4DA0 /* SFPRODISPLAYREGULAR.OTF */; };
+		F804C4612F58176F00DCC904 /* IBMPlexMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F804C4602F58176F00DCC904 /* IBMPlexMono-Regular.ttf */; };
 		F81BBF172ED2FA2300D6392C /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81BBF162ED2FA2300D6392C /* LoadingView.swift */; };
 		F81BBF192ED2FB4400D6392C /* Lottie.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F81BBF182ED2FB4400D6392C /* Lottie.bundle */; };
 		F8B1D04F2EFD2BE300503ABF /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F8B1D04E2EFD2BE300503ABF /* Poppins-MediumItalic.ttf */; };
@@ -63,6 +64,7 @@
 		CAD60B0802D8E14861022043 /* WavyLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavyLine.swift; sourceTree = "<group>"; };
 		CEAEEA362A908126E36CE67D /* UIComponentModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIComponentModule.swift; sourceTree = "<group>"; };
 		D0B974295D3F09C44A2CC00B /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
+		F804C4602F58176F00DCC904 /* IBMPlexMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IBMPlexMono-Regular.ttf"; sourceTree = "<group>"; };
 		F81BBF162ED2FA2300D6392C /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		F81BBF182ED2FB4400D6392C /* Lottie.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Lottie.bundle; sourceTree = "<group>"; };
 		F8B1D04E2EFD2BE300503ABF /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				6D8DBA0614E81655B6DA4DA0 /* SFPRODISPLAYREGULAR.OTF */,
 				73B304C658A19F73D38495F8 /* VividlyRegular.ttf */,
 				F8B1D04E2EFD2BE300503ABF /* Poppins-MediumItalic.ttf */,
+				F804C4602F58176F00DCC904 /* IBMPlexMono-Regular.ttf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				307C5C9F9B5C314C90630F0B /* FeltTipSeniorRegular.ttf in Resources */,
 				ADF5B717105751DFD4D2FA19 /* Images.bundle in Resources */,
 				A93096AB4E16B6A6B92484D8 /* Poppins-Regular.ttf in Resources */,
+				F804C4612F58176F00DCC904 /* IBMPlexMono-Regular.ttf in Resources */,
 				E6745AE6C90BD250C57E4639 /* SFPRODISPLAYBOLD.OTF in Resources */,
 				704871D37BBDACFB972F9B81 /* SFPRODISPLAYMEDIUM.OTF in Resources */,
 				E9E65CDB07211204207C03EF /* SFPRODISPLAYREGULAR.OTF in Resources */,

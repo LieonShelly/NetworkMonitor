@@ -16,7 +16,7 @@ class InsightsViewModel: @unchecked Sendable {
         self.dataService = dataService
     }
     
-    func featchData() async throws {
+    func fetchData() async throws {
        let report = try await dataService.fetchWeeklyReportUseCase.execute(week: nil)
         await MainActor.run {
             self.weeklyReport = report
