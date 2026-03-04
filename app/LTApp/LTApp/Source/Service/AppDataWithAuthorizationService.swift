@@ -26,6 +26,7 @@ public protocol AppDataWithAuthorizationServiceful {
     var updateStrategyUseCase: any UpdateStrategyUseCaseType { get }
     
     var fetchQodStrategyOptionsUseCase: any FetchQodStrategyOptionsUseCaseType { get }
+    var fetchWeeklyReportUseCase: any FetchWeeklyReportUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
@@ -37,12 +38,14 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     public let userManagementService: any UserManagementServiceful
     private let notificationRepository: any NotificationRepositoryType
     private let userFlowRepository: any UserFlowRepositoryType
+    private let reportRepository: any ReportRepositoryType
     
     public init(authRepository: any AuthRepositoryType,
                 reflectionRepository: any ReflectionRepositoryType,
                 userFlowRepository: any UserFlowRepositoryType,
                 iconRepositroy: any IconRepositoryType,
                 notificationRepository: any NotificationRepositoryType,
+                reportRepository: any ReportRepositoryType,
                 storage: any KeyValueStorageType,
                 keyDataStorage: any KeyDataStorageType) {
         self.authRepository = authRepository
@@ -53,6 +56,7 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
         self.userManagementService = UserManagementService(repository: userFlowRepository)
         self.notificationRepository = notificationRepository
         self.keyDataStorage = keyDataStorage
+        self.reportRepository = reportRepository
     }
     
     public lazy var authUseCasse: any AuthUseCaseType = {
@@ -125,5 +129,9 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var fetchQodStrategyOptionsUseCase: any FetchQodStrategyOptionsUseCaseType = {
         FetchQodStrategyOptionsUseCase(repository: userFlowRepository)
+    }()
+    
+    public lazy var fetchWeeklyReportUseCase: any FetchWeeklyReportUseCaseType = {
+        return FetchWeeklyReportUseCase(repository: reportRepository)
     }()
 }

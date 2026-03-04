@@ -9,12 +9,18 @@ import SwiftUI
 import UIComponent
 
 struct InsightsView: View {
+    @State var viewModel: InsightsViewModel
+    
+    init(viewModel: InsightsViewModel) {
+        self._viewModel = State(wrappedValue: viewModel)
+    }
+    
     var body: some View {
         VStack(spacing: .zero) {
             titleView
-            ScrollView(showsIndicators: false) {
-                LoadingView()
-            }
+        }
+        .task {
+            try? await viewModel.featchData()
         }
     }
     
@@ -26,5 +32,3 @@ struct InsightsView: View {
         .padding(.leading, 24)
     }
 }
-
-

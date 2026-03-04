@@ -27,7 +27,7 @@ struct AppScrollContentView: View {
                                onTapAnswerAction: onTapAnswerAction, )
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(1)
-                    InsightsView()
+                    InsightsView(viewModel: viewModel.insightsViewModel)
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(2)
                     UserHomeView(viewModel: viewModel.userViewModel)

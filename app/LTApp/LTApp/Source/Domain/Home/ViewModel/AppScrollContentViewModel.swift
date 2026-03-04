@@ -15,11 +15,13 @@ class AppScrollContentViewModel: ObservableObject {
     let calendarViewModel: CalendarViewModel
     let threadViewModel: ThreadViewModel
     let userViewModel: UserHomeViewModel
+    let insightsViewModel: InsightsViewModel
     
     init(service: any AppDataWithAuthorizationServiceful) {
         calendarViewModel = CalendarViewModel(service: service)
         threadViewModel = ThreadViewModel(service: service)
         userViewModel = UserHomeViewModel(dataService: service)
+        insightsViewModel = InsightsViewModel(dataService: service)
     }
     
     deinit {
