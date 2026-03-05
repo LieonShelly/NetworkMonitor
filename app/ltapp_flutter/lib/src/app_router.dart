@@ -3,8 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:ltapp_flutter/src/features/add_answer/add_answer_page.dart';
 import 'package:ltapp_flutter/src/features/answer_detail/answer_detail_page.dart';
 import 'package:ltapp_flutter/src/features/calendar/calendar_page.dart';
+import 'package:ltapp_flutter/src/features/copilot/chat_page.dart';
 import 'package:ltapp_flutter/src/features/home_view.dart';
 import 'package:ltapp_flutter/src/features/thread/thread_page.dart';
+import 'package:ltapp_flutter/src/features/user/user_home.dart';
 import 'package:ltapp_flutter/src/service/dto/calendar_reflection_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -17,6 +19,7 @@ class AppRoutePath {
   static const user = "/user";
   static const answerDetail = "/answer_detail";
   static const addAnswer = "/add_answer";
+  static const chat = "/chat";
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -53,9 +56,8 @@ GoRouter router(Ref ref) {
             routes: [
               GoRoute(
                 path: AppRoutePath.insights,
-                pageBuilder: (context, state) => const NoTransitionPage(
-                  child: Scaffold(body: Center(child: Text("insights page"))),
-                ),
+                pageBuilder: (context, state) =>
+                    const NoTransitionPage(child: ChatPage()),
               ),
             ],
           ),
@@ -63,9 +65,8 @@ GoRouter router(Ref ref) {
             routes: [
               GoRoute(
                 path: AppRoutePath.user,
-                pageBuilder: (context, state) => const NoTransitionPage(
-                  child: Scaffold(body: Center(child: Text("user page"))),
-                ),
+                pageBuilder: (context, state) =>
+                    const NoTransitionPage(child: UserHomePage()),
               ),
             ],
           ),
@@ -106,6 +107,14 @@ GoRouter router(Ref ref) {
         pageBuilder: (context, state) {
           final questions = state.extra as List<QuestionModel>;
           final page = AddAnswerPage(key: state.pageKey, questions: questions);
+          return MaterialPage(key: state.pageKey, child: page);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: AppRoutePath.chat,
+        pageBuilder: (context, state) {
+          final page = ChatPage(key: state.pageKey);
           return MaterialPage(key: state.pageKey, child: page);
         },
       ),

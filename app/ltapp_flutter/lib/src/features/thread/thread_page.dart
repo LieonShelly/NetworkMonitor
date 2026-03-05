@@ -22,11 +22,6 @@ class _ThreadPageState extends ConsumerState<ThreadPage> {
 
   PreferredSizeWidget _buildHeaderView() {
     return AppBar(
-      backgroundColor: Color(0xFFFFF8F8),
-      elevation: 0,
-      scrolledUnderElevation: 0,
-      surfaceTintColor: Colors.transparent,
-      centerTitle: true,
       title: Text(
         "Thread",
         style: AppTextStyle.feltTipSeniorRegular(

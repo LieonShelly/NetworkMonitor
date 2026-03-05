@@ -6,14 +6,13 @@ import 'package:flutter/foundation.dart';
 import 'package:ltapp_flutter/src/core/network/api_client.dart';
 import 'package:ltapp_flutter/src/core/network/app_exception.dart';
 import 'package:ltapp_flutter/src/core/network/auth_interceptor.dart';
+import 'package:ltapp_flutter/src/core/network/network_config.dart';
 import 'package:ltapp_flutter/src/core/network/refresh_token_interceptor.dart';
 import 'package:ltapp_flutter/src/core/network/token_storage.dart';
 
 class HttpApiClient implements ApiClientType {
   late final Dio _dio;
   final TokenStorage _tokenStorage;
-  static const String _proxyIp = '127.0.0.1';
-  static const String _proxyPort = '8888';
   HttpApiClient({required String baseUrl, required TokenStorage tokenStorage})
     : _tokenStorage = tokenStorage {
     _dio = Dio(
@@ -31,12 +30,26 @@ class HttpApiClient implements ApiClientType {
       AuthInterceptor(storage: _tokenStorage),
       QueuedInterceptorsWrapper(
         onRequest: (options, handler) {
+          if (kDebugMode) {
+            debugPrint(
+              '🌐 Request: ${options.method} ${options.baseUrl}${options.path}',
+            );
+            debugPrint('📤 Data: ${options.data}');
+          }
           handler.next(options);
         },
         onResponse: (response, handler) {
+          if (kDebugMode) {
+            debugPrint('📥 Response: ${response.statusCode}');
+          }
           handler.next(response);
         },
         onError: (error, handler) {
+          if (kDebugMode) {
+            debugPrint('❌ Error: ${error.message}');
+            debugPrint('   Type: ${error.type}');
+            debugPrint('   URL: ${error.requestOptions.uri}');
+          }
           RefreshTokenInterceptor(_dio, _tokenStorage).onError(error, handler);
         },
       ),
@@ -47,7 +60,9 @@ class HttpApiClient implements ApiClientType {
         createHttpClient: () {
           final client = HttpClient();
           client.findProxy = (uri) {
-            return 'PROXY $_proxyIp:$_proxyPort';
+            final proxyConfig = NetworkConfig.getProxyConfig(uri);
+            debugPrint('🔧 Proxy config for ${uri.host}: $proxyConfig');
+            return proxyConfig;
           };
           client.badCertificateCallback =
               (X509Certificate cert, String host, int port) => true;
