@@ -124,6 +124,12 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             Expanded(
               child: TextField(
                 controller: _textEditingController,
+                maxLines: null,
+                minLines: 1,
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.send,
+                autocorrect: true,
+                enableSuggestions: true,
                 decoration: InputDecoration(
                   hintText: '输入你的指令',
                   border: OutlineInputBorder(
