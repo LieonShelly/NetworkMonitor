@@ -17,11 +17,11 @@ struct CalendarView: View {
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @StateObject var viewModel: CalendarViewModel
     @State var showMonthList: Bool = false
-    let addAction: ((Question?) -> Void)?
+    let addAction: (([Question]) -> Void)?
     let onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?
     
     init(viewModel: CalendarViewModel,
-         addAction: ((Question?) -> Void)?,
+         addAction: (([Question]) -> Void)?,
          onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?,
     ) {
         self._viewModel = .init(wrappedValue: viewModel)
@@ -31,10 +31,22 @@ struct CalendarView: View {
     
     var body: some View {
         GeometryReader { proxy in
-            VStack(spacing: .zero) {
-                headerView(proxy)
-                weekDay(spacing: .zero, proxy: proxy)
-                monthListView(proxy: proxy)
+            ZStack(alignment: .bottom) {
+                VStack(spacing: .zero) {
+                    headerView(proxy)
+                    weekDay(spacing: .zero, proxy: proxy)
+                    monthListView(proxy: proxy)
+                }
+                
+                if let head = viewModel.todayQuestions.first, viewModel.showTodayQuestion {
+                    TodayQuestionView(question: head) {
+                        addAction?(viewModel.organize())
+                    }
+                    .offset(y: -(40 + 16 * 2))
+                    .padding(.horizontal, 40)
+                    .padding(.bottom, 10)
+                    .transition(.opacity.animation(.easeInOut))
+                }
             }
         }
         .defaultBackground()
@@ -42,6 +54,7 @@ struct CalendarView: View {
             Task.detached {
                 await viewModel.generateMonths()
                 await viewModel.scrollToCurrentMonth()
+                try? await viewModel.fetchDataTodayQuestions()
             }
         }
     }
@@ -151,7 +164,7 @@ struct CalendarView: View {
                     ClendarItemView(
                         day: day,
                         addAction: {
-                            addAction?(nil)
+                            addAction?(viewModel.organize())
                         }, didTapIcon: { answer in
                             onTapAnswerAction?(viewModel.generateAnswerDetailViewModel(answer))
                         }

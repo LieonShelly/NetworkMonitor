@@ -6,10 +6,12 @@ import SwiftUI
 
 struct AppScrollContentView: View {
     @ObservedObject var viewModel: AppScrollContentViewModel
-    let addAction: ((Question?) -> Void)?
+    let addAction: (([Question]) -> Void)?
     let onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?
     
-    init(viewModel: AppScrollContentViewModel, addAction: ((Question?) -> Void)?, onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?) {
+    init(viewModel: AppScrollContentViewModel,
+         addAction: (([Question]) -> Void)?,
+         onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?) {
         self.viewModel = viewModel
         self.addAction = addAction
         self.onTapAnswerAction = onTapAnswerAction

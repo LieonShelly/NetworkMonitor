@@ -6,8 +6,6 @@ import Combine
 import SwiftUI
 
 final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObject,  @unchecked Sendable {
-    @MainActor @Published var todayQuestions: [Question] = []
-    @MainActor @Published var showTodayQuestion: Bool = true
     @MainActor @Published var subPageRoute: InnerPageRouteState = .none
     
     var tabbarViewModel = AppTabbarViewModel(
@@ -64,13 +62,6 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
        
     }
     
-    func fetchData() async throws {
-        let questions = try await service.fetchTodayQuestionsUseCase.execute()
-        await MainActor.run {
-            self.todayQuestions = questions
-        }
-    }
-    
    @MainActor
     func observeNotification() {
         self.notificationHandler.topic.sink { [weak self] topic in
@@ -83,47 +74,41 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
                 }
             case .todayQuestion:
                 Task {
-                    if todayQuestions.isEmpty {
-                        try? await fetchData()
+                    let calendarViewModel = contentViewModel.calendarViewModel
+                    if calendarViewModel.todayQuestions.isEmpty {
+                       try? await calendarViewModel.fetchDataTodayQuestions()
                     }
-                    self.pushToAddTodayAnsnwer()
+                    pushToAddTodayAnsnwer(calendarViewModel.organize())
                 }
             }
         }
         .store(in: &cancellables)
     }
     
-    @MainActor
-    func organize() -> [Question] {
-        let count = self.todayQuestions.count
-        let questions = self.todayQuestions
-        guard let head = questions.first else { return [] }
-       return [head] + questions[1 ..< count]
-    }
-    
-    @MainActor
-    func generateTodayViewModel(_ questions: [Question]) -> TodayAnswerViewModel {
-        let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
-            Task {
-                self?.contentViewModel.calendarViewModel.queryCurrenntIconStatus(iconId)
-                self?.showTodayQuestion = false
-            }
-            
-        })
-        return todayAnswerViewModel
+    @MainActor func pushToAddTodayAnsnwer(_ questions: [Question]) {
+        guard !questions.isEmpty else { return }
+        if questions.count > 1 {
+            let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
+                Task {
+                    self?.contentViewModel.calendarViewModel.queryCurrenntIconStatus(iconId)
+                    self?.contentViewModel.calendarViewModel.showTodayQuestion = false
+                }
+                
+            })
+            route(.todayAnswer(todayAnswerViewModel))
+        } else {
+            let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
+                Task {
+                    self?.contentViewModel.calendarViewModel.queryCurrenntIconStatus(iconId)
+                }
+                
+            })
+            route(.addSingleAnswer(todayAnswerViewModel))
+        }
     }
     
     @MainActor func selected(_ index: Int) {
         contentViewModel.scrollTo(index)
-    }
-    
-    
-    @MainActor func pushToAddTodayAnsnwer(_ question: Question? = nil) {
-        if let question {
-            route(.addSingleAnswer(generateTodayViewModel([question])))
-        } else {
-            route(.todayAnswer(generateTodayViewModel(todayQuestions)))
-        }
     }
 }
 

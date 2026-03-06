@@ -21,6 +21,7 @@ public struct ReportContent: Sendable {
 }
 
 public struct AnalyticalSection: Sendable {
+    let id: UUID = UUID()
     let title: String
     let content: String
 }

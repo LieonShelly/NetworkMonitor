@@ -25,35 +25,20 @@ struct AppHomeView: View {
     fileprivate func scrollContentView() -> AppScrollContentView {
         return AppScrollContentView(
             viewModel: viewModel.contentViewModel,
-            addAction: { question in
-                viewModel.pushToAddTodayAnsnwer(question)
+            addAction: { questions in
+                viewModel.pushToAddTodayAnsnwer(questions)
             },
-            onTapAnswerAction: {answerDetailViewModel in
+            onTapAnswerAction: { answerDetailViewModel in
                 if let answerDetailViewModel {
                     viewModel.route(.answerDetail(answerDetailViewModel))
                 }
             })
     }
     
-    fileprivate func tabbar() -> ZStack<TupleView<(some View, (some View)?)>> {
-        return ZStack(alignment: .bottom) {
-            AppTabbar(viewModel: viewModel.tabbarViewModel)
-                .padding(.horizontal, 50)
-                .padding(.top, 10)
-            
-            if let head = viewModel.todayQuestions.first, viewModel.showTodayQuestion {
-                TodayQuestionView(question: head) {
-                    viewModel.pushToAddTodayAnsnwer()
-                }
-                .offset(y: -(40 + 16 * 2))
-                .padding(.horizontal, 40)
-                .padding(.bottom, 10)
-                .transition(.opacity)
-                .task {
-                    viewModel.observeNotification()
-                }
-            }
-        }
+    fileprivate func tabbar() -> some View {
+        AppTabbar(viewModel: viewModel.tabbarViewModel)
+            .padding(.horizontal, 50)
+            .padding(.top, 10)
     }
     
     func homeView(_ proxy: GeometryProxy) -> some View {
@@ -76,7 +61,6 @@ struct AppHomeView: View {
             withAnimation(.easeInOut) {
                 showPage = true
             }
-            try? await viewModel.fetchData()
         }
     }
     

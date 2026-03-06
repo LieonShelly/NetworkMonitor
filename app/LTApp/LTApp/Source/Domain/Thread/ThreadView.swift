@@ -13,7 +13,7 @@ struct ThreadView: View {
     @State private var showCategory: Bool = true
     
     let onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?
-    let addAnswerAction: ((Question?) -> Void)?
+    let addAnswerAction: (([Question]) -> Void)?
     enum Constants {
         static let iconSize: CGFloat = 24
         static let iconItemSpacing: CGFloat = 8
@@ -25,7 +25,7 @@ struct ThreadView: View {
     }
     
     init(viewModel: ThreadViewModel,
-         addAnswerAction: ((Question?) -> Void)?,
+         addAnswerAction: (([Question]) -> Void)?,
          onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?,) {
         self._viewModel = .init(wrappedValue: viewModel)
         self.onTapAnswerAction = onTapAnswerAction
@@ -309,7 +309,7 @@ struct ThreadView: View {
             .frame(width: Constants.iconSize, height: Constants.iconSize)
             .foregroundStyle(AppColor.color(hex: 0x000000))
             .onTapGesture {
-                addAnswerAction?(question.toQuestion())
+                addAnswerAction?([question.toQuestion()])
             }
     }
     
@@ -360,7 +360,7 @@ struct ThreadView: View {
             homeCoordinator.push(HomeRoute.questionLib)
         }
         emptyStateLibSection(title: "Start writing to make your own thread", icon: .threadAdd, btnTitle: "view question of the day ") {
-            addAnswerAction?(nil)
+            addAnswerAction?([])
         }
     }
     

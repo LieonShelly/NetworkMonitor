@@ -23,7 +23,8 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var todayUpdatingIcon: IconData?
     @MainActor @Published var selectedDay: CalendarDay?
     @MainActor @Published var months: [CalendarMonth] = []
-    
+    @MainActor @Published var todayQuestions: [Question] = []
+    @MainActor @Published var showTodayQuestion: Bool = true
     let itemSize: CGSize = .init(width: 30, height: 30)
     
     private let service: any AppDataWithAuthorizationServiceful
@@ -46,6 +47,14 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         }
     }
     
+    
+    @MainActor
+    func organize() -> [Question] {
+        let count = self.todayQuestions.count
+        let questions = self.todayQuestions
+        guard let head = questions.first else { return [] }
+       return [head] + questions[1 ..< count]
+    }
 }
 
 extension CalendarViewModel {
@@ -89,6 +98,13 @@ extension CalendarViewModel {
                 }
             }
             self.months = months
+        }
+    }
+    
+    func fetchDataTodayQuestions() async throws {
+        let questions = try await service.fetchTodayQuestionsUseCase.execute()
+        await MainActor.run {
+            self.todayQuestions = questions
         }
     }
 }

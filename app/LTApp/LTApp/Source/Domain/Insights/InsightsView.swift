@@ -39,7 +39,10 @@ struct InsightsView: View {
         ScrollView {
             LazyVStack(spacing: .zero) {
                 summaryView
+                momentView
+                overView
             }
+            .padding(.bottom, 80)
         }
     }
     
@@ -120,5 +123,82 @@ struct InsightsView: View {
             })
           
 
+    }
+    
+    @ViewBuilder var momentView: some View {
+        if let report = viewModel.weeklyReport {
+            VStack(alignment: .leading, spacing: .zero) {
+                Text("// A Moment to Reveal")
+                    .textStyle(size: 11, color: AppColor.color(hex: 0x888888), fontFamily: .ibmPlexMonoRegular)
+                    .padding(.leading, 20)
+                    .padding(.top, 16)
+                    .padding(.bottom, 14)
+                
+                Text(report.reportJson.momentToReveal)
+                    .textStyle(size: 13, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 16)
+            }
+            .overlay(content: {
+                VStack {
+                    line(axis: .horizontal)
+                    Spacer()
+                    line(axis: .horizontal)
+                }
+            })
+            .overlay(content: {
+                HStack {
+                    line(axis: .vertical)
+                    Spacer()
+                    line(axis: .vertical)
+                }
+            })
+            .padding(.horizontal, 32)
+            .padding(.top, 37)
+        }
+        
+    }
+    
+    @ViewBuilder var overView: some View {
+        if let report = viewModel.weeklyReport {
+            VStack(alignment: .leading, spacing: .zero) {
+                Text("// Your Analytical Overview")
+                    .textStyle(size: 11, color: AppColor.color(hex: 0x888888), fontFamily: .ibmPlexMonoRegular)
+                    .padding(.leading, 20)
+                    .padding(.top, 20)
+                    .padding(.bottom, 14)
+                
+                VStack(alignment: .leading, spacing: 16) {
+                    ForEach(report.reportJson.analyticalOverview, id: \.id) { section in
+                        VStack(alignment: .leading, spacing: .zero) {
+                            Text(section.title)
+                                .textStyle(size: 24, color: AppColor.color(hex: 0x000000), fontFamily: .feltTipSeniorRegular)
+                            Text(section.content)
+                                .textStyle(size: 13, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                                .padding(.top, 2)
+                        }
+                    }
+                }
+                .padding(.bottom, 16)
+                .padding(.leading, 20)
+            }
+            .overlay(content: {
+                VStack {
+                    line(axis: .horizontal)
+                    Spacer()
+                    line(axis: .horizontal)
+                }
+            })
+            .overlay(content: {
+                HStack {
+                    line(axis: .vertical)
+                    Spacer()
+                    line(axis: .vertical)
+                }
+            })
+            .padding(.horizontal, 32)
+            .padding(.top, 37)
+        }
+        
     }
 }
