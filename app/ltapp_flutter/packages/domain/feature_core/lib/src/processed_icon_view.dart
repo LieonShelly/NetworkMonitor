@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lt_uicomponent/uicomponent.dart';
-import 'package:lt_uicomponent/uicomponent.dart';
 import 'package:lt_reflection_service/reflection_service.dart';
 
 class ProcessedIconView extends ConsumerWidget with ImageCacheKeyType {

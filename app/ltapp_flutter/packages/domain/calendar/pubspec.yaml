@@ -12,6 +12,8 @@ dependencies:
   flutter_riverpod: ^3.1.0
   riverpod_annotation: ^4.0.0
   intl: ^0.20.2
+  go_router: ^17.0.0
+  scroll_to_index: ^3.0.1
   
   # Internal dependencies
   lt_uicomponent:
@@ -20,6 +22,8 @@ dependencies:
     path: ../../service/lt_reflection_service
   date_utl:
     path: ../../utls/date_utl
+  feature_core:
+    path: ../feature_core
 
 dev_dependencies:
   flutter_test:
