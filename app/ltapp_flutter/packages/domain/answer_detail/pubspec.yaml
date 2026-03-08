@@ -19,6 +19,8 @@ dependencies:
     path: ../../core/lt_uicomponent
   lt_reflection_service:
     path: ../../service/lt_reflection_service
+  feature_core:
+    path: ../feature_core
 
 dev_dependencies:
   flutter_test:

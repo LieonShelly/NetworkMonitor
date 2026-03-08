@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lt_uicomponent/uicomponent.dart';
 import 'package:lt_reflection_service/reflection_service.dart';
+import 'package:feature_core/feature_core.dart';
 
 class AnswerDetailPage extends ConsumerStatefulWidget with ImageCacheKeyType {
   final AnswerModel answer;
