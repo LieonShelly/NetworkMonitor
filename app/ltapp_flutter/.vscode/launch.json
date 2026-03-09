@@ -9,7 +9,7 @@
             "name": "ltapp_flutter",
             "request": "launch",
             "type": "dart",
-            "program": "lib/main.dart"
+            "program": "apps/lt_app/lib/main.dart"
         },
         {
             "name": "ltapp_flutter (profile mode)",
