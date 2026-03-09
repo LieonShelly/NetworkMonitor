@@ -72,23 +72,23 @@ dev_dependencies:
   freezed: ^3.2.3
   json_serializable: ^6.7.1
 
-flutter:
-  uses-material-design: true
-  assets:
-    - assets/icons/
-  fonts:
-    - family: Poppins
-      fonts:
-        - asset: assets/fonts/Poppins-Regular.ttf
+# flutter:
+#   uses-material-design: true
+#   assets:
+#     - assets/icons/
+#   fonts:
+#     - family: Poppins
+#       fonts:
+#         - asset: assets/fonts/Poppins-Regular.ttf
 
-    - family: FeltTipSeniorRegular
-      fonts:
-        - asset: assets/fonts/FeltTipSeniorRegular.ttf
+#     - family: FeltTipSeniorRegular
+#       fonts:
+#         - asset: assets/fonts/FeltTipSeniorRegular.ttf
         
-    - family: PoppinsMediumItalic
-      fonts:
-        - asset: assets/fonts/Poppins-MediumItalic.ttf
+#     - family: PoppinsMediumItalic
+#       fonts:
+#         - asset: assets/fonts/Poppins-MediumItalic.ttf
 
-    - family: VividlyRegular
-      fonts:
-        - asset: assets/fonts/VividlyRegular.ttf
+#     - family: VividlyRegular
+#       fonts:
+#         - asset: assets/fonts/VividlyRegular.ttf
