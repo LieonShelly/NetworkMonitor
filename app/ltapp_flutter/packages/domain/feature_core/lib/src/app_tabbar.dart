@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lt_uicomponent/uicomponent.dart';
-import 'package:lt_app/src/app_router.dart';
+import 'app_route_path.dart';
 
 class AppTabbar extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
