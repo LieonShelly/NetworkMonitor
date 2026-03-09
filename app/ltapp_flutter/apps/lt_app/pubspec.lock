@@ -9,6 +9,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "85.0.0"
+  add_answer:
+    dependency: "direct main"
+    description:
+      path: "../../packages/domain/add_answer"
+      relative: true
+    source: path
+    version: "0.1.0"
   analyzer:
     dependency: transitive
     description:
@@ -25,6 +32,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.10"
+  answer_detail:
+    dependency: "direct main"
+    description:
+      path: "../../packages/domain/answer_detail"
+      relative: true
+    source: path
+    version: "0.1.0"
   args:
     dependency: transitive
     description:
@@ -137,6 +151,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  calendar:
+    dependency: "direct main"
+    description:
+      path: "../../packages/domain/calendar"
+      relative: true
+    source: path
+    version: "0.1.0"
   characters:
     dependency: transitive
     description:
@@ -193,6 +214,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  copilot:
+    dependency: "direct main"
+    description:
+      path: "../../packages/domain/copilot"
+      relative: true
+    source: path
+    version: "0.1.0"
   coverage:
     dependency: transitive
     description:
@@ -217,6 +245,29 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+  date_utl:
+    dependency: "direct main"
+    description:
+      path: "../../packages/utls/date_utl"
+      relative: true
+    source: path
+    version: "0.1.0"
+  dio:
+    dependency: "direct main"
+    description:
+      name: dio
+      sha256: aff32c08f92787a557dd5c0145ac91536481831a01b4648136373cddb0e64f8c
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.9.2"
+  dio_web_adapter:
+    dependency: transitive
+    description:
+      name: dio_web_adapter
+      sha256: "2f9e64323a7c3c7ef69567d5c800424a11f8337b8b228bad02524c9fb3c1f340"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.2"
   eip1559:
     dependency: transitive
     description:
@@ -241,6 +292,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.3"
+  feature_core:
+    dependency: "direct main"
+    description:
+      path: "../../packages/domain/feature_core"
+      relative: true
+    source: path
+    version: "0.1.0"
   ffi:
     dependency: transitive
     description:
@@ -523,10 +581,31 @@ packages:
   lt_annotation:
     dependency: "direct main"
     description:
-      path: "packages/lt_annotation"
+      path: "../../packages/utls/lt_annotation"
       relative: true
     source: path
     version: "0.0.1"
+  lt_network:
+    dependency: "direct main"
+    description:
+      path: "../../packages/core/network"
+      relative: true
+    source: path
+    version: "0.1.0"
+  lt_reflection_service:
+    dependency: "direct main"
+    description:
+      path: "../../packages/service/lt_reflection_service"
+      relative: true
+    source: path
+    version: "0.1.0"
+  lt_uicomponent:
+    dependency: "direct main"
+    description:
+      path: "../../packages/core/lt_uicomponent"
+      relative: true
+    source: path
+    version: "0.1.0"
   matcher:
     dependency: transitive
     description:
@@ -964,6 +1043,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.11"
+  thread:
+    dependency: "direct main"
+    description:
+      path: "../../packages/domain/thread"
+      relative: true
+    source: path
+    version: "0.1.0"
   timing:
     dependency: transitive
     description:
@@ -972,6 +1058,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  today_question:
+    dependency: "direct main"
+    description:
+      path: "../../packages/domain/today_question"
+      relative: true
+    source: path
+    version: "0.1.0"
   typed_data:
     dependency: transitive
     description:
@@ -980,6 +1073,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+  user:
+    dependency: "direct main"
+    description:
+      path: "../../packages/domain/user"
+      relative: true
+    source: path
+    version: "0.1.0"
   uuid:
     dependency: transitive
     description:

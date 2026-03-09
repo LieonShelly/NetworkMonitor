@@ -10,22 +10,57 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # Flutter 核心依赖
   flutter_riverpod: ^3.1.0
   riverpod_annotation: ^4.0.0
   go_router: ^17.0.0
-  intl: ^0.20.2 
+  intl: ^0.20.2
   freezed_annotation: ^3.1.0
-  json_annotation: ^4.8.1      
-  flutter_secure_storage: ^10.0.0
+  json_annotation: ^4.8.1
+  dio: ^5.9.0
+  flutter_svg: ^2.0.9
   cached_network_image: ^3.4.1
+  flutter_secure_storage: ^10.0.0
   scroll_to_index: ^3.0.1
-  lt_annotation:
-    path: '../../utls/lt_annotation'
   flutter_cache_manager: ^3.4.1
   path_provider: ^2.1.5
   web3dart: ^2.7.3
   http: ^1.6.0
-  flutter_svg: ^2.0.9 
+
+  # Core Packages
+  lt_uicomponent:
+    path: ../../packages/core/lt_uicomponent
+  lt_network:
+    path: ../../packages/core/network
+
+  # Service Packages
+  lt_reflection_service:
+    path: ../../packages/service/lt_reflection_service
+
+  # Utility Packages
+  date_utl:
+    path: ../../packages/utls/date_utl
+  lt_annotation:
+    path: ../../packages/utls/lt_annotation
+
+  # Domain Packages
+  add_answer:
+    path: ../../packages/domain/add_answer
+  answer_detail:
+    path: ../../packages/domain/answer_detail
+  calendar:
+    path: ../../packages/domain/calendar
+  copilot:
+    path: ../../packages/domain/copilot
+  feature_core:
+    path: ../../packages/domain/feature_core
+  thread:
+    path: ../../packages/domain/thread
+  today_question:
+    path: ../../packages/domain/today_question
+  user:
+    path: ../../packages/domain/user
+
 
 
 dev_dependencies:

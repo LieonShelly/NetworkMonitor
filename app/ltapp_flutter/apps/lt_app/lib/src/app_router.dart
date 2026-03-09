@@ -1,26 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ltapp_flutter/src/domain/add_answer/add_answer_page.dart';
-import 'package:ltapp_flutter/src/domain/answer_detail/answer_detail_page.dart';
-import 'package:ltapp_flutter/src/domain/calendar/calendar_page.dart';
-import 'package:ltapp_flutter/src/domain/copilot/chat_page.dart';
-import 'package:ltapp_flutter/src/domain/home_view.dart';
-import 'package:ltapp_flutter/src/domain/thread/thread_page.dart';
-import 'package:ltapp_flutter/src/domain/user/user_home.dart';
-import '../../packages/service/dto/calendar_reflection_model.dart';
+import 'package:add_answer/add_answer.dart';
+import 'package:answer_detail/answer_detail.dart';
+import 'package:calendar/calendar.dart';
+import 'package:copilot/copilot.dart';
+import 'home_view.dart';
+import 'package:thread/thread.dart';
+import 'package:user/user.dart';
+import 'package:lt_reflection_service/reflection_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
+import 'package:feature_core/feature_core.dart';
 part 'app_router.g.dart';
-
-class AppRoutePath {
-  static const calendar = "/calendar";
-  static const thread = "/thread";
-  static const insights = "/insights";
-  static const user = "/user";
-  static const answerDetail = "/answer_detail";
-  static const addAnswer = "/add_answer";
-  static const chat = "/chat";
-}
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 @riverpod

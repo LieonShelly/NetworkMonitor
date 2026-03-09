@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'app_tabbar.dart';
+import 'package:feature_core/feature_core.dart';
 import 'package:today_question/today_question.dart';
 
 class HomeView extends StatelessWidget {
