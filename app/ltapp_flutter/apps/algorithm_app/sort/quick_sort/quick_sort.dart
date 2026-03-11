@@ -1,3 +1,6 @@
+// 最优化时间复杂度 O(nlogn) 最差时间复杂度 O(n^2)
+// 最优化时空间杂度 O(logn) 最差空间复杂度 O(n)
+
 void swap(List<int> arr, int low, int high) {
   int temp = arr[low];
   arr[low] = arr[high];
