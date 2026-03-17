@@ -403,3 +403,68 @@ struct ThreadView: View {
         }
     }
 }
+
+
+
+import SwiftUI
+
+
+struct ReadyToPrintView: View {
+    var body: some View {
+        VStack(spacing: .zero) {
+            iconListView
+        }
+    }
+    
+    var iconListView: some View {
+        HStack(spacing: .zero) {
+            HStack(spacing: .zero) {
+                Text("YOUR COINS")
+                    .textStyle(size: 12, fontFamily: .poppinsRegular)
+                
+                Image(.rightPloly)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 12, height: 12)
+                    .padding(.leading, 4)
+                
+            }
+            .padding(.horizontal, 11)
+            .padding(.vertical, 12)
+            .overlay {
+                Rectangle()
+                    .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
+            }
+            .padding(.vertical, 16)
+            .padding(.leading, 16)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach(0 ..< 10) { _ in
+                        Circle()
+                            .fill(Color.random)
+                            .frame(width: 25, height: 25)
+                            .background {
+                                Circle()
+                                    .fill(Color.black)
+                                    .offset(x: 2, y: 2)
+                            }
+                    }
+                }
+                .padding(.vertical, 10)
+            }
+            .padding(.leading, 15)
+            .padding(.trailing, 11)
+            
+        }
+        .overlay(content: {
+            Rectangle()
+                .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
+        })
+        .padding(.horizontal, 16)
+    }
+}
+
+#Preview {
+    ReadyToPrintView()
+}

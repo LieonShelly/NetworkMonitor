@@ -1,3 +1,0 @@
-library copilot;
-
-export 'src/chat_page.dart';
