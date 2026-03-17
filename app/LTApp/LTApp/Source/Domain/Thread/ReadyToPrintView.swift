@@ -9,6 +9,18 @@ import SwiftUI
 import UIComponent
 
 struct ReadyToPrintView: View {
+    enum Constants {
+        static let rpH: CGFloat = 320
+        static let rpPadding: CGFloat = 12 + 20 + 28
+    }
+    
+    @State private var scene: CoinScene = {
+        let scene = CoinScene(size: CGSize(width: UIScreen.main.bounds.width - Constants.rpPadding * 2, height: Constants.rpH))
+        scene.scaleMode = .fill
+        return scene
+    }()
+    @State private var started: Bool = false
+    
     var body: some View {
         VStack(spacing: .zero) {
             iconListView
@@ -78,23 +90,15 @@ struct ReadyToPrintView: View {
         
     }
     
-    
     var rpView: some View {
-        VStack(spacing: .zero) {
-            Image(.invader)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 72, height: 72)
-                .padding(.bottom, 8)
-            
-            Image(.rtp)
-                .resizable()
-                .scaledToFit()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 40)
-                .padding(.horizontal, 14)
+        HStack {
+            if started {
+                iconLoadingView
+            } else {
+                rpIdleView
+            }
         }
-        .frame(height: 320)
+        .frame(height: Constants.rpH)
         .overlay {
             RoundedRectangle(cornerRadius: 16)
                 .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
@@ -105,7 +109,7 @@ struct ReadyToPrintView: View {
             Rectangle()
                 .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
         }
-        .padding(.horizontal, 16 + 20)
+        .padding(.horizontal, 12 + 20)
     }
     
     var startView: some View {
@@ -133,7 +137,9 @@ struct ReadyToPrintView: View {
             .offset(y: -35)
             Spacer()
             Button {
-                
+                let path = Bundle.main.path(forResource: "test_rocket.png", ofType: nil)!
+                scene.dropCoinsBatch(localPaths: [path, path, path,  path, path], count: 5)
+                started = true
             } label: {
                 RoundedRectangle(cornerRadius: 16)
                     .fill(AppColor.color(hex: 0x000000))
@@ -157,10 +163,33 @@ struct ReadyToPrintView: View {
 
         }
         .background {
-            Trapezoid(padding: 16 + 20, direction: .top)
+            Trapezoid(padding: 12 + 20, direction: .top)
                 .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
         }
     }
+    
+    
+    var iconLoadingView: some View {
+        SpriteView(scene: scene, options: [.allowsTransparency, .shouldCullNonVisibleNodes])
+    }
+    
+    var rpIdleView: some View {
+        VStack(spacing: .zero) {
+            Image(.invader)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 72, height: 72)
+                .padding(.bottom, 8)
+            
+            Image(.rtp)
+                .resizable()
+                .scaledToFit()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 40)
+                .padding(.horizontal, 14)
+        }
+    }
+    
 }
 
 struct JoyStickView: View {
@@ -189,67 +218,6 @@ struct JoyStickView: View {
         }
     }
 }
-import SpriteKit
-
-class CoinScene: SKScene {
-    override func didMove(to view: SKView) {
-        let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
-        borderBody.friction = 0.5
-        borderBody.restitution = 0.2
-        self.physicsBody = borderBody
-        self.backgroundColor = .clear
-    }
-
-    func dropCoinsBatch(localPaths: [String], count: Int) {
-        for(index, path) in localPaths.enumerated() {
-            guard let image = UIImage(contentsOfFile: path) else {
-                continue
-            }
-            let texture = SKTexture(image: image)
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 0.4, execute: {
-                self.createSingleCoin(texture: texture)
-            })
-        }
-    }
-
-    private func createSingleCoin(texture: SKTexture) {
-        let coinSize = CGSize(width: 64, height: 64)
-        
-        let radius = coinSize.width * 0.5
-        
-        let cropNode = SKCropNode()
-        
-        let mask = SKShapeNode(circleOfRadius: radius)
-        mask.fillColor = .white
-        mask.strokeColor = .clear
-        cropNode.maskNode = mask
-        
-        let coinImageNode = SKSpriteNode(texture: texture, size: coinSize)
-        coinImageNode.position = .zero
-        cropNode.addChild(coinImageNode)
-        
-        let borderNode = SKShapeNode(circleOfRadius: radius)
-        borderNode.strokeColor = .black
-        borderNode.lineWidth = 4
-        borderNode.fillColor = .clear
-        borderNode.zPosition = 1
-        cropNode.addChild(borderNode)
-        
-        let physicsRadius = radius - 1
-        
-        cropNode.physicsBody = SKPhysicsBody(circleOfRadius: radius)
-        cropNode.physicsBody?.restitution = 0.5 // 弹性
-        cropNode.physicsBody?.friction = 0.3    // 摩擦力
-        cropNode.physicsBody?.allowsRotation = true
-        cropNode.physicsBody?.angularDamping = 0.5
-        
-        let randomX = CGFloat.random(in: radius...(frame.width - radius))
-        cropNode.position = CGPoint(x: randomX, y: frame.height)
-        
-        addChild(cropNode)
-    }
-}
-
 import SwiftUI
 import SpriteKit
 

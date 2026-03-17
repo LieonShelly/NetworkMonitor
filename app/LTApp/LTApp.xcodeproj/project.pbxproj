@@ -119,6 +119,7 @@
 		F81AAB2F2EFA4E6900F1680F /* CalendarGridLines.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */; };
 		F81E12192F694E1000DAD57B /* ReadyToPrintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81E12182F694E1000DAD57B /* ReadyToPrintView.swift */; };
 		F81E121F2F695DDE00DAD57B /* test_rocket.png in Resources */ = {isa = PBXBuildFile; fileRef = F81E121E2F695DDE00DAD57B /* test_rocket.png */; };
+		F81E12212F69618500DAD57B /* CoinScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81E12202F69618500DAD57B /* CoinScene.swift */; };
 		F826AAFC2F31EEC20043B16D /* ThreadCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F826AAFB2F31EEC10043B16D /* ThreadCategoryView.swift */; };
 		F82BB7762F39C0B900F9DB49 /* QuestionOfTodaySettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82BB7752F39C0B800F9DB49 /* QuestionOfTodaySettingItem.swift */; };
 		F82BB7782F39C72C00F9DB49 /* UpdateStrategyUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82BB7772F39C72C00F9DB49 /* UpdateStrategyUseCase.swift */; };
@@ -305,6 +306,7 @@
 		F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridLines.swift; sourceTree = "<group>"; };
 		F81E12182F694E1000DAD57B /* ReadyToPrintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyToPrintView.swift; sourceTree = "<group>"; };
 		F81E121E2F695DDE00DAD57B /* test_rocket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test_rocket.png; sourceTree = "<group>"; };
+		F81E12202F69618500DAD57B /* CoinScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinScene.swift; sourceTree = "<group>"; };
 		F826AAFB2F31EEC10043B16D /* ThreadCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadCategoryView.swift; sourceTree = "<group>"; };
 		F82BB7752F39C0B800F9DB49 /* QuestionOfTodaySettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingItem.swift; sourceTree = "<group>"; };
 		F82BB7772F39C72C00F9DB49 /* UpdateStrategyUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStrategyUseCase.swift; sourceTree = "<group>"; };
@@ -555,6 +557,7 @@
 		7F014EE2F2AB15F051E875F8 /* Thread */ = {
 			isa = PBXGroup;
 			children = (
+				F81E12202F69618500DAD57B /* CoinScene.swift */,
 				F81E121E2F695DDE00DAD57B /* test_rocket.png */,
 				F81E12182F694E1000DAD57B /* ReadyToPrintView.swift */,
 				F826AAFB2F31EEC10043B16D /* ThreadCategoryView.swift */,
@@ -1118,6 +1121,7 @@
 				F82BB7812F39DFED00F9DB49 /* FetchQodStrategyOptionsUseCase.swift in Sources */,
 				FC384158B10A64A8B751A47A /* UserRowItem.swift in Sources */,
 				F86ECAC92EF39F4E007EEA24 /* PostNotificationUseCase.swift in Sources */,
+				F81E12212F69618500DAD57B /* CoinScene.swift in Sources */,
 				4EECAD353BB7BC9928A7AC4B /* ViewExtension.swift in Sources */,
 				F8F2F9302F01069F00936ECD /* CalendarSlashLine.swift in Sources */,
 				E2DA5FFF029D9D4E00EFF8DB /* WelcomeView.swift in Sources */,
