@@ -18,7 +18,10 @@ struct InsightsView: View {
     var body: some View {
         VStack(spacing: .zero) {
             titleView
-            contentView
+            ReadyToPrintView()
+                .padding(.bottom, 112)
+                .padding(.top, 33)
+//            contentView
         }
         .onFirstAppear {
             Task.detached {
