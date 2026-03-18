@@ -18,14 +18,16 @@ struct InsightsView: View {
     var body: some View {
         VStack(spacing: .zero) {
             titleView
-            if let currentIcons = viewModel.currentIcons, !currentIcons.icons.isEmpty {
-                ReadyToPrintView(icons: currentIcons.icons)
+            switch viewModel.state {
+            case .readyToPrint:
+                ReadyToPrintView(viewModel: viewModel)
                     .padding(.bottom, 112)
                     .padding(.top, 33)
-            } else {
+                    .transition(.opacity.animation(.easeInOut))
+            case .reported:
                 contentView
+                    .transition(.opacity.animation(.easeInOut))
             }
-            
         }
         .onFirstAppear {
             Task.detached {
@@ -141,9 +143,30 @@ struct InsightsView: View {
                     .padding(.top, 16)
                     .padding(.bottom, 14)
                 
+                Text(report.reportJson.gem.scene)
+                    .textStyle(size: 13, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 16)
+                
+                Text("The Evidence ")
+                    .textStyle(size: 11, color: AppColor.color(hex: 0x888888), fontFamily: .ibmPlexMonoRegular)
+                    .padding(.leading, 20)
+                
                 Text(report.reportJson.gem.evidence)
                     .textStyle(size: 13, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
                     .padding(.horizontal, 20)
+                    .padding(.top, 4)
+                
+                
+                Text("The insights")
+                    .textStyle(size: 11, color: AppColor.color(hex: 0x888888), fontFamily: .ibmPlexMonoRegular)
+                    .padding(.leading, 20)
+                    .padding(.top, 16)
+                
+                Text(report.reportJson.gem.insight)
+                    .textStyle(size: 13, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 4)
                     .padding(.bottom, 16)
             }
             .overlay(content: {

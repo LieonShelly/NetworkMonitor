@@ -23,7 +23,7 @@ class CoinScene: SKScene {
         view.ignoresSiblingOrder = false
     }
 
-    func dropCoinsBatch(localPaths: [String], count: Int) {
+    func dropCoinsBatch(localPaths: [String], count: Int, onCompleted: (@Sendable () -> Void)? = nil) {
         let textures = localPaths.compactMap { path -> SKTexture? in
             guard let image = UIImage(contentsOfFile: path) else { return nil }
             return SKTexture(image: image)
@@ -31,9 +31,20 @@ class CoinScene: SKScene {
         
         SKTexture.preload(textures) { [weak self] in
             DispatchQueue.main.async {
+                let total = textures.count
+                if total == 0 {
+                    onCompleted?()
+                    return
+                }
                 for (index, texture) in textures.enumerated() {
+                    let isLast = (index == total - 1)
                     DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 0.15) {
                         self?.createSingleCoin(texture: texture)
+                        if isLast {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                onCompleted?()
+                            }
+                        }
                     }
                 }
             }
@@ -75,7 +86,7 @@ class CoinScene: SKScene {
         
         let borderNode = SKShapeNode(circleOfRadius: radius)
         borderNode.strokeColor = .black
-        borderNode.lineWidth = 2
+        borderNode.lineWidth = 3
         borderNode.fillColor = .clear
         borderNode.zPosition = 1
         cropNode.addChild(borderNode)

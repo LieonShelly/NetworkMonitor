@@ -12,20 +12,16 @@ import Kingfisher
 
 struct ReadyToPrintView: View, ImageCacheKeyType {
     enum Constants {
-        static let rpH: CGFloat = 320
         static let rpPadding: CGFloat = 12 + 20 + 28
     }
-    let icons: [WeeklyReportIcon]
+    @StateObject var viewModel: InsightsViewModel
     var processorId: String = "metal.icon.processor.v3_thickness_2"
-    @State private var scene: CoinScene = {
-        let scene = CoinScene(size: CGSize(width: UIScreen.main.bounds.width - Constants.rpPadding * 2, height: Constants.rpH))
-        scene.scaleMode = .fill
-        return scene
-    }()
+    @State private var scene: CoinScene?
     @State private var started: Bool = false
+    @State private var sceneSize: CGSize = .zero
     
-    init(icons: [WeeklyReportIcon]) {
-        self.icons = icons
+    init(viewModel: InsightsViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
@@ -35,9 +31,6 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
             startView
         }
         .defaultBackground()
-        .onFirstAppear {
-            scene.backgroundColor = .clear
-        }
     }
     
     @ViewBuilder
@@ -65,6 +58,7 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
+                    let icons = viewModel.currentIcons?.icons ?? []
                     ForEach(icons, id: \.id) { icon in
                         let url = icon.url
                         Circle()
@@ -104,26 +98,39 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
     }
     
     var rpView: some View {
-        ZStack {
-            iconLoadingView.opacity(started ? 1 : 0)
-            if !started {
-                rpIdleView
+        GeometryReader { geometry in
+            ZStack {
+                if let scene = scene {
+                    iconLoadingView(scene: scene).opacity(started ? 1 : 0)
+                }
+                if !started {
+                    rpIdleView
+                }
             }
-            
+            .animation(.easeInOut, value: started)
+            .overlay {
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
+            }
+            .padding(.vertical, 32)
+            .padding(.horizontal, 28)
+            .overlay {
+                Rectangle()
+                    .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
+            }
+            .padding(.horizontal, 12 + 20)
+            .onFirstAppear {
+                let width = geometry.size.width - Constants.rpPadding * 2
+                let height = geometry.size.height - 64 // 减去 vertical padding
+                sceneSize = CGSize(width: width, height: height)
+                
+                let newScene = CoinScene(size: sceneSize)
+                newScene.scaleMode = .fill
+                newScene.backgroundColor = .clear
+                scene = newScene
+            }
         }
-        .frame(height: Constants.rpH)
-        .animation(.easeInOut, value: started)
-        .overlay {
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
-        }
-        .padding(.vertical, 32)
-        .padding(.horizontal, 28)
-        .overlay {
-            Rectangle()
-                .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
-        }
-        .padding(.horizontal, 12 + 20)
+        .frame(maxHeight: .infinity)
     }
     
     var startView: some View {
@@ -151,9 +158,14 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
             .offset(y: -35)
             Spacer()
             Button {
-               let paths = icons.map { cacheKey($0.url)}
+                guard let scene = scene, let icons = viewModel.currentIcons?.icons else { return }
+                let paths = icons.map { cacheKey($0.url)}
                     .map { KingfisherManager.shared.cache.cachePath(forKey: $0, processorIdentifier: processorId) }
-                scene.dropCoinsBatch(localPaths: paths , count: paths.count)
+                scene.dropCoinsBatch(localPaths: paths , count: paths.count) {
+                    Task {
+                        try? await viewModel.generateReport()
+                    }
+                }
                 started = true
             } label: {
                 RoundedRectangle(cornerRadius: 16)
@@ -184,7 +196,7 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
     }
     
     
-    var iconLoadingView: some View {
+    func iconLoadingView(scene: CoinScene) -> some View {
         SpriteView(scene: scene, options: [.allowsTransparency, .shouldCullNonVisibleNodes])
     }
     
@@ -205,31 +217,4 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
         }
     }
     
-}
-
-struct JoyStickView: View {
-    var body: some View {
-        VStack(spacing: .zero) {
-           Circle()
-                .fill(AppColor.backgroundPage)
-                .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
-                .frame(width: 48, height: 48)
-                .zIndex(11)
-            
-            
-            Image(.roundRect)
-                .resizable()
-                .scaledToFit()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 8, height: 64)
-                .zIndex(10)
-            
-            Image(.rpBtn)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 48, height: 30)
-                .offset(y: -5)
-            
-        }
-    }
 }

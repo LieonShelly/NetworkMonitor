@@ -122,6 +122,7 @@
 		F818A3C12F6A88EB00C475E5 /* FetchWeeklyReportsListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F818A3C02F6A88EB00C475E5 /* FetchWeeklyReportsListUseCase.swift */; };
 		F818A3C32F6A88F900C475E5 /* WeeklyReportsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F818A3C22F6A88F900C475E5 /* WeeklyReportsList.swift */; };
 		F818A3C52F6A890700C475E5 /* WeeklyReportsListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F818A3C42F6A890700C475E5 /* WeeklyReportsListDTO.swift */; };
+		F818A3C72F6AA60F00C475E5 /* JoyStickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F818A3C62F6AA60F00C475E5 /* JoyStickView.swift */; };
 		F81AAB2F2EFA4E6900F1680F /* CalendarGridLines.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */; };
 		F81E12192F694E1000DAD57B /* ReadyToPrintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81E12182F694E1000DAD57B /* ReadyToPrintView.swift */; };
 		F81E121F2F695DDE00DAD57B /* test_rocket.png in Resources */ = {isa = PBXBuildFile; fileRef = F81E121E2F695DDE00DAD57B /* test_rocket.png */; };
@@ -314,6 +315,7 @@
 		F818A3C02F6A88EB00C475E5 /* FetchWeeklyReportsListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchWeeklyReportsListUseCase.swift; sourceTree = "<group>"; };
 		F818A3C22F6A88F900C475E5 /* WeeklyReportsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReportsList.swift; sourceTree = "<group>"; };
 		F818A3C42F6A890700C475E5 /* WeeklyReportsListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReportsListDTO.swift; sourceTree = "<group>"; };
+		F818A3C62F6AA60F00C475E5 /* JoyStickView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoyStickView.swift; sourceTree = "<group>"; };
 		F819405F06FE6217721A71E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridLines.swift; sourceTree = "<group>"; };
 		F81E12182F694E1000DAD57B /* ReadyToPrintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyToPrintView.swift; sourceTree = "<group>"; };
@@ -434,6 +436,8 @@
 		3A7D36EC338FF4B7178AF189 /* Insights */ = {
 			isa = PBXGroup;
 			children = (
+				F818A3C62F6AA60F00C475E5 /* JoyStickView.swift */,
+				F81E12182F694E1000DAD57B /* ReadyToPrintView.swift */,
 				F804C45E2F57E57200DCC904 /* InsightsViewModel.swift */,
 				E01D237BCB9DFB43B17A86FE /* InsightsView.swift */,
 			);
@@ -571,7 +575,6 @@
 			children = (
 				F81E12202F69618500DAD57B /* CoinScene.swift */,
 				F81E121E2F695DDE00DAD57B /* test_rocket.png */,
-				F81E12182F694E1000DAD57B /* ReadyToPrintView.swift */,
 				F826AAFB2F31EEC10043B16D /* ThreadCategoryView.swift */,
 				F85F56852F1BC9890066056E /* IconView.swift */,
 				717ADB6461381216CE8A7111 /* ThreadView.swift */,
@@ -1039,6 +1042,7 @@
 				3D8214F0F78A07CAEBD7D865 /* CategoryDTO.swift in Sources */,
 				B4383FD8FDC52AA006BA4FE8 /* Coordinator.swift in Sources */,
 				961DF519B9273BCA5ADFB8EE /* DateExtension.swift in Sources */,
+				F818A3C72F6AA60F00C475E5 /* JoyStickView.swift in Sources */,
 				F826AAFC2F31EEC20043B16D /* ThreadCategoryView.swift in Sources */,
 				F86ECACF2EF3B5B4007EEA24 /* NotificationHandler.swift in Sources */,
 				251D83036C1C4D45618B91DF /* DayReflectionsDTO.swift in Sources */,
