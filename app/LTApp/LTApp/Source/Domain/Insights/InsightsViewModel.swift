@@ -8,16 +8,16 @@
 
 import SwiftUI
 
-@Observable
-class InsightsViewModel: @unchecked Sendable {
+final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     let dataService: any AppDataWithAuthorizationServiceful
-   @MainActor var weeklyReport: WeeklyReport?
+    @MainActor @Published var weeklyReport: WeeklyReport?
+    
     init(dataService: any AppDataWithAuthorizationServiceful) {
         self.dataService = dataService
     }
     
     func fetchData() async throws {
-       let report = try await dataService.fetchWeeklyReportUseCase.execute(week: nil)
+        let report = try await dataService.fetchWeeklyReportUseCase.execute(week: nil)
         await MainActor.run {
             self.weeklyReport = report
         }

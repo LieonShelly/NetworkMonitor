@@ -9,10 +9,10 @@ import SwiftUI
 import UIComponent
 
 struct InsightsView: View {
-    @State var viewModel: InsightsViewModel
+    @StateObject var viewModel: InsightsViewModel
     
     init(viewModel: InsightsViewModel) {
-        self._viewModel = State(wrappedValue: viewModel)
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
@@ -137,7 +137,7 @@ struct InsightsView: View {
                     .padding(.top, 16)
                     .padding(.bottom, 14)
                 
-                Text(report.reportJson.momentToReveal)
+                Text(report.reportJson.gem.evidence)
                     .textStyle(size: 13, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
                     .padding(.horizontal, 20)
                     .padding(.bottom, 16)

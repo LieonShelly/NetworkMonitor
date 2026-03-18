@@ -14,9 +14,17 @@ public struct WeeklyReport: Sendable {
     let icons: [IconData]
 }
 
+
+public struct GemContent: Sendable {
+    let scene: String
+    let evidence: String
+    let insight: String
+}
+
+
 public struct ReportContent: Sendable {
     let summary: String
-    let momentToReveal: String
+    let gem: GemContent
     let analyticalOverview: [AnalyticalSection]
 }
 

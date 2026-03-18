@@ -26,7 +26,7 @@ public struct WeeklyReportDTO: Decodable {
 
 public struct ReportContentDTO: Decodable {
     let summary: String
-    let momentToReveal: String
+    let gem: GemContentDTO
     let analyticalOverview: [AnalyticalSectionDTO]
 }
 
@@ -56,7 +56,7 @@ extension ReportContentDTO {
     func toDomain() -> ReportContent {
         return ReportContent(
             summary: summary,
-            momentToReveal: momentToReveal,
+            gem: gem.toDomain(),
             analyticalOverview: analyticalOverview.map { $0.toDomain() }
         )
     }
@@ -67,6 +67,22 @@ extension AnalyticalSectionDTO {
         return AnalyticalSection(
             title: title,
             content: content
+        )
+    }
+}
+
+
+
+public struct GemContentDTO: Decodable {
+    let scene: String
+    let evidence: String
+    let insight: String
+    
+    func toDomain() -> GemContent {
+        return GemContent(
+            scene: scene,
+            evidence: evidence,
+            insight: insight
         )
     }
 }
