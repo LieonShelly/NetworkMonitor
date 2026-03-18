@@ -35,6 +35,9 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
             startView
         }
         .defaultBackground()
+        .onFirstAppear {
+            scene.backgroundColor = .clear
+        }
     }
     
     @ViewBuilder
@@ -101,14 +104,15 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
     }
     
     var rpView: some View {
-        HStack {
-            if started {
-                iconLoadingView
-            } else {
+        ZStack {
+            iconLoadingView.opacity(started ? 1 : 0)
+            if !started {
                 rpIdleView
             }
+            
         }
         .frame(height: Constants.rpH)
+        .animation(.easeInOut, value: started)
         .overlay {
             RoundedRectangle(cornerRadius: 16)
                 .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
