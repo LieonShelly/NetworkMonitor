@@ -41,7 +41,7 @@ class CoinScene: SKScene {
                     DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 0.15) {
                         self?.createSingleCoin(texture: texture)
                         if isLast {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                 onCompleted?()
                             }
                         }
