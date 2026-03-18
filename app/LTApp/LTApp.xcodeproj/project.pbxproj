@@ -116,6 +116,9 @@
 		F804C45D2F57DFA700DCC904 /* WeeklyReportDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804C45C2F57DFA700DCC904 /* WeeklyReportDTO.swift */; };
 		F804C45F2F57E57200DCC904 /* InsightsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804C45E2F57E57200DCC904 /* InsightsViewModel.swift */; };
 		F80E7DA72EDED0E400CBC678 /* AnswerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80E7DA62EDED0E300CBC678 /* AnswerDetailView.swift */; };
+		F818A3BB2F6A803800C475E5 /* WeeklyReportCurrentIconsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F818A3BA2F6A803800C475E5 /* WeeklyReportCurrentIconsDTO.swift */; };
+		F818A3BD2F6A805500C475E5 /* WeeklyReportCurrentIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F818A3BC2F6A805500C475E5 /* WeeklyReportCurrentIcons.swift */; };
+		F818A3BF2F6A806600C475E5 /* FetchWeeklyReportCurrentIconsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F818A3BE2F6A806600C475E5 /* FetchWeeklyReportCurrentIconsUseCase.swift */; };
 		F81AAB2F2EFA4E6900F1680F /* CalendarGridLines.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */; };
 		F81E12192F694E1000DAD57B /* ReadyToPrintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81E12182F694E1000DAD57B /* ReadyToPrintView.swift */; };
 		F81E121F2F695DDE00DAD57B /* test_rocket.png in Resources */ = {isa = PBXBuildFile; fileRef = F81E121E2F695DDE00DAD57B /* test_rocket.png */; };
@@ -302,6 +305,9 @@
 		F804C45C2F57DFA700DCC904 /* WeeklyReportDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReportDTO.swift; sourceTree = "<group>"; };
 		F804C45E2F57E57200DCC904 /* InsightsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsViewModel.swift; sourceTree = "<group>"; };
 		F80E7DA62EDED0E300CBC678 /* AnswerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerDetailView.swift; sourceTree = "<group>"; };
+		F818A3BA2F6A803800C475E5 /* WeeklyReportCurrentIconsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReportCurrentIconsDTO.swift; sourceTree = "<group>"; };
+		F818A3BC2F6A805500C475E5 /* WeeklyReportCurrentIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReportCurrentIcons.swift; sourceTree = "<group>"; };
+		F818A3BE2F6A806600C475E5 /* FetchWeeklyReportCurrentIconsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchWeeklyReportCurrentIconsUseCase.swift; sourceTree = "<group>"; };
 		F819405F06FE6217721A71E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGridLines.swift; sourceTree = "<group>"; };
 		F81E12182F694E1000DAD57B /* ReadyToPrintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyToPrintView.swift; sourceTree = "<group>"; };
@@ -681,6 +687,7 @@
 		CABF9307229AB1227582DD7E /* DTO */ = {
 			isa = PBXGroup;
 			children = (
+				F818A3BA2F6A803800C475E5 /* WeeklyReportCurrentIconsDTO.swift */,
 				F804C45C2F57DFA700DCC904 /* WeeklyReportDTO.swift */,
 				F8DF26632F34994200E91FFF /* UserInfoDTO.swift */,
 				DD1F88B0511D44095E2B4950 /* AnswerDTO.swift */,
@@ -821,6 +828,7 @@
 			isa = PBXGroup;
 			children = (
 				F804C4502F57DF7B00DCC904 /* WeeklyReport.swift */,
+				F818A3BC2F6A805500C475E5 /* WeeklyReportCurrentIcons.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -844,6 +852,7 @@
 		F804C4572F57DF7B00DCC904 /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
+				F818A3BE2F6A806600C475E5 /* FetchWeeklyReportCurrentIconsUseCase.swift */,
 				F804C4562F57DF7B00DCC904 /* FetchWeeklyReportUseCase.swift */,
 			);
 			path = UseCase;
@@ -991,6 +1000,7 @@
 				527AE96C0AAF06A8BD53EA7B /* AppDataWithAuthorizationService.swift in Sources */,
 				B94E852EB4C83A226D8F2BC9 /* AppHomeRootView.swift in Sources */,
 				F8C266582EF2973F0000F5D6 /* NotificationViewModel.swift in Sources */,
+				F818A3BD2F6A805500C475E5 /* WeeklyReportCurrentIcons.swift in Sources */,
 				F804C45D2F57DFA700DCC904 /* WeeklyReportDTO.swift in Sources */,
 				F82BB77F2F39D73C00F9DB49 /* SVGIconProcessor.swift in Sources */,
 				78DF79A388F79FC0EE57251D /* AppHomeRootViewModel.swift in Sources */,
@@ -1108,6 +1118,7 @@
 				6794C5D9105547EACB9FA0A8 /* User.swift in Sources */,
 				F8DF26662F349B5100E91FFF /* UserFlowRepository.swift in Sources */,
 				F8D5A80C2F2B55BB003D2D33 /* AppVariant.swift in Sources */,
+				F818A3BF2F6A806600C475E5 /* FetchWeeklyReportCurrentIconsUseCase.swift in Sources */,
 				F8DF26642F34994200E91FFF /* UserInfoDTO.swift in Sources */,
 				1E9FEF639D7E9255FC28548A /* LoginInfoDTO.swift in Sources */,
 				F8A0C81E2F2B50C7005D231D /* LTAppFeatureConfig.swift in Sources */,
@@ -1118,6 +1129,7 @@
 				D5F6161D355BD120DEF44CD1 /* UserHomeView.swift in Sources */,
 				FF7C7736C42D858DEA6687ED /* UserManagementServiceful.swift in Sources */,
 				5A9B569CECC17045B80790DD /* UserRow.swift in Sources */,
+				F818A3BB2F6A803800C475E5 /* WeeklyReportCurrentIconsDTO.swift in Sources */,
 				F82BB7812F39DFED00F9DB49 /* FetchQodStrategyOptionsUseCase.swift in Sources */,
 				FC384158B10A64A8B751A47A /* UserRowItem.swift in Sources */,
 				F86ECAC92EF39F4E007EEA24 /* PostNotificationUseCase.swift in Sources */,

@@ -7,19 +7,22 @@ import LTNetwork
 
 enum ReportRequest: Request, @unchecked Sendable {
     case weeklyReport(week: String?)
+    case weeklyReportCurrentIcons
     
     var endPoint: any EndPoint {
         var path: String = "/api"
         switch self {
         case .weeklyReport:
             path += "/weekly-report"
+        case .weeklyReportCurrentIcons:
+            path += "/weekly-report/current"
         }
         return DefaultEndPoint.baseURL(path: path)
     }
     
     var method: HttpMethod {
         switch self {
-        case .weeklyReport:
+        case .weeklyReport, .weeklyReportCurrentIcons:
             return .get
         }
     }
@@ -30,6 +33,8 @@ enum ReportRequest: Request, @unchecked Sendable {
             if let week {
                 return .urlEncoding([("week", week)])
             }
+            return .empty
+        case .weeklyReportCurrentIcons:
             return .empty
         }
     }
