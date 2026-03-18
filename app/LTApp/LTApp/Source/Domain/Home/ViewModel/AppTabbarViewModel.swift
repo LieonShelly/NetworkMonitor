@@ -64,7 +64,6 @@ class AppTabbarViewModel: ObservableObject {
     }
     
     func updateSelectedIndex(_ index: Int) {
-        print("updateOpacity - selectedIndex - final:\(index)")
         guard index < items.count else { return }
         selectedIndex = index
         let item = items[selectedIndex]

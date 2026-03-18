@@ -69,13 +69,15 @@ struct DefaultOriginalIconImageView: View {
 
 struct ThumbnailIconImageView<Placeholder: View>: View, ImageCacheKeyType {
     let url: String
+    var thickness: Int = 2
+    var processorIdentifier: String = "metal.icon.processor.v3_thickness_2"
     var renderMode: Image.TemplateRenderingMode?
     @ViewBuilder let placeholder:  () -> Placeholder
     
     var body: some View {
         KFImage(source: imageResource.map { .network($0) })
             .cacheOriginalImage()
-            .setProcessor(MetalIconProcessor(thickness: 2))
+            .setProcessor(MetalIconProcessor(thickness: thickness, identifier: processorIdentifier))
             .serialize(by: FormatIndicatedCacheSerializer.png)
             .renderingMode(renderMode)
             .cacheMemoryOnly(false)

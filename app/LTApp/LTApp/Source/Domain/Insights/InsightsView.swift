@@ -18,10 +18,14 @@ struct InsightsView: View {
     var body: some View {
         VStack(spacing: .zero) {
             titleView
-            ReadyToPrintView()
-                .padding(.bottom, 112)
-                .padding(.top, 33)
-//            contentView
+            if let currentIcons = viewModel.currentIcons, !currentIcons.icons.isEmpty {
+                ReadyToPrintView(icons: currentIcons.icons)
+                    .padding(.bottom, 112)
+                    .padding(.top, 33)
+            } else {
+                contentView
+            }
+            
         }
         .onFirstAppear {
             Task.detached {

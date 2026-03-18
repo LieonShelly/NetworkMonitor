@@ -13,9 +13,9 @@ struct MetalIconProcessor: ImageProcessor {
     var identifier = "com.metal.icon.processor.v2"
     let thickness: Int
     
-    init(thickness: Int = 1) {
+    init(thickness: Int = 1, identifier: String? = nil) {
         self.thickness = thickness
-        self.identifier = "com.metal.icon.processor.v3_thickness_\(thickness)"
+        self.identifier = identifier ?? "com.metal.icon.processor.v3_thickness_\(thickness)"
     }
     
     func process(item: ImageProcessItem, options: KingfisherParsedOptionsInfo) -> KFCrossPlatformImage? {

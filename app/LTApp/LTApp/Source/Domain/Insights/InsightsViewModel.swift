@@ -11,6 +11,7 @@ import SwiftUI
 final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     let dataService: any AppDataWithAuthorizationServiceful
     @MainActor @Published var weeklyReport: WeeklyReport?
+    @MainActor @Published var currentIcons: WeeklyReportCurrentIcons?
     
     init(dataService: any AppDataWithAuthorizationServiceful) {
         self.dataService = dataService
@@ -18,8 +19,10 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     
     func fetchData() async throws {
         let report = try await dataService.fetchWeeklyReportUseCase.execute(week: nil)
+        let currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
         await MainActor.run {
             self.weeklyReport = report
+            self.currentIcons = currentIcons
         }
     }
     
