@@ -56,15 +56,15 @@ struct AppleIDSignInView: View {
                 if let authorizationCodeData = credential.authorizationCode, let code = String(data: authorizationCodeData, encoding: .utf8) {
                     authorizationCode = code
                 }
-//                Task.detached {
-//                    do {
-//                        try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
-//                        await route()
-//                    } catch {
-//                        
-//                    }
-//                   
-//                }
+                Task.detached {
+                    do {
+                        try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
+                        await route()
+                    } catch {
+                        
+                    }
+                   
+                }
             case let .failure(error):
                 print(error)
             }
@@ -73,18 +73,18 @@ struct AppleIDSignInView: View {
         .frame(height: 54)
         .padding(.horizontal, 30)
         .padding(.bottom, 168)
-       .onTapGesture {
-            Task.detached {
-                do {
-                    try await viewModel.login(authorizationCode: "c8fa3d210869a41a8a8988bc2b3127b7c.0.prxxu.iO7weocGaCTxBEkWY27qgw", identityToken: "eyJraWQiOiJZUXJxZE1ENGJxIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmxpdHRsZS50aGluZ3MiLCJleHAiOjE3NzQyNTg0MTcsImlhdCI6MTc3NDE3MjAxNywic3ViIjoiMDAxNzc0LmZiNmI2MWIyOTkyZTQ2ODM4YmVlMzRlNzgxYTZhMTE0LjEwMjEiLCJjX2hhc2giOiJzakQ4OFJyTHZUREZyZ2VzcnlzREZBIiwiZW1haWwiOiJieGJiZGR4eW40QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc19wcml2YXRlX2VtYWlsIjp0cnVlLCJhdXRoX3RpbWUiOjE3NzQxNzIwMTcsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.ESTmxIFaZeG4l3EmTTUyOlUTy7dfYQ75nHvCF2NqnjJw1SdlKPxcH093SCR-7aeZNzHcW_112IdorAoGHkgI0J9_UbKfOwhefWcmpRe_JZADx3gkbpFkQC4RKWnPFgZHD4btT4tIy5HuARcSF5m2S6g5lNYhrEUKti4gNTTzRSJphbSz4WFq8ef_D6RXgSZKj1d4jV7yE5zZ9LuG4qmv6BHr4EmNDRE9pr6UBe6drMTr0-QYEoXaeaCeE5j5e3PSMOgof9TZWpig6LM2Vgpb2h1A2QQk2NJlpG8tw1pUSkkDht3fFb6dYJ8QOceat_IcH9ihFuifE5QEYhAKPJAOGw")
-                    await route()
-                } catch {
-                  await MainActor.run {
-                        showError = true
-                    }
-                }
-            }
-        }
+//       .onTapGesture {
+//            Task.detached {
+//                do {
+//                    try await viewModel.login(authorizationCode: "", identityToken: "")
+//                    await route()
+//                } catch {
+//                  await MainActor.run {
+//                        showError = true
+//                    }
+//                }
+//            }
+//        }
     }
     
     @MainActor
