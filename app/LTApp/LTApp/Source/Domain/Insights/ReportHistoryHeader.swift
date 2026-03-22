@@ -51,10 +51,6 @@ struct ReportHistoryHeader: View {
                 iconList
                 Spacer()
             }
-            .contentShape(.rect)
-            .onTapGesture {
-                viewModel.onTapHistoryHeader()
-            }
         }
         .padding(.horizontal, 16)
         .padding(.top, 16)
@@ -62,11 +58,14 @@ struct ReportHistoryHeader: View {
             RoundedRectangle(cornerRadius: 16)
                 .stroke(AppColor.color(hex: 0x888888), lineWidth: 1)
         }
+        .contentShape(.rect)
+        .onTapGesture {
+            viewModel.onTapHistoryHeader()
+        }
     }
     
     @ViewBuilder
     var iconList: some View {
-        
         let columns: Int = 5
         let columnW: CGFloat = 28
         let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: 10, alignment: .center)}

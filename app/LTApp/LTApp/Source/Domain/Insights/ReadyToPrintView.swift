@@ -269,6 +269,7 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
                 .frame(width: 151, height: 148)
             
             Text("not enough tokens".uppercased())
+                .multilineTextAlignment(.center)
                 .textStyle(size: 36, fontFamily: .poppinsRegular)
                 .padding(.top, 27)
             
