@@ -21,13 +21,35 @@ struct ReportHistoryView: View {
         ScrollView {
             VStack(spacing: .zero) {
                 ReportHistoryHeader(viewModel: viewModel)
-                LazyVStack(spacing: .zero) {
-                    ForEach(viewModel.historys, id: \.id) { history in
-                        ReportHistoryRow(history: history)
-                    }
-                }
+                histroyView
             }
             .padding(.horizontal, 36)
+        }
+        .refreshable {
+            try? await viewModel.fetchData()
+            try? await viewModel.fetchHistory()
+        }
+    }
+    
+    @ViewBuilder
+    var histroyView: some View {
+        HStack {
+            Text("HISTORY")
+                .textStyle(size: 12, fontFamily: .poppinsRegular)
+                .padding(.top, 15)
+                .padding(.bottom, 12)
+            Spacer()
+        }
+        
+        LazyVStack(spacing: 16) {
+            ForEach(viewModel.historys, id: \.id) { history in
+                ReportHistoryRow(history: history)
+                    .onTapGesture {
+                        Task {
+                           try? await viewModel.didTapHistoryItem(history)
+                        }
+                    }
+            }
         }
     }
 }
@@ -46,7 +68,7 @@ struct ReportHistoryRow: View {
             .frame(width: 64, height: 64)
             
             VStack(alignment: .leading, spacing: .zero) {
-                Text("\(history.periodStart) - \(history.periodEnd)")
+                Text("\(history.periodStart.yyyymmdd) - \(history.periodEnd.yyyymmdd)")
                     .textStyle(size: 11, fontFamily: .ibmPlexMonoRegular)
                 
                 Text("This week, you nurtured a rich balance of deepening friendships, new learning, and quiet personal freedom.")
@@ -82,32 +104,36 @@ struct ReportHistoryHeader: View {
                 .padding(.top, 4)
             
             Spacer()
-            HStack(alignment: .top, spacing: .zero) {
-                HStack(spacing: .zero) {
-                    Text("YOUR COINS")
-                        .textStyle(size: 9, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
-                        .lineLimit(1)
+            VStack (alignment: .leading, spacing: .zero) {
+                HStack(alignment: .top, spacing: .zero) {
+                    HStack(spacing: .zero) {
+                        Text("YOUR COINS")
+                            .textStyle(size: 9, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
+                            .lineLimit(1)
+                        
+                        Image(.rightPloly)
+                            .renderingMode(.template)
+                            .resizable()
+                            .foregroundStyle(AppColor.color(hex: 0xffffff))
+                            .scaledToFit()
+                            .frame(width: 12, height: 12)
+                            .rotationEffect(.degrees(90))
+                            .padding(.leading, 4)
+                        
+                    }
+                    .padding(8)
+                    .background(AppColor.color(hex: 0x000000))
+                    .frame(minWidth: 80)
                     
-                    Image(.rightPloly)
-                        .renderingMode(.template)
-                        .resizable()
-                        .foregroundStyle(AppColor.color(hex: 0xffffff))
-                        .scaledToFit()
-                        .frame(width: 12, height: 12)
-                        .rotationEffect(.degrees(90))
-                        .padding(.leading, 4)
+                    Spacer()
                     
+                    Text("22 - 28 Feb")
+                        .textStyle(size: 14, fontFamily: .ibmPlexMonoRegular)
                 }
-                .padding(8)
-                .background(AppColor.color(hex: 0x000000))
-                .frame(minWidth: 80)
-                
                 Spacer()
-                
-                Text("22 - 28 Feb")
-                    .textStyle(size: 14, fontFamily: .ibmPlexMonoRegular)
+                iconList
+                Spacer()
             }
-          
         }
         .padding(.horizontal, 16)
         .padding(.top, 16)
@@ -122,7 +148,7 @@ struct ReportHistoryHeader: View {
         
         let columns: Int = 5
         let columnW: CGFloat = 28
-        let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: .zero, alignment: .center)}
+        let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: 10, alignment: .center)}
         let itemH: CGFloat = 28
         let count = viewModel.weeklyIcons.count
         LazyVGrid(columns: columnsG, spacing: 16) {
@@ -135,13 +161,13 @@ struct ReportHistoryHeader: View {
                     Circle()
                         .fill(Color.clear)
                         .stroke(AppColor.color(hex: 0x000000), style: .init(lineWidth: 1, lineCap: .square, lineJoin: .round, miterLimit: 0, dash: [4, 4], dashPhase: .zero))
-                        .frame(width: 28, height: 28)
+                        .frame(width: itemH, height: itemH)
                     
                 case .plus:
                     Circle()
                         .fill(Color.clear)
                         .stroke(AppColor.color(hex: 0x000000), style: .init(lineWidth: 1, lineCap: .square, lineJoin: .round, miterLimit: 0, dash: [4, 4], dashPhase: .zero))
-                        .frame(width: 28, height: 28)
+                        .frame(width: itemH, height: itemH)
                         .overlay {
                             Image(.threadAdd)
                                 .resizable()

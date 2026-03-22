@@ -36,7 +36,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
             let normalCount = self.weeklyIcons.count
             if currentIcons.minAnswersToGenerateReport > self.weeklyIcons.count {
                 self.weeklyIcons.append(.plus)
-               let placeholders = [0 ..< currentIcons.minAnswersToGenerateReport - normalCount - 1 ].map { _ in ConinIconStyle.empty }
+               let placeholders = (0 ..< currentIcons.minAnswersToGenerateReport - normalCount - 1).map { _ in ConinIconStyle.empty }
                 self.weeklyIcons.append(contentsOf: placeholders)
             }
         }
@@ -54,6 +54,15 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
        let list = try await dataService.fetchWeeklyReportsListUseCase.execute(limit: nil, cursor: nil, isRead: nil)
         await MainActor.run {
             self.historys = list.reports
+        }
+    }
+    
+    @MainActor
+    func didTapHistoryItem(_ history: WeeklyReportSummary) async throws {
+        let report = try await dataService.fetchWeeklyReportUseCase.execute(week: history.week)
+        await MainActor.run {
+            self.weeklyReport = report
+            self.state = .reported
         }
     }
     

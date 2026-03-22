@@ -150,6 +150,7 @@
 		F87E9E792F6FA6EE0028D944 /* WeeklyReportReadResultDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E782F6FA6EE0028D944 /* WeeklyReportReadResultDTO.swift */; };
 		F87E9E7B2F6FA7380028D944 /* WeeklyReportReadResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E7A2F6FA7380028D944 /* WeeklyReportReadResult.swift */; };
 		F87E9E7D2F6FC4AD0028D944 /* ReportHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E7C2F6FC4AD0028D944 /* ReportHistoryView.swift */; };
+		F87E9E7F2F6FE0F10028D944 /* ReportedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E7E2F6FE0F10028D944 /* ReportedView.swift */; };
 		F88E5FFE060A4CDAD0021795 /* UniversalResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FF8161A8C18829BAA0967 /* UniversalResponse.swift */; };
 		F8A0C81E2F2B50C7005D231D /* LTAppFeatureConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A0C81D2F2B50C7005D231D /* LTAppFeatureConfig.swift */; };
 		F8A22C4C3D1795B392850452 /* FirstQuestionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5700C32AD3048D4D735EFB /* FirstQuestionViewModel.swift */; };
@@ -345,6 +346,7 @@
 		F87E9E782F6FA6EE0028D944 /* WeeklyReportReadResultDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReportReadResultDTO.swift; sourceTree = "<group>"; };
 		F87E9E7A2F6FA7380028D944 /* WeeklyReportReadResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReportReadResult.swift; sourceTree = "<group>"; };
 		F87E9E7C2F6FC4AD0028D944 /* ReportHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportHistoryView.swift; sourceTree = "<group>"; };
+		F87E9E7E2F6FE0F10028D944 /* ReportedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportedView.swift; sourceTree = "<group>"; };
 		F8A0C81D2F2B50C7005D231D /* LTAppFeatureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTAppFeatureConfig.swift; sourceTree = "<group>"; };
 		F8BE5EC12EE1640B009206C2 /* IconImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImageView.swift; sourceTree = "<group>"; };
 		F8C266512EF285EE0000F5D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -450,6 +452,7 @@
 				F804C45E2F57E57200DCC904 /* InsightsViewModel.swift */,
 				E01D237BCB9DFB43B17A86FE /* InsightsView.swift */,
 				F87E9E7C2F6FC4AD0028D944 /* ReportHistoryView.swift */,
+				F87E9E7E2F6FE0F10028D944 /* ReportedView.swift */,
 			);
 			path = Insights;
 			sourceTree = "<group>";
@@ -1096,6 +1099,7 @@
 				8E67E2C696F8627AFEA79508 /* OnboardingSentenceDTO.swift in Sources */,
 				B4EAAE9C185B0C15B1132251 /* OnboardingView.swift in Sources */,
 				89B942D014F5A83C05318F58 /* OnboardingViewModel.swift in Sources */,
+				F87E9E7F2F6FE0F10028D944 /* ReportedView.swift in Sources */,
 				EAEE0A40DC9D8080566E01AB /* PinQuestionUseCase.swift in Sources */,
 				44B212CA966A91BC3CEA6ECC /* PreHomeContentView.swift in Sources */,
 				D85E2BC7EBA68FECD95EBFF8 /* PreHomeCoordinator.swift in Sources */,
