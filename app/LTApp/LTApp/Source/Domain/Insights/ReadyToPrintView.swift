@@ -207,6 +207,7 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
 
 struct CoinIconView: View {
     let url: String
+    let processorId: String
     
     init(url: String, processorId: String) {
         self.url = url

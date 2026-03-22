@@ -27,11 +27,14 @@ struct InsightsView: View {
             case .reported:
                 contentView
                     .transition(.opacity.animation(.easeInOut))
+            case .history:
+                ReportHistoryView(viewModel: viewModel)
             }
         }
         .onFirstAppear {
             Task.detached {
                 try? await viewModel.fetchData()
+                try? await viewModel.fetchHistory()
             }
         }
     }

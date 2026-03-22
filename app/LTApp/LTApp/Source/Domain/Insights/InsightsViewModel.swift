@@ -12,11 +12,14 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     let dataService: any AppDataWithAuthorizationServiceful
     @MainActor @Published var weeklyReport: WeeklyReport?
     @MainActor @Published var currentIcons: WeeklyReportCurrentIcons?
-    @MainActor @Published var state: UIState = .readyToPrint
+    @MainActor @Published var state: UIState = .history
+    @MainActor @Published var weeklyIcons: [ConinIconStyle] = []
+    @MainActor @Published var historys: [WeeklyReportSummary] = []
     
     enum UIState {
         case readyToPrint
         case reported
+        case history
     }
     
     init(dataService: any AppDataWithAuthorizationServiceful) {
@@ -29,6 +32,13 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         await MainActor.run {
             self.weeklyReport = report
             self.currentIcons = currentIcons
+            self.weeklyIcons = currentIcons.icons.map { .normal($0)}
+            let normalCount = self.weeklyIcons.count
+            if currentIcons.minAnswersToGenerateReport > self.weeklyIcons.count {
+                self.weeklyIcons.append(.plus)
+               let placeholders = [0 ..< currentIcons.minAnswersToGenerateReport - normalCount - 1 ].map { _ in ConinIconStyle.empty }
+                self.weeklyIcons.append(contentsOf: placeholders)
+            }
         }
     }
     
@@ -41,10 +51,20 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     }
     
     func fetchHistory() async throws {
-        
+       let list = try await dataService.fetchWeeklyReportsListUseCase.execute(limit: nil, cursor: nil, isRead: nil)
+        await MainActor.run {
+            self.historys = list.reports
+        }
     }
     
     deinit {
         print("deinit-InsightsViewModel")
     }
+}
+
+
+enum ConinIconStyle {
+    case normal(WeeklyReportIcon)
+    case plus
+    case empty
 }
