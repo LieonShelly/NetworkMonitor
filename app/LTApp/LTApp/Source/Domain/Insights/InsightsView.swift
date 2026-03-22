@@ -17,9 +17,9 @@ struct InsightsView: View {
     
     var body: some View {
         VStack(spacing: .zero) {
-            titleView
             switch viewModel.state {
             case .readyToPrint:
+                titleView
                 ReadyToPrintView(viewModel: viewModel)
                     .padding(.bottom, 112)
                     .padding(.top, 33)
@@ -28,6 +28,7 @@ struct InsightsView: View {
                 ReportedView(viewModel: viewModel)
                     .transition(.opacity.animation(.easeInOut))
             case .history:
+                titleView
                 ReportHistoryView(viewModel: viewModel)
                     .padding(.top, 33)
                     .transition(.opacity.animation(.easeInOut))
