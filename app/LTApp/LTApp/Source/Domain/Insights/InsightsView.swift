@@ -37,12 +37,31 @@ struct InsightsView: View {
     }
     
     var titleView: some View {
-        HStack(spacing: .zero) {
-            Text("AI Insights")
-                .textStyle(size: 33)
+        ZStack(alignment: .trailing) {
+            if viewModel.state != .history {
+                Button {
+                    viewModel.state = .history
+                } label: {
+                    if viewModel.unreadHisotrys.isEmpty {
+                        Image(.folderOpen)
+                            .resizable()
+                            .frame(width: 32, height: 32)
+                            .foregroundStyle(AppColor.color(hex: 0x000000))
+                    } else {
+                        Image(.folderOpenDot)
+                            .resizable()
+                            .frame(width: 32, height: 32)
+                            .foregroundStyle(AppColor.color(hex: 0x000000))
+                    }
+                }
+            }
+            HStack(spacing: .zero) {
+                Spacer()
+                Text("AI Insights")
+                    .textStyle(size: 33)
+                Spacer()
+            }
         }
-        .padding(.vertical, 12)
+        .padding(.horizontal, 24)
     }
-    
-   
 }
