@@ -16,7 +16,10 @@ public struct WeeklyReportReadResultDTO: Decodable {
 
 extension WeeklyReportReadResultDTO {
     func toDomain() -> WeeklyReportReadResult {
-        let readAtDate = readAt != nil ? ISO8601DateFormatter().date(from: readAt!) : nil
+        let readAtDate: Date? = {
+            guard let readAt else { return nil }
+            return AppDateFormatter.iso8601.date(from: readAt)
+        }()
         return WeeklyReportReadResult(
             week: week,
             readAt: readAtDate

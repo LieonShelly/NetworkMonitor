@@ -50,7 +50,10 @@ extension WeeklyReportSummaryDTO {
     func toDomain() -> WeeklyReportSummary {
         let periodStartDate = AppDateFormatter.yyyymmdd.date(from: periodStart) ?? Date()
         let periodEndDate = AppDateFormatter.yyyymmdd.date(from: periodEnd) ?? Date()
-        let readAtDate = readAt != nil ? ISO8601DateFormatter().date(from: readAt!) : nil
+        let readAtDate: Date? = {
+            guard let readAt else { return nil }
+            return AppDateFormatter.iso8601.date(from: readAt)
+        }()
         
         return WeeklyReportSummary(
             id: id,

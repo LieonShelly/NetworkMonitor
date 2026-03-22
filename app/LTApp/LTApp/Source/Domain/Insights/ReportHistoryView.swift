@@ -37,12 +37,14 @@ struct ReportHistoryView: View {
     
     @ViewBuilder
     var histroyView: some View {
-        HStack {
-            Text("unread".uppercased())
-                .textStyle(size: 12, fontFamily: .poppinsRegular)
-                .padding(.top, 15)
-                .padding(.bottom, 12)
-            Spacer()
+        if !viewModel.unreadHisotrys.isEmpty {
+            HStack {
+                Text("unread".uppercased())
+                    .textStyle(size: 12, fontFamily: .poppinsRegular)
+                    .padding(.top, 15)
+                    .padding(.bottom, 12)
+                Spacer()
+            }
         }
         
         LazyVStack(spacing: 16) {
