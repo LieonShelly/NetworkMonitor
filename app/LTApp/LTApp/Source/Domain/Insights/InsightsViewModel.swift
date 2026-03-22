@@ -40,6 +40,10 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         self.state = .reported
     }
     
+    func fetchHistory() async throws {
+        
+    }
+    
     deinit {
         print("deinit-InsightsViewModel")
     }

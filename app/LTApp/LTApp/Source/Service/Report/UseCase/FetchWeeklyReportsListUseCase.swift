@@ -19,3 +19,35 @@ public class FetchWeeklyReportsListUseCase: FetchWeeklyReportsListUseCaseType, @
         try await repository.fetchWeeklyReportsList(limit: limit, cursor: cursor, isRead: isRead)
     }
 }
+
+public protocol FetchReadWeeklyReportsUseCaseType: Sendable {
+    func execute(limit: Int?, cursor: String?) async throws -> WeeklyReportsList
+}
+
+public class FetchReadWeeklyReportsUseCase: FetchReadWeeklyReportsUseCaseType, @unchecked Sendable {
+    private let repository: any ReportRepositoryType
+    
+    public init(repository: any ReportRepositoryType) {
+        self.repository = repository
+    }
+    
+    public func execute(limit: Int?, cursor: String?) async throws -> WeeklyReportsList {
+        try await repository.fetchWeeklyReportsList(limit: limit, cursor: cursor, isRead: true)
+    }
+}
+
+public protocol FetchUnreadWeeklyReportsUseCaseType: Sendable {
+    func execute(limit: Int?, cursor: String?) async throws -> WeeklyReportsList
+}
+
+public class FetchUnreadWeeklyReportsUseCase: FetchUnreadWeeklyReportsUseCaseType, @unchecked Sendable {
+    private let repository: any ReportRepositoryType
+    
+    public init(repository: any ReportRepositoryType) {
+        self.repository = repository
+    }
+    
+    public func execute(limit: Int?, cursor: String?) async throws -> WeeklyReportsList {
+        try await repository.fetchWeeklyReportsList(limit: limit, cursor: cursor, isRead: false)
+    }
+}
