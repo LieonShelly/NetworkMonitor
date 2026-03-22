@@ -10,6 +10,7 @@ public struct WeeklyReportDTO: Decodable {
     let periodStart: String
     let periodEnd: String
     let reflectionCount: Int
+    let readAt: String?
     let reportJson: ReportContentDTO
     let icons: [IconDto]
     
@@ -19,6 +20,7 @@ public struct WeeklyReportDTO: Decodable {
         case periodStart = "period_start"
         case periodEnd = "period_end"
         case reflectionCount = "reflection_count"
+        case readAt = "read_at"
         case reportJson = "report_json"
         case icons
     }
@@ -39,6 +41,7 @@ extension WeeklyReportDTO {
     func toDomain() -> WeeklyReport {
         let periodStartDate = AppDateFormatter.yyyymmdd.date(from: periodStart) ?? Date()
         let periodEndDate = AppDateFormatter.yyyymmdd.date(from: periodEnd) ?? Date()
+        let readAtDate = readAt != nil ? ISO8601DateFormatter().date(from: readAt!) : nil
         
         return WeeklyReport(
             id: id,
@@ -46,6 +49,7 @@ extension WeeklyReportDTO {
             periodStart: periodStartDate,
             periodEnd: periodEndDate,
             reflectionCount: reflectionCount,
+            readAt: readAtDate,
             reportJson: reportJson.toDomain(),
             icons: icons.map { $0.toDomain() }
         )

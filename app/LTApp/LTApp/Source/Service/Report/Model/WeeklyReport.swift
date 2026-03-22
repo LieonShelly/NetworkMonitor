@@ -10,6 +10,7 @@ public struct WeeklyReport: Sendable {
     let periodStart: Date
     let periodEnd: Date
     let reflectionCount: Int
+    let readAt: Date?
     let reportJson: ReportContent
     let icons: [IconData]
 }

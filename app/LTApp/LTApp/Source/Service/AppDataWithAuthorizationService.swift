@@ -29,6 +29,7 @@ public protocol AppDataWithAuthorizationServiceful {
     var fetchWeeklyReportUseCase: any FetchWeeklyReportUseCaseType { get }
     var fetchWeeklyReportCurrentIconsUseCase: any FetchWeeklyReportCurrentIconsUseCaseType { get }
     var fetchWeeklyReportsListUseCase: any FetchWeeklyReportsListUseCaseType { get }
+    var markWeeklyReportReadUseCase: any MarkWeeklyReportReadUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
@@ -143,5 +144,9 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var fetchWeeklyReportsListUseCase: any FetchWeeklyReportsListUseCaseType = {
         return FetchWeeklyReportsListUseCase(repository: reportRepository)
+    }()
+    
+    public lazy var markWeeklyReportReadUseCase: any MarkWeeklyReportReadUseCaseType = {
+        return MarkWeeklyReportReadUseCase(repository: reportRepository)
     }()
 }

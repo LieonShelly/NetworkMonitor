@@ -9,6 +9,7 @@ public protocol ReportRepositoryType {
     func fetchWeeklyReport(week: String?) async throws -> WeeklyReport
     func fetchWeeklyReportCurrentIcons() async throws -> WeeklyReportCurrentIcons
     func fetchWeeklyReportsList(limit: Int?, cursor: String?, isRead: Bool?) async throws -> WeeklyReportsList
+    func markWeeklyReportRead(week: String) async throws -> WeeklyReportReadResult
 }
 
 public final class ReportRepository: ReportRepositoryType {
@@ -36,6 +37,13 @@ public final class ReportRepository: ReportRepositoryType {
         let request = ReportRequest.weeklyReportsList(limit: limit, cursor: cursor, isRead: isRead)
         let response = try await apiClient.sendRequest(request)
         let dto: UniversalResponse<WeeklyReportsListDTO> = try response.parseJson()
+        return dto.data.toDomain()
+    }
+    
+    public func markWeeklyReportRead(week: String) async throws -> WeeklyReportReadResult {
+        let request = ReportRequest.markWeeklyReportRead(week: week)
+        let response = try await apiClient.sendRequest(request)
+        let dto: UniversalResponse<WeeklyReportReadResultDTO> = try response.parseJson()
         return dto.data.toDomain()
     }
 }

@@ -9,6 +9,7 @@ enum ReportRequest: Request, @unchecked Sendable {
     case weeklyReport(week: String?)
     case weeklyReportCurrentIcons
     case weeklyReportsList(limit: Int?, cursor: String?, isRead: Bool?)
+    case markWeeklyReportRead(week: String)
     
     var endPoint: any EndPoint {
         var path: String = "/api"
@@ -19,6 +20,8 @@ enum ReportRequest: Request, @unchecked Sendable {
             path += "/weekly-report/current"
         case .weeklyReportsList:
             path += "/weekly-reports"
+        case .markWeeklyReportRead:
+            path += "/weekly-report/read"
         }
         return DefaultEndPoint.baseURL(path: path)
     }
@@ -27,6 +30,8 @@ enum ReportRequest: Request, @unchecked Sendable {
         switch self {
         case .weeklyReport, .weeklyReportCurrentIcons, .weeklyReportsList:
             return .get
+        case .markWeeklyReportRead:
+            return .post
         }
     }
     
@@ -51,6 +56,8 @@ enum ReportRequest: Request, @unchecked Sendable {
                 params.append(("isRead", isRead ? "true" : "false"))
             }
             return params.isEmpty ? .empty : .urlEncoding(params)
+        case let .markWeeklyReportRead(week):
+            return .json(body: ["week": week], urlParameter: nil)
         }
     }
 }

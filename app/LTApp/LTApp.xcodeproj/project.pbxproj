@@ -146,6 +146,9 @@
 		F86ECACD2EF3B5AA007EEA24 /* NotificationTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86ECACC2EF3B5AA007EEA24 /* NotificationTopic.swift */; };
 		F86ECACF2EF3B5B4007EEA24 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86ECACE2EF3B5B4007EEA24 /* NotificationHandler.swift */; };
 		F875E80B2F1DE7D00050BD23 /* CancellableBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = F875E80A2F1DE7D00050BD23 /* CancellableBox.swift */; };
+		F87E9E772F6FA6DC0028D944 /* MarkWeeklyReportReadUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E762F6FA6DC0028D944 /* MarkWeeklyReportReadUseCase.swift */; };
+		F87E9E792F6FA6EE0028D944 /* WeeklyReportReadResultDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E782F6FA6EE0028D944 /* WeeklyReportReadResultDTO.swift */; };
+		F87E9E7B2F6FA7380028D944 /* WeeklyReportReadResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E7A2F6FA7380028D944 /* WeeklyReportReadResult.swift */; };
 		F88E5FFE060A4CDAD0021795 /* UniversalResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FF8161A8C18829BAA0967 /* UniversalResponse.swift */; };
 		F8A0C81E2F2B50C7005D231D /* LTAppFeatureConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A0C81D2F2B50C7005D231D /* LTAppFeatureConfig.swift */; };
 		F8A22C4C3D1795B392850452 /* FirstQuestionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5700C32AD3048D4D735EFB /* FirstQuestionViewModel.swift */; };
@@ -337,6 +340,9 @@
 		F86ECACC2EF3B5AA007EEA24 /* NotificationTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTopic.swift; sourceTree = "<group>"; };
 		F86ECACE2EF3B5B4007EEA24 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		F875E80A2F1DE7D00050BD23 /* CancellableBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellableBox.swift; sourceTree = "<group>"; };
+		F87E9E762F6FA6DC0028D944 /* MarkWeeklyReportReadUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkWeeklyReportReadUseCase.swift; sourceTree = "<group>"; };
+		F87E9E782F6FA6EE0028D944 /* WeeklyReportReadResultDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReportReadResultDTO.swift; sourceTree = "<group>"; };
+		F87E9E7A2F6FA7380028D944 /* WeeklyReportReadResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReportReadResult.swift; sourceTree = "<group>"; };
 		F8A0C81D2F2B50C7005D231D /* LTAppFeatureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTAppFeatureConfig.swift; sourceTree = "<group>"; };
 		F8BE5EC12EE1640B009206C2 /* IconImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImageView.swift; sourceTree = "<group>"; };
 		F8C266512EF285EE0000F5D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -709,6 +715,7 @@
 				FC3BB1A5F6EF38CD8369837F /* ThreadQuestionDTO.swift */,
 				273FF8161A8C18829BAA0967 /* UniversalResponse.swift */,
 				3E2A303C6121C53C8CCA6C7E /* LoginInfoDTO.swift */,
+				F87E9E782F6FA6EE0028D944 /* WeeklyReportReadResultDTO.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -840,6 +847,7 @@
 				F818A3C22F6A88F900C475E5 /* WeeklyReportsList.swift */,
 				F804C4502F57DF7B00DCC904 /* WeeklyReport.swift */,
 				F818A3BC2F6A805500C475E5 /* WeeklyReportCurrentIcons.swift */,
+				F87E9E7A2F6FA7380028D944 /* WeeklyReportReadResult.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -866,6 +874,7 @@
 				F818A3C02F6A88EB00C475E5 /* FetchWeeklyReportsListUseCase.swift */,
 				F818A3BE2F6A806600C475E5 /* FetchWeeklyReportCurrentIconsUseCase.swift */,
 				F804C4562F57DF7B00DCC904 /* FetchWeeklyReportUseCase.swift */,
+				F87E9E762F6FA6DC0028D944 /* MarkWeeklyReportReadUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -1119,6 +1128,7 @@
 				F82BB7762F39C0B900F9DB49 /* QuestionOfTodaySettingItem.swift in Sources */,
 				F8F122D02F289AA5008DB4AB /* DeleteAnswersUseCase.swift in Sources */,
 				42D99842A51E63130D7CCA07 /* ThreadQuestionDTO.swift in Sources */,
+				F87E9E7B2F6FA7380028D944 /* WeeklyReportReadResult.swift in Sources */,
 				F85859F42EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift in Sources */,
 				F875E80B2F1DE7D00050BD23 /* CancellableBox.swift in Sources */,
 				F84409E72EE32B33004A40B2 /* InnerPageRoutingModifier.swift in Sources */,
@@ -1147,6 +1157,7 @@
 				5A9B569CECC17045B80790DD /* UserRow.swift in Sources */,
 				F818A3BB2F6A803800C475E5 /* WeeklyReportCurrentIconsDTO.swift in Sources */,
 				F82BB7812F39DFED00F9DB49 /* FetchQodStrategyOptionsUseCase.swift in Sources */,
+				F87E9E792F6FA6EE0028D944 /* WeeklyReportReadResultDTO.swift in Sources */,
 				FC384158B10A64A8B751A47A /* UserRowItem.swift in Sources */,
 				F86ECAC92EF39F4E007EEA24 /* PostNotificationUseCase.swift in Sources */,
 				F81E12212F69618500DAD57B /* CoinScene.swift in Sources */,
@@ -1154,6 +1165,7 @@
 				F8F2F9302F01069F00936ECD /* CalendarSlashLine.swift in Sources */,
 				E2DA5FFF029D9D4E00EFF8DB /* WelcomeView.swift in Sources */,
 				92BD92C1E7E99F3A6370EA63 /* WelcomeViewModel.swift in Sources */,
+				F87E9E772F6FA6DC0028D944 /* MarkWeeklyReportReadUseCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
