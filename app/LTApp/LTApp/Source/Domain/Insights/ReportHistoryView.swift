@@ -44,7 +44,7 @@ struct ReportHistoryView: View {
         LazyVStack(spacing: 16) {
             if !viewModel.unreadHisotrys.isEmpty {
                 ForEach(viewModel.unreadHisotrys, id: \.id) { history in
-                    ReportHistoryRow(history: history)
+                    UnreadReportHistoryRow(history: history)
                         .onTapGesture {
                             Task {
                                try? await viewModel.didTapHistoryItem(history)
@@ -92,6 +92,30 @@ struct ReportHistoryRow: View {
             .padding(.leading, 16)
         }
         .padding(.horizontal, 16)
+        .padding(.vertical, 15)
+        .overlay {
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(AppColor.color(hex: 0x888888), lineWidth: 1)
+        }
+    }
+}
+
+struct UnreadReportHistoryRow: View {
+    let history: WeeklyReportSummary
+    
+    var body: some View {
+        
+        VStack(alignment: .center, spacing: 2) {
+            Text("tap to reveal".uppercased())
+                .textStyle(size: 20, fontFamily: .poppinsRegular)
+            
+            Text("\(history.periodStart.yyyymmdd) - \(history.periodEnd.yyyymmdd)")
+                .textStyle(size: 11, fontFamily: .ibmPlexMonoRegular)
+            
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.top, 36)
+        .padding(.bottom, 30)
         .padding(.vertical, 15)
         .overlay {
             RoundedRectangle(cornerRadius: 16)
