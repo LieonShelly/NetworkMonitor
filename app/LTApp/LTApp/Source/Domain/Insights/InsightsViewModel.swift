@@ -43,6 +43,46 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         }
     }
     
+    func fetchCurrentWeekReport() async throws {
+        let report = try await dataService.fetchWeeklyReportUseCase.execute(week: nil)
+        await MainActor.run {
+            self.weeklyReport = report
+        }
+    }
+    
+    func fetchCurrentWeekIcons() async throws {
+        let currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
+        await MainActor.run {
+            self.currentIcons = currentIcons
+            self.weeklyIcons = currentIcons.icons.map { .normal($0)}
+            let normalCount = self.weeklyIcons.count
+            if currentIcons.minAnswersToGenerateReport > self.weeklyIcons.count {
+                self.weeklyIcons.append(.plus)
+               let placeholders = (0 ..< currentIcons.minAnswersToGenerateReport - normalCount - 1).map { _ in ConinIconStyle.empty }
+                self.weeklyIcons.append(contentsOf: placeholders)
+            }
+        }
+    }
+    
+    func fetchHisotryData() async throws {
+        let list = try await dataService.fetchWeeklyReportsListUseCase.execute(limit: nil, cursor: nil, isRead: nil)
+         let unRead = list.reports.filter({ $0.readAt == nil })
+         let read = list.reports.filter({ $0.readAt != nil })
+        let currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
+        await MainActor.run {
+            self.currentIcons = currentIcons
+            self.weeklyIcons = currentIcons.icons.map { .normal($0)}
+            let normalCount = self.weeklyIcons.count
+            if currentIcons.minAnswersToGenerateReport > self.weeklyIcons.count {
+                self.weeklyIcons.append(.plus)
+               let placeholders = (0 ..< currentIcons.minAnswersToGenerateReport - normalCount - 1).map { _ in ConinIconStyle.empty }
+                self.weeklyIcons.append(contentsOf: placeholders)
+            }
+            self.unreadHisotrys = unRead
+            self.readHisotrys = read
+        }
+    }
+    
     @MainActor
     func generateReport() async throws {
         guard weeklyReport == nil else { return self.state = .reported }

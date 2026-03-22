@@ -34,12 +34,6 @@ struct InsightsView: View {
                     .transition(.opacity.animation(.easeInOut))
             }
         }
-        .onFirstAppear {
-            Task.detached {
-                try? await viewModel.fetchData()
-                try? await viewModel.fetchHistory()
-            }
-        }
     }
     
     var titleView: some View {

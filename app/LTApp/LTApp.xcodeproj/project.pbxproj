@@ -151,6 +151,9 @@
 		F87E9E7B2F6FA7380028D944 /* WeeklyReportReadResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E7A2F6FA7380028D944 /* WeeklyReportReadResult.swift */; };
 		F87E9E7D2F6FC4AD0028D944 /* ReportHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E7C2F6FC4AD0028D944 /* ReportHistoryView.swift */; };
 		F87E9E7F2F6FE0F10028D944 /* ReportedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E7E2F6FE0F10028D944 /* ReportedView.swift */; };
+		F87E9E812F6FF3820028D944 /* ReportHistoryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E802F6FF3820028D944 /* ReportHistoryHeader.swift */; };
+		F87E9E832F6FF3920028D944 /* ReportHistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E822F6FF3920028D944 /* ReportHistoryRow.swift */; };
+		F87E9E852F6FF39F0028D944 /* UnreadReportHistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E842F6FF39F0028D944 /* UnreadReportHistoryRow.swift */; };
 		F88E5FFE060A4CDAD0021795 /* UniversalResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FF8161A8C18829BAA0967 /* UniversalResponse.swift */; };
 		F8A0C81E2F2B50C7005D231D /* LTAppFeatureConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A0C81D2F2B50C7005D231D /* LTAppFeatureConfig.swift */; };
 		F8A22C4C3D1795B392850452 /* FirstQuestionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5700C32AD3048D4D735EFB /* FirstQuestionViewModel.swift */; };
@@ -347,6 +350,9 @@
 		F87E9E7A2F6FA7380028D944 /* WeeklyReportReadResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReportReadResult.swift; sourceTree = "<group>"; };
 		F87E9E7C2F6FC4AD0028D944 /* ReportHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportHistoryView.swift; sourceTree = "<group>"; };
 		F87E9E7E2F6FE0F10028D944 /* ReportedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportedView.swift; sourceTree = "<group>"; };
+		F87E9E802F6FF3820028D944 /* ReportHistoryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportHistoryHeader.swift; sourceTree = "<group>"; };
+		F87E9E822F6FF3920028D944 /* ReportHistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportHistoryRow.swift; sourceTree = "<group>"; };
+		F87E9E842F6FF39F0028D944 /* UnreadReportHistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadReportHistoryRow.swift; sourceTree = "<group>"; };
 		F8A0C81D2F2B50C7005D231D /* LTAppFeatureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTAppFeatureConfig.swift; sourceTree = "<group>"; };
 		F8BE5EC12EE1640B009206C2 /* IconImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImageView.swift; sourceTree = "<group>"; };
 		F8C266512EF285EE0000F5D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -446,6 +452,9 @@
 		3A7D36EC338FF4B7178AF189 /* Insights */ = {
 			isa = PBXGroup;
 			children = (
+				F87E9E842F6FF39F0028D944 /* UnreadReportHistoryRow.swift */,
+				F87E9E822F6FF3920028D944 /* ReportHistoryRow.swift */,
+				F87E9E802F6FF3820028D944 /* ReportHistoryHeader.swift */,
 				F81E12202F69618500DAD57B /* CoinScene.swift */,
 				F818A3C62F6AA60F00C475E5 /* JoyStickView.swift */,
 				F81E12182F694E1000DAD57B /* ReadyToPrintView.swift */,
@@ -1039,6 +1048,7 @@
 				A9A0644E8593A152539FDEBE /* AppScrollContentViewModel.swift in Sources */,
 				9BB548E33C85CA305BC4EFAA /* AppTabbar.swift in Sources */,
 				D6553CA92EF7F5086C2D3652 /* AppTabbarItem.swift in Sources */,
+				F87E9E832F6FF3920028D944 /* ReportHistoryRow.swift in Sources */,
 				F86ECACB2EF3A11C007EEA24 /* NotificationFlagUseCase.swift in Sources */,
 				411879C93E870B65D2792153 /* AppTabbarView.swift in Sources */,
 				BE23B8FA23E7357F40A9042B /* AppTabbarViewModel.swift in Sources */,
@@ -1094,6 +1104,7 @@
 				F8FE2C322F20B82200B8A266 /* BaseViewModelType.swift in Sources */,
 				77BA7C884C2D706C5876FFDF /* LoopingStackCardView.swift in Sources */,
 				A53173906931B98B4452965C /* NaviBar.swift in Sources */,
+				F87E9E812F6FF3820028D944 /* ReportHistoryHeader.swift in Sources */,
 				4CD1D65B6A56A9633F0DF5A4 /* OnboardingAccessUseCaseType.swift in Sources */,
 				450860D0307C5827AD8BC4C3 /* OnboardingSentence.swift in Sources */,
 				8E67E2C696F8627AFEA79508 /* OnboardingSentenceDTO.swift in Sources */,
@@ -1155,6 +1166,7 @@
 				F818A3BF2F6A806600C475E5 /* FetchWeeklyReportCurrentIconsUseCase.swift in Sources */,
 				F8DF26642F34994200E91FFF /* UserInfoDTO.swift in Sources */,
 				1E9FEF639D7E9255FC28548A /* LoginInfoDTO.swift in Sources */,
+				F87E9E852F6FF39F0028D944 /* UnreadReportHistoryRow.swift in Sources */,
 				F8A0C81E2F2B50C7005D231D /* LTAppFeatureConfig.swift in Sources */,
 				F804C4582F57DF7B00DCC904 /* FetchWeeklyReportUseCase.swift in Sources */,
 				F804C4592F57DF7B00DCC904 /* WeeklyReport.swift in Sources */,
