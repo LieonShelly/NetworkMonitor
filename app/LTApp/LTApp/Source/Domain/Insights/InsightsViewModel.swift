@@ -14,7 +14,8 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var currentIcons: WeeklyReportCurrentIcons?
     @MainActor @Published var state: UIState = .history
     @MainActor @Published var weeklyIcons: [ConinIconStyle] = []
-    @MainActor @Published var historys: [WeeklyReportSummary] = []
+    @MainActor @Published var unreadHisotrys: [WeeklyReportSummary] = []
+    @MainActor @Published var readHisotrys: [WeeklyReportSummary] = []
     
     enum UIState {
         case readyToPrint
@@ -52,8 +53,11 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     
     func fetchHistory() async throws {
        let list = try await dataService.fetchWeeklyReportsListUseCase.execute(limit: nil, cursor: nil, isRead: nil)
+        let unRead = list.reports.filter({ $0.readAt == nil })
+        let read = list.reports.filter({ $0.readAt != nil })
         await MainActor.run {
-            self.historys = list.reports
+            self.unreadHisotrys = unRead
+            self.readHisotrys = read
         }
     }
     

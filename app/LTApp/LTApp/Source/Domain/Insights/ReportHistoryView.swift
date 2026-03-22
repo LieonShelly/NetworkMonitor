@@ -42,7 +42,21 @@ struct ReportHistoryView: View {
         }
         
         LazyVStack(spacing: 16) {
-            ForEach(viewModel.historys, id: \.id) { history in
+            if !viewModel.unreadHisotrys.isEmpty {
+                ForEach(viewModel.unreadHisotrys, id: \.id) { history in
+                    ReportHistoryRow(history: history)
+                        .onTapGesture {
+                            Task {
+                               try? await viewModel.didTapHistoryItem(history)
+                            }
+                        }
+                }
+            }
+           
+        }
+        
+        LazyVStack(spacing: 16) {
+            ForEach(viewModel.readHisotrys, id: \.id) { history in
                 ReportHistoryRow(history: history)
                     .onTapGesture {
                         Task {
@@ -50,6 +64,7 @@ struct ReportHistoryView: View {
                         }
                     }
             }
+           
         }
     }
 }
