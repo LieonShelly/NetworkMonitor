@@ -226,9 +226,12 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
     }
     
    @ViewBuilder var unreadView: some View {
+       let onRowH: CGFloat = (84.0 + 16 * 2)
+       let towRowH: CGFloat = (84 * 2.0 + 16 * 2 + 12)
         VStack(spacing: .zero) {
-            Text("\(viewModel.unreadHisotrys.count)")
+            Text("\(viewModel.unreadHisotrys.count) UNREAD")
                 .textStyle(size: 12, fontFamily: .poppinsRegular)
+                
             
             ScrollView(showsIndicators: false) {
                 LazyVStack(spacing: 12) {
@@ -243,11 +246,17 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
                             RoundedRectangle(cornerRadius: 16)
                                 .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
                         }
+                        .onTapGesture {
+                            Task {
+                                try await viewModel.didTapHistoryItem(history)
+                            }
+                        }
                     }
                 }
                 .padding(.horizontal, 20)
+                .padding(.vertical, 16)
             }
-            .frame(height: 84 * 2 + 12)
+            .frame(height: viewModel.unreadHisotrys.count >= 2 ? towRowH : onRowH)
         }
     }
     
