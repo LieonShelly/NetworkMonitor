@@ -270,6 +270,7 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
                 .multilineTextAlignment(.center)
                 .textStyle(size: 36, fontFamily: .dsDigital)
                 .padding(.top, 27)
+                .frame(width: 232)
             
         }
     }

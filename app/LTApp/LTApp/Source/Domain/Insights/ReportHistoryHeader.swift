@@ -44,7 +44,7 @@ struct ReportHistoryHeader: View {
                     
                     Spacer()
                     
-                    Text("22 - 28 Feb")
+                    Text(Date().weekRangeDesc) // e.g. 22 - 28 Mar
                         .textStyle(size: 14, fontFamily: .ibmPlexMonoRegular)
                 }
                 Spacer()
@@ -59,11 +59,6 @@ struct ReportHistoryHeader: View {
                 .stroke(AppColor.color(hex: 0x888888), lineWidth: 1)
         }
         .contentShape(.rect)
-        .onFirstAppear(perform: {
-            Task.detached {
-               try? await viewModel.fetchDataTodayQuestions()
-            }
-        })
         .onTapGesture {
             viewModel.onTapHistoryHeader()
         }

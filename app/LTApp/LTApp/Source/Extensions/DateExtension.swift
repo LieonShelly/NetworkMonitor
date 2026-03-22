@@ -86,6 +86,27 @@ extension Date {
         return formatter.string(from: self)
     }
     
+    /// e.g. "22 - 28 Mar"
+    var weekRangeDesc: String {
+        let calendar = AppCalendar.current
+        guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: self) else {
+            return yyyymmdd
+        }
+        let start = weekInterval.start
+        let end = calendar.date(byAdding: .day, value: -1, to: weekInterval.end) ?? weekInterval.end
+        
+        let startDay = calendar.component(.day, from: start)
+        let endDay = calendar.component(.day, from: end)
+        let endMonth = end.monthDesc(isShort: true)
+        
+        if calendar.isDate(start, equalTo: end, toGranularity: .month) {
+            return "\(startDay) - \(endDay) \(endMonth)"
+        } else {
+            let startMonth = start.monthDesc(isShort: true)
+            return "\(startDay) \(startMonth) - \(endDay) \(endMonth)"
+        }
+    }
+    
     func ordinalSuffix(for day: Int) -> String {
         switch day {
         case 1, 21, 31:
