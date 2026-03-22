@@ -59,6 +59,11 @@ struct ReportHistoryHeader: View {
                 .stroke(AppColor.color(hex: 0x888888), lineWidth: 1)
         }
         .contentShape(.rect)
+        .onFirstAppear(perform: {
+            Task.detached {
+               try? await viewModel.fetchDataTodayQuestions()
+            }
+        })
         .onTapGesture {
             viewModel.onTapHistoryHeader()
         }
@@ -94,6 +99,9 @@ struct ReportHistoryHeader: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 16, height: 16)
                                 .foregroundStyle(AppColor.color(hex: 0x000000))
+                        }
+                        .onTapGesture {
+                            viewModel.onTapAdd()
                         }
                 }
             }

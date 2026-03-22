@@ -10,6 +10,7 @@ class AppScrollContentViewModel: ObservableObject {
     @Published var scrollPosition: ScrollPosition = .init(id: 0)
     var didScroll: ((_ progress: CGFloat, _ isToRight: Bool) -> Void)?
     var didEndScroll: ((Int) -> Void)?
+    var goToQoTFlow: (() -> Void)?
     @Published var preProgress: CGFloat = 0
     @Published var isTapping: Bool = false
     let calendarViewModel: CalendarViewModel
@@ -17,11 +18,15 @@ class AppScrollContentViewModel: ObservableObject {
     let userViewModel: UserHomeViewModel
     let insightsViewModel: InsightsViewModel
     
-    init(service: any AppDataWithAuthorizationServiceful) {
+    init(service: any AppDataWithAuthorizationServiceful, ) {
         calendarViewModel = CalendarViewModel(service: service)
         threadViewModel = ThreadViewModel(service: service)
         userViewModel = UserHomeViewModel(dataService: service)
         insightsViewModel = InsightsViewModel(dataService: service)
+    }
+    
+    func configQoTFlow(goToQoTFlow: (() -> Void)? = nil) {
+        insightsViewModel.goToQoTFlow = goToQoTFlow
     }
     
     deinit {

@@ -17,6 +17,8 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var unreadHisotrys: [WeeklyReportSummary] = []
     @MainActor @Published var readHisotrys: [WeeklyReportSummary] = []
     @MainActor @Published var printUIState: ReadyToPrintUIState = .empty
+    var todayQuestions: [Question] = []
+    var goToQoTFlow: (() -> Void)?
     
     enum UIState {
         case readyToPrint
@@ -30,7 +32,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         case empty
     }
     
-    init(dataService: any AppDataWithAuthorizationServiceful) {
+    init(dataService: any AppDataWithAuthorizationServiceful,) {
         self.dataService = dataService
     }
     
@@ -155,9 +157,19 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         }
     }
     
+    func fetchDataTodayQuestions() async throws {
+        let questions = try await dataService.fetchTodayQuestionsUseCase.execute()
+        self.todayQuestions = questions
+    }
+    
     @MainActor
     func onTapHistoryHeader() {
         self.state = .readyToPrint
+    }
+    
+    @MainActor
+    func onTapAdd() {
+        goToQoTFlow?()
     }
     
     deinit {

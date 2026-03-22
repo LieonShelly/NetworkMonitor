@@ -47,6 +47,16 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
         self.notificationHandler = notificationHandler
         contentViewModel = AppScrollContentViewModel(service: service)
         
+        contentViewModel.configQoTFlow {[weak self] in
+            Task {
+                guard let self else { return }
+                guard let questions = try? await service.fetchTodayQuestionsUseCase.execute() else { return }
+                await MainActor.run {
+                    self.pushToAddTodayAnsnwer(questions)
+                }
+            }
+        }
+        
         contentViewModel.didScroll = { [weak self] progress, isToRight in
             guard let self else { return }
             self.tabbarViewModel.updateOpacity(progress, isToRight: isToRight)
