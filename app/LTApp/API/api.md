@@ -53,13 +53,18 @@
         "period_end": "2024-10-27",
         "reflection_count": 9,
         "read_at": null
-        }
+        },
+        "summary": "",
+        "icon": {
+            "id": "cludicon123456789",
+            "url": ""
+            }
     ],
     "pagination": {
         "limit": 20,
         "hasMore": true,
         "nextCursor": "2024-W36"
-    }
+        }
     }
     ```
 - 说明:

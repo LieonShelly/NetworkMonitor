@@ -36,6 +36,6 @@ public struct AnalyticalSection: Sendable {
 }
 
 public struct ReportIcon: Sendable, Identifiable {
-    public let id: String
+    public  let id: String
     let url: String
 }

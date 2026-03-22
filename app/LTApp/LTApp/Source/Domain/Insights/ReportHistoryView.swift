@@ -60,18 +60,14 @@ struct ReportHistoryRow: View {
     
     var body: some View {
         HStack(spacing: .zero) {
-            ThumbnailIconImageView(url: "") {
-                Image(.calendarDripper)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            }
+            DefaultOriginalIconImageView(url: history.icon.url)
             .frame(width: 64, height: 64)
             
             VStack(alignment: .leading, spacing: .zero) {
                 Text("\(history.periodStart.yyyymmdd) - \(history.periodEnd.yyyymmdd)")
                     .textStyle(size: 11, fontFamily: .ibmPlexMonoRegular)
                 
-                Text("This week, you nurtured a rich balance of deepening friendships, new learning, and quiet personal freedom.")
+                Text(history.summary)
                     .lineLimit(3)
                     .textStyle(size: 13, fontFamily: .poppinsRegular)
                     .padding(.top, 4)

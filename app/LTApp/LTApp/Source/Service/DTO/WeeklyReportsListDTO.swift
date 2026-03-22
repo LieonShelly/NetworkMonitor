@@ -16,6 +16,8 @@ public struct WeeklyReportSummaryDTO: Decodable {
     let periodEnd: String
     let reflectionCount: Int
     let readAt: String?
+    let summary: String
+    let icon: ReportIconDTO
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -24,6 +26,8 @@ public struct WeeklyReportSummaryDTO: Decodable {
         case periodEnd = "period_end"
         case reflectionCount = "reflection_count"
         case readAt = "read_at"
+        case summary
+        case icon
     }
 }
 
@@ -54,7 +58,9 @@ extension WeeklyReportSummaryDTO {
             periodStart: periodStartDate,
             periodEnd: periodEndDate,
             reflectionCount: reflectionCount,
-            readAt: readAtDate
+            readAt: readAtDate,
+            summary: summary,
+            icon: icon.toDomain()
         )
     }
 }
@@ -65,6 +71,18 @@ extension PaginationInfoDTO {
             limit: limit,
             hasMore: hasMore,
             nextCursor: nextCursor
+        )
+    }
+}
+
+struct ReportIconDTO: Decodable {
+    let id: String
+    let url: String
+    
+    func toDomain() -> ReportIcon {
+        return ReportIcon(
+            id: id,
+            url: url
         )
     }
 }

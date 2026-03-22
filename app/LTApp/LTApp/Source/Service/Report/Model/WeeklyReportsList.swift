@@ -16,6 +16,8 @@ public struct WeeklyReportSummary: Sendable, Identifiable {
     let periodEnd: Date
     let reflectionCount: Int
     let readAt: Date?
+    let summary: String
+    let icon: ReportIcon
 }
 
 public struct PaginationInfo: Sendable {
