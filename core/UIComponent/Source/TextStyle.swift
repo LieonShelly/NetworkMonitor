@@ -36,6 +36,9 @@ public extension View {
         case .ibmPlexMonoRegular:
             return self.foregroundStyle(color)
                 .font(AppFont.ibmPlexMono(size: size, fontWeight: .regular))
+        case .dsDigital:
+            return self.foregroundStyle(color)
+                .font(AppFont.dsDigtal(size: size, fontWeight: .regular))
         }
     }
 }

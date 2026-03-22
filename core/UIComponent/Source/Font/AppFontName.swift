@@ -21,6 +21,7 @@ public enum AppFontType: String, CaseIterable {
     case sfProBold
     case vividlyRegular
     case ibmPlexMonoRegular
+    case dsDigital
     
     var fileName: String {
         switch self {
@@ -40,6 +41,8 @@ public enum AppFontType: String, CaseIterable {
             "Poppins-MediumItalic"
         case .ibmPlexMonoRegular:
             "IBMPlexMono-Regular"
+        case .dsDigital:
+            "DS-DIGI"
         }
     }
     
@@ -49,6 +52,8 @@ public enum AppFontType: String, CaseIterable {
             return "ttf"
         case .sfProRegular, .sfProBold, .sfProMedium:
             return "OTF"
+        case .dsDigital:
+            return "TTF"
         }
     }
     
@@ -70,6 +75,8 @@ public enum AppFontType: String, CaseIterable {
             "Poppins-MediumItalic"
         case .ibmPlexMonoRegular:
             "IBMPlexMono-Regular"
+        case .dsDigital:
+            "DS-Digital"
         }
     }
 }

@@ -216,13 +216,11 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
                 .frame(width: 72, height: 72)
                 .padding(.bottom, 8)
             
-            Image(.rtp)
-                .resizable()
-                .scaledToFit()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 40)
-                .padding(.horizontal, 14)
+            Text("READY TO PRINT".uppercased())
+                .multilineTextAlignment(.center)
+                .textStyle(size: 40, fontFamily: .dsDigital)
         }
+        .frame(maxWidth: .infinity)
     }
     
    @ViewBuilder var unreadView: some View {
@@ -230,7 +228,7 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
        let towRowH: CGFloat = (84 * 2.0 + 16 * 2 + 12)
         VStack(spacing: .zero) {
             Text("\(viewModel.unreadHisotrys.count) UNREAD")
-                .textStyle(size: 12, fontFamily: .poppinsRegular)
+                .textStyle(size: 24, fontFamily: .dsDigital)
                 
             
             ScrollView(showsIndicators: false) {
@@ -270,7 +268,7 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
             
             Text("not enough tokens".uppercased())
                 .multilineTextAlignment(.center)
-                .textStyle(size: 36, fontFamily: .poppinsRegular)
+                .textStyle(size: 36, fontFamily: .dsDigital)
                 .padding(.top, 27)
             
         }

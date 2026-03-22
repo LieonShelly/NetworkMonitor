@@ -6,6 +6,19 @@ import SwiftUI
 
 public class AppFont {
     
+    public static func dsDigtal(size: CGFloat, fontWeight: AppFontWeight = .regular) -> Font {
+        switch fontWeight {
+        case .regular:
+            return Font.custom(AppFontType.dsDigital.fontName, size: size)
+        case .medium, .bold:
+            return Font.custom(AppFontType.feltTipSeniorRegular.fontName, size: size)
+        case .heavy:
+            return Font.custom(AppFontType.feltTipSeniorRegular.fontName, size: size)
+        case .mediumItalic:
+            return Font.custom(AppFontType.poppinsMediumItalic.fontName, size: size)
+        }
+    }
+    
     public static func feltTipSenior(size: CGFloat, fontWeight: AppFontWeight = .regular) -> Font {
         switch fontWeight {
         case .regular:
