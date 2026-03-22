@@ -31,6 +31,9 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
             startView
         }
         .defaultBackground()
+        .task {
+            try? await viewModel.fetchReadyToPrintData()
+        }
     }
     
     @ViewBuilder
@@ -58,10 +61,22 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
-                    let icons = viewModel.currentIcons?.icons ?? []
-                    ForEach(icons, id: \.id) { icon in
-                        let url = icon.url
-                      CoinIconView(url: url, processorId: processorId)
+                    let icons = viewModel.weeklyIcons
+                    ForEach(0 ..< icons.count, id: \.self) { index in
+                        let icon = icons[index]
+                        switch icon {
+                        case .normal(let iconData):
+                            let url = iconData.url
+                          CoinIconView(url: url, processorId: processorId)
+                        case .empty:
+                            Circle()
+                                .fill(Color.clear)
+                                .stroke(AppColor.color(hex: 0x000000), style: .init(lineWidth: 1, lineCap: .square, lineJoin: .round, miterLimit: 0, dash: [4, 4], dashPhase: .zero))
+                                .frame(width: 28, height: 28)
+                        case .plus:
+                            EmptyView()
+                        }
+                      
                     }
                 }
                 .padding(.vertical, 10)
@@ -90,7 +105,14 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
                     iconLoadingView(scene: scene).opacity(started ? 1 : 0)
                 }
                 if !started {
-                    rpIdleView
+                    switch viewModel.printUIState {
+                    case .readyToPrint:
+                        rpIdleView
+                    case .unread:
+                        unreadView
+                    case .empty:
+                        emptyView
+                    }
                 }
             }
             .animation(.easeInOut, value: started)
@@ -203,32 +225,44 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
         }
     }
     
-}
-
-struct CoinIconView: View {
-    let url: String
-    let processorId: String
-    
-    init(url: String, processorId: String) {
-        self.url = url
-        self.processorId = processorId
+   @ViewBuilder var unreadView: some View {
+        VStack(spacing: .zero) {
+            Text("\(viewModel.unreadHisotrys.count)")
+                .textStyle(size: 12, fontFamily: .poppinsRegular)
+            
+            ScrollView(showsIndicators: false) {
+                LazyVStack(spacing: 12) {
+                    ForEach(viewModel.unreadHisotrys, id: \.id) { history in
+                        HStack {
+                            Text("\(history.periodStart.yyyymmdd) - \(history.periodEnd.yyyymmdd)")
+                                .textStyle(size: 13, fontFamily: .ibmPlexMonoRegular)
+                        }
+                        .frame(height: 84)
+                        .frame(maxWidth: .infinity)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
+                        }
+                    }
+                }
+                .padding(.horizontal, 20)
+            }
+            .frame(height: 84 * 2 + 12)
+        }
     }
     
-    var body: some View {
-        Circle()
-            .fill(AppColor.backgroundPage)
-            .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
-            .frame(width: 28, height: 28)
-            .overlay(content: {
-                ThumbnailIconImageView(url: url, processorIdentifier: processorId) {
-                    
-                }
-                .frame(width: 18, height: 18)
-            })
-            .background {
-                Circle()
-                    .fill(Color.black)
-                    .offset(x: 2, y: 2)
-            }
+    
+    var emptyView: some View {
+        VStack(spacing: .zero) {
+            Image(.emptyFace)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 151, height: 148)
+            
+            Text("not enough tokens".uppercased())
+                .textStyle(size: 36, fontFamily: .poppinsRegular)
+                .padding(.top, 27)
+            
+        }
     }
 }

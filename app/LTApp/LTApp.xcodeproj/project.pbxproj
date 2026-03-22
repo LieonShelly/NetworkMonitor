@@ -154,6 +154,7 @@
 		F87E9E812F6FF3820028D944 /* ReportHistoryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E802F6FF3820028D944 /* ReportHistoryHeader.swift */; };
 		F87E9E832F6FF3920028D944 /* ReportHistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E822F6FF3920028D944 /* ReportHistoryRow.swift */; };
 		F87E9E852F6FF39F0028D944 /* UnreadReportHistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E842F6FF39F0028D944 /* UnreadReportHistoryRow.swift */; };
+		F87E9E872F70268B0028D944 /* CoinIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E862F70268B0028D944 /* CoinIconView.swift */; };
 		F88E5FFE060A4CDAD0021795 /* UniversalResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FF8161A8C18829BAA0967 /* UniversalResponse.swift */; };
 		F8A0C81E2F2B50C7005D231D /* LTAppFeatureConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A0C81D2F2B50C7005D231D /* LTAppFeatureConfig.swift */; };
 		F8A22C4C3D1795B392850452 /* FirstQuestionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5700C32AD3048D4D735EFB /* FirstQuestionViewModel.swift */; };
@@ -353,6 +354,7 @@
 		F87E9E802F6FF3820028D944 /* ReportHistoryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportHistoryHeader.swift; sourceTree = "<group>"; };
 		F87E9E822F6FF3920028D944 /* ReportHistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportHistoryRow.swift; sourceTree = "<group>"; };
 		F87E9E842F6FF39F0028D944 /* UnreadReportHistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadReportHistoryRow.swift; sourceTree = "<group>"; };
+		F87E9E862F70268B0028D944 /* CoinIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinIconView.swift; sourceTree = "<group>"; };
 		F8A0C81D2F2B50C7005D231D /* LTAppFeatureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTAppFeatureConfig.swift; sourceTree = "<group>"; };
 		F8BE5EC12EE1640B009206C2 /* IconImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImageView.swift; sourceTree = "<group>"; };
 		F8C266512EF285EE0000F5D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -452,6 +454,7 @@
 		3A7D36EC338FF4B7178AF189 /* Insights */ = {
 			isa = PBXGroup;
 			children = (
+				F87E9E862F70268B0028D944 /* CoinIconView.swift */,
 				F87E9E842F6FF39F0028D944 /* UnreadReportHistoryRow.swift */,
 				F87E9E822F6FF3920028D944 /* ReportHistoryRow.swift */,
 				F87E9E802F6FF3820028D944 /* ReportHistoryHeader.swift */,
@@ -1056,6 +1059,7 @@
 				9AC14B324700ABD899419124 /* AppleIDSignInViewModel.swift in Sources */,
 				104D7AAC7350FCA5BBA95E54 /* AuthInterceptor.swift in Sources */,
 				E1D345809DCE577E4D466390 /* AuthRepository.swift in Sources */,
+				F87E9E872F70268B0028D944 /* CoinIconView.swift in Sources */,
 				F0083B5ACFA2CDE8498A47E5 /* AuthRequest.swift in Sources */,
 				1AAE92823C8BAF31C7A09E52 /* AuthUseCase.swift in Sources */,
 				F1B48CC86B724385430FEC21 /* CalendarDay.swift in Sources */,

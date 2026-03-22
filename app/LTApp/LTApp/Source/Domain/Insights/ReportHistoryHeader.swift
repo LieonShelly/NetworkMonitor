@@ -51,6 +51,10 @@ struct ReportHistoryHeader: View {
                 iconList
                 Spacer()
             }
+            .contentShape(.rect)
+            .onTapGesture {
+                viewModel.onTapHistoryHeader()
+            }
         }
         .padding(.horizontal, 16)
         .padding(.top, 16)

@@ -16,11 +16,18 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var weeklyIcons: [ConinIconStyle] = []
     @MainActor @Published var unreadHisotrys: [WeeklyReportSummary] = []
     @MainActor @Published var readHisotrys: [WeeklyReportSummary] = []
+    @MainActor @Published var printUIState: ReadyToPrintUIState = .empty
     
     enum UIState {
         case readyToPrint
         case reported
         case history
+    }
+    
+    enum ReadyToPrintUIState {
+        case readyToPrint
+        case unread
+        case empty
     }
     
     init(dataService: any AppDataWithAuthorizationServiceful) {
@@ -50,10 +57,39 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         }
     }
     
-    func fetchCurrentWeekIcons() async throws {
+    func fetchHistoryHeaderCurrentWeekIcons() async throws {
         let currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
         await MainActor.run {
             self.currentIcons = currentIcons
+            self.weeklyIcons = currentIcons.icons.map { .normal($0)}
+            let normalCount = self.weeklyIcons.count
+            if currentIcons.minAnswersToGenerateReport > self.weeklyIcons.count {
+                self.weeklyIcons.append(.plus)
+               let placeholders = (0 ..< currentIcons.minAnswersToGenerateReport - normalCount - 1).map { _ in ConinIconStyle.empty }
+                self.weeklyIcons.append(contentsOf: placeholders)
+            }
+        }
+    }
+    
+    func fetchReadyToPrintData() async throws {
+        let currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
+        let ready = currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count
+        var printUIState: ReadyToPrintUIState = .empty
+        var unreads: [WeeklyReportSummary] = []
+        
+        if currentIcons.icons.isEmpty {
+            printUIState = .empty
+        } else if ready {
+            printUIState = .readyToPrint
+        } else {
+            unreads = try await dataService.fetchUnreadWeeklyReportsUseCase.execute(limit: nil, cursor: nil).reports
+            printUIState = !unreads.isEmpty ? .unread : .empty
+            
+        }
+        await MainActor.run {
+            self.printUIState = printUIState
+            self.currentIcons = currentIcons
+            self.unreadHisotrys = unreads
             self.weeklyIcons = currentIcons.icons.map { .normal($0)}
             let normalCount = self.weeklyIcons.count
             if currentIcons.minAnswersToGenerateReport > self.weeklyIcons.count {
@@ -117,6 +153,11 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
             self.weeklyReport = report
             self.state = .reported
         }
+    }
+    
+    @MainActor
+    func onTapHistoryHeader() {
+        self.state = .readyToPrint
     }
     
     deinit {
