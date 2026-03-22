@@ -33,7 +33,7 @@ struct ReportHistoryHeader: View {
                             .resizable()
                             .foregroundStyle(AppColor.color(hex: 0xffffff))
                             .scaledToFit()
-                            .frame(width: 12, height: 12)
+                            .frame(width: 9, height: 8)
                             .rotationEffect(.degrees(90))
                             .padding(.leading, 4)
                         
