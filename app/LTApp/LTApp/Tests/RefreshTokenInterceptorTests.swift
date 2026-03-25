@@ -62,94 +62,11 @@ final class MockTokenProvider: TokenProvider {
 }
 
 
-// MARK: - Bug Condition Exploration Test
+// MARK: - RefreshTokenInterceptor Tests (migrated to onError API)
 
-/// **Validates: Requirements 1.1, 1.4, 2.1, 2.4**
-///
-/// Property 1: Bug Condition — Concurrent 401 requests trigger multiple token refreshes.
-///
-/// On UNFIXED code this test is EXPECTED TO FAIL, proving the race condition exists.
-/// When multiple concurrent requests receive 401, each independently calls
-/// `refreshTokenIfNeeded()` instead of coalescing into a single refresh operation.
+/// Tests for the migrated RefreshTokenInterceptor using the new NetworkInterceptor protocol.
+/// The interceptor now only overrides `onError` instead of `adapt`/`shouldRetry`.
 final class RefreshTokenInterceptorTests: XCTestCase {
-
-    /// Bug condition exploration: concurrent 401 requests should trigger only ONE refresh,
-    /// but on unfixed code each request independently triggers its own refresh.
-    func testConcurrent401RequestsTriggerOnlySingleRefresh() async throws {
-        // Arrange
-        let mockUseCase = MockRefreshTokenUseCase()
-        // Use a meaningful delay so concurrent calls overlap
-        mockUseCase.simulatedDelay = 200_000_000 // 200ms
-        let mockService = MockAppDataWithoutAuthorizationService(refreshTokenUseCase: mockUseCase)
-        let mockTokenProvider = MockTokenProvider()
-        let interceptor = RefreshTokenInterceptor(
-            tokenProvider: mockTokenProvider,
-            service: mockService
-        )
-
-        let concurrentCount = 5
-
-        // Create distinct URLRequests and 401 responses
-        let requestsAndResponses: [(URLRequest, HTTPURLResponse)] = (0..<concurrentCount).map { i in
-            let url = URL(string: "https://api.example.com/resource/\(i)")!
-            let request = URLRequest(url: url)
-            let response = HTTPURLResponse(
-                url: url,
-                statusCode: 401,
-                httpVersion: nil,
-                headerFields: nil
-            )!
-            return (request, response)
-        }
-
-        // Act — fire all shouldRetry calls concurrently using TaskGroup
-        var results: [Bool] = []
-        results = try await withThrowingTaskGroup(of: Bool.self) { group in
-            for (request, response) in requestsAndResponses {
-                group.addTask {
-                    try await interceptor.shouldRetry(request, response: response)
-                }
-            }
-            var collected: [Bool] = []
-            for try await result in group {
-                collected.append(result)
-            }
-            return collected
-        }
-
-        // Assert — on correctly fixed code, refresh should be called exactly once.
-        // On UNFIXED code, this assertion WILL FAIL because each concurrent
-        // shouldRetry call independently invokes refreshTokenIfNeeded().
-        let callCount = mockUseCase.executeCallCount
-        XCTAssertEqual(
-            callCount, 1,
-            "Expected refreshTokenUseCase.execute() to be called exactly 1 time, "
-            + "but it was called \(callCount) times. "
-            + "This proves the race condition: \(concurrentCount) concurrent 401 requests "
-            + "each independently triggered a token refresh."
-        )
-
-        // All shouldRetry calls should return true (refresh succeeded for all)
-        XCTAssertTrue(
-            results.allSatisfy { $0 },
-            "All concurrent shouldRetry calls should return true after successful refresh"
-        )
-    }
-}
-
-
-// MARK: - Preservation Property Tests
-
-/// **Validates: Requirements 3.1, 3.2, 3.3, 3.4, 3.5, 3.6**
-///
-/// Property 2: Preservation — Non-concurrent 401 scenarios behave identically.
-///
-/// These tests verify that the fix does NOT alter any existing behavior for:
-/// - Non-401 status codes (no refresh triggered)
-/// - Single 401 request (exactly one refresh, shouldRetry returns true)
-/// - Request already in requestsPool (no re-trigger)
-/// - Refresh failure (shouldRetry returns false)
-final class RefreshTokenPreservationTests: XCTestCase {
 
     // MARK: - Helpers
 
@@ -166,129 +83,121 @@ final class RefreshTokenPreservationTests: XCTestCase {
         URLRequest(url: URL(string: "https://api.example.com\(path)")!)
     }
 
-    private func makeResponse(statusCode: Int, url: URL? = nil) -> HTTPURLResponse {
-        HTTPURLResponse(
-            url: url ?? URL(string: "https://api.example.com/test")!,
-            statusCode: statusCode,
-            httpVersion: nil,
-            headerFields: nil
-        )!
+    private func make401Error() -> AppNetworkError {
+        .httpError(statusCode: .unauthorized, body: nil)
     }
 
-    // MARK: - Property 2a: Non-401 status codes do not trigger refresh
+    // MARK: - 401 triggers retry on successful refresh
 
-    /// **Validates: Requirements 3.1, 3.2**
-    ///
-    /// For any non-401 HTTP status code (200-399, 402-599), `shouldRetry` always
-    /// returns `false` and the refresh use case is never called.
-    func testNon401StatusCodesDoNotTriggerRefresh() async throws {
-        let statusCodes = [200, 301, 400, 403, 404, 500, 502, 503]
+    func testOnError401WithSuccessfulRefreshReturnsRetry() async throws {
+        let mockUseCase = MockRefreshTokenUseCase()
+        mockUseCase.simulatedDelay = 10_000_000 // 10ms
+        let (interceptor, _) = makeInterceptor(mockUseCase: mockUseCase)
 
-        for statusCode in statusCodes {
-            let mockUseCase = MockRefreshTokenUseCase()
-            mockUseCase.simulatedDelay = 0
-            let (interceptor, _) = makeInterceptor(mockUseCase: mockUseCase)
+        let request = makeRequest()
+        let handler = ErrorInterceptorHandler()
+        let result = await interceptor.onError(make401Error(), request: request, handler: handler)
 
-            let request = makeRequest(path: "/status/\(statusCode)")
-            let url = URL(string: "https://api.example.com/status/\(statusCode)")!
-            let response = makeResponse(statusCode: statusCode, url: url)
-
-            let result = try await interceptor.shouldRetry(request, response: response)
-
-            XCTAssertFalse(
-                result,
-                "shouldRetry must return false for status code \(statusCode)"
-            )
-            XCTAssertEqual(
-                mockUseCase.executeCallCount, 0,
-                "refreshTokenUseCase.execute() must not be called for status code \(statusCode)"
-            )
+        switch result {
+        case .retry:
+            break // expected
+        case .next:
+            XCTFail("Expected .retry but got .next")
         }
+
+        XCTAssertEqual(mockUseCase.executeCallCount, 1,
+                       "refreshTokenUseCase.execute() must be called exactly 1 time")
     }
 
-    // MARK: - Property 2b: Single 401 request triggers exactly one refresh
+    // MARK: - 401 with refresh failure returns next(error)
 
-    /// **Validates: Requirements 3.3**
-    ///
-    /// For a single 401 request with no concurrency, `shouldRetry` returns `true`
-    /// and the refresh use case is called exactly 1 time.
-    func testSingle401RequestTriggersExactlyOneRefresh() async throws {
+    func testOnError401WithRefreshFailureReturnsNext() async throws {
         let mockUseCase = MockRefreshTokenUseCase()
-        mockUseCase.simulatedDelay = 10_000_000 // 10ms
+        mockUseCase.simulatedDelay = 10_000_000
+        mockUseCase.errorToThrow = NSError(domain: "TestError", code: -1)
         let (interceptor, _) = makeInterceptor(mockUseCase: mockUseCase)
 
         let request = makeRequest()
-        let response = makeResponse(statusCode: 401)
+        let handler = ErrorInterceptorHandler()
+        let result = await interceptor.onError(make401Error(), request: request, handler: handler)
 
-        let result = try await interceptor.shouldRetry(request, response: response)
+        switch result {
+        case .next:
+            break // expected
+        case .retry:
+            XCTFail("Expected .next but got .retry")
+        }
 
-        XCTAssertTrue(
-            result,
-            "shouldRetry must return true for a single 401 request"
-        )
-        XCTAssertEqual(
-            mockUseCase.executeCallCount, 1,
-            "refreshTokenUseCase.execute() must be called exactly 1 time for a single 401 request"
-        )
+        XCTAssertEqual(mockUseCase.executeCallCount, 1)
     }
 
-    // MARK: - Property 2c: Request already in pool does not re-trigger refresh
+    // MARK: - Non-401 errors pass through
 
-    /// **Validates: Requirements 3.4**
-    ///
-    /// When a request has already been through shouldRetry once (added to requestsPool),
-    /// a second 401 for the same request returns `false` without triggering another refresh.
-    func testRequestAlreadyInPoolDoesNotRetriggerRefresh() async throws {
-        let mockUseCase = MockRefreshTokenUseCase()
-        mockUseCase.simulatedDelay = 10_000_000 // 10ms
-        let (interceptor, _) = makeInterceptor(mockUseCase: mockUseCase)
+    func testOnErrorNon401ReturnsNext() async throws {
+        let (interceptor, mockUseCase) = makeInterceptor()
+
+        let nonAuthErrors: [Error] = [
+            AppNetworkError.httpError(statusCode: .notFound, body: nil),
+            AppNetworkError.httpError(statusCode: .internalServerError, body: nil),
+            AppNetworkError.networkError(debugDescription: "timeout", errorCode: .timedOut),
+            NSError(domain: "TestError", code: -1)
+        ]
 
         let request = makeRequest()
-        let response = makeResponse(statusCode: 401)
+        let handler = ErrorInterceptorHandler()
 
-        // First call — should succeed and add request to pool
-        let firstResult = try await interceptor.shouldRetry(request, response: response)
-        XCTAssertTrue(firstResult, "First shouldRetry call must return true")
-        XCTAssertEqual(mockUseCase.executeCallCount, 1, "Refresh must be called once on first 401")
+        for error in nonAuthErrors {
+            let result = await interceptor.onError(error, request: request, handler: handler)
+            switch result {
+            case .next:
+                break // expected
+            case .retry:
+                XCTFail("Expected .next for non-401 error but got .retry")
+            }
+        }
 
-        // Second call with the same request — should be blocked by requestsPool
-        let secondResult = try await interceptor.shouldRetry(request, response: response)
-        XCTAssertFalse(
-            secondResult,
-            "shouldRetry must return false for a request already in requestsPool"
-        )
-        // Refresh should NOT have been called again
-        XCTAssertEqual(
-            mockUseCase.executeCallCount, 1,
-            "refreshTokenUseCase.execute() must not be called again for a pooled request"
-        )
+        XCTAssertEqual(mockUseCase.executeCallCount, 0,
+                       "refreshTokenUseCase.execute() must not be called for non-401 errors")
     }
 
-    // MARK: - Property 2d: Refresh failure returns false
+    // MARK: - Concurrent 401 requests deduplicate refresh
 
-    /// **Validates: Requirements 3.4**
-    ///
-    /// When the refresh operation throws an error, `shouldRetry` returns `false`.
-    func testRefreshFailureReturnsFalse() async throws {
+    func testConcurrent401RequestsTriggerOnlySingleRefresh() async throws {
         let mockUseCase = MockRefreshTokenUseCase()
-        mockUseCase.simulatedDelay = 10_000_000 // 10ms
-        mockUseCase.errorToThrow = NSError(domain: "TestError", code: -1, userInfo: [
-            NSLocalizedDescriptionKey: "Simulated refresh token failure"
-        ])
-        let (interceptor, _) = makeInterceptor(mockUseCase: mockUseCase)
+        mockUseCase.simulatedDelay = 200_000_000 // 200ms
+        let service = MockAppDataWithoutAuthorizationService(refreshTokenUseCase: mockUseCase)
+        let tokenProvider = MockTokenProvider()
+        let interceptor = RefreshTokenInterceptor(tokenProvider: tokenProvider, service: service)
 
-        let request = makeRequest()
-        let response = makeResponse(statusCode: 401)
+        let concurrentCount = 5
+        let handler = ErrorInterceptorHandler()
+        let error401 = make401Error()
 
-        let result = try await interceptor.shouldRetry(request, response: response)
+        let results: [ErrorInterceptorResult] = await withTaskGroup(of: ErrorInterceptorResult.self) { group in
+            for i in 0..<concurrentCount {
+                let request = makeRequest(path: "/resource/\(i)")
+                group.addTask {
+                    await interceptor.onError(error401, request: request, handler: handler)
+                }
+            }
+            var collected: [ErrorInterceptorResult] = []
+            for await result in group {
+                collected.append(result)
+            }
+            return collected
+        }
 
-        XCTAssertFalse(
-            result,
-            "shouldRetry must return false when refresh operation throws an error"
-        )
-        XCTAssertEqual(
-            mockUseCase.executeCallCount, 1,
-            "refreshTokenUseCase.execute() must be called exactly 1 time even when it fails"
-        )
+        XCTAssertEqual(mockUseCase.executeCallCount, 1,
+                       "Expected refreshTokenUseCase.execute() to be called exactly 1 time, "
+                       + "but it was called \(mockUseCase.executeCallCount) times.")
+
+        for result in results {
+            switch result {
+            case .retry:
+                break // expected
+            case .next:
+                XCTFail("All concurrent 401 calls should return .retry after successful refresh")
+            }
+        }
     }
 }

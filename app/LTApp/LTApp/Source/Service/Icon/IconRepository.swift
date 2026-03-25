@@ -10,7 +10,7 @@ import LTNetwork
 
 public protocol IconRepositoryType {
     
-    func queryIconGeneratingStatus(_ iconId: String) -> AsyncThrowingStream<IconDto, any Error>
+    func queryIconGeneratingStatus(_ iconId: String) -> (stream: AsyncThrowingStream<IconDto, any Error>, task: NetworkTask)
 }
 
 public class IconRepository: IconRepositoryType {
@@ -20,8 +20,7 @@ public class IconRepository: IconRepositoryType {
         self.apiClient = apiClient
     }
     
-    public func queryIconGeneratingStatus(_ iconId: String) -> AsyncThrowingStream<IconDto, any Error> {
-        let reponse: AsyncThrowingStream<IconDto, any Error> = apiClient.sendSSERequest(IconRequest.generate(iconId))
-        return reponse
+    public func queryIconGeneratingStatus(_ iconId: String) -> (stream: AsyncThrowingStream<IconDto, any Error>, task: NetworkTask) {
+        return apiClient.sendSSERequest(IconRequest.generate(iconId))
     }
 }

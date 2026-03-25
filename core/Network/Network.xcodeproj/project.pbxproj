@@ -14,6 +14,9 @@
 		BC8F4DAC1D002F6D6EAB9FF5 /* Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50035C6563B504C87FD60E15 /* Encoder.swift */; };
 		D77B88C1F0AAA330F46E554C /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E0D3B186156941F80B49FD /* Environment.swift */; };
 		E3A304423FF180CB5D86ADDC /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D17E04324F1D6F39E40AC /* Request.swift */; };
+		F80450A82F743D3400937AE8 /* InterceptorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80450A72F743D3400937AE8 /* InterceptorHandler.swift */; };
+		F80450AA2F743E4700937AE8 /* InterceptorChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80450A92F743E4700937AE8 /* InterceptorChain.swift */; };
+		F80450AC2F743E5400937AE8 /* NetworkTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80450AB2F743E5400937AE8 /* NetworkTask.swift */; };
 		F99461AC79E7BC1C609AE4AC /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F50951E33B7CF50B49D0A09 /* Response.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +31,9 @@
 		B0F9A9792CF59874F8A8FF58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D441AFBDA9734C9E1559A54A /* NetworkInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkInterceptor.swift; sourceTree = "<group>"; };
 		D5E0D3B186156941F80B49FD /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		F80450A72F743D3400937AE8 /* InterceptorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterceptorHandler.swift; sourceTree = "<group>"; };
+		F80450A92F743E4700937AE8 /* InterceptorChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterceptorChain.swift; sourceTree = "<group>"; };
+		F80450AB2F743E5400937AE8 /* NetworkTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTask.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -35,6 +41,8 @@
 			isa = PBXGroup;
 			children = (
 				D441AFBDA9734C9E1559A54A /* NetworkInterceptor.swift */,
+				F80450A72F743D3400937AE8 /* InterceptorHandler.swift */,
+				F80450A92F743E4700937AE8 /* InterceptorChain.swift */,
 			);
 			path = Interceptor;
 			sourceTree = "<group>";
@@ -75,6 +83,7 @@
 				D5E0D3B186156941F80B49FD /* Environment.swift */,
 				075D17E04324F1D6F39E40AC /* Request.swift */,
 				8F50951E33B7CF50B49D0A09 /* Response.swift */,
+				F80450AB2F743E5400937AE8 /* NetworkTask.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -134,11 +143,14 @@
 				904DBDDDE747B9E21F789509 /* ApiClient.swift in Sources */,
 				AAAAD901B263B15187DE8B27 /* AppNetworkError.swift in Sources */,
 				BC8F4DAC1D002F6D6EAB9FF5 /* Encoder.swift in Sources */,
+				F80450A82F743D3400937AE8 /* InterceptorHandler.swift in Sources */,
 				D77B88C1F0AAA330F46E554C /* Environment.swift in Sources */,
 				1C078EDBB3E45357DCA0B642 /* NetworkInterceptor.swift in Sources */,
 				E3A304423FF180CB5D86ADDC /* Request.swift in Sources */,
 				7A44FABDFA0407F43B7F7C58 /* RequestBuilder.swift in Sources */,
 				F99461AC79E7BC1C609AE4AC /* Response.swift in Sources */,
+				F80450AA2F743E4700937AE8 /* InterceptorChain.swift in Sources */,
+				F80450AC2F743E5400937AE8 /* NetworkTask.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

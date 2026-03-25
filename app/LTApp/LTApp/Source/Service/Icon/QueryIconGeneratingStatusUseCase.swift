@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import LTNetwork
 
 public protocol QueryIconGeneratingStatusUseCaseType: Sendable {
     func execute(_ iconId: String) -> AsyncThrowingStream<IconDto, any Error>
@@ -30,7 +31,7 @@ public final class QueryIconGeneratingStatusUseCase: QueryIconGeneratingStatusUs
     
     
     public func execute(_ iconId: String) -> AsyncThrowingStream<IconDto, any Error> {
-        repository.queryIconGeneratingStatus(iconId)
+        repository.queryIconGeneratingStatus(iconId).stream
     }
     
     
@@ -63,7 +64,7 @@ public final class QueryIconGeneratingStatusUseCase: QueryIconGeneratingStatusUs
                 self.activeTasks.removeValue(forKey: iconId)
             }
             do {
-                let stream = self.repository.queryIconGeneratingStatus(iconId)
+                let (stream, _) = self.repository.queryIconGeneratingStatus(iconId)
                 for try await status in stream {
                     self.stateCache[iconId] = status
                     self.eventSubject.send(status)

@@ -8,39 +8,31 @@ import LTNetwork
 actor RefreshTokenInterceptor: NetworkInterceptor, @unchecked Sendable {
     private weak var tokenProvider: TokenProvider?
     private let service: any AppDataWithoutAuthorizationServicefull
-    private var requestsPool: [URLRequest] = []
     private var refreshingTask: Task<Void, Error>?
-    
+
     init(tokenProvider: TokenProvider?, service: any AppDataWithoutAuthorizationServicefull) {
         self.tokenProvider = tokenProvider
         self.service = service
     }
-    
-    func adapt(_ request: URLRequest) async throws -> URLRequest {
-        return request
-    }
-    
-    func shouldRetry(_ request: URLRequest, response: URLResponse?) async throws -> Bool {
-        guard let response = response as? HTTPURLResponse, response.statusCode == 401 else {
-            return false
-        }
-        guard !requestsPool.contains(request) else {
-            return false
+
+    public func onError(_ error: Error, request: URLRequest, handler: ErrorInterceptorHandler) async -> ErrorInterceptorResult {
+        guard let networkError = error as? AppNetworkError,
+              case .httpError(statusCode: .unauthorized, _) = networkError else {
+            return handler.next(error)
         }
         do {
             try await refreshTokenIfNeeded()
-            requestsPool.append(request)
-            return true
+            return handler.retry()
         } catch {
-            return false
+            return handler.next(error)
         }
     }
-    
+
     private func refreshTokenIfNeeded() async throws {
         if let existingTask = refreshingTask {
             return try await existingTask.value
         }
-        
+
         let task = Task {
             defer { refreshingTask = nil }
             try await service.refreshTokenUseCase.execute()
@@ -49,5 +41,3 @@ actor RefreshTokenInterceptor: NetworkInterceptor, @unchecked Sendable {
         try await task.value
     }
 }
-
-

@@ -13,15 +13,11 @@ public actor AuthInterceptor: NetworkInterceptor, @unchecked Sendable {
         self.tokenProvider = tokenProvider
     }
     
-    public func adapt(_ request: URLRequest) async throws -> URLRequest {
+    public func onRequest(_ request: URLRequest, handler: RequestInterceptorHandler) async -> RequestInterceptorResult {
         var request = request
         if let token = tokenProvider?.accessToken {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
-        return request
-    }
-    
-    public func shouldRetry(_ request: URLRequest, response: URLResponse?) async throws -> Bool {
-        return false
+        return handler.next(request)
     }
 }

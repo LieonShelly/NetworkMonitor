@@ -19,17 +19,13 @@ public class LogoutInterceptor: NetworkInterceptor, TokenExpirePublihser, @unche
         tokenExpiredSubject = .init()
     }
     
-    public func adapt(_ request: URLRequest) async throws -> URLRequest {
-        return request
-    }
-    
-    public func shouldRetry(_ request: URLRequest, response: URLResponse?) async throws -> Bool {
-        return false
-    }
-    
-    public func abort(_ request: URLRequest, response: URLResponse?) async throws -> Bool {
+    public func onError(_ error: Error, request: URLRequest, handler: ErrorInterceptorHandler) async -> ErrorInterceptorResult {
+        guard let networkError = error as? AppNetworkError,
+              case .httpError(statusCode: .unauthorized, _) = networkError else {
+            return handler.next(error)
+        }
         tokenProvider?.clear()
         tokenExpiredSubject.send()
-        return true
+        return handler.next(error)
     }
 }

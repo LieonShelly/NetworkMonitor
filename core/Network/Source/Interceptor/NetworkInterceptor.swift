@@ -5,15 +5,23 @@
 import Foundation
 
 public protocol NetworkInterceptor: Sendable {
-    func adapt(_ request: URLRequest) async throws -> URLRequest
-    
-    func shouldRetry(_ request: URLRequest, response: URLResponse?) async throws -> Bool
-    
-    func abort(_ request: URLRequest, response: URLResponse?) async throws -> Bool
+    func onRequest(_ request: URLRequest, handler: RequestInterceptorHandler) async -> RequestInterceptorResult
+    func onResponse(_ response: Response, handler: ResponseInterceptorHandler) async -> ResponseInterceptorResult
+    func onError(_ error: Error, request: URLRequest, handler: ErrorInterceptorHandler) async -> ErrorInterceptorResult
 }
 
+// MARK: - Default implementations (pass-through)
+
 extension NetworkInterceptor {
-    public func abort(_ request: URLRequest, response: URLResponse?) async throws -> Bool {
-        return false
+    public func onRequest(_ request: URLRequest, handler: RequestInterceptorHandler) async -> RequestInterceptorResult {
+        handler.next(request)
+    }
+
+    public func onResponse(_ response: Response, handler: ResponseInterceptorHandler) async -> ResponseInterceptorResult {
+        handler.next(response)
+    }
+
+    public func onError(_ error: Error, request: URLRequest, handler: ErrorInterceptorHandler) async -> ErrorInterceptorResult {
+        handler.next(error)
     }
 }
