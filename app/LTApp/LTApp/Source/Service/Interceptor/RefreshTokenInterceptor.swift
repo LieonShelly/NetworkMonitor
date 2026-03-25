@@ -9,6 +9,7 @@ actor RefreshTokenInterceptor: NetworkInterceptor, @unchecked Sendable {
     private weak var tokenProvider: TokenProvider?
     private let service: any AppDataWithoutAuthorizationServicefull
     private var requestsPool: [URLRequest] = []
+    private var refreshingTask: Task<Void, Error>?
     
     init(tokenProvider: TokenProvider?, service: any AppDataWithoutAuthorizationServicefull) {
         self.tokenProvider = tokenProvider
@@ -36,7 +37,16 @@ actor RefreshTokenInterceptor: NetworkInterceptor, @unchecked Sendable {
     }
     
     private func refreshTokenIfNeeded() async throws {
-        try await service.refreshTokenUseCase.execute()
+        if let existingTask = refreshingTask {
+            return try await existingTask.value
+        }
+        
+        let task = Task {
+            defer { refreshingTask = nil }
+            try await service.refreshTokenUseCase.execute()
+        }
+        refreshingTask = task
+        try await task.value
     }
 }
 

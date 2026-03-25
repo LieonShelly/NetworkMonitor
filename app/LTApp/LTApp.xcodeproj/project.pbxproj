@@ -109,6 +109,8 @@
 		F1B48CC86B724385430FEC21 /* CalendarDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB376B93C7F5FF4B131FD9F /* CalendarDay.swift */; };
 		F30FC501E337AB0B4B0C0D18 /* IconRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB18B18DB1403A5E4F474A33 /* IconRequest.swift */; };
 		F7EEBCB8F06F2AFB8348CBE5 /* ReflectionDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9D7669128928BF1C1B5FEE /* ReflectionDetailViewModel.swift */; };
+		F804509C2F742A7100937AE8 /* LTAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804509B2F742A7100937AE8 /* LTAppTests.swift */; };
+		F80450A22F742A7200937AE8 /* RefreshTokenInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80450A12F742A7200937AE8 /* RefreshTokenInterceptorTests.swift */; };
 		F804C4582F57DF7B00DCC904 /* FetchWeeklyReportUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804C4562F57DF7B00DCC904 /* FetchWeeklyReportUseCase.swift */; };
 		F804C4592F57DF7B00DCC904 /* WeeklyReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804C4502F57DF7B00DCC904 /* WeeklyReport.swift */; };
 		F804C45A2F57DF7B00DCC904 /* ReportRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804C4542F57DF7B00DCC904 /* ReportRequest.swift */; };
@@ -187,6 +189,16 @@
 		FE1586C04C6B5797BA88B10A /* AppDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB288D2282CC28AF1D391D /* AppDataService.swift */; };
 		FF7C7736C42D858DEA6687ED /* UserManagementServiceful.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146ED45DD2787D6230E0BDBB /* UserManagementServiceful.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F80450A32F742B6600937AE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E45E43351C9B272F88EDEB26 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E7E490667728FCDFE61D8210;
+			remoteInfo = LTApp;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		F5F8701FF925845AD9BA0E08 /* Embed Frameworks */ = {
@@ -311,6 +323,9 @@
 		F47135D07C75B8747AF6FC84 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		F4DD5E97D8DF693CCE6F4AD8 /* OnboardingSentence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSentence.swift; sourceTree = "<group>"; };
 		F4EA66A0CB3CB6B4CB331EE1 /* FetchHeadQuestionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchHeadQuestionUseCase.swift; sourceTree = "<group>"; };
+		F80450992F742A7100937AE8 /* LTAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F804509B2F742A7100937AE8 /* LTAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTAppTests.swift; sourceTree = "<group>"; };
+		F80450A12F742A7200937AE8 /* RefreshTokenInterceptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenInterceptorTests.swift; sourceTree = "<group>"; };
 		F804C4502F57DF7B00DCC904 /* WeeklyReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReport.swift; sourceTree = "<group>"; };
 		F804C4522F57DF7B00DCC904 /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
 		F804C4542F57DF7B00DCC904 /* ReportRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRequest.swift; sourceTree = "<group>"; };
@@ -395,6 +410,13 @@
 				F82BB77D2F39D68600F9DB49 /* SVGKitSwift in Frameworks */,
 				F8D5A8092F2B54FB003D2D33 /* LTCommon.framework in Frameworks */,
 				30DADA89529C20B4B71D5352 /* UIComponent.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80450962F742A7100937AE8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -629,6 +651,7 @@
 			isa = PBXGroup;
 			children = (
 				3D3670EBA2012A0EEEC3429D /* LTApp.app */,
+				F80450992F742A7100937AE8 /* LTAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -710,6 +733,7 @@
 		B7386D92BF9A8593FB03FD4A = {
 			isa = PBXGroup;
 			children = (
+				F80450942F742A2100937AE8 /* Tests */,
 				AB83959469BF097211D1B288 /* Resource */,
 				F55B695BA829CC64D30C8BE3 /* Source */,
 				79243E3AFF138544EF16CCA9 /* Frameworks */,
@@ -848,6 +872,16 @@
 			path = Reflection;
 			sourceTree = "<group>";
 		};
+		F80450942F742A2100937AE8 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F804509B2F742A7100937AE8 /* LTAppTests.swift */,
+				F80450A12F742A7200937AE8 /* RefreshTokenInterceptorTests.swift */,
+			);
+			name = Tests;
+			path = LTApp/Tests;
+			sourceTree = "<group>";
+		};
 		F804C44F2F57DD7000DCC904 /* Report */ = {
 			isa = PBXGroup;
 			children = (
@@ -970,6 +1004,26 @@
 			productReference = 3D3670EBA2012A0EEEC3429D /* LTApp.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F80450982F742A7100937AE8 /* LTAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F804509D2F742A7200937AE8 /* Build configuration list for PBXNativeTarget "LTAppTests" */;
+			buildPhases = (
+				F80450952F742A7100937AE8 /* Sources */,
+				F80450962F742A7100937AE8 /* Frameworks */,
+				F80450972F742A7100937AE8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F80450A42F742B6600937AE8 /* PBXTargetDependency */,
+			);
+			name = LTAppTests;
+			packageProductDependencies = (
+			);
+			productName = LTAppTests;
+			productReference = F80450992F742A7100937AE8 /* LTAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -977,11 +1031,16 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					E7E490667728FCDFE61D8210 = {
 						DevelopmentTeam = R7S4TKW9JF;
 						ProvisioningStyle = Manual;
+					};
+					F80450982F742A7100937AE8 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = E7E490667728FCDFE61D8210;
 					};
 				};
 			};
@@ -1003,6 +1062,7 @@
 			projectRoot = "";
 			targets = (
 				E7E490667728FCDFE61D8210 /* LTApp */,
+				F80450982F742A7100937AE8 /* LTAppTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1015,6 +1075,13 @@
 				5A4923C99845041D6F007D76 /* Assets.xcassets in Resources */,
 				105A63A4AE63E5337A8A7FFF /* LaunchScreen.storyboard in Resources */,
 				F81E121F2F695DDE00DAD57B /* test_rocket.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F80450972F742A7100937AE8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1193,7 +1260,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F80450952F742A7100937AE8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F804509C2F742A7100937AE8 /* LTAppTests.swift in Sources */,
+				F80450A22F742A7200937AE8 /* RefreshTokenInterceptorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F80450A42F742B6600937AE8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E7E490667728FCDFE61D8210 /* LTApp */;
+			targetProxy = F80450A32F742B6600937AE8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		2AF3639E49F7722B31D2D6FB /* Debug */ = {
@@ -1375,6 +1459,97 @@
 			};
 			name = Release;
 		};
+		F804509E2F742A7200937AE8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R7S4TKW9JF;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LTAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LTApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LTApp";
+			};
+			name = Debug;
+		};
+		F804509F2F742A7200937AE8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R7S4TKW9JF;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LTAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LTApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LTApp";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F80450A02F742A7200937AE8 /* Release-Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R7S4TKW9JF;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LTAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LTApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LTApp";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release-Debug";
+		};
 		F8B910AB2EF506B500C54DB8 /* Release-Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1480,6 +1655,16 @@
 				96DF86E4C07D7446BB72814A /* Debug */,
 				59617759A1F060F2CCC61EB6 /* Release */,
 				F8B910AB2EF506B500C54DB8 /* Release-Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F804509D2F742A7200937AE8 /* Build configuration list for PBXNativeTarget "LTAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F804509E2F742A7200937AE8 /* Debug */,
+				F804509F2F742A7200937AE8 /* Release */,
+				F80450A02F742A7200937AE8 /* Release-Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
