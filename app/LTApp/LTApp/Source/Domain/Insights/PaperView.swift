@@ -181,7 +181,7 @@ struct PaperView: View {
                     }
                 }
                 .padding(.bottom, isSmall ? 8 : 16)
-                .padding(.leading, isSmall ? 10 : 20)
+                .padding(.horizontal, isSmall ? 10 : 20)
             }
             .overlay(content: {
                 VStack {
