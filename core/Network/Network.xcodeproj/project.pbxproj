@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,17 +11,20 @@
 		0AF080DF4BED8924F8166294 /* LTNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AB22D5290EA3B6898B01D3D /* LTNetwork.framework */; };
 		1B05E3B2A78FCC0362F79F9E /* NetworkTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E16B070F231A23A5035590 /* NetworkTask.swift */; };
 		1C078EDBB3E45357DCA0B642 /* NetworkInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D441AFBDA9734C9E1559A54A /* NetworkInterceptor.swift */; };
+		465156A3CA39015CB136F3E8 /* ApiClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658C8112DDF290354104A8C /* ApiClientTests.swift */; };
 		4B201CAA52530924C6DD0DD7 /* LTNetwork.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F47A18D1DB2286F7DE84B99B /* LTNetwork.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		600B310D020E85FDC6D51CED /* LTNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F47A18D1DB2286F7DE84B99B /* LTNetwork.framework */; };
 		68C1DA6616ABDC0E5437F52F /* LTNetwork.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4AB22D5290EA3B6898B01D3D /* LTNetwork.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7A44FABDFA0407F43B7F7C58 /* RequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB87B8ACEC2514948E234F6 /* RequestBuilder.swift */; };
 		904DBDDDE747B9E21F789509 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998CB59B4E0E422E2EBB39FF /* ApiClient.swift */; };
 		AAAAD901B263B15187DE8B27 /* AppNetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE4A363A34008F28BF45AA1 /* AppNetworkError.swift */; };
+		AD6843A9F13AC199097A0F76 /* InterceptorChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE3BE9412D41856DD8B118 /* InterceptorChainTests.swift */; };
 		BC8F4DAC1D002F6D6EAB9FF5 /* Encoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50035C6563B504C87FD60E15 /* Encoder.swift */; };
+		CC2CBC2698A0948B6B587480 /* NetworkTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58075B7710E8E3EB3B37908E /* NetworkTaskTests.swift */; };
+		D602D76905619AF20A6044B7 /* DefaultInterceptorPassThroughTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD289B5FCC9C4754A38E4F6 /* DefaultInterceptorPassThroughTests.swift */; };
 		D77B88C1F0AAA330F46E554C /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E0D3B186156941F80B49FD /* Environment.swift */; };
 		E3A304423FF180CB5D86ADDC /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075D17E04324F1D6F39E40AC /* Request.swift */; };
 		F0D8010924DA62221FA842B5 /* InterceptorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1314AB60FF65D8A133CA76AD /* InterceptorHandler.swift */; };
-		F8238CEC2F74E7B900EF9D2C /* DefaultInterceptorPassThroughTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8238CEB2F74E7B900EF9D2C /* DefaultInterceptorPassThroughTests.swift */; };
 		F99461AC79E7BC1C609AE4AC /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F50951E33B7CF50B49D0A09 /* Response.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,20 +56,23 @@
 /* Begin PBXFileReference section */
 		075D17E04324F1D6F39E40AC /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		1314AB60FF65D8A133CA76AD /* InterceptorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterceptorHandler.swift; sourceTree = "<group>"; };
+		15EE3BE9412D41856DD8B118 /* InterceptorChainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterceptorChainTests.swift; sourceTree = "<group>"; };
 		1BE4A363A34008F28BF45AA1 /* AppNetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetworkError.swift; sourceTree = "<group>"; };
 		4AB22D5290EA3B6898B01D3D /* LTNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LTNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50035C6563B504C87FD60E15 /* Encoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encoder.swift; sourceTree = "<group>"; };
+		58075B7710E8E3EB3B37908E /* NetworkTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTaskTests.swift; sourceTree = "<group>"; };
 		7BB87B8ACEC2514948E234F6 /* RequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBuilder.swift; sourceTree = "<group>"; };
 		8F50951E33B7CF50B49D0A09 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		998CB59B4E0E422E2EBB39FF /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		A9E16B070F231A23A5035590 /* NetworkTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTask.swift; sourceTree = "<group>"; };
 		B0F9A9792CF59874F8A8FF58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B658C8112DDF290354104A8C /* ApiClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClientTests.swift; sourceTree = "<group>"; };
 		CE8790907A64F6404B8AF385 /* InterceptorChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterceptorChain.swift; sourceTree = "<group>"; };
 		D441AFBDA9734C9E1559A54A /* NetworkInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkInterceptor.swift; sourceTree = "<group>"; };
 		D5E0D3B186156941F80B49FD /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
-		E108852E8AA5852FAFEE0F47 /* LTNetworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTNetworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E108852E8AA5852FAFEE0F47 /* LTNetworkTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LTNetworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFD289B5FCC9C4754A38E4F6 /* DefaultInterceptorPassThroughTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultInterceptorPassThroughTests.swift; sourceTree = "<group>"; };
 		F47A18D1DB2286F7DE84B99B /* LTNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LTNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F8238CEB2F74E7B900EF9D2C /* DefaultInterceptorPassThroughTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultInterceptorPassThroughTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +123,10 @@
 		85639E50F69B2B3E79087673 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				F8238CEB2F74E7B900EF9D2C /* DefaultInterceptorPassThroughTests.swift */,
+				B658C8112DDF290354104A8C /* ApiClientTests.swift */,
+				EFD289B5FCC9C4754A38E4F6 /* DefaultInterceptorPassThroughTests.swift */,
+				15EE3BE9412D41856DD8B118 /* InterceptorChainTests.swift */,
+				58075B7710E8E3EB3B37908E /* NetworkTaskTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -211,6 +220,7 @@
 			);
 			mainGroup = 45136B8DDE2D542E43FEAB3B;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -243,7 +253,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8238CEC2F74E7B900EF9D2C /* DefaultInterceptorPassThroughTests.swift in Sources */,
+				465156A3CA39015CB136F3E8 /* ApiClientTests.swift in Sources */,
+				D602D76905619AF20A6044B7 /* DefaultInterceptorPassThroughTests.swift in Sources */,
+				AD6843A9F13AC199097A0F76 /* InterceptorChainTests.swift in Sources */,
+				CC2CBC2698A0948B6B587480 /* NetworkTaskTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

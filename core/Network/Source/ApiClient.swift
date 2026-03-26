@@ -28,14 +28,10 @@ public class ApiClient: ApiClientType, @unchecked Sendable {
         self.maxRetryCount = maxRetryCount
     }
 
-    // MARK: - ApiClientType conformance (backward compatible)
-
     public func sendRequest(_ request: any Request) async throws -> Response {
         let networkTask = makeTask(for: request)
         return try await networkTask.value
     }
-
-    // MARK: - NetworkTask-based API
 
     public func request(_ request: any Request) -> NetworkTask {
         makeTask(for: request)
@@ -56,7 +52,6 @@ public class ApiClient: ApiClientType, @unchecked Sendable {
         var retryCount = 0
 
         while true {
-            // Check cancellation at the start of each iteration
             try Task.checkCancellation()
 
             // 1. onRequest interceptor chain
@@ -66,18 +61,15 @@ public class ApiClient: ApiClientType, @unchecked Sendable {
             case .next(let req):
                 urlRequest = req
             case .reject(let error):
-                // onRequest reject: throw directly, skip onError chain and retry
                 throw error
             }
 
-            // 2. Execute network request
             try Task.checkCancellation()
             let responseData: (Data, URLResponse)
             do {
                 responseData = try await session.data(for: urlRequest)
             } catch {
                 if error is CancellationError { throw error }
-                // Wrap network connection failures as AppNetworkError.networkError
                 throw AppNetworkError.networkError(
                     debugDescription: error.localizedDescription,
                     errorCode: (error as? URLError)?.code
@@ -122,8 +114,6 @@ public class ApiClient: ApiClientType, @unchecked Sendable {
             }
         }
     }
-
-    // MARK: - SSE Streaming
 
     public func sendSSERequest<T: Codable>(_ request: any Request) -> (stream: AsyncThrowingStream<T, any Error>, task: NetworkTask) where T: Sendable {
         var streamContinuation: AsyncThrowingStream<T, any Error>.Continuation?
