@@ -32,6 +32,13 @@ struct InsightsView: View {
                 ReportHistoryView(viewModel: viewModel)
                     .padding(.top, 20)
                     .transition(.opacity.animation(.easeInOut))
+            case .printing:
+                PrinterView(viewModel: viewModel)
+                    .onFirstAppear {
+                        Task {
+                           try? await viewModel.generateReport()
+                        }
+                    }
             }
         }
     }

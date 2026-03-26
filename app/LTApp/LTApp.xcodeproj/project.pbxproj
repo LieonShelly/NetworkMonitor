@@ -110,7 +110,6 @@
 		F30FC501E337AB0B4B0C0D18 /* IconRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB18B18DB1403A5E4F474A33 /* IconRequest.swift */; };
 		F7EEBCB8F06F2AFB8348CBE5 /* ReflectionDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9D7669128928BF1C1B5FEE /* ReflectionDetailViewModel.swift */; };
 		F804509C2F742A7100937AE8 /* LTAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804509B2F742A7100937AE8 /* LTAppTests.swift */; };
-		F80450A22F742A7200937AE8 /* RefreshTokenInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80450A12F742A7200937AE8 /* RefreshTokenInterceptorTests.swift */; };
 		F804C4582F57DF7B00DCC904 /* FetchWeeklyReportUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804C4562F57DF7B00DCC904 /* FetchWeeklyReportUseCase.swift */; };
 		F804C4592F57DF7B00DCC904 /* WeeklyReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804C4502F57DF7B00DCC904 /* WeeklyReport.swift */; };
 		F804C45A2F57DF7B00DCC904 /* ReportRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804C4542F57DF7B00DCC904 /* ReportRequest.swift */; };
@@ -129,6 +128,7 @@
 		F81E12192F694E1000DAD57B /* ReadyToPrintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81E12182F694E1000DAD57B /* ReadyToPrintView.swift */; };
 		F81E121F2F695DDE00DAD57B /* test_rocket.png in Resources */ = {isa = PBXBuildFile; fileRef = F81E121E2F695DDE00DAD57B /* test_rocket.png */; };
 		F81E12212F69618500DAD57B /* CoinScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81E12202F69618500DAD57B /* CoinScene.swift */; };
+		F8238D142F7510DC00EF9D2C /* PrinterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8238D132F7510DC00EF9D2C /* PrinterView.swift */; };
 		F826AAFC2F31EEC20043B16D /* ThreadCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F826AAFB2F31EEC10043B16D /* ThreadCategoryView.swift */; };
 		F82BB7762F39C0B900F9DB49 /* QuestionOfTodaySettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82BB7752F39C0B800F9DB49 /* QuestionOfTodaySettingItem.swift */; };
 		F82BB7782F39C72C00F9DB49 /* UpdateStrategyUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82BB7772F39C72C00F9DB49 /* UpdateStrategyUseCase.swift */; };
@@ -178,6 +178,7 @@
 		F8DF26622F34989A00E91FFF /* UserFlowRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DF26612F34989900E91FFF /* UserFlowRequest.swift */; };
 		F8DF26642F34994200E91FFF /* UserInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DF26632F34994200E91FFF /* UserInfoDTO.swift */; };
 		F8DF26662F349B5100E91FFF /* UserFlowRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DF26652F349B5100E91FFF /* UserFlowRepository.swift */; };
+		F8E85AD52F751CF3002DDDCB /* PaperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E85AD42F751CF3002DDDCB /* PaperView.swift */; };
 		F8F122D02F289AA5008DB4AB /* DeleteAnswersUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F122CF2F289AA5008DB4AB /* DeleteAnswersUseCase.swift */; };
 		F8F2F9302F01069F00936ECD /* CalendarSlashLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */; };
 		F8FE2C322F20B82200B8A266 /* BaseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FE2C312F20B82100B8A266 /* BaseViewModelType.swift */; };
@@ -325,7 +326,6 @@
 		F4EA66A0CB3CB6B4CB331EE1 /* FetchHeadQuestionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchHeadQuestionUseCase.swift; sourceTree = "<group>"; };
 		F80450992F742A7100937AE8 /* LTAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LTAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F804509B2F742A7100937AE8 /* LTAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTAppTests.swift; sourceTree = "<group>"; };
-		F80450A12F742A7200937AE8 /* RefreshTokenInterceptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenInterceptorTests.swift; sourceTree = "<group>"; };
 		F804C4502F57DF7B00DCC904 /* WeeklyReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReport.swift; sourceTree = "<group>"; };
 		F804C4522F57DF7B00DCC904 /* ReportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRepository.swift; sourceTree = "<group>"; };
 		F804C4542F57DF7B00DCC904 /* ReportRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRequest.swift; sourceTree = "<group>"; };
@@ -345,6 +345,7 @@
 		F81E12182F694E1000DAD57B /* ReadyToPrintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyToPrintView.swift; sourceTree = "<group>"; };
 		F81E121E2F695DDE00DAD57B /* test_rocket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test_rocket.png; sourceTree = "<group>"; };
 		F81E12202F69618500DAD57B /* CoinScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinScene.swift; sourceTree = "<group>"; };
+		F8238D132F7510DC00EF9D2C /* PrinterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrinterView.swift; sourceTree = "<group>"; };
 		F826AAFB2F31EEC10043B16D /* ThreadCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadCategoryView.swift; sourceTree = "<group>"; };
 		F82BB7752F39C0B800F9DB49 /* QuestionOfTodaySettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingItem.swift; sourceTree = "<group>"; };
 		F82BB7772F39C72C00F9DB49 /* UpdateStrategyUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStrategyUseCase.swift; sourceTree = "<group>"; };
@@ -387,6 +388,7 @@
 		F8DF26612F34989900E91FFF /* UserFlowRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFlowRequest.swift; sourceTree = "<group>"; };
 		F8DF26632F34994200E91FFF /* UserInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoDTO.swift; sourceTree = "<group>"; };
 		F8DF26652F349B5100E91FFF /* UserFlowRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFlowRepository.swift; sourceTree = "<group>"; };
+		F8E85AD42F751CF3002DDDCB /* PaperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperView.swift; sourceTree = "<group>"; };
 		F8F122CF2F289AA5008DB4AB /* DeleteAnswersUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAnswersUseCase.swift; sourceTree = "<group>"; };
 		F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSlashLine.swift; sourceTree = "<group>"; };
 		F8FE2C312F20B82100B8A266 /* BaseViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModelType.swift; sourceTree = "<group>"; };
@@ -476,6 +478,8 @@
 		3A7D36EC338FF4B7178AF189 /* Insights */ = {
 			isa = PBXGroup;
 			children = (
+				F8E85AD42F751CF3002DDDCB /* PaperView.swift */,
+				F8238D132F7510DC00EF9D2C /* PrinterView.swift */,
 				F87E9E862F70268B0028D944 /* CoinIconView.swift */,
 				F87E9E842F6FF39F0028D944 /* UnreadReportHistoryRow.swift */,
 				F87E9E822F6FF3920028D944 /* ReportHistoryRow.swift */,
@@ -876,7 +880,6 @@
 			isa = PBXGroup;
 			children = (
 				F804509B2F742A7100937AE8 /* LTAppTests.swift */,
-				F80450A12F742A7200937AE8 /* RefreshTokenInterceptorTests.swift */,
 			);
 			name = Tests;
 			path = LTApp/Tests;
@@ -1189,9 +1192,11 @@
 				70E2DF7DFDA4CEB51E8A4367 /* Question.swift in Sources */,
 				F82BB7782F39C72C00F9DB49 /* UpdateStrategyUseCase.swift in Sources */,
 				870E4E9529AA560778050A4E /* QuestionCardView.swift in Sources */,
+				F8238D142F7510DC00EF9D2C /* PrinterView.swift in Sources */,
 				F8BE5EC22EE1640C009206C2 /* IconImageView.swift in Sources */,
 				EA36E3C0AF3849BFE0986450 /* QuestionCardViewModel.swift in Sources */,
 				3FFC599735C72F8E7C4C14AD /* QuestionDTO.swift in Sources */,
+				F8E85AD52F751CF3002DDDCB /* PaperView.swift in Sources */,
 				CE099D470FE88544D7A470A1 /* QuestionLibView.swift in Sources */,
 				3BF84786ED5F7DA57F2606B1 /* QuestionLibViewModel.swift in Sources */,
 				C1D4DC88211091701556DF2D /* QuestionRow.swift in Sources */,
@@ -1265,7 +1270,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F804509C2F742A7100937AE8 /* LTAppTests.swift in Sources */,
-				F80450A22F742A7200937AE8 /* RefreshTokenInterceptorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

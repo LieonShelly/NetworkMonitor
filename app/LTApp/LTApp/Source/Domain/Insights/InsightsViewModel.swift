@@ -12,7 +12,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     let dataService: any AppDataWithAuthorizationServiceful
     @MainActor @Published var weeklyReport: WeeklyReport?
     @MainActor @Published var currentIcons: WeeklyReportCurrentIcons?
-    @MainActor @Published var state: UIState = .history
+    @MainActor @Published var state: UIState = .printing
     @MainActor @Published var weeklyIcons: [ConinIconStyle] = []
     @MainActor @Published var unreadHisotrys: [WeeklyReportSummary] = []
     @MainActor @Published var readHisotrys: [WeeklyReportSummary] = []
@@ -24,6 +24,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         case readyToPrint
         case reported
         case history
+        case printing
     }
     
     enum ReadyToPrintUIState {
@@ -126,7 +127,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         guard weeklyReport == nil else { return self.state = .reported }
         let report = try await dataService.fetchWeeklyReportUseCase.execute(week: nil)
         self.weeklyReport = report
-        self.state = .reported
+        self.state = .printing
     }
     
     func fetchHistory() async throws {
