@@ -38,11 +38,12 @@ struct InsightsView: View {
                     .transition(.opacity.animation(.easeInOut))
             }
         }
+        .defaultBackground()
     }
     
     var titleView: some View {
         ZStack(alignment: .trailing) {
-            if viewModel.state != .history || viewModel.state != .printing {
+            if viewModel.state != .history, viewModel.state != .printing {
                 Button {
                     viewModel.state = .history
                 } label: {
