@@ -17,6 +17,21 @@ targets:
     settings:
       groups:
         - BaseTargetSetting
+  LTNetworkTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests
+    dependencies:
+      - target: LTNetwork
+      - framework: LTNetwork.framework
+        implicit: true
+    settings:
+      groups:
+        - BaseTargetSetting
+        - BaseTestTargetSetting
+
+
 shemes:
   LTNetwork:
     templates:

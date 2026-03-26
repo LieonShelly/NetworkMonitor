@@ -4,7 +4,6 @@
 
 import XCTest
 @testable import LTNetwork
-@testable import LTApp
 // MARK: - Default Interceptor (no overrides)
 
 /// A struct that conforms to `NetworkInterceptor` without overriding any methods.
