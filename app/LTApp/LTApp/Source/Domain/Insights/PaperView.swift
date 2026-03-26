@@ -81,6 +81,7 @@ struct PaperView: View {
             
             Text(report.reportJson.summary)
                 .textStyle(size: isSmall ? 9: 13, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, isSmall ? 10: 20)
                 .padding(.bottom, isSmall ? 8: 16)
         }
@@ -111,6 +112,7 @@ struct PaperView: View {
                 
                 Text(report.reportJson.gem.scene)
                     .textStyle(size: isSmall ? 9:  13, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, isSmall ? 10: 20)
                     .padding(.bottom, isSmall ? 8: 16)
                 
@@ -120,6 +122,7 @@ struct PaperView: View {
                 
                 Text(report.reportJson.gem.evidence)
                     .textStyle(size: isSmall ? 9: 13, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, isSmall ? 10 : 20)
                     .padding(.top, isSmall ? 2: 4)
                 
@@ -131,6 +134,7 @@ struct PaperView: View {
                 
                 Text(report.reportJson.gem.insight)
                     .textStyle(size: isSmall ? 9: 13, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, isSmall ? 10: 20)
                     .padding(.top, isSmall ? 2: 4)
                     .padding(.bottom, isSmall ? 8: 16)
@@ -171,6 +175,7 @@ struct PaperView: View {
                                 .textStyle(size: isSmall ? 12: 24, color: AppColor.color(hex: 0x000000), fontFamily: .feltTipSeniorRegular)
                             Text(section.content)
                                 .textStyle(size: isSmall ? 9: 13, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                                .fixedSize(horizontal: false, vertical: true)
                                 .padding(.top, 2)
                         }
                     }

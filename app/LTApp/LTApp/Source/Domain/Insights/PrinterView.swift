@@ -12,50 +12,38 @@ import SwiftUI
 struct PrinterView: View {
     @ObservedObject var viewModel: InsightsViewModel
     @State private var isPrinting = false
-    let bgColor = Color(red: 0.99, green: 0.98, blue: 0.96)
     
     var body: some View {
         ZStack {
-            bgColor.edgesIgnoringSafeArea(.all)
-            
-            VStack {
-                Spacer()
+            AppColor.backgroundPage.edgesIgnoringSafeArea(.all)
+            ZStack(alignment: .top) {
                 
-                ZStack(alignment: .top) {
+                Color.clear
+                    .padding(.horizontal, 24 + 32 + 20)
+                    .overlay(
+                        PaperView(viewModel: viewModel, isSmall: true)
+                            .padding(.horizontal, 24 + 32 + 20)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .offset(y: isPrinting ? -10 : -1000),
+                        alignment: .top
+                    )
+                    .clipShape(Rectangle())
                     
-                    Color.random
-                        .padding(.horizontal, 24 + 32 + 20)
-                        .overlay(
-                            PaperView(viewModel: viewModel, isSmall: true)
-                                .padding(.horizontal, 24 + 32 + 20)
-                                .offset(y: isPrinting ? -10 : -2000),
-                            alignment: .top
-                        )
-                        .clipShape(Rectangle())
-                        .offset(y: 34)
-                        .zIndex(2)
-                    
-                    PrinterBodyView()
-                        .zIndex(1)
-                }
+                    .offset(y: 34)
+                    .zIndex(2)
                 
-                Spacer()
-                
-                Button(action: {
-                    withAnimation(.easeInOut(duration: 2.0)) {
-                        isPrinting.toggle()
+                PrinterBodyView()
+                    .zIndex(1)
+                    .onFirstAppear {
+                        withAnimation(.easeInOut(duration: 2.0), completionCriteria: .logicallyComplete, {
+                            isPrinting.toggle()
+                        }, completion: {
+                            viewModel.state = .reported
+                        })
                     }
-                }) {
-                    Text(isPrinting ? "收回纸张" : "开始打印")
-                        .font(.system(size: 16, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 32)
-                        .padding(.vertical, 14)
-                        .background(Color.black)
-                        .cornerRadius(25)
-                }
-                .padding(.bottom, 50)
+                    
             }
+            .padding(.top, 43)
         }
     }
 }

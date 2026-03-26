@@ -33,19 +33,16 @@ struct InsightsView: View {
                     .padding(.top, 20)
                     .transition(.opacity.animation(.easeInOut))
             case .printing:
+                titleView
                 PrinterView(viewModel: viewModel)
-                    .onFirstAppear {
-                        Task {
-                           try? await viewModel.generateReport()
-                        }
-                    }
+                    .transition(.opacity.animation(.easeInOut))
             }
         }
     }
     
     var titleView: some View {
         ZStack(alignment: .trailing) {
-            if viewModel.state != .history {
+            if viewModel.state != .history || viewModel.state != .printing {
                 Button {
                     viewModel.state = .history
                 } label: {
