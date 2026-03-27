@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@MainActor
 final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     let dataService: any AppDataWithAuthorizationServiceful
     @MainActor @Published var weeklyReport: WeeklyReport?
@@ -16,6 +17,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var weeklyIcons: [ConinIconStyle] = []
     @MainActor @Published var unreadHisotrys: [WeeklyReportSummary] = []
     @MainActor @Published var readHisotrys: [WeeklyReportSummary] = []
+    @MainActor @Published var reportsPaginator: Paginator<WeeklyReportSummary>!
     @MainActor @Published var printUIState: ReadyToPrintUIState = .empty
     var todayQuestions: [Question] = []
     var goToQoTFlow: (() -> Void)?
@@ -35,6 +37,10 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     
     init(dataService: any AppDataWithAuthorizationServiceful,) {
         self.dataService = dataService
+        self.reportsPaginator = Paginator { [dataService] cursor in
+            let list = try await dataService.fetchWeeklyReportsListUseCase.execute(limit: 20, cursor: cursor, isRead: nil)
+            return (list.reports, list.pagination)
+        }
     }
     
     func fetchData() async throws {
@@ -104,10 +110,8 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     }
     
     func fetchHisotryData() async throws {
-        let list = try await dataService.fetchWeeklyReportsListUseCase.execute(limit: nil, cursor: nil, isRead: nil)
-         let unRead = list.reports.filter({ $0.readAt == nil })
-         let read = list.reports.filter({ $0.readAt != nil })
         let currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
+        await reportsPaginator.loadFirst()
         await MainActor.run {
             self.currentIcons = currentIcons
             self.weeklyIcons = currentIcons.icons.map { .normal($0)}
@@ -117,8 +121,8 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
                let placeholders = (0 ..< currentIcons.minAnswersToGenerateReport - normalCount - 1).map { _ in ConinIconStyle.empty }
                 self.weeklyIcons.append(contentsOf: placeholders)
             }
-            self.unreadHisotrys = unRead
-            self.readHisotrys = read
+            self.unreadHisotrys = reportsPaginator.items.filter { $0.readAt == nil }
+            self.readHisotrys = reportsPaginator.items.filter { $0.readAt != nil }
         }
     }
     
@@ -131,13 +135,18 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     }
     
     func fetchHistory() async throws {
-       let list = try await dataService.fetchWeeklyReportsListUseCase.execute(limit: nil, cursor: nil, isRead: nil)
-        let unRead = list.reports.filter({ $0.readAt == nil })
-        let read = list.reports.filter({ $0.readAt != nil })
+        await reportsPaginator.loadFirst()
         await MainActor.run {
-            self.unreadHisotrys = unRead
-            self.readHisotrys = read
+            self.unreadHisotrys = reportsPaginator.items.filter { $0.readAt == nil }
+            self.readHisotrys = reportsPaginator.items.filter { $0.readAt != nil }
         }
+    }
+    
+    @MainActor
+    func loadMoreHistory() async {
+        await reportsPaginator.loadMore()
+        self.unreadHisotrys = reportsPaginator.items.filter { $0.readAt == nil }
+        self.readHisotrys = reportsPaginator.items.filter { $0.readAt != nil }
     }
     
     @MainActor

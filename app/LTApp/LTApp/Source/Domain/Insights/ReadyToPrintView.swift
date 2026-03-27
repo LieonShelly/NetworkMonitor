@@ -14,14 +14,14 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
     enum Constants {
         static let rpPadding: CGFloat = 12 + 20 + 28
     }
-    @StateObject var viewModel: InsightsViewModel
+    @ObservedObject var viewModel: InsightsViewModel
     var processorId: String = "metal.icon.processor.v3_thickness_2"
     @State private var scene: CoinScene?
     @State private var started: Bool = false
     @State private var sceneSize: CGSize = .zero
     
     init(viewModel: InsightsViewModel) {
-        self._viewModel = StateObject(wrappedValue: viewModel)
+        self.viewModel = viewModel
     }
     
     var body: some View {

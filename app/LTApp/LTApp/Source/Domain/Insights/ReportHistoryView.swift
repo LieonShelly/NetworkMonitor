@@ -78,9 +78,19 @@ struct ReportHistoryView: View {
                                try? await viewModel.didTapHistoryItem(history)
                             }
                         }
+                        .onAppear {
+                            if history.id == viewModel.readHisotrys.last?.id {
+                                Task { await viewModel.loadMoreHistory() }
+                            }
+                        }
                 }
                
             }
         }
+        
+        LoadMoreFooter(
+            state: viewModel.reportsPaginator.loadMoreState,
+            onRetry: { await viewModel.loadMoreHistory() }
+        )
     }
 }
