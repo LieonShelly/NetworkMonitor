@@ -24,6 +24,7 @@ struct ReportHistoryView: View {
                 histroyView
             }
             .padding(.horizontal, 36)
+            .padding(.bottom, 40 + 16 * 2)
         }
         .refreshable {
             try? await viewModel.fetchHisotryData()

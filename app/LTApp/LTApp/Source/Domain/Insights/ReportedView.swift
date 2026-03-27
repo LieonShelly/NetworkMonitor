@@ -36,8 +36,9 @@ struct ReportedView: View {
                 Text("\(report.periodStart.yyyymmdd) - \(report.periodEnd.yyyymmdd)")
                     .textStyle(size: 16, color: AppColor.color(hex: 0x423D3D), fontFamily: .poppinsRegular)
             }
+            .frame(height: 32)
             .padding(.horizontal, 24)
-            .padding(.vertical, 20)
+            .padding(.bottom, 6)
         }
     }
 }

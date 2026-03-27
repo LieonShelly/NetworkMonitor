@@ -22,7 +22,6 @@ struct InsightsView: View {
                 titleView
                 ReadyToPrintView(viewModel: viewModel)
                     .padding(.bottom, 112)
-                    .padding(.top, 20)
                     .transition(.opacity.animation(.easeInOut))
             case .reported:
                 ReportedView(viewModel: viewModel)
@@ -30,7 +29,6 @@ struct InsightsView: View {
             case .history:
                 titleView
                 ReportHistoryView(viewModel: viewModel)
-                    .padding(.top, 20)
                     .transition(.opacity.animation(.easeInOut))
             case .printing:
                 titleView
@@ -69,6 +67,6 @@ struct InsightsView: View {
         }
         .frame(height: 32)
         .padding(.horizontal, 24)
-        .padding(.vertical, 12)
+        .padding(.bottom, 12)
     }
 }

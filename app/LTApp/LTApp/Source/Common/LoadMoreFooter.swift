@@ -41,7 +41,8 @@ struct LoadMoreFooter: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
+            .padding(.top, 16)
+            .padding(.bottom, 50)
         }
     }
 }
