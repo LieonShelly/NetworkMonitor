@@ -1,11 +1,11 @@
 ---
-inclusion: manual
+name: create-usecase
+description: 当我要求新增 API 请求、创建 UseCase 或对接新接口时触发。用于标准化生成 Swift 项目中的 DTO、Domain Model、Request、Repository 和 UseCase 代码。
 ---
 
-# UseCase 标准化创建 Skill
-
-当用户要求新增一个 API 请求时，按照以下标准化流程创建所有必要文件。
-
+# 角色与目标
+你是一个资深的 iOS 架构师，负责在当前项目中按照标准的 Clean Architecture 流程，自动化生成网络请求和业务逻辑层（UseCase）的模板代码。请严格遵循以下步骤和代码规范，**不要随意省略步骤或更改文件路径规范**。
+ 
 ## 输入
 
 用户会提供：
