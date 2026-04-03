@@ -5,6 +5,30 @@
 import SwiftUI
 
 public class AppFont {
+    public static let heading = AppFont.ltFont(size: 24, fontWeight: .regular)
+    public static let title = AppFont.ltFont(size: 18, fontWeight: .regular)
+    public static let section = AppFont.ltFont(size: 14, fontWeight: .regular)
+    public static let subSection = AppFont.ltFont(size: 10, fontWeight: .regular)
+    public static let subTitle = AppFont.poppins(size: 16, fontWeight: .regular)
+    public static let body = AppFont.poppins(size: 14, fontWeight: .regular)
+    public static let caption = AppFont.poppins(size: 12, fontWeight: .regular)
+    public static let annotation = AppFont.ibmPlexMono(size: 12, fontWeight: .regular)
+}
+
+extension AppFont {
+    
+    public static func ltFont(size: CGFloat, fontWeight: AppFontWeight = .regular) -> Font {
+        switch fontWeight {
+        case .regular:
+            return Font.custom(AppFontType.feltTipSeniorRegular.fontName, size: size)
+        case .medium, .bold:
+            return Font.custom(AppFontType.feltTipSeniorRegular.fontName, size: size)
+        case .heavy:
+            return Font.custom(AppFontType.feltTipSeniorRegular.fontName, size: size)
+        case .mediumItalic:
+            return Font.custom(AppFontType.poppinsMediumItalic.fontName, size: size)
+        }
+    }
     
     public static func dsDigtal(size: CGFloat, fontWeight: AppFontWeight = .regular) -> Font {
         switch fontWeight {
