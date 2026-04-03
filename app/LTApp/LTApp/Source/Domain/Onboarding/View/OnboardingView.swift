@@ -51,10 +51,9 @@ struct OnboardingView: View {
     
     var title: some View {
         HStack {
-            Text("Which aspect do you want to focus on?")
+            Text("Pick a focus area you want to start with")
                 .multilineTextAlignment(.leading)
-                .font(AppFont.feltTipSenior(size: 36))
-                .foregroundStyle(AppColor.textPrimary)
+                .textStyle(font: .heading)
             Spacer()
         }
         .padding(.top, 70)

@@ -42,6 +42,13 @@ public struct AppButton: View {
         self.onTap = onTap
     }
     
+    
+    public init(isEnabled: Bool, title: String, onTap: @escaping () -> Void) {
+        self.style = isEnabled ? .blackNormal : .greyDisabled
+        self.title = title
+        self.onTap = onTap
+    }
+    
     public var body: some View {
         Button(action: onTap) {
             RoundedRectangle(cornerRadius: 12)

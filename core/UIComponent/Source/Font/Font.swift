@@ -14,7 +14,29 @@ public enum AppFont {
     case caption
     case annotation
     
-    var font: Font {
+    public var font: Font {
+        switch self {
+        case .heading:
+            AppFont.ltFont(size: 24, fontWeight: .regular)
+        case .title:
+            AppFont.ltFont(size: 18, fontWeight: .regular)
+        case .section:
+            AppFont.ltFont(size: 14, fontWeight: .regular)
+        case .subSection:
+            AppFont.ltFont(size: 10, fontWeight: .regular)
+        case .subTitle:
+            AppFont.poppins(size: 16, fontWeight: .regular)
+        case .body:
+            AppFont.poppins(size: 14, fontWeight: .regular)
+        case .caption:
+            AppFont.poppins(size: 12, fontWeight: .regular)
+        case .annotation:
+            AppFont.ibmPlexMono(size: 12, fontWeight: .regular)
+        }
+    }
+    
+    
+    public var uifont: UIFont {
         switch self {
         case .heading:
             AppFont.ltFont(size: 24, fontWeight: .regular)
@@ -164,6 +186,48 @@ extension AppFont {
         }
     }
     
+    public static func ltFont(size: CGFloat, fontWeight: AppFontWeight = .regular) -> UIFont {
+        switch fontWeight {
+        case .regular:
+            return UIFont(descriptor: .init(name: AppFontType.littleThing.fontName, size: size), size: size)
+        case .medium, .bold:
+            return UIFont(descriptor: .init(name: AppFontType.littleThing.fontName, size: size), size: size)
+        case .heavy:
+            return UIFont(descriptor: .init(name: AppFontType.littleThing.fontName, size: size), size: size)
+        case .mediumItalic:
+            return UIFont(descriptor: .init(name: AppFontType.littleThing.fontName, size: size), size: size)
+        }
+    }
+    
+    
+    public static func poppins(size: CGFloat, fontWeight: AppFontWeight = .regular) -> UIFont {
+        switch fontWeight {
+        case .regular:
+            return UIFont(descriptor: .init(name: AppFontType.poppinsRegular.fontName, size: size), size: size)
+        case .medium, .bold:
+            return UIFont(descriptor: .init(name: AppFontType.poppinsRegular.fontName, size: size), size: size)
+        case .heavy:
+            return UIFont(descriptor: .init(name: AppFontType.poppinsRegular.fontName, size: size), size: size)
+        case .mediumItalic:
+            return UIFont(descriptor: .init(name: AppFontType.poppinsMediumItalic.fontName, size: size), size: size)
+        }
+    }
+    
+    
+    public static func ibmPlexMono(size: CGFloat, fontWeight: AppFontWeight = .regular) -> UIFont {
+        switch fontWeight {
+        case .regular:
+            return UIFont(descriptor: .init(name: AppFontType.ibmPlexMonoRegular.fontName, size: size), size: size)
+        case .medium:
+            return UIFont(descriptor: .init(name: AppFontType.ibmPlexMonoRegular.fontName, size: size), size: size)
+        case .bold:
+            return UIFont(descriptor: .init(name: AppFontType.ibmPlexMonoRegular.fontName, size: size), size: size)
+        case .heavy:
+            return UIFont(descriptor: .init(name: AppFontType.ibmPlexMonoRegular.fontName, size: size), size: size)
+        case .mediumItalic:
+            return UIFont(descriptor: .init(name: AppFontType.ibmPlexMonoRegular.fontName, size: size), size: size)
+        }
+    }
     
     public static func registerFonts() throws {
         try AppFontType.allCases.forEach { try UIFont.register(from: resourceUrl(fontType: $0)) }
