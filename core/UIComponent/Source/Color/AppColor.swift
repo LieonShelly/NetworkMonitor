@@ -8,7 +8,15 @@ public enum AppColor {
     public static let textPrimary = Color("textPrimary", bundle: UIComponentsModule.resourceBundle)
     case textSecondary
     public  static let backgroundPage = Color("backgroundPage", bundle: UIComponentsModule.resourceBundle)
-    public static let white = Color.white
+    public static let white = AppColor.color(hex: 0xFFFFFF)
+    public static let black = AppColor.color(hex: 0x000000)
+    public static let greyNeutral = AppColor.color(hex: 0xCDCDCD)
+    public static let greyDark = AppColor.color(hex: 0x323232)
+    public static let oat = AppColor.color(hex: 0xFFFDF8)
+    public static let grey = AppColor.color(hex: 0xB8B8B8)
+    public static let greyLight = AppColor.color(hex: 0xEBEBEB)
+    public static let greyMedium = AppColor.color(hex: 0x6F6F6F)
+    
     
     public static func color(hex: UInt32, alpha: CGFloat = 1) -> Color {
         Color(UIColor(hex: hex, alpha: alpha))
