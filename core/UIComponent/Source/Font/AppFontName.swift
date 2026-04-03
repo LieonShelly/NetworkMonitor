@@ -83,7 +83,7 @@ public enum AppFontType: String, CaseIterable {
         case .dsDigital:
             "DS-Digital"
         case .littleThing:
-            "TheLittleThings02"
+            "TheLittleThings02Regular"
         }
     }
 }

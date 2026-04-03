@@ -5,12 +5,39 @@
 import SwiftUI
 
 public struct AppButton: View {
-    let isEnabled: Bool
+    public enum Style {
+        case blackNormal
+        case greyNormal
+        case greyDisabled
+        
+        var background: Color {
+            switch self {
+            case .blackNormal:
+                return AppColor.black
+            case .greyNormal:
+                return AppColor.greyLight
+            case .greyDisabled:
+                return AppColor.greyLight
+            }
+        }
+        
+        var foreground: Color {
+            switch self {
+            case .blackNormal:
+                return AppColor.white
+            case .greyNormal:
+                return AppColor.greyDark
+            case .greyDisabled:
+                return AppColor.greyMedium
+            }
+        }
+    }
+    let style: Style
     let title: String
     let onTap: () -> Void
     
-    public init(isEnabled: Bool, title: String, onTap: @escaping () -> Void) {
-        self.isEnabled = isEnabled
+    public init(style: AppButton.Style, title: String, onTap: @escaping () -> Void) {
+        self.style = style
         self.title = title
         self.onTap = onTap
     }
@@ -18,15 +45,14 @@ public struct AppButton: View {
     public var body: some View {
         Button(action: onTap) {
             RoundedRectangle(cornerRadius: 12)
-                .fill(!isEnabled ? AppColor.color(hex: 0xD9D9D9) : AppColor.textPrimary)
+                .fill(style.background)
                 .overlay {
                     Text(title)
-                        .font(AppFont.feltTipSenior(size: 32, fontWeight: .regular))
-                        .foregroundStyle(isEnabled ? AppColor.white : AppColor.textPrimary )
+                        .textStyle(font: .heading, color: style.foreground)
                 }
         }
-        .disabled(!isEnabled)
-        .animation(.easeInOut, value: isEnabled)
+        .disabled(style == .greyDisabled)
+        .animation(.easeInOut, value: style)
     }
 }
 
@@ -44,7 +70,7 @@ public struct DefaultAppButton: View {
     }
     
     public var body: some View {
-        AppButton(isEnabled: isEnabled, title: title, onTap: onTap)
+        AppButton(style: isEnabled ? .blackNormal : .greyDisabled, title: title, onTap: onTap)
             .frame(height: 62)
     }
 }

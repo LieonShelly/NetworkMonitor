@@ -161,6 +161,7 @@
 		F87E9E872F70268B0028D944 /* CoinIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E862F70268B0028D944 /* CoinIconView.swift */; };
 		F88E5FFE060A4CDAD0021795 /* UniversalResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FF8161A8C18829BAA0967 /* UniversalResponse.swift */; };
 		F8A0C81E2F2B50C7005D231D /* LTAppFeatureConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A0C81D2F2B50C7005D231D /* LTAppFeatureConfig.swift */; };
+		F8A19E442F801D670087DC63 /* FixedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A19E432F801D660087DC63 /* FixedHeader.swift */; };
 		F8A22C4C3D1795B392850452 /* FirstQuestionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5700C32AD3048D4D735EFB /* FirstQuestionViewModel.swift */; };
 		F8BE5EC22EE1640C009206C2 /* IconImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BE5EC12EE1640B009206C2 /* IconImageView.swift */; };
 		F8C07D0E2EF13C17001C5E84 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F8C07D0D2EF13C17001C5E84 /* Kingfisher */; };
@@ -376,6 +377,7 @@
 		F87E9E842F6FF39F0028D944 /* UnreadReportHistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadReportHistoryRow.swift; sourceTree = "<group>"; };
 		F87E9E862F70268B0028D944 /* CoinIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinIconView.swift; sourceTree = "<group>"; };
 		F8A0C81D2F2B50C7005D231D /* LTAppFeatureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTAppFeatureConfig.swift; sourceTree = "<group>"; };
+		F8A19E432F801D660087DC63 /* FixedHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedHeader.swift; sourceTree = "<group>"; };
 		F8BE5EC12EE1640B009206C2 /* IconImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImageView.swift; sourceTree = "<group>"; };
 		F8C266512EF285EE0000F5D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8C266532EF286030000F5D6 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -942,6 +944,7 @@
 		F823CE532F762C1F00C95672 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				F8A19E432F801D660087DC63 /* FixedHeader.swift */,
 				F823CE512F762C1F00C95672 /* LoadMoreFooter.swift */,
 				F823CE522F762C1F00C95672 /* Paginator.swift */,
 			);
@@ -1266,6 +1269,7 @@
 				F804C45B2F57DF7B00DCC904 /* ReportRepository.swift in Sources */,
 				D5F6161D355BD120DEF44CD1 /* UserHomeView.swift in Sources */,
 				FF7C7736C42D858DEA6687ED /* UserManagementServiceful.swift in Sources */,
+				F8A19E442F801D670087DC63 /* FixedHeader.swift in Sources */,
 				5A9B569CECC17045B80790DD /* UserRow.swift in Sources */,
 				F818A3BB2F6A803800C475E5 /* WeeklyReportCurrentIconsDTO.swift in Sources */,
 				F82BB7812F39DFED00F9DB49 /* FetchQodStrategyOptionsUseCase.swift in Sources */,
