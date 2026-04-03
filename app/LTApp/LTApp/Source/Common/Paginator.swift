@@ -77,3 +77,132 @@ final class Paginator<T: Sendable>: ObservableObject {
         }
     }
 }
+
+import SwiftUI
+import UIComponent
+
+public struct FixedHeader<Trailing: View>: View {
+    let title: String
+    let size: HeaderSize
+    var backAction: (() -> Void)? = nil
+    @ViewBuilder let trailing: (() -> Trailing)
+    
+    public init(title: String,
+                size: HeaderSize = .plain,
+                backAction: (() -> Void)? = nil,
+                @ViewBuilder trailing:  @escaping (() -> Trailing) = { EmptyView() } ) {
+        self.title = title
+        self.backAction = backAction
+        self.trailing = trailing
+        self.size = size
+    }
+    
+    public enum HeaderSize {
+        case plain
+        case large
+        
+        var height: CGFloat {
+            switch self {
+            case .plain:
+                return 72
+            case .large:
+                return 100
+            }
+        }
+    }
+    
+    public var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            HStack {
+                if let backAction {
+                    backBtn.onTapGesture {
+                        backAction()
+                    }
+                }
+            }
+            .frame(width: 32, height: 32)
+            
+            titleView
+            
+            HStack {
+                trailing()
+            }
+            .frame(width: 32, height: 32)
+           
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 20)
+        .padding(.horizontal, 24)
+        .background(AppColor.oat)
+    }
+    
+    var backBtn: some View {
+        Image(.back)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 32, height: 32)
+    }
+    
+    var titleView: some View {
+        Text(title)
+            .textStyle(font: .heading)
+            .lineSpacing(0)
+            .frame(maxWidth: .infinity)
+            .background(Color.random)
+    }
+}
+
+struct FixedHeaderPage: View {
+    var body: some View {
+        VStack {
+            FixedHeader(title: "header")
+            FixedHeader(title: "header") {}
+            
+            FixedHeader(title: "header", backAction: { }, trailing: {
+                Image(.library)
+                    .resizable()
+                    .renderingMode(.template)
+                    .foregroundStyle(Color.black)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 32, height: 32)
+            })
+            
+            FixedHeader(title: "What is one little thing that make you happy today?", size: .large)
+            
+            FixedHeader(title: "What is one little thing that make you happy today?", size: .large) {
+                
+            }
+            FixedHeader(title: "What is one little thing that make you happy today?",
+                        size: .large,
+                        backAction: {},
+                        trailing: {
+                Image(.library)
+                    .resizable()
+                    .renderingMode(.template)
+                    .foregroundStyle(Color.black)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 32, height: 32)
+            })
+            
+            FixedHeader(title: "What is one little thing?", size: .large)
+            
+            FixedHeader(title: "What is one little thing?", size: .large) {
+                
+            }
+            FixedHeader(title: "What is one little thing?",
+                        size: .large,
+                        backAction: {},
+                        trailing: {
+                Image(.library)
+                    .resizable()
+                    .renderingMode(.template)
+                    .foregroundStyle(Color.black)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 32, height: 32)
+            })
+
+        }
+        .background(Color.random)
+        
+    }
+}

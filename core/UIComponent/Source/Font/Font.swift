@@ -4,15 +4,36 @@
 
 import SwiftUI
 
-public class AppFont {
-    public static let heading = AppFont.ltFont(size: 24, fontWeight: .regular)
-    public static let title = AppFont.ltFont(size: 18, fontWeight: .regular)
-    public static let section = AppFont.ltFont(size: 14, fontWeight: .regular)
-    public static let subSection = AppFont.ltFont(size: 10, fontWeight: .regular)
-    public static let subTitle = AppFont.poppins(size: 16, fontWeight: .regular)
-    public static let body = AppFont.poppins(size: 14, fontWeight: .regular)
-    public static let caption = AppFont.poppins(size: 12, fontWeight: .regular)
-    public static let annotation = AppFont.ibmPlexMono(size: 12, fontWeight: .regular)
+public enum AppFont {
+    case heading
+    case title
+    case section
+    case subSection
+    case subTitle
+    case body
+    case caption
+    case annotation
+    
+    var font: Font {
+        switch self {
+        case .heading:
+            AppFont.ltFont(size: 24, fontWeight: .regular)
+        case .title:
+            AppFont.ltFont(size: 18, fontWeight: .regular)
+        case .section:
+            AppFont.ltFont(size: 14, fontWeight: .regular)
+        case .subSection:
+            AppFont.ltFont(size: 10, fontWeight: .regular)
+        case .subTitle:
+            AppFont.poppins(size: 16, fontWeight: .regular)
+        case .body:
+            AppFont.poppins(size: 14, fontWeight: .regular)
+        case .caption:
+            AppFont.poppins(size: 12, fontWeight: .regular)
+        case .annotation:
+            AppFont.ibmPlexMono(size: 12, fontWeight: .regular)
+        }
+    }
 }
 
 extension AppFont {
@@ -20,13 +41,13 @@ extension AppFont {
     public static func ltFont(size: CGFloat, fontWeight: AppFontWeight = .regular) -> Font {
         switch fontWeight {
         case .regular:
-            return Font.custom(AppFontType.feltTipSeniorRegular.fontName, size: size)
+            return Font.custom(AppFontType.littleThing.fontName, size: size)
         case .medium, .bold:
-            return Font.custom(AppFontType.feltTipSeniorRegular.fontName, size: size)
+            return Font.custom(AppFontType.littleThing.fontName, size: size)
         case .heavy:
-            return Font.custom(AppFontType.feltTipSeniorRegular.fontName, size: size)
+            return Font.custom(AppFontType.littleThing.fontName, size: size)
         case .mediumItalic:
-            return Font.custom(AppFontType.poppinsMediumItalic.fontName, size: size)
+            return Font.custom(AppFontType.littleThing.fontName, size: size)
         }
     }
     

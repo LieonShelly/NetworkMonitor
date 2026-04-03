@@ -28,7 +28,8 @@ struct LTAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            coordinator.rootView()
+//            coordinator.rootView()
+            FixedHeaderPage()
         }
         .environmentObject(homeCoordinator)
         .environmentObject(coordinator)

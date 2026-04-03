@@ -7,6 +7,14 @@ import SwiftUI
 
 public extension View {
     func textStyle(
+        font: AppFont,
+        color: Color = AppColor.textPrimary
+    )  -> some View {
+        return self.foregroundStyle(color)
+            .font(font.font)
+    }
+    
+    func textStyle(
         size: CGFloat,
         color: Color = AppColor.textPrimary,
         fontFamily: AppFontType = .vividlyRegular
@@ -39,6 +47,9 @@ public extension View {
         case .dsDigital:
             return self.foregroundStyle(color)
                 .font(AppFont.dsDigtal(size: size, fontWeight: .regular))
+        case .littleThing:
+            return self.foregroundStyle(color)
+                .font(AppFont.ltFont(size: size, fontWeight: .regular))
         }
     }
 }

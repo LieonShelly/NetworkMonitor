@@ -15,6 +15,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         try! AppFont.registerFonts()
+        print(UIFont.familyNames)
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
         return true
