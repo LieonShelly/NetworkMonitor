@@ -56,7 +56,7 @@ struct OnboardingNotificationView: View {
     
     var headerView: some View {
         FixedHeader {
-            Text(Date().monthDayDesc)
+            Text(Date().dayMonthDesc)
                 .textStyle(font: .section, color: AppColor.color(hex: 0x423D3D))
         }
         .padding(.horizontal, 24)

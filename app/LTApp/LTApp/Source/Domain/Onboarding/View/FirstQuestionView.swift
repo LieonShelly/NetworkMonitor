@@ -64,7 +64,7 @@ struct FirstQuestionView: View {
     
     func dateView() -> some View {
         FixedHeader {
-            Text(Date().monthDayDesc)
+            Text(Date().dayMonthDesc)
                 .textStyle(font: .section, color: AppColor.color(hex: 0x423D3D))
         } backAction: {
             navigator.pop()
