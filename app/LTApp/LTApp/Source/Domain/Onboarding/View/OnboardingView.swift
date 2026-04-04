@@ -5,7 +5,6 @@
 import SwiftUI
 import UIComponent
 
-
 struct OnboardingView: View {
     enum PageState {
         case onboarding
@@ -43,7 +42,6 @@ struct OnboardingView: View {
         VStack(spacing: .zero) {
             title
             topicList
-            Spacer()
             bottomBtn
         }
         .transition(.asymmetric(insertion: .identity, removal: .opacity))
@@ -61,22 +59,23 @@ struct OnboardingView: View {
     }
     
     var topicList: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(spacing: 16) {
-                ForEach(viewModel.list, id: \.id) { category in
-                    DashLineButton(
-                        text: category.name ,
-                        isSelected: selectedCategory == category) {
-                        selectedCategory = category
+        VStack {
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 0) {
+                    ForEach(0 ..< viewModel.list.count, id: \.self) { index in
+                        let category = viewModel.list[index]
+                        buttton(
+                            category: category,
+                            selected: selectedCategory == category,
+                            index: index
+                        )
                     }
-                        .padding(2)
-                    .frame(height: 112)
                 }
             }
+            .frame(height: 110 * 4)
+            .padding(.horizontal, 27)
         }
-        .padding(.horizontal, 32)
-        .padding(.vertical, 61)
-        
+        .frame(maxHeight: .infinity)
     }
     
     var bottomBtn: some View {
@@ -88,6 +87,42 @@ struct OnboardingView: View {
                 }
             }
             .padding(.horizontal, 32)
+    }
+    
+    @ViewBuilder
+    func buttton(category: Category, selected: Bool, index: Int) -> some View {
+        let degree: CGFloat =  CGFloat(index).truncatingRemainder(dividingBy: 2) == 0 ? -2 : 2
+        Button {
+            selectedCategory = category
+        } label: {
+            HStack {
+                HStack(spacing: .zero) {
+                    SVGImageView(url: category.imageUrl, renderMode: .template)
+                        .foregroundStyle(selected ? AppColor.white: AppColor.black)
+                        .frame(width: 32, height: 32)
+                    Text(category.name)
+                        .textStyle(font: .title, color: selected ? AppColor.white : AppColor.black)
+                        .padding(.leading, 12)
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 80)
+                .background {
+                    if selected {
+                        Capsule().fill(AppColor.black)
+                    } else {
+                        HandDrawnCapsule()
+                            .stroke(
+                                AppColor.black,
+                                style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round)
+                            )
+                    }
+                  
+                }
+                .rotationEffect(.degrees(degree))
+            }
+            .padding(.horizontal, 5)
+            .frame(height: 110)
+        }
     }
 }
 

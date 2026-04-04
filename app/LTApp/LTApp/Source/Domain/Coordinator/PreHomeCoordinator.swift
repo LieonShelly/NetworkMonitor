@@ -25,7 +25,7 @@ final class PreHomeCoordinator: ObservableObject, Coordinator, @unchecked Sendab
     }
     
     func start() {
-        path.append(PreHomeRoute.login)
+        path.append(PreHomeRoute.onborading)
         appDataService.onboardingAccessUseCase.reset()
     }
     

@@ -39,6 +39,7 @@
 		F87E9E8B2F703A1E0028D944 /* DS-DIGI.TTF in Resources */ = {isa = PBXBuildFile; fileRef = F87E9E8A2F703A1E0028D944 /* DS-DIGI.TTF */; };
 		F8B1D04F2EFD2BE300503ABF /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F8B1D04E2EFD2BE300503ABF /* Poppins-MediumItalic.ttf */; };
 		F8BE5EC42EE16A13009206C2 /* OnFirstAppearViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BE5EC32EE16A13009206C2 /* OnFirstAppearViewModifier.swift */; };
+		F8DC220C2F80B628000EA4F5 /* HandDrawnCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DC220B2F80B628000EA4F5 /* HandDrawnCapsule.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +76,7 @@
 		F87E9E8A2F703A1E0028D944 /* DS-DIGI.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DS-DIGI.TTF"; sourceTree = "<group>"; };
 		F8B1D04E2EFD2BE300503ABF /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
 		F8BE5EC32EE16A13009206C2 /* OnFirstAppearViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnFirstAppearViewModifier.swift; sourceTree = "<group>"; };
+		F8DC220B2F80B628000EA4F5 /* HandDrawnCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandDrawnCapsule.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 		E31927E42E4F54FFEE5D9121 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				F8DC220B2F80B628000EA4F5 /* HandDrawnCapsule.swift */,
 				F81E121A2F694E3900DAD57B /* Trapezoid.swift */,
 				F8BE5EC32EE16A13009206C2 /* OnFirstAppearViewModifier.swift */,
 				F81BBF162ED2FA2300D6392C /* LoadingView.swift */,
@@ -266,6 +269,7 @@
 				12F78E66B560E003F65BFF60 /* TextStyle.swift in Sources */,
 				17C9C95D9DFAC93D9B4FE3DB /* UIComponentModule.swift in Sources */,
 				02F0A5606E97E1083140746A /* UIComponentsModule.swift in Sources */,
+				F8DC220C2F80B628000EA4F5 /* HandDrawnCapsule.swift in Sources */,
 				182470EF6023B79F875BC0BA /* WavyLine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
