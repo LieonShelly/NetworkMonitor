@@ -14,6 +14,7 @@ struct WelcomeView: View {
     @State var currentPage: CurrentPage = .first
     @State var showPage: Bool = false
     @State var showSecondPageText: Bool = false
+    @State var showGoBtn: Bool = false
     @EnvironmentObject var coordinator: PreHomeCoordinator
     @StateObject var viewModel: WelcomeViewModel
     
@@ -72,7 +73,10 @@ struct WelcomeView: View {
                 AnimatedMultilineText(
                     text: "answer your first question to get started",
                     font: AppFont.heading.uifont,
-                    width: 305
+                    width: 305,
+                    animationCompleted: {
+                        showGoBtn = true
+                    }
                 )
                     .frame(width: 305)
             }
@@ -82,6 +86,7 @@ struct WelcomeView: View {
                 coordinator.push(PreHomeRoute.firstQuestion(viewModel.category))
             }
             .padding(.horizontal, 24)
+            .opacity(showGoBtn ? 1 : 0)
         }
         .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .identity))
        
