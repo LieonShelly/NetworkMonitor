@@ -26,8 +26,12 @@ struct OnboardingView: View {
             case .onboarding:
                 onboardingContent
             case .welcome:
-                if let selectedCategory {
-                    coordinator.build(PreHomeRoute.welcome(selectedCategory))
+                if let selectedCategory,
+                let welcomeView = coordinator.build(PreHomeRoute.welcome(selectedCategory)) {
+                    welcomeView
+                        .onDisappear {
+                            self.currentPage = .onboarding
+                        }
                 }
             }
         }

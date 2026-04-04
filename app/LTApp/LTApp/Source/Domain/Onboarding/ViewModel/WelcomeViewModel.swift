@@ -11,5 +11,4 @@ final class WelcomeViewModel: ObservableObject, @unchecked Sendable {
     init(category: Category) {
         self.category = category
     }
-    
 }

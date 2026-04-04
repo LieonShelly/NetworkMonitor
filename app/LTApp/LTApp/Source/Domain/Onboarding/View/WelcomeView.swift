@@ -15,10 +15,10 @@ struct WelcomeView: View {
     @State var showPage: Bool = false
     @State var showSecondPageText: Bool = false
     @EnvironmentObject var coordinator: PreHomeCoordinator
-    @ObservedObject var viewModel: WelcomeViewModel
+    @StateObject var viewModel: WelcomeViewModel
     
     init(viewModel: WelcomeViewModel) {
-        self.viewModel = viewModel
+        self._viewModel = .init(wrappedValue: viewModel)
     }
     
     var body: some View {
