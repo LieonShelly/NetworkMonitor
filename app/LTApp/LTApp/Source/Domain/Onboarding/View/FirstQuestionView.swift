@@ -12,6 +12,12 @@ struct FirstQuestionView: View {
         case final
         case answer
     }
+    enum Constants {
+        static let headerH: CGFloat = 72
+        static let spacing: CGFloat = 20
+        static let questionHPercent: CGFloat = 0.6
+        static let answerHPercent: CGFloat = 0.4
+    }
     @EnvironmentObject var coordinaor: AppCoordinator
     @ObservedObject var viewModel: FirstQuestionViewModel
     @State var currentPage: CurrentPage = .answer
@@ -60,7 +66,7 @@ struct FirstQuestionView: View {
         .matchedGeometryEffect(id: "title", in: animation, properties: .position)
     }
     
-    var dateView: some View {
+    func dateView() -> some View {
         HStack {
             Spacer()
             Text(Date().monthDayDesc)
@@ -68,22 +74,24 @@ struct FirstQuestionView: View {
                 .padding(.trailing, 32)
         }
         .frame(height: 72)
-        .background(Color.random)
     }
     
-    var questionCardView: some View {
+    @ViewBuilder
+    func questionCardView(parent: GeometryProxy) -> some View {
+        let idleH = max((parent.size.height - Constants.spacing) * Constants.questionHPercent, 0)
+        
         VStack {
             Text("#\(viewModel.category.name)")
                 .textStyle(font: .section, color: AppColor.color(hex: 0xADA35F))
                 .padding(.top, 10)
             Spacer()
         }
-        .frame(height: 350)
+        .frame(height: idleH)
         .frame(maxWidth: .infinity)
         .background {
             RoundedRectangle(cornerRadius: 12)
                 .fill(AppColor.color(hex: 0xFFFAEE))
-                .shadow(color: AppColor.color(hex: 0xDFD7C440).opacity(0.25), radius: 4, x: 4, y: 4)
+                .shadow(color: AppColor.color(hex: 0xDFD7C4).opacity(0.25), radius: 4, x: 4, y: 4)
         }
         .overlay {
             Text(viewModel.question?.title ?? "")
@@ -93,46 +101,19 @@ struct FirstQuestionView: View {
        
     }
     
-    var topicTitleSubmittedView: some View {
-        HStack(spacing: 6) {
-            Text(viewModel.category.name)
-                .textStyle(size: 14, color: .white, fontFamily: .sfProBold)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 8)
-        .background(AppColor.textPrimary)
-        .cornerRadius(16, corners: .allCorners)
-        .padding(.top, 16)
-        .matchedGeometryEffect(id: "category", in: animation, properties: .position)
-    }
-    
-    var questionView: some View {
-        HStack {
-            Text(viewModel.question?.title ?? "")
-                .textStyle(size: 32)
-                .fixedSize(horizontal: false, vertical: true)
-            Spacer()
-        }
-        .padding(.top, 20)
-        .padding(.horizontal, 24)
-        .matchedGeometryEffect(id: "question", in: animation, properties: .position)
-    }
-    
-    var answerInputView: some View {
+    @ViewBuilder
+    func answerInputView(parent: GeometryProxy) -> some View {
+       let idleH = max((parent.size.height - Constants.spacing) * Constants.answerHPercent, 0)
         AnswerInputView(
             text: $viewModel.answerText,
             placeholder: "Write anything...."
         )
-        .padding(.horizontal, 24)
-        .frame(height: keyboardObserver.keyboardShown ? 150 : 286)
-        .padding(.top, 35)
-        .padding(.bottom, 76)
-        .matchedGeometryEffect(id: "answer", in: animation, properties: .position)
+        .frame(height: keyboardObserver.keyboardShown ? 150 : idleH)
         
     }
     
     var okBtn: some View {
-        AppButton(isEnabled: !viewModel.answerText.isEmpty, title: "oK") {
+        DefaultAppButton(isEnabled: !viewModel.answerText.isEmpty, title: "Create") {
             Task.detached {
                 do {
                     try await viewModel.submit()
@@ -142,14 +123,18 @@ struct FirstQuestionView: View {
                 }
             }
         }
-        .frame(height: 62)
+        .padding(.top, Constants.spacing)
     }
     
     var answerForm: some View {
         VStack(spacing: .zero) {
-            dateView
-            questionCardView
-            answerInputView
+            dateView()
+            GeometryReader { proxy in
+                VStack(spacing: Constants.spacing) {
+                    questionCardView(parent: proxy)
+                    answerInputView(parent: proxy)
+                }
+            }
             okBtn
         }
         .contentShape(.rect)
@@ -161,7 +146,6 @@ struct FirstQuestionView: View {
     
     var submittedForm: some View {
         VStack(spacing: .zero) {
-            topicTitleSubmittedView
             ImageFramesAnimationView(aniamationData: .dripple)
                 .padding(.top, 100)
                 .opacity(0)
