@@ -60,6 +60,39 @@ struct FirstQuestionView: View {
         .matchedGeometryEffect(id: "title", in: animation, properties: .position)
     }
     
+    var dateView: some View {
+        HStack {
+            Spacer()
+            Text(Date().monthDayDesc)
+                .textStyle(font: .section, color: AppColor.color(hex: 0x423D3D))
+                .padding(.trailing, 32)
+        }
+        .frame(height: 72)
+        .background(Color.random)
+    }
+    
+    var questionCardView: some View {
+        VStack {
+            Text("#\(viewModel.category.name)")
+                .textStyle(font: .section, color: AppColor.color(hex: 0xADA35F))
+                .padding(.top, 10)
+            Spacer()
+        }
+        .frame(height: 350)
+        .frame(maxWidth: .infinity)
+        .background {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(AppColor.color(hex: 0xFFFAEE))
+                .shadow(color: AppColor.color(hex: 0xDFD7C440).opacity(0.25), radius: 4, x: 4, y: 4)
+        }
+        .overlay {
+            Text(viewModel.question?.title ?? "")
+                .textStyle(font: .heading)
+                .padding(.horizontal, 10)
+        }
+       
+    }
+    
     var topicTitleSubmittedView: some View {
         HStack(spacing: 6) {
             Text(viewModel.category.name)
@@ -110,18 +143,17 @@ struct FirstQuestionView: View {
             }
         }
         .frame(height: 62)
-        .padding(.horizontal, 32)
     }
     
     var answerForm: some View {
         VStack(spacing: .zero) {
-            topicTitleView
-            Spacer()
-            questionView
+            dateView
+            questionCardView
             answerInputView
             okBtn
         }
         .contentShape(.rect)
+        .padding(.horizontal, 24)
         .onTapGesture {
             hideKeyboard()
         }
