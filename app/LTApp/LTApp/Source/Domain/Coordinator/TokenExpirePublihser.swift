@@ -25,7 +25,7 @@ class RootViewProvider: RootViewProviding {
         self.tokenProvider = tokenProvider
         self.tokenExpired = tokenExpired
         if tokenProvider.refreshToken != nil {
-            root = .init(.home(.init(overLayData: nil)))
+            root = .init(.home(.init()))
         } else {
             root = .init(.preHome)
         }

@@ -34,9 +34,6 @@ struct TodayAnswerSubmittedView: View {
             closeBtn
         }
         .animation(.easeInOut, value: opacity)
-        .task {
-            homeCoordinator.dripleTransitionData?.showCalendarDripple = false
-        }
     }
     
     @ViewBuilder var imageAnswerView: some View {
@@ -66,7 +63,6 @@ struct TodayAnswerSubmittedView: View {
             .textStyle(size: 32, fontFamily: .vividlyRegular)
             .padding(.horizontal, 16)
             .opacity(opacity)
-            .matchedGeometryEffect(id: "question", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
         
     }
     
@@ -85,7 +81,6 @@ struct TodayAnswerSubmittedView: View {
         )
         .padding(.horizontal, 24)
         .opacity(opacity)
-        .matchedGeometryEffect(id: "answer", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
     }
     
     @ViewBuilder
@@ -113,9 +108,6 @@ struct TodayAnswerSubmittedView: View {
                 }
                 withAnimation(.easeIn(duration: 0.5)) {
                     showBtn = false
-                }
-                withAnimation(.easeIn(duration: 0.5)) {
-                    homeCoordinator.dripleTransitionData?.showCalendarDripple = true
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 + 0.25, execute: {
                     dismissed()

@@ -23,4 +23,8 @@ class NotificationViewModel: ObservableObject, @unchecked Sendable {
     func didOpen() async {
         await appService.notificationFlagUseCase.save()
     }
+    
+    deinit {
+        debugPrint("NotificationViewModel-deinit")
+    }
 }

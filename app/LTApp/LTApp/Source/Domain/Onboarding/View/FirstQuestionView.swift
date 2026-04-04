@@ -8,7 +8,6 @@ import UIComponent
 
 struct FirstQuestionView: View {
     enum CurrentPage {
-        case submitted
         case final
         case answer
     }
@@ -33,10 +32,6 @@ struct FirstQuestionView: View {
     var body: some View {
         ZStack {
             switch currentPage {
-            case .submitted:
-                submittedForm
-                    .defaultBackground()
-                    .transition(.opacity)
             case .final:
                 EmptyView()
             case .answer:
@@ -146,66 +141,11 @@ struct FirstQuestionView: View {
         }
     }
     
-    var submittedForm: some View {
-        VStack(spacing: .zero) {
-            ImageFramesAnimationView(aniamationData: .dripple)
-                .padding(.top, 100)
-                .opacity(0)
-                .transition(.opacity)
-            
-            HStack {
-                Text("\(viewModel.question?.title ?? "")")
-                    .textStyle(size: 24)
-                    .lineLimit(10)
-                Spacer()
-            }
-            .padding(.horizontal, 24)
-            .padding(.top, 59)
-            .matchedGeometryEffect(id: "question", in: animation, properties: .position)
-            
-            HStack {
-                Text(viewModel.answerText)
-                    .textStyle(size: 12, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
-                    .padding(.init(top: 22, leading: 18, bottom: 22, trailing: 18))
-                Spacer()
-            }
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(style: .init(lineWidth: 1))
-                    .foregroundStyle(AppColor.color(hex: 0xEBEBEB))
-            )
-            .padding(.horizontal, 24)
-            .padding(.vertical, 8)
-            .matchedGeometryEffect(id: "answer", in: animation, properties: .position)
-            
-            if currentPage == .submitted {
-                HStack {
-                    Text(viewModel.createAt?.formatDateToEnglishStyle() ?? "June 16, 2025")
-                        .textStyle(size: 10, color: AppColor.color(hex: 0x9e9e9e), fontFamily: .sfProRegular)
-                    Spacer()
-                }
-                .padding(.horizontal, 24)
-                .transition(.opacity)
-            }
-            Spacer()
-        }
-    }
-    
     
     func showSubmittedForm() async throws {
-        withAnimation(.easeInOut(duration: 0.5)) {
-            currentPage = .submitted
-        }
         viewModel.disableOnboardingFlow()
-        try await Task.sleep(for: .milliseconds(700))
         coordinaor.changeRoot(
-            .home(.init(
-                overLayData: .init(
-                    category: viewModel.category.name,
-                    question: viewModel.question?.title ?? "",
-                    answerText: viewModel.answerText,
-                    createAt: viewModel.createAt ?? Date())
-            ))
+            .home(.init(showNotificationView: true))
         )
     }
 }

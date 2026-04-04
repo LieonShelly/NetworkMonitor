@@ -5,10 +5,8 @@
 import Combine
 
 final class AppHomeRootViewModel: ObservableObject, @unchecked Sendable {
-    @Published var overLayData: FirstQuestionSubmittedData?
-    
-    init(overLayData: FirstQuestionSubmittedData?) {
-        self.overLayData = overLayData
+    @Published var showNotificationView: Bool
+    init(showNotificationView: Bool = false) {
+        self.showNotificationView = showNotificationView
     }
-    
 }

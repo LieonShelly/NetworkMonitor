@@ -68,7 +68,6 @@
 		8B72C98AA0D7D97C5F45B585 /* IconData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E191E045EC8DC024A505D9 /* IconData.swift */; };
 		8E67E2C696F8627AFEA79508 /* OnboardingSentenceDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10489822281726627B1BDEAA /* OnboardingSentenceDTO.swift */; };
 		90EEE169E4EB789087FD78CB /* ReflectionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DEB62FD1565807822EF26E /* ReflectionRepository.swift */; };
-		91D8E50CA05A244503C0A3C2 /* FirstQuestionSubmittedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E322BEA2CB29630A6CB6E4 /* FirstQuestionSubmittedView.swift */; };
 		92BD92C1E7E99F3A6370EA63 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D96244F6B5A3CA5FD5E0E7F /* WelcomeViewModel.swift */; };
 		961DF519B9273BCA5ADFB8EE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D4E09A724BCD2DD7F06EE /* DateExtension.swift */; };
 		9AC14B324700ABD899419124 /* AppleIDSignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1725C0FEABF1F19FD57DDDD0 /* AppleIDSignInViewModel.swift */; };
@@ -173,6 +172,7 @@
 		F8D5A80A2F2B54FB003D2D33 /* LTCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F8D5A8082F2B54FB003D2D33 /* LTCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F8D5A80C2F2B55BB003D2D33 /* AppVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5A80B2F2B55BB003D2D33 /* AppVariant.swift */; };
 		F8D8886A2EF12D5200D4E14F /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D888692EF12D5200D4E14F /* NotificationView.swift */; };
+		F8DC220E2F80E93B000EA4F5 /* OnboardingNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DC220D2F80E93B000EA4F5 /* OnboardingNotificationView.swift */; };
 		F8DC77C42EDFE53200B68A61 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = F8DC77C32EDFE53200B68A61 /* Shaders.metal */; };
 		F8DE82392F32F07C00CFD13E /* UserHomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE82382F32F07B00CFD13E /* UserHomeCoordinator.swift */; };
 		F8DE823D2F32F89D00CFD13E /* UserHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DE823C2F32F89D00CFD13E /* UserHomeViewModel.swift */; };
@@ -308,7 +308,6 @@
 		C22AD87774BC0C7A206AE203 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
 		CE817C60707A10F2069E3CCD /* DayReflectionsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayReflectionsDTO.swift; sourceTree = "<group>"; };
 		D5D96C3730B143EA703C64DC /* LTNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LTNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D7E322BEA2CB29630A6CB6E4 /* FirstQuestionSubmittedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstQuestionSubmittedView.swift; sourceTree = "<group>"; };
 		D807EA1C7BBBD32BBC917F6A /* OnboardingAccessUseCaseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAccessUseCaseType.swift; sourceTree = "<group>"; };
 		D937E69B6E1FA3AC692CEC4B /* QueryIconGeneratingStatusUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryIconGeneratingStatusUseCase.swift; sourceTree = "<group>"; };
 		DA4E3F2059D4D782A1856AF9 /* LoopingStackCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopingStackCardView.swift; sourceTree = "<group>"; };
@@ -386,6 +385,7 @@
 		F8D5A8082F2B54FB003D2D33 /* LTCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LTCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8D5A80B2F2B55BB003D2D33 /* AppVariant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVariant.swift; sourceTree = "<group>"; };
 		F8D888692EF12D5200D4E14F /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		F8DC220D2F80E93B000EA4F5 /* OnboardingNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNotificationView.swift; sourceTree = "<group>"; };
 		F8DC77C32EDFE53200B68A61 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		F8DE82382F32F07B00CFD13E /* UserHomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeCoordinator.swift; sourceTree = "<group>"; };
 		F8DE823C2F32F89D00CFD13E /* UserHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserHomeViewModel.swift; sourceTree = "<group>"; };
@@ -697,8 +697,8 @@
 		A783CB4BB751EABCE6C79F9B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F8DC220D2F80E93B000EA4F5 /* OnboardingNotificationView.swift */,
 				1AE93F9BB0D11563EC196761 /* AnswerInputView.swift */,
-				D7E322BEA2CB29630A6CB6E4 /* FirstQuestionSubmittedView.swift */,
 				162B9CD1B0BE19E0EA39EF93 /* FirstQuestionView.swift */,
 				8BA90D5350B07637453E5735 /* OnboardingView.swift */,
 				45B22A1218F09A998C430756 /* PreHomeContentView.swift */,
@@ -1162,6 +1162,7 @@
 				F826AAFC2F31EEC20043B16D /* ThreadCategoryView.swift in Sources */,
 				F86ECACF2EF3B5B4007EEA24 /* NotificationHandler.swift in Sources */,
 				251D83036C1C4D45618B91DF /* DayReflectionsDTO.swift in Sources */,
+				F8DC220E2F80E93B000EA4F5 /* OnboardingNotificationView.swift in Sources */,
 				F8DE823F2F32F8E500CFD13E /* QuestionOfTodaySettingView.swift in Sources */,
 				0DF096C53022D08153C5E810 /* DefaultEndPoint.swift in Sources */,
 				C15DEB64381AC3730DC90088 /* DetailAnswerRow.swift in Sources */,
@@ -1174,7 +1175,6 @@
 				EFC187983F274A3E98DC55A4 /* FetchThreadQuestionsUseCase.swift in Sources */,
 				3BAC2EF102159C39527C4A9B /* FetchTodayQuestionsUseCase.swift in Sources */,
 				F8C266522EF285EE0000F5D6 /* AppDelegate.swift in Sources */,
-				91D8E50CA05A244503C0A3C2 /* FirstQuestionSubmittedView.swift in Sources */,
 				4A61DBBA35C61856E1DC4882 /* FirstQuestionView.swift in Sources */,
 				F8A22C4C3D1795B392850452 /* FirstQuestionViewModel.swift in Sources */,
 				4F31DC62285BD5C37592B097 /* HomeCoordinator.swift in Sources */,

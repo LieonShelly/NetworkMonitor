@@ -65,19 +65,24 @@ public struct AppButton: View {
 
 
 public struct DefaultAppButton: View {
-    let isEnabled: Bool
     let title: String
     let onTap: () -> Void
-    
+    let style:  AppButton.Style
     
     public init(isEnabled: Bool = true, title: String, onTap: @escaping () -> Void) {
-        self.isEnabled = isEnabled
+        self.style = isEnabled ? .blackNormal : .greyDisabled
+        self.title = title
+        self.onTap = onTap
+    }
+    
+    public init(style: AppButton.Style, title: String, onTap: @escaping () -> Void) {
+        self.style = style
         self.title = title
         self.onTap = onTap
     }
     
     public var body: some View {
-        AppButton(style: isEnabled ? .blackNormal : .greyDisabled, title: title, onTap: onTap)
+        AppButton(style: style, title: title, onTap: onTap)
             .frame(height: 62)
     }
 }

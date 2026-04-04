@@ -94,7 +94,7 @@ struct AppleIDSignInView: View {
             coordinator.push(PreHomeRoute.splash)
         } else {
             appCoordinator.changeRoot(
-                .home(.init(overLayData: nil))
+                .home(.init())
             )
         }
     }

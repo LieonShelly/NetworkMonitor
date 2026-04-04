@@ -109,7 +109,6 @@ struct TodayAnswerView: View {
         .padding(.horizontal, 20)
         .padding(.top, 20)
         .opacity(opacity)
-        .matchedGeometryEffect(id: "question", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
     }
     
     @ViewBuilder
@@ -137,7 +136,6 @@ struct TodayAnswerView: View {
         .padding(.horizontal, 24)
         .padding(.top, 16)
         .padding(.bottom, 16)
-        .matchedGeometryEffect(id: "answer", in: homeCoordinator.dripleTransitionData.drippleAnimationSpace)
         
     }
     
