@@ -19,14 +19,15 @@ struct FirstQuestionView: View {
         static let answerHPercent: CGFloat = 0.4
     }
     @EnvironmentObject var coordinaor: AppCoordinator
-    @ObservedObject var viewModel: FirstQuestionViewModel
+    @StateObject var viewModel: FirstQuestionViewModel
     @State var currentPage: CurrentPage = .answer
     @State var showFramesAniamtion: Bool = false
     @Namespace var animation
     @StateObject var keyboardObserver: KeyboardObserver = .init()
+    @EnvironmentObject var navigator: PreHomeCoordinator
     
     init(viewModel: FirstQuestionViewModel) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
@@ -67,13 +68,12 @@ struct FirstQuestionView: View {
     }
     
     func dateView() -> some View {
-        HStack {
-            Spacer()
+        FixedHeader {
             Text(Date().monthDayDesc)
                 .textStyle(font: .section, color: AppColor.color(hex: 0x423D3D))
-                .padding(.trailing, 32)
+        } backAction: {
+            navigator.pop()
         }
-        .frame(height: 72)
     }
     
     @ViewBuilder
@@ -96,6 +96,7 @@ struct FirstQuestionView: View {
         .overlay {
             Text(viewModel.question?.title ?? "")
                 .textStyle(font: .heading)
+                .frame(maxHeight: 120)
                 .padding(.horizontal, 10)
         }
        
@@ -108,7 +109,7 @@ struct FirstQuestionView: View {
             text: $viewModel.answerText,
             placeholder: "Write anything...."
         )
-        .frame(height: keyboardObserver.keyboardShown ? 150 : idleH)
+        .frame(height: idleH)
         
     }
     
@@ -124,6 +125,7 @@ struct FirstQuestionView: View {
             }
         }
         .padding(.top, Constants.spacing)
+        .padding(.bottom, keyboardObserver.keyboardShown ? Constants.spacing : .zero)
     }
     
     var answerForm: some View {

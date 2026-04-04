@@ -14,10 +14,10 @@ struct OnboardingView: View {
     @State var selectedCategory: Category? = nil
     @EnvironmentObject var coordinator: PreHomeCoordinator
     @State var currentPage: PageState = .onboarding
-    @ObservedObject var viewModel: OnboardingViewModel
+    @StateObject var viewModel: OnboardingViewModel
     
     init(viewModel: OnboardingViewModel) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {

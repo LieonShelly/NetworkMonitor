@@ -14,10 +14,10 @@ public struct FixedHeader<Trailing: View>: View {
     var backAction: (() -> Void)? = nil
     @ViewBuilder let trailing: (() -> Trailing)
     
-    public init(title: String,
+    public init(title: String = "",
                 size: HeaderSize = .plain,
-                backAction: (() -> Void)? = nil,
-                @ViewBuilder trailing:  @escaping (() -> Trailing) = { EmptyView() } ) {
+                @ViewBuilder trailing:  @escaping (() -> Trailing) = { EmptyView() },
+                backAction: (() -> Void)? = nil ) {
         self.title = title
         self.backAction = backAction
         self.trailing = trailing
@@ -40,37 +40,38 @@ public struct FixedHeader<Trailing: View>: View {
     
     public var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            HStack {
-                if let backAction {
-                    backBtn.onTapGesture {
-                        backAction()
-                    }
-                }
-            }
-            .frame(width: 32, height: 32)
             switch size {
             case .plain:
-                titleView
-                HStack(spacing: .zero) {
-                    trailing()
+                ZStack {
+                    HStack {
+                        backBtn
+                        Spacer()
+                        trailing()
+                    }
+                    titleView
                 }
-                .frame(width: 32, height: 32)
             case .large:
+                backBtn
                 titleView
                 trailing()
             }
         }
         .frame(maxWidth: .infinity)
-        .padding(.horizontal, 24)
         .frame(height: size.height)
         .background(AppColor.oat)
     }
     
+    @ViewBuilder
     var backBtn: some View {
-        Image(.back)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 32, height: 32)
+        if let backAction {
+            Image(.back)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 32, height: 32)
+                .onTapGesture {
+                backAction()
+            }
+        }
     }
     
     var titleView: some View {
@@ -78,60 +79,5 @@ public struct FixedHeader<Trailing: View>: View {
             .textStyle(font: .heading)
             .lineSpacing(0)
             .frame(maxWidth: .infinity, minHeight: 30, alignment: size == .large ? .leading : .center)
-    }
-}
-
-#Preview {
-    ScrollView {
-        
-        VStack {
-            FixedHeader(title: "header")
-            FixedHeader(title: "header") {}
-            
-            FixedHeader(title: "header", backAction: { }, trailing: {
-                Image(.library)
-                    .resizable()
-                    .renderingMode(.template)
-                    .foregroundStyle(Color.black)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 32, height: 32)
-            })
-            
-            FixedHeader(title: "What is one little thing that make you happy today?", size: .large)
-            
-            FixedHeader(title: "What is one little thing that make you happy today?", size: .large) {
-                
-            }
-            FixedHeader(title: "What is one little thing that make you happy today?",
-                        size: .large,
-                        backAction: {},
-                        trailing: {
-                Image(.library)
-                    .resizable()
-                    .renderingMode(.template)
-                    .foregroundStyle(Color.black)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 32, height: 32)
-            })
-            
-            FixedHeader(title: "What is one little thing?", size: .large)
-            
-            FixedHeader(title: "What is one little thing?", size: .large) {
-                
-            }
-            FixedHeader(title: "What is one little thing?",
-                        size: .large,
-                        backAction: {},
-                        trailing: {
-                Image(.library)
-                    .resizable()
-                    .renderingMode(.template)
-                    .foregroundStyle(Color.black)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 32, height: 32)
-            })
-            
-        }
-        .background(Color.random)
     }
 }
