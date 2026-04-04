@@ -49,7 +49,7 @@ struct WelcomeView: View {
     var firstTextView: some View {
         AnimatedMultilineText(
             text: "welcome",
-            font: AppFont.vividly(size: 32),
+            font: AppFont.heading.uifont,
             width: 305,
             animationCompleted: {
                 withAnimation(.easeInOut) {
@@ -71,14 +71,14 @@ struct WelcomeView: View {
             if showSecondPageText {
                 AnimatedMultilineText(
                     text: "answer your first question to get started",
-                    font: AppFont.vividly(size: 32),
+                    font: AppFont.heading.uifont,
                     width: 305
                 )
                     .frame(width: 305)
             }
                 
             Spacer()
-            DefaultAppButton(title: "start") {
+            DefaultAppButton(title: "let's go") {
                 coordinator.push(PreHomeRoute.firstQuestion(viewModel.category))
             }
             .padding(.horizontal, 24)
