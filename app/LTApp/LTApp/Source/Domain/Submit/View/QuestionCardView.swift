@@ -25,7 +25,7 @@ struct QuestionCardView: View {
     
     var titleView: some View {
         Text("# \(question.category?.name ?? "")")
-              .textStyle(size: 10, color: AppColor.color(hex: 0x000000), fontFamily: .poppinsRegular)
+              .textStyle(size: 14, color: AppColor.color(hex: 0xADA35F), fontFamily: .littleThing)
               .padding(.horizontal, 10)
               .padding(.vertical, 6)
               .background(AppColor.color(hex: 0xFFFDF8))

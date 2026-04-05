@@ -60,7 +60,7 @@ struct TodayAnswerSubmittedView: View {
     
     var questionView: some View {
         Text(viewModel.question.title)
-            .textStyle(size: 32, fontFamily: .vividlyRegular)
+            .textStyle(font: .heading)
             .padding(.horizontal, 16)
             .opacity(opacity)
         
@@ -69,7 +69,7 @@ struct TodayAnswerSubmittedView: View {
    @ViewBuilder var answerView: some View {
         HStack {
             Text(viewModel.answer.content)
-                .textStyle(size: 12, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                .textStyle(font: .body, color: AppColor.greyDark)
                 .padding(.init(top: 22, leading: 18, bottom: 22, trailing: 18))
             Spacer()
         }
@@ -136,7 +136,7 @@ struct TodayAnswerSubmittedView: View {
                     .transition(.opacity)
                 
                 Text("Weaving your thoughts...")
-                    .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
+                    .textStyle(font: .heading)
                     .padding(.vertical, 36)
                     .transition(.opacity)
             }

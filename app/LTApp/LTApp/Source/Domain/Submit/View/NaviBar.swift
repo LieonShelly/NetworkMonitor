@@ -23,7 +23,7 @@ struct NaviBar: View {
             
             HStack {
                 Text(titlte)
-                    .textStyle(size: 12, color: AppColor.color(hex: 0x423D3D), fontFamily: .poppinsRegular)
+                    .textStyle(font: .section, color: AppColor.greyMedium)
             }
             .frame(maxWidth: .infinity)
         }
