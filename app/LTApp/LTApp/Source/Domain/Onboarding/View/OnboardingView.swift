@@ -114,13 +114,9 @@ struct OnboardingView: View {
                     if selected {
                         Capsule().fill(AppColor.black)
                     } else {
-                        HandDrawnCapsule()
-                            .stroke(
-                                AppColor.black,
-                                style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round)
-                            )
+                        Image(.wvBtnBg)
+                            .resizable()
                     }
-                  
                 }
                 .rotationEffect(.degrees(degree))
             }
