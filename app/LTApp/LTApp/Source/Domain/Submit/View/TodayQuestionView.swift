@@ -24,8 +24,8 @@ struct TodayQuestionView: View {
     }
     
     var titleView: some View {
-        Text("Question of the day")
-              .textStyle(size: 12, color: AppColor.color(hex: 0x6f6f6f), fontFamily: .poppinsRegular)
+        Text("Daily Prompt")
+            .textStyle(font: .caption, color: AppColor.greyMedium)
               .padding(.horizontal, 16)
               .padding(.top, 16)
               .padding(.bottom, 8)
@@ -44,7 +44,7 @@ struct TodayQuestionView: View {
         Text(question.title)
             .multilineTextAlignment(.leading)
             .fixedSize(horizontal: false, vertical: true)
-            .textStyle(size: 24)
+            .textStyle(font: .title)
             .padding(.horizontal, 16)
     }
     

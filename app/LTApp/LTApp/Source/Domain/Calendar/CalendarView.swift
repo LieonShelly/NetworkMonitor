@@ -67,7 +67,7 @@ struct CalendarView: View {
         HStack(spacing: spacing) {
             ForEach(viewModel.weekdays, id: \.id) { day in
                 Text(day.title)
-                    .textStyle(size: 16, color: AppColor.color(hex: isFutureMonth ? 0xcdcdcd : 0x323232), fontFamily: .feltTipSeniorRegular)
+                    .textStyle(font: .section, color: isFutureMonth ? AppColor.greyNeutral : AppColor.greyDark)
                     .frame(width: itemW, height: 18)
             }
         }
@@ -82,7 +82,7 @@ struct CalendarView: View {
                     HStack(spacing: .zero) {
                         HStack(spacing: .zero) {
                             Text(currentMonth.date.monthDesc(isShort: false))
-                                .textStyle(size: 36, fontFamily: .feltTipSeniorRegular)
+                                .textStyle(font: .heading)
                                 .transition(.opacity)
                             Image(.downFillArrow)
                                 .rotationEffect(.init(degrees: showMonthList ? -180 : 0))
@@ -94,7 +94,7 @@ struct CalendarView: View {
                       
                         Spacer()
                         Text(Date().dayDesc())
-                            .textStyle(size: 18, fontFamily: .feltTipSeniorRegular)
+                            .textStyle(size: 12, fontFamily: .littleThing)
                             .transition(.opacity)
                             .background(
                                 Image(.brushCycle)
@@ -110,9 +110,9 @@ struct CalendarView: View {
                     .padding(.horizontal, Constants.hP)
                    
                     Text(currentMonth.date.yearDesc())
-                        .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
+                        .textStyle(font: .section)
                         .transition(.opacity)
-                        .padding(.top, 2)
+                        .padding(.top, 8)
                         .padding(.horizontal, Constants.hP)
                    
                 }
@@ -176,7 +176,7 @@ struct CalendarView: View {
                CalendarGridLines(
                    columns: columns,
                    rowHeight: itemH,
-                   color: AppColor.color(hex: 0xcdcdcd)
+                   color: AppColor.greyNeutral
                )
                .overlay(content: {
                    if month.isFuture {
@@ -196,9 +196,12 @@ struct CalendarView: View {
     
     @ViewBuilder
     func footerView(momth: CalendarMonth) -> some View {
-        Text("\(momth.iconCount) icons created this month \n \(momth.moreDaysTogo) more days to go!")
+        let text =  momth.date.isSameMonth(Date()) ?
+        "\(momth.iconCount) icons created this month \n \(momth.moreDaysTogo) more days to go!" :
+        "\(momth.iconCount) icons created this month"
+        Text(text)
             .multilineTextAlignment(.center)
-            .textStyle(size: 18, color: AppColor.color(hex: 0x000000), fontFamily: .feltTipSeniorRegular)
+            .textStyle(font: .section, color: AppColor.black)
             .padding(.bottom, 50)
             .padding(.top, 20)
     }
@@ -211,9 +214,8 @@ struct CalendarView: View {
                     switch month.itemType {
                     case .normal:
                         Text("\(month.date.monthDesc(isShort: true))")
-                            .textStyle(size: 20,
-                                       color: isCurrentMonth(month: month) ? AppColor.color(hex: 0xffffff) : AppColor.color(hex: 0x000000),
-                                       fontFamily: .feltTipSeniorRegular)
+                            .textStyle(font: .section,
+                                       color: isCurrentMonth(month: month) ? AppColor.white : AppColor.black)
                             .padding(.vertical, 4)
                             .padding(.horizontal, 12)
                             .background {
@@ -236,9 +238,8 @@ struct CalendarView: View {
                     case .yearPlaceholder:
                         Text("\(month.date.yearDesc())")
                             .textStyle(
-                                size: 20,
-                                color: AppColor.color(hex: 0x000000),
-                                fontFamily: .feltTipSeniorRegular
+                                font: .section,
+                                color: AppColor.black,
                             )
                     }
                 }
@@ -268,9 +269,8 @@ struct CalendarView: View {
             
             Text("The best is \n yet to come")
                 .textStyle(
-                    size: 36,
-                    color: AppColor.color(hex: 0x000000),
-                    fontFamily: .feltTipSeniorRegular
+                    font: .title,
+                    color: AppColor.black
                 )
         }
     }

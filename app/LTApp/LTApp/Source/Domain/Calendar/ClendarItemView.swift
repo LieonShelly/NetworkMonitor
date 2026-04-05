@@ -57,9 +57,8 @@ struct ClendarItemView: View {
         HStack {
             VStack {
                 Text(day.date.dayDesc())
-                    .textStyle(size: 14,
-                               color: AppColor.color(hex: day.isAbsent || day.dayType == .future ? 0xcdcdcd : 0x323232),
-                               fontFamily: .feltTipSeniorRegular)
+                    .textStyle(font: .subSection,
+                               color: day.isAbsent || day.dayType == .future ? AppColor.greyNeutral : AppColor.greyDark)
                     .background {
                         if day.isToday, day.reflections == nil {
                             Image(.brushCycle)
