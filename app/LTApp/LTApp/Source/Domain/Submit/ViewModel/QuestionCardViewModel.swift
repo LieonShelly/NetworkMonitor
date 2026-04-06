@@ -31,7 +31,7 @@ final class QuestionCardViewModel: ObservableObject, @unchecked Sendable {
     }
     
     deinit {
-        print("deinit")
+        print("QuestionCardViewModel-deinit")
     }
     
     @MainActor
