@@ -115,10 +115,12 @@ struct TodayAnswerSubmittedView: View {
                 
             } label: {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(AppColor.color(hex: 0xD9D9D9))
+                    .fill(AppColor.color(hex: 0xEBEBEB, alpha: 0.92))
                     .frame(width: 48, height: 48)
                     .overlay {
                         Image(.xmark)
+                            .renderingMode(.template)
+                            .foregroundStyle(AppColor.color(hex: 0x000000, alpha: 0.85))
                     }
             }
             .padding(.top, 20)

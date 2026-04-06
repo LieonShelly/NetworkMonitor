@@ -82,7 +82,7 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
         let didOpenNotification = await service.notificationFlagUseCase.fetch()
         await MainActor.run {
             if didOpenNotification {
-                pageState = .submitted
+                pageState = .notificationView
             } else {
                 pageState = .notificationView
             }

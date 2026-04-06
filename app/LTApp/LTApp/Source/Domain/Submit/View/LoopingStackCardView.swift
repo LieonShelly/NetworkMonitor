@@ -58,8 +58,6 @@ struct LoopingStackCardView: View {
     
     var content: some View {
         QuestionCardView(question: viewModel.question)
-//            .zIndex(realIndex)
-//            .rotationEffect(.degrees((2.0 ) * CGFloat(index)), anchor: .init(x: 0, y: 0.5))
     }
 }
 

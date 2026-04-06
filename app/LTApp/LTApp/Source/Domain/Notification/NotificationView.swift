@@ -28,9 +28,9 @@ struct NotificationView: View {
             
             Spacer()
             Text("A unique icon is being created based on what you wrote, we will let you know when it’s ready! ")
-                .textStyle(size: 12, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                .textStyle(font: .body, color: AppColor.color(hex: 0x323232))
                 .padding(.bottom, 16)
-                .padding(.horizontal, 43)
+                .padding(.horizontal, 32)
             
             VStack(spacing: 16) {
                 DefaultAppButton(title: "Notify me") {
@@ -45,17 +45,9 @@ struct NotificationView: View {
                         }
                     }
                 }
-                Button(action: {
+                
+                DefaultAppButton(style: .greyNormal, title: "Skip") {
                     dismiss()
-                }) {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(AppColor.color(hex: 0xD9D9D9).opacity(0.4))
-                        .overlay {
-                            Text("Back")
-                                .font(AppFont.feltTipSenior(size: 24, fontWeight: .regular))
-                                .foregroundStyle(AppColor.textPrimary )
-                        }
-                        .frame(height: 62)
                 }
             }
             .padding(.horizontal, 24)
@@ -66,14 +58,10 @@ struct NotificationView: View {
     }
     
     @ViewBuilder var titleView: some View {
-        Text("daily life")
-            .textStyle(size: 24, color: AppColor.color(hex: 0x323232), fontFamily: .feltTipSeniorRegular)
-            .padding(.vertical, 4)
-            .padding(.horizontal, 10)
-            .background(AppColor.color(hex: 0xD9D9D9).opacity(0.4))
-            .cornerRadius(30, corners: .allCorners)
-            .padding(.top, 16)
-        
+        FixedHeader {
+            Text(Date().dayMonthDesc)
+                .textStyle(font: .section, color: AppColor.color(hex: 0x423D3D))
+        }
     }
     
     @ViewBuilder var loadingView: some View {
@@ -83,7 +71,7 @@ struct NotificationView: View {
                 .transition(.opacity)
             
             Text("Weaving your thoughts...")
-                .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
+                .textStyle(font: .heading)
                 .padding(.vertical, 36)
                 .transition(.opacity)
         }

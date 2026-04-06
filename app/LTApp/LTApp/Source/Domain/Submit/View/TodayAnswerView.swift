@@ -33,7 +33,6 @@ struct TodayAnswerView: View {
                 naviBar
                 unsubmittedForm
             case .submitted:
-                naviBar
                 submittedForm
             case .notificationView:
                 NotificationView(viewModel: .init(appService: viewModel.service),
