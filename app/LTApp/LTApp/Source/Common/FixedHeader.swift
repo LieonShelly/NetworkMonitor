@@ -56,6 +56,7 @@ public struct FixedHeader<Trailing: View>: View {
                 trailing()
             }
         }
+        .padding(.horizontal, 24)
         .frame(maxWidth: .infinity)
         .frame(height: size.height)
         .background(AppColor.oat)

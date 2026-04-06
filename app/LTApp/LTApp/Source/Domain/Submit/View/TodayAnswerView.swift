@@ -55,7 +55,9 @@ struct TodayAnswerView: View {
     }
     
     @ViewBuilder var naviBar: some View {
-        NaviBar(titlte: viewModel.title, hideBackBtn: viewModel.pageState != .unsubmit) {
+        FixedHeader {
+          refreshBtn
+        } backAction: {
             withAnimation(.easeInOut, completionCriteria: .logicallyComplete) {
                 opacity = 0
             } completion: {
@@ -132,7 +134,6 @@ struct TodayAnswerView: View {
                     .resizable()
                     .frame(width: 32, height: 32)
             }
-            .padding(.top, 8 * 3)
             .transition(.opacity)
         }
       

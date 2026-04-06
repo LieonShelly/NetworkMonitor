@@ -126,16 +126,20 @@ struct FirstQuestionView: View {
     var answerForm: some View {
         VStack(spacing: .zero) {
             dateView()
-            GeometryReader { proxy in
-                VStack(spacing: Constants.spacing) {
-                    questionCardView(parent: proxy)
-                    answerInputView(parent: proxy)
+            VStack(spacing: .zero) {
+                GeometryReader { proxy in
+                    VStack(spacing: Constants.spacing) {
+                        questionCardView(parent: proxy)
+                        answerInputView(parent: proxy)
+                    }
                 }
+                okBtn
             }
-            okBtn
+            .padding(.horizontal, 24)
+  
         }
         .contentShape(.rect)
-        .padding(.horizontal, 24)
+        
         .onTapGesture {
             hideKeyboard()
         }
