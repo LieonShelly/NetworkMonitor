@@ -55,15 +55,15 @@ struct AppleIDSignInView: View {
                 if let authorizationCodeData = credential.authorizationCode, let code = String(data: authorizationCodeData, encoding: .utf8) {
                     authorizationCode = code
                 }
-//                Task.detached {
-//                    do {
-//                        try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
-//                        await route()
-//                    } catch {
-//                        
-//                    }
-//                   
-//                }
+                Task.detached {
+                    do {
+                        try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
+                        await route()
+                    } catch {
+                        
+                    }
+                   
+                }
             case let .failure(error):
                 print(error)
             }
@@ -72,8 +72,8 @@ struct AppleIDSignInView: View {
         .frame(height: 54)
         .padding(.horizontal, 30)
         .padding(.bottom, 168)
-       .onTapGesture {
-           route()
+//       .onTapGesture {
+//           route()
 //            Task.detached {
 //                do {
 //                    try await viewModel.login(authorizationCode: "", identityToken: "")
@@ -84,7 +84,7 @@ struct AppleIDSignInView: View {
 //                    }
 //                }
 //            }
-        }
+//        }
     }
     
     @MainActor
