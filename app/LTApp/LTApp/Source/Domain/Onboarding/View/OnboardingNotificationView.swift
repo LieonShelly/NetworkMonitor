@@ -66,15 +66,12 @@ struct OnboardingNotificationView: View {
         VStack(spacing: .zero) {
             LoadingView()
                 .frame(width: 290, height: 200)
-                .transition(.opacity)
             
             Text("Weaving your thoughts...")
                 .textStyle(font: .heading)
                 .padding(.vertical, 36)
-                .transition(.opacity)
         }
         .padding(.top, 42)
-        .transition(.opacity)
     
     }
     

@@ -4,6 +4,7 @@
 
 
 import SwiftUI
+import UIComponent
 
 struct AppHomeRootView: View {
     @EnvironmentObject var coordinator: HomeCoordinator
@@ -17,6 +18,8 @@ struct AppHomeRootView: View {
     
     var body: some View {
         ZStack {
+            AppColor.backgroundPage.ignoresSafeArea()
+            
             NavigationStack(path: $coordinator.path) {
                 EmptyView()
                     .toolbarVisibility(.hidden, for: .navigationBar)
@@ -51,7 +54,6 @@ struct AppHomeRootView: View {
                 .zIndex(1)
             }
         }
-        .animation(.easeInOut, value: notificationVisible)
         .task {
             if viewModel.showNotificationView {
                 withAnimation(.easeInOut(duration: 0.5)) {

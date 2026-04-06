@@ -4,6 +4,7 @@
 
 import SwiftUI
 import UIComponent
+import AudioToolbox
 
 
 struct SplashView: View {
@@ -121,7 +122,8 @@ struct SplashView: View {
                     visibleIcons.insert(i)
                 }
             }
-            try? await Task.sleep(for: .seconds(0.25))
+            AudioServicesPlaySystemSound(1519)
+            try? await Task.sleep(for: .seconds(0.3))
         }
     }
 }
