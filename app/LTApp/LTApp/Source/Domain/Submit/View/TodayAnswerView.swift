@@ -84,6 +84,7 @@ struct TodayAnswerView: View {
         .padding(.horizontal, 24)
         .contentShape(.rect)
         .opacity(opacity)
+        .zIndex(2)
         .onTapGesture {
             hideKeyboard()
         }
