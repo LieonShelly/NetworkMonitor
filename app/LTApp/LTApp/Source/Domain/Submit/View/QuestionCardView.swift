@@ -11,40 +11,22 @@ struct QuestionCardView: View {
     
     var body: some View {
         VStack {
-            titleView
-            questionView
+            Text("# \(question.category?.name ?? "")")
+                .textStyle(font: .section, color: AppColor.color(hex: 0xADA35F))
+                .padding(.top, 10)
+            Spacer()
         }
         .frame(maxWidth: .infinity)
-        .background(AppColor.color(hex: 0xFFFAEE))
-        .cornerRadius(12, corners: .allCorners)
-        .overlay(
+        .background {
             RoundedRectangle(cornerRadius: 12)
-                .stroke(AppColor.color(hex: 0x717171), lineWidth: 1)
-        )
+                .fill(AppColor.color(hex: 0xFFFAEE))
+                .shadow(color: AppColor.color(hex: 0xDFD7C4).opacity(0.25), radius: 4, x: 4, y: 4)
+        }
+        .overlay {
+            Text(question.title)
+                .textStyle(font: .heading)
+                .frame(maxHeight: 120)
+                .padding(.horizontal, 10)
+        }
     }
-    
-    var titleView: some View {
-        Text("# \(question.category?.name ?? "")")
-              .textStyle(size: 14, color: AppColor.color(hex: 0xADA35F), fontFamily: .littleThing)
-              .padding(.horizontal, 10)
-              .padding(.vertical, 6)
-              .background(AppColor.color(hex: 0xFFFDF8))
-              .overlay(
-                  RoundedRectangle(cornerRadius: 16)
-                      .stroke(AppColor.color(hex: 0xEBEBEB), lineWidth: 1)
-              )
-              .padding(.top, keyboardObserver.keyboardShown ? 0 : 5)
-
-    }
-    
-    var questionView: some View {
-        Text(question.title)
-            .textStyle(size: keyboardObserver.keyboardShown ? 32: 36)
-              .fixedSize(horizontal: false, vertical: true)
-              .padding(.bottom, keyboardObserver.keyboardShown ? 10 : 45)
-              .padding(.top, keyboardObserver.keyboardShown ? 0 : 12)
-              .padding(.horizontal, 20)
-
-    }
-
 }

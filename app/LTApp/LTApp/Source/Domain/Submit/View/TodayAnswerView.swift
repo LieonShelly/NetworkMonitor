@@ -12,6 +12,12 @@ struct TodayAnswerView: View {
     @StateObject var keyboardObserver: KeyboardObserver = .init()
     @State var opacity: CGFloat = 1
     @EnvironmentObject var homeCoordinator: HomeCoordinator
+    enum Constants {
+        static let headerH: CGFloat = 72
+        static let spacing: CGFloat = 20
+        static let questionHPercent: CGFloat = 0.6
+        static let answerHPercent: CGFloat = 0.4
+    }
     
     init(viewModel: TodayAnswerViewModel, presented: Binding<Bool>) {
         self._viewModel = .init(wrappedValue: viewModel)
@@ -64,12 +70,17 @@ struct TodayAnswerView: View {
     
     var unsubmittedForm: some View {
         VStack(spacing: .zero) {
-            cardListView
-            refreshBtn
-            answerInputView
+            GeometryReader { proxy in
+                VStack(spacing: Constants.spacing) {
+                    cardListView(parent: proxy)
+                    answerInputView(parent: proxy)
+                }
+            }
+            .padding(.bottom, Constants.spacing)
             okBtn
         }
-        .padding(.top, 44)
+        .padding(.top, Constants.headerH)
+        .padding(.horizontal, 24)
         .contentShape(.rect)
         .opacity(opacity)
         .onTapGesture {
@@ -94,7 +105,8 @@ struct TodayAnswerView: View {
     }
     
     @ViewBuilder
-    var cardListView: some View {
+    func cardListView(parent: GeometryProxy) -> some View  {
+        let idleH = max((parent.size.height - Constants.spacing) * Constants.questionHPercent, 0)
         ZStack {
             ForEach(viewModel.cardViewModels, id: \.id) { cardViewModel in
                 let count = cardViewModel.count
@@ -105,9 +117,8 @@ struct TodayAnswerView: View {
                     .disabled(keyboardObserver.keyboardShown)
             }
         }
+        .frame(height: idleH)
         .frame(maxWidth: .infinity)
-        .padding(.horizontal, 20)
-        .padding(.top, 20)
         .opacity(opacity)
     }
     
@@ -127,20 +138,18 @@ struct TodayAnswerView: View {
       
     }
     
-    var answerInputView: some View {
+    @ViewBuilder
+    func answerInputView(parent: GeometryProxy) -> some View  {
+        let idleH = max((parent.size.height - Constants.spacing) * Constants.answerHPercent, 0)
         AnswerInputView(
             text: $viewModel.answerText,
             placeholder: "Write anything...."
         )
-        .frame(minHeight: 200, maxHeight: .infinity)
-        .padding(.horizontal, 24)
-        .padding(.top, 16)
-        .padding(.bottom, 16)
-        
+        .frame(height: idleH)
     }
     
     var okBtn: some View {
-        AppButton(isEnabled: !viewModel.answerText.isEmpty, title: "oK") {
+        DefaultAppButton(isEnabled: !viewModel.answerText.isEmpty, title: "Create") {
             Task.detached {
                 do {
                     try await viewModel.submit()
@@ -149,8 +158,8 @@ struct TodayAnswerView: View {
                 }
             }
         }
-        .frame(height: 62)
-        .padding(.horizontal, 24)
+        .padding(.top, Constants.spacing)
+        .padding(.bottom, keyboardObserver.keyboardShown ? Constants.spacing : .zero)
     }
     
 }
