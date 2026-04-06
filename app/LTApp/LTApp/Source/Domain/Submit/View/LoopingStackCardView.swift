@@ -15,7 +15,8 @@ struct LoopingStackCardView: View {
     
     var body: some View {
         let rotationDegree: CGFloat = -10
-        let rotation = max(min(-viewModel.offset / viewModel.viewSize.height, 1), 0) * rotationDegree
+        let dragProgress = max(min(-viewModel.offset / viewModel.viewSize.height, 1), 0)
+        let rotation = dragProgress * rotationDegree
         content
             .onGeometryChange(for: CGSize.self, of: {
                 $0.size

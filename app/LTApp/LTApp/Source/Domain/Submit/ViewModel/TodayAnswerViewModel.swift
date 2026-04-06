@@ -97,6 +97,9 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
    @MainActor func changeToNextCard() {
        withAnimation(.smooth(duration: 0.5, extraBounce: 0)) {
            cardViewModels = cardViewModels.nextRotation()
+           for (i, vm) in cardViewModels.enumerated() {
+               vm.index = i
+           }
        }
     }
 }

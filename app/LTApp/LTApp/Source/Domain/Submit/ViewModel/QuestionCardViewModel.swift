@@ -9,7 +9,7 @@ import SwiftUI
 final class QuestionCardViewModel: ObservableObject, @unchecked Sendable {
     let id: UUID = UUID()
     let question: Question
-    var index: Int
+    @Published var index: Int
     let count: Int
     var maxTranslationWidth: CGFloat? = nil
     var changeToNext: ( @MainActor () -> Void)?
