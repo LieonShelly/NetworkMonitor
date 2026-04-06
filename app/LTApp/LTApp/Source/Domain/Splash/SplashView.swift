@@ -13,11 +13,11 @@ struct SplashView: View {
         case third
     }
     @EnvironmentObject var coordinator: PreHomeCoordinator
-    @State var currentPage: CurrentPage = .first
-    @ObservedObject var viewModel: SplashViewModel
+    @State var currentPage: CurrentPage = .second
+    @StateObject var viewModel: SplashViewModel
     
     init(viewModel: SplashViewModel) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {

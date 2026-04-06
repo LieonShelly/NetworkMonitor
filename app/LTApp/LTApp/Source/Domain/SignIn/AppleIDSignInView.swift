@@ -55,15 +55,15 @@ struct AppleIDSignInView: View {
                 if let authorizationCodeData = credential.authorizationCode, let code = String(data: authorizationCodeData, encoding: .utf8) {
                     authorizationCode = code
                 }
-                Task.detached {
-                    do {
-                        try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
-                        await route()
-                    } catch {
-                        
-                    }
-                   
-                }
+//                Task.detached {
+//                    do {
+//                        try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
+//                        await route()
+//                    } catch {
+//                        
+//                    }
+//                   
+//                }
             case let .failure(error):
                 print(error)
             }
@@ -72,8 +72,8 @@ struct AppleIDSignInView: View {
         .frame(height: 54)
         .padding(.horizontal, 30)
         .padding(.bottom, 168)
-//       .onTapGesture {
-//           route()
+       .onTapGesture {
+           route()
 //            Task.detached {
 //                do {
 //                    try await viewModel.login(authorizationCode: "", identityToken: "")
@@ -84,7 +84,7 @@ struct AppleIDSignInView: View {
 //                    }
 //                }
 //            }
-//        }
+        }
     }
     
     @MainActor
@@ -96,31 +96,5 @@ struct AppleIDSignInView: View {
                 .home(.init())
             )
         }
-    }
-}
-
-
-struct TestView: View {
-    var body: some View {
-        ScrollView {
-            
-            VStack {
-                offsetMonitorView
-                ForEach(0 ..< 10) { index in
-                    Rectangle()
-                        .frame(height: 30)
-                }
-            }
-        }
-        .coordinateSpace(.named("scroll"))
-       
-    }
-    
-    var offsetMonitorView: some View {
-        Color.clear
-            .onGeometryChange(for: CGFloat.self, of: { $0.frame(in: .named("scroll")).minY }, action: { newValue in
-                print(newValue)
-            })
-            .frame(height: 0)
     }
 }
