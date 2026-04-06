@@ -62,6 +62,9 @@ struct OnboardingView: View {
         .padding(.horizontal, 32)
     }
     
+    @State var visibleButtonIndices: Set<Int> = []
+    @State var showBottomBtn: Bool = false
+    
     var topicList: some View {
         VStack {
             ScrollView(showsIndicators: false) {
@@ -73,13 +76,44 @@ struct OnboardingView: View {
                             selected: selectedCategory == category,
                             index: index
                         )
+                        .offset(y: visibleButtonIndices.contains(index) ? 0 : 200)
+                        .opacity(visibleButtonIndices.contains(index) ? 1 : 0)
+                        .animation(
+                            .easeOut(duration: 0.4).delay(Double(index) * 0.1),
+                            value: visibleButtonIndices.contains(index)
+                        )
                     }
                 }
             }
             .frame(height: 110 * 4)
             .padding(.horizontal, 27)
+            .clipped()
         }
         .frame(maxHeight: .infinity)
+        .onChange(of: viewModel.list) { _, newList in
+            guard !newList.isEmpty else { return }
+            revealButtons(count: newList.count)
+        }
+        .onAppear {
+            if !viewModel.list.isEmpty {
+                revealButtons(count: viewModel.list.count)
+            }
+        }
+    }
+    
+    private func revealButtons(count: Int) {
+        guard visibleButtonIndices.isEmpty else { return }
+        withAnimation(.easeIn(duration: 0.4)) {
+            for i in 0..<count {
+                visibleButtonIndices.insert(i)
+            }
+        }
+        let totalDelay = Double(count) * 0.1 + 0.4
+        DispatchQueue.main.asyncAfter(deadline: .now() + totalDelay) {
+            withAnimation(.easeOut(duration: 0.4)) {
+                showBottomBtn = true
+            }
+        }
     }
     
     var bottomBtn: some View {
@@ -91,6 +125,8 @@ struct OnboardingView: View {
                 }
             }
             .padding(.horizontal, 32)
+            .offset(y: showBottomBtn ? 0 : 100)
+            .opacity(showBottomBtn ? 1 : 0)
     }
     
     @ViewBuilder
