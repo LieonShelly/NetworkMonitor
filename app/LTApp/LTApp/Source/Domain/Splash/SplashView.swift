@@ -64,7 +64,10 @@ struct SplashView: View {
         .necktie, .heart, .flower, .fire,
         .cup, .mail, .sun, .smile
     ]
-    @State var visibleIcons: Int = 0
+    @State var visibleIcons: Set<Int> = []
+    @State var showText: Bool = false
+    private let alwaysVisibleIndices: Set<Int> = []
+    
     var thirdSceen: some View {
         VStack(spacing: .zero) {
             Text(viewModel.sentence?.page3st ?? "each answer will generate a unique icon of your own ")
@@ -75,6 +78,8 @@ struct SplashView: View {
                 .foregroundStyle(AppColor.textPrimary)
                 .padding(.bottom, 172)
                 .padding(.top, 114)
+                .opacity(showText ? 1 : 0)
+                .animation(.easeOut(duration: 0.5), value: showText)
             
             LazyVGrid(columns: [
                 .init(.fixed(18), spacing: 40, alignment: .center),
@@ -83,12 +88,11 @@ struct SplashView: View {
                 .init(.fixed(18), spacing: 40, alignment: .center),
             ], spacing: 40) {
                 ForEach(Array(icons.enumerated()), id: \.offset) { index, icon in
+                    let isVisible = alwaysVisibleIndices.contains(index) || visibleIcons.contains(index)
                     Image(icon)
-                        .opacity(visibleIcons > index ? 1 : 0)
-                        .animation(.easeInOut.delay(
-                            delayDuration(iconIndex: index)
-                        ), value: visibleIcons)
-                        
+                        .opacity(isVisible ? 1 : 0)
+                        .scaleEffect(isVisible ? 1 : 0.3)
+                        .animation(.easeOut(duration: 0.35), value: isVisible)
                 }
             }
             .frame(height: 86)
@@ -97,21 +101,27 @@ struct SplashView: View {
         .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .identity))
         .task {
             try? await Task.sleep(for: .seconds(0.8))
-            visibleIcons = icons.count
-            let totalDuraion = delayDuration(iconIndex: icons.count - 1)
-            try? await Task.sleep(for: .seconds(totalDuraion + 0.25))
+            await revealIconsRandomly()
+            withAnimation(.easeOut(duration: 0.5)) {
+                showText = true
+            }
+            try? await Task.sleep(for: .seconds(1.5))
             coordinator.push(PreHomeRoute.onborading)
         }
     }
     
-    
-    func delayDuration(iconIndex: Int) -> Double {
-        let animationDuration = 0.15
-        let preIconsDuration: Double = icons[0 ..< iconIndex
-        ].reduce(0) { total, icon in
-            return total + animationDuration
+    private func revealIconsRandomly() async {
+        var remaining = Array(0..<icons.count).filter { !alwaysVisibleIndices.contains($0) }.shuffled()
+        while !remaining.isEmpty {
+            let batchSize = min(Bool.random() ? 2 : 1, remaining.count)
+            let batch = remaining.prefix(batchSize)
+            remaining.removeFirst(batchSize)
+            withAnimation {
+                for i in batch {
+                    visibleIcons.insert(i)
+                }
+            }
+            try? await Task.sleep(for: .seconds(0.25))
         }
-        let curentIconDuration = Double(iconIndex) * animationDuration
-        return preIconsDuration + curentIconDuration
     }
 }
