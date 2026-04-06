@@ -18,8 +18,9 @@ struct AnswerDetailView: View {
     var body: some View {
         ZStack(alignment: .top) {
             AppColor.backgroundPage.opacity(opacity).ignoresSafeArea()
-            NaviBar(titlte: viewModel.title, hideBackBtn: true) {
-            }
+           Text(viewModel.title)
+                .textStyle(font: .section, color: AppColor.greyMedium)
+                .frame(height: 72)
             .opacity(opacity)
             .zIndex(1)
             
@@ -29,9 +30,9 @@ struct AnswerDetailView: View {
                 dismissed: dismissed
             )
             .frame(maxHeight: .infinity)
-            .padding(.top, 44)
+            .padding(.top, 72)
             .contentShape(.rect)
-            .padding(.top, 20)
+            .padding(.top, 16)
         }
         .toolbarVisibility(.hidden, for: .navigationBar)
         .allowsHitTesting(true)

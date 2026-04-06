@@ -61,7 +61,7 @@ struct TodayAnswerSubmittedView: View {
     var questionView: some View {
         Text(viewModel.question.title)
             .textStyle(font: .heading)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 24)
             .opacity(opacity)
         
     }
