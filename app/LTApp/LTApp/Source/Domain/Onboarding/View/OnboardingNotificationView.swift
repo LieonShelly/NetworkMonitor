@@ -59,7 +59,6 @@ struct OnboardingNotificationView: View {
             Text(Date().dayMonthDesc)
                 .textStyle(font: .section, color: AppColor.color(hex: 0x423D3D))
         }
-        .padding(.horizontal, 24)
     }
     
     @ViewBuilder var loadingView: some View {
@@ -72,6 +71,7 @@ struct OnboardingNotificationView: View {
                 .padding(.vertical, 36)
         }
         .padding(.top, 42)
+        .padding(.horizontal, 24)
     
     }
     
