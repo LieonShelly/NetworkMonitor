@@ -118,11 +118,11 @@ struct ReflectionDetailView: View {
                 showSummary.toggle()
             } label: {
                 Text("\(sumary.totalAnswers) answers, \(sumary.daysOver) days ")
-                    .textStyle(size: 10, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
+                    .textStyle(font: .caption, color: AppColor.white)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
                     .background {
-                        RoundedRectangle(cornerRadius: 16)
+                        Capsule()
                             .fill(AppColor.color(hex: 0x000000))
                     }
             }
@@ -133,26 +133,9 @@ struct ReflectionDetailView: View {
     
     func topbar(_ proxy: GeometryProxy) -> some View {
         VStack(spacing: .zero) {
-            HStack(alignment: .top, spacing: .zero) {
-                Button {
-                    homeCoordinator.pop()
-                } label: {
-                    Image(.back)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: Constants.backBtnSize, height: Constants.backBtnSize)
-                        .padding(.leading, 25)
-                }
-                Text(viewModel.title)
-                    .lineLimit(5)
-                    .textStyle(size: 32, fontFamily: .feltTipSeniorRegular)
-                    .padding(.leading, 12)
-                    .padding(.trailing, 24)
-                
-                Spacer()
-            }
-            .padding(.top, 20)
-            .background(AppColor.backgroundPage)
+            FixedHeader(title: viewModel.title, size: .large, backAction: {
+                homeCoordinator.pop()
+            })
             
             LinearGradient(gradient: .init(colors: [
                 AppColor.color(hex: 0xFFFDF8).opacity(0),
@@ -160,7 +143,6 @@ struct ReflectionDetailView: View {
             ]), startPoint: .init(x: 0.5, y: 1), endPoint: .init(x: 0.5, y: 0))
             .frame(height: 20)
         }
-        
         .zIndex(2)
     }
 }

@@ -20,10 +20,10 @@ struct DetailAnswerRow: View {
     var dateView: some View {
         VStack(alignment: .trailing, spacing: .zero) {
             Text(answer.createTms?.monthDesc(isShort: true) ?? "")
-                .textStyle(size: 20, color: AppColor.color(hex: 0x000000), fontFamily: .feltTipSeniorRegular)
+                .textStyle(font: .section)
             
             Text(answer.createTms?.dayDesc() ?? "")
-                .textStyle(size: 20, color: AppColor.color(hex: 0x000000), fontFamily: .feltTipSeniorRegular)
+                .textStyle(font: .section)
             
         }
         .padding(.top, 42)
@@ -42,10 +42,9 @@ struct DetailAnswerRow: View {
         HStack {
             Text(answer.content)
                 .multilineTextAlignment(.leading)
-                .textStyle(size: 14, color: AppColor.color(hex: 0x6f6f6f), fontFamily: .poppinsRegular)
+                .textStyle(font: .body, color: AppColor.greyMedium)
             Spacer()
         }
-      
             .padding(.top, 42)
             .padding(.bottom, 14)
     }
