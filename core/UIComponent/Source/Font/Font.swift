@@ -11,6 +11,7 @@ public enum AppFont {
     case subSection
     case subTitle
     case body
+    case bodyBold
     case caption
     case annotation
     
@@ -28,6 +29,8 @@ public enum AppFont {
             AppFont.poppins(size: 16, fontWeight: .regular)
         case .body:
             AppFont.poppins(size: 14, fontWeight: .regular)
+        case .bodyBold:
+            AppFont.poppins(size: 14, fontWeight: .bold)
         case .caption:
             AppFont.poppins(size: 12, fontWeight: .regular)
         case .annotation:
@@ -54,6 +57,8 @@ public enum AppFont {
             AppFont.poppins(size: 12, fontWeight: .regular)
         case .annotation:
             AppFont.ibmPlexMono(size: 12, fontWeight: .regular)
+        case .bodyBold:
+            AppFont.poppins(size: 14, fontWeight: .bold)
         }
     }
 }
@@ -117,8 +122,10 @@ extension AppFont {
         switch fontWeight {
         case .regular:
             return Font.custom(AppFontType.poppinsRegular.fontName, size: size)
-        case .medium, .bold:
-            return Font.custom(AppFontType.poppinsRegular.fontName, size: size)
+        case .bold:
+            return Font.custom(AppFontType.poppinsBold.fontName, size: size)
+        case .medium:
+            return Font.custom(AppFontType.poppinsBold.fontName, size: size)
         case .heavy:
             return Font.custom(AppFontType.poppinsRegular.fontName, size: size)
         case .mediumItalic:

@@ -26,6 +26,9 @@ public extension View {
         case .poppinsRegular:
             return self.foregroundStyle(color)
                 .font(AppFont.poppins(size: size))
+        case .poppinsBold:
+            return self.foregroundStyle(color)
+                .font(AppFont.poppins(size: size, fontWeight: .bold))
         case .sfProRegular:
             return self.foregroundStyle(color)
                 .font(AppFont.sfPro(size: size))

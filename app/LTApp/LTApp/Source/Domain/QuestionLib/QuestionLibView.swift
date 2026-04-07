@@ -13,31 +13,31 @@ struct QuestionLibView: View {
     }
     
     var body: some View {
-        ScrollView {
-            Rectangle()
-                .fill(Color.clear)
-                .frame(height: 36)
-            LazyVStack(spacing: .zero) {
-                ForEach(viewModel.categories, id: \.id) { category in
-                    VStack(spacing: .zero) {
-                        sectionHeader(category.name)
-                        ForEach(category.questions, id: \.id) { question in
-                            QuestionRow(text: question.title, isPinned: question.pinned) {
-                                Task.detached {
-                                    await viewModel.pinQuesition(question)
+        VStack(spacing: .zero) {
+            FixedHeader(title: "Question Library", size: .plain, backAction: {
+                homeCoordinator.pop()
+            })
+            ScrollView {
+                LazyVStack(spacing: .zero) {
+                    ForEach(viewModel.categories, id: \.id) { category in
+                        VStack(spacing: .zero) {
+                            sectionHeader(category.name)
+                            ForEach(category.questions, id: \.id) { question in
+                                QuestionRow(text: question.title, isPinned: question.pinned) {
+                                    Task.detached {
+                                        await viewModel.pinQuesition(question)
+                                    }
                                 }
                             }
                         }
+                        .padding(.bottom, 36)
                     }
-                    .padding(.bottom, 36)
                 }
+             
             }
-         
         }
+        .toolbarVisibility(.hidden, for: .navigationBar)
         .defaultBackground()
-        .defaultNavigationBar("Question Library") {
-            homeCoordinator.pop()
-        }
         .task {
             do {
                 try await viewModel.fetchData()
@@ -50,7 +50,7 @@ struct QuestionLibView: View {
     func sectionHeader(_ title: String) -> some View {
         HStack {
             Text(title)
-                .textStyle(size: 24)
+                .textStyle(font: .title)
             Spacer()
         }
         .padding(.leading, 42)

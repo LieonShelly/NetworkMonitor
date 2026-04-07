@@ -271,12 +271,18 @@ struct ThreadView: View {
     
     var titleView: some View {
         FixedHeader(title: "Threads") {
-            Image(.library)
-                .resizable()
-                .renderingMode(.template)
-                .frame(width: 32, height: 32)
-                .foregroundStyle(AppColor.color(hex: 0x000000))
+            Button {
+                homeCoordinator.push(HomeRoute.questionLib)
+            } label: {
+                Image(.library)
+                    .resizable()
+                    .renderingMode(.template)
+                    .frame(width: 32, height: 32)
+                    .foregroundStyle(AppColor.color(hex: 0x000000))
+            }
+
         }
+        .zIndex(10)
     }
     
     var footer: some View {

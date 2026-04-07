@@ -5,9 +5,8 @@
 import SwiftUI
 
 public enum AppColor {
-    public static let textPrimary = Color("textPrimary", bundle: UIComponentsModule.resourceBundle)
-    case textSecondary
-    public  static let backgroundPage = Color("backgroundPage", bundle: UIComponentsModule.resourceBundle)
+    public static let textPrimary = AppColor.black
+    public static let backgroundPage = AppColor.oat
     public static let white = AppColor.color(hex: 0xFFFFFF)
     public static let black = AppColor.color(hex: 0x000000)
     public static let greyNeutral = AppColor.color(hex: 0xCDCDCD)

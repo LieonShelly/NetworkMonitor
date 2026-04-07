@@ -40,6 +40,7 @@
 		F8B1D04F2EFD2BE300503ABF /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F8B1D04E2EFD2BE300503ABF /* Poppins-MediumItalic.ttf */; };
 		F8BE5EC42EE16A13009206C2 /* OnFirstAppearViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BE5EC32EE16A13009206C2 /* OnFirstAppearViewModifier.swift */; };
 		F8DC220C2F80B628000EA4F5 /* HandDrawnCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DC220B2F80B628000EA4F5 /* HandDrawnCapsule.swift */; };
+		F8E734272F850851003AF441 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F8E734262F850851003AF441 /* Poppins-Bold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +78,7 @@
 		F8B1D04E2EFD2BE300503ABF /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
 		F8BE5EC32EE16A13009206C2 /* OnFirstAppearViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnFirstAppearViewModifier.swift; sourceTree = "<group>"; };
 		F8DC220B2F80B628000EA4F5 /* HandDrawnCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandDrawnCapsule.swift; sourceTree = "<group>"; };
+		F8E734262F850851003AF441 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				73B304C658A19F73D38495F8 /* VividlyRegular.ttf */,
 				F8B1D04E2EFD2BE300503ABF /* Poppins-MediumItalic.ttf */,
 				F804C4602F58176F00DCC904 /* IBMPlexMono-Regular.ttf */,
+				F8E734262F850851003AF441 /* Poppins-Bold.ttf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				E6745AE6C90BD250C57E4639 /* SFPRODISPLAYBOLD.OTF in Resources */,
 				704871D37BBDACFB972F9B81 /* SFPRODISPLAYMEDIUM.OTF in Resources */,
 				E9E65CDB07211204207C03EF /* SFPRODISPLAYREGULAR.OTF in Resources */,
+				F8E734272F850851003AF441 /* Poppins-Bold.ttf in Resources */,
 				04CDD63E76124D79FB0C1578 /* VividlyRegular.ttf in Resources */,
 				F81BBF192ED2FB4400D6392C /* Lottie.bundle in Resources */,
 				F8B1D04F2EFD2BE300503ABF /* Poppins-MediumItalic.ttf in Resources */,

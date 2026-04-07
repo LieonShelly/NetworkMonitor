@@ -71,7 +71,7 @@ struct QuestionRow: View {
                 .offset(y: -2)
                 .opacity(isPinned ? 1 : 0)
             Text(text)
-                .textStyle(size: 14, fontFamily: .poppinsRegular)
+                .textStyle(font: .body, color: AppColor.color(hex: 0x282828))
                 .padding(.leading, 8)
             Spacer()
         }
@@ -104,7 +104,7 @@ struct QuestionRow: View {
     
     var line: some View {
         Rectangle()
-            .fill(AppColor.color(hex: 0xCDCDCD))
+            .fill(AppColor.greyLight)
             .frame(height: 0.5)
             .padding(.leading, 42)
             .padding(.trailing, max(abs(currentOffsetX + updatingOffsetX), 42))

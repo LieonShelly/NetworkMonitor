@@ -14,6 +14,7 @@ public enum AppFontWeight {
 
 public enum AppFontType: String, CaseIterable {
     case poppinsRegular
+    case poppinsBold
     case poppinsMediumItalic
     case feltTipSeniorRegular
     case sfProRegular
@@ -28,6 +29,8 @@ public enum AppFontType: String, CaseIterable {
         switch self {
         case .poppinsRegular:
             "Poppins-Regular"
+        case .poppinsBold:
+            "Poppins-Bold"
         case .feltTipSeniorRegular:
             "FeltTipSeniorRegular"
         case .sfProRegular:
@@ -51,7 +54,7 @@ public enum AppFontType: String, CaseIterable {
     
     var fileExtension: String {
         switch self {
-        case .poppinsRegular, .feltTipSeniorRegular, .vividlyRegular, .poppinsMediumItalic, .ibmPlexMonoRegular:
+        case .poppinsRegular, .feltTipSeniorRegular, .vividlyRegular, .poppinsMediumItalic, .ibmPlexMonoRegular, .poppinsBold:
             return "ttf"
         case .sfProRegular, .sfProBold, .sfProMedium:
             return "OTF"
@@ -66,6 +69,8 @@ public enum AppFontType: String, CaseIterable {
         switch self {
         case .poppinsRegular:
             "Poppins-Regular"
+        case .poppinsBold:
+            "Poppins-Bold"
         case .feltTipSeniorRegular:
             "FeltTipSenior"
         case .sfProRegular:

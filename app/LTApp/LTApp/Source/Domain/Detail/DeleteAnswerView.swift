@@ -73,7 +73,7 @@ struct DeleteAnswerView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 20, height: 20)
                         Text("Delete")
-                            .textStyle(size: 32, color: AppColor.color(hex: 0xffffff), fontFamily: .feltTipSeniorRegular)
+                            .textStyle(font: .heading, color: AppColor.white)
                             .padding(.leading, 10)
                     }
                 }
@@ -97,7 +97,7 @@ struct DeleteAnswerView: View {
                             .frame(width: 18, height: 20)
 
                         Text("Cancel")
-                            .textStyle(size: 32, color: AppColor.color(hex: 0x00000), fontFamily: .feltTipSeniorRegular)
+                            .textStyle(font: AppFont.heading, color: AppColor.black)
                             .padding(.leading, 10)
                     }
                 }
