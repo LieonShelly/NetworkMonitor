@@ -68,12 +68,10 @@ struct ThreadView: View {
                     }
                 }
                 
-                if !viewModel.questionList.isEmpty {
-                    footer
-                }
+                footer
             }
             .padding(.top, 16)
-            .padding(.top, Constants.categoryHeight)
+            .padding(.top, viewModel.categories.isEmpty ? 0 : Constants.categoryHeight)
         }
         .padding(.horizontal, Constants.listHP)
         .refreshable {
@@ -181,7 +179,7 @@ struct ThreadView: View {
             })
             .overlay(alignment: .leading, content: {
                 Text(didTapShowMore ? "show less" : "show more")
-                    .textStyle(size: 10, color: AppColor.color(hex: 0xBFBFBF), fontFamily: .poppinsRegular)
+                    .textStyle(font: .caption, color: AppColor.grey)
                     .onTapGesture {
                         withAnimation(.easeInOut) {
                             viewModel.didTapShowMore(question)
@@ -239,7 +237,7 @@ struct ThreadView: View {
             Text(question.title)
                 .lineLimit(5)
                 .multilineTextAlignment(.leading)
-                .textStyle(size: 24, fontFamily: .feltTipSeniorRegular)
+                .textStyle(font: .title)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, Constants.quesiontTilteHp)
         }
@@ -272,24 +270,13 @@ struct ThreadView: View {
     }
     
     var titleView: some View {
-        ZStack(alignment: .trailing) {
-            Button {
-                homeCoordinator.push(HomeRoute.questionLib)
-            } label: {
-                Image(.library)
-                    .resizable()
-                    .frame(width: 32, height: 32)
-                    .foregroundStyle(AppColor.color(hex: 0x000000))
-            }
-            HStack(spacing: .zero) {
-                Spacer()
-                Text("Threads")
-                    .textStyle(size: 32, fontFamily: .feltTipSeniorRegular)
-                Spacer()
-
-            }
+        FixedHeader(title: "Threads") {
+            Image(.library)
+                .resizable()
+                .renderingMode(.template)
+                .frame(width: 32, height: 32)
+                .foregroundStyle(AppColor.color(hex: 0x000000))
         }
-        .padding(.horizontal, 24)
     }
     
     var footer: some View {
@@ -320,7 +307,7 @@ struct ThreadView: View {
                               ontapAction: (() -> Void)?) -> some View {
         VStack(alignment: .leading, spacing: .zero) {
             Text(title)
-                .textStyle(size: 24, color: AppColor.color(hex: 0xcdcdcd), fontFamily: .feltTipSeniorRegular)
+                .textStyle(font: .title, color: AppColor.grey)
                 .padding(.horizontal, Constants.quesiontTilteHp + Constants.pinIconW)
             
             Button {
@@ -334,14 +321,14 @@ struct ThreadView: View {
                         .foregroundStyle(AppColor.color(hex: 0xffffff))
                     
                     Text(btnTitle)
-                        .textStyle(size: 12, color: AppColor.color(hex: 0xffffff), fontFamily: .poppinsRegular)
+                        .textStyle(font: .section, color: AppColor.white)
                         .padding(.leading, 6)
                 }
                 .padding(.horizontal, 12)
-                .padding(.vertical, 7)
+                .padding(.vertical, 16)
                 .background {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(AppColor.color(hex: 0x000000))
+                    Capsule()
+                        .fill(AppColor.greyDark)
                 }
             }
             .padding(.bottom, 56)
@@ -377,7 +364,7 @@ struct ThreadView: View {
                 
                 Text(answer.content)
                     .multilineTextAlignment(.leading)
-                    .textStyle(size: 13, color: AppColor.color(hex: 0x6F6F6F), fontFamily: .poppinsRegular)
+                    .textStyle(font: .body, color: AppColor.greyMedium)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, Constants.quesiontTilteHp)
             }

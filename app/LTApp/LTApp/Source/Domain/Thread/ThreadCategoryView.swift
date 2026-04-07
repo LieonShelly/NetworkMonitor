@@ -48,13 +48,12 @@ struct ThreadCategoryView: View {
     func item(category: ThreadCategoryItem, index: Int) -> some View {
         VStack(spacing: 8) {
             SVGImageView(url: category.category.imageUrl, renderMode: .template)
-                .foregroundStyle(selectedIndex == index ? AppColor.color(hex: 0x000000) : AppColor.color(hex: 0xB8B8B8) )
+                .foregroundStyle(selectedIndex == index ? AppColor.black: AppColor.grey )
             
             Text(category.category.name)
                 .textStyle(
-                    size: 16,
-                    color: category.selected ? AppColor.color(hex: 0x000000) : AppColor.color(hex: 0xB8B8B8),
-                    fontFamily: .feltTipSeniorRegular
+                    font: .section,
+                    color: category.selected ? AppColor.black: AppColor.grey,
                 )
             
         }
