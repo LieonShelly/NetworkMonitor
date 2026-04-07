@@ -1,38 +1,43 @@
 # Tech Stack
 
 ## Platform
-- iOS (Swift, SwiftUI)
-- Minimum deployment: iOS 17+ (uses `onChange(of:)` two-parameter variant, Swift concurrency with `@MainActor`)
-- Xcode project with workspace (`LTApp.xcworkspace`)
+- iOS 17+ (SwiftUI)
+- Swift 5.9+
+- Xcode project generated via XcodeGen (`project.yml` files)
 
-## Project Generation
-- XcodeGen (`project.yml` files in each core module and `fastlane/project/`)
-- Generate project: `fastlane generate_project`
+## Build System
+- XcodeGen for project file generation
+- Fastlane for CI/CD (TestFlight distribution)
+- Swift Package Manager for the Network module (`core/Network/Package.swift`)
+- XcodeGen project configs for other core modules
 
-## Build & Deploy
-- Fastlane for CI/CD
-- Ruby 3.2.2, Bundler >= 2.0.0, Fastlane 2.228.0
-- Bundle ID: `com.little.things`
-- Build to TestFlight: `bundle exec fastlane internal_test`
-- Generate Xcode project: `bundle exec fastlane generate_project`
-- Install dependencies: `bundle install`
+## Key Libraries
+- Lottie 4.5.1 (animations, via UIComponent module)
+- Combine (reactive data flow)
+- SwiftUI (all UI)
 
-## Core Frameworks (local)
-- `LTNetwork` — HTTP client with interceptor chain (auth, refresh token, logout)
-- `LTCommon` — Feature toggles, dependency injection
-- `Persistence` — KeyChain and UserDefaults storage abstraction
-- `UIComponent` — Shared UI components, colors, fonts, Lottie animations
+## Core Modules (under `core/`)
+| Module | Product Name | Purpose |
+|---|---|---|
+| Network | LTNetwork | HTTP client, interceptors, request/response pipeline |
+| Common | LTCommon | Feature toggles, dependency injection |
+| Persistence | Persistence | KeyChain and UserDefaults storage abstractions |
+| UIComponent | UIComponent | Shared UI components, fonts, colors, Lottie animations |
 
-## Third-Party Dependencies
-- Lottie 4.5.1 (via SPM, used in UIComponent)
+## Common Commands
 
-## Key Patterns
-- Swift Concurrency (`async/await`, `@MainActor`, `Sendable`)
-- Combine for reactive bindings in coordinators
-- Protocol-oriented design — all use cases and repositories have protocol types
-- `@unchecked Sendable` on classes with internal synchronization
+```bash
+# Generate Xcode project from project.yml
+cd fastlane && bundle exec fastlane generate_project
 
-## Signing & Provisioning
-- Certificates and provisioning profiles stored in `certs/`
-- Ad-hoc, App Store, and Development profiles available
-- App Store Connect API key used for TestFlight uploads
+# Build and upload to TestFlight
+bundle exec fastlane internal_test
+
+# Run Network module tests (SPM)
+cd core/Network && swift test
+```
+
+## Concurrency
+- Swift Concurrency (async/await, actors) throughout
+- `@MainActor` for UI-bound classes and published properties
+- `@unchecked Sendable` used on classes with manual thread safety

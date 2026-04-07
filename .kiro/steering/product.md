@@ -1,22 +1,19 @@
-# Product: LittleThings (LTApp)
+# Product Overview
 
-A daily reflection and journaling iOS app. Users answer daily questions, track their reflections over time, and receive AI-generated weekly insight reports.
+LittleThings (LTApp) is an iOS journaling/reflection app. Users answer daily questions ("reflections"), and the app generates weekly AI-powered insight reports with summaries, analytical overviews, and personalized icons.
 
 ## Core Features
-- Daily reflection questions with answer submission
-- Calendar view showing reflection history with custom icons
-- Threaded question categories and a question library
-- Weekly AI-generated insight reports (summary, gem moments, analytical overview)
-- Report history with read/unread tracking
-- Push notifications
-- Apple ID sign-in authentication
-- Onboarding flow
-- User settings (question-of-the-day strategy)
-- Feature toggle system for staged rollouts
+- Daily reflection prompts with question-of-the-day
+- Threaded question browsing and category-based question library
+- Calendar view of past reflections
+- AI-generated weekly reports with structured insights (summary, gem, analytical overview)
+- Weekly report history with read/unread tracking
+- Onboarding flow with Apple Sign-In
+- Push notification support
+- Icon generation tied to reflections
 
 ## Backend
-- REST API at `things.dvacode.tech` (HTTPS)
-- JWT-based auth with refresh token flow
-- API documentation lives in `app/LTApp/API/api.md`
-- Responses use a universal wrapper: `{ success, msg, data }`
-- Paginated lists use cursor-based pagination with `limit`, `cursor`, `hasMore`, `nextCursor`
+- REST API hosted at `things.dvacode.tech`
+- API docs located at `app/LTApp/API/api.md`
+- Auth via Bearer token with refresh token flow
+- Responses wrapped in `UniversalResponse<T>` envelope
