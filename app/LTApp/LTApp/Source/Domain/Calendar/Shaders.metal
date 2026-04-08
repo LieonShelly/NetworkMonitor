@@ -81,3 +81,52 @@ kernel void thickenAndRemoveBackground(texture2d<float, access::read> inTexture 
         outTexture.write(float4(darkestColor.rgb, 1.0), gid);
     }
 }
+
+
+struct OverlayColor {
+    float4 color;
+};
+
+
+kernel void apply_color_overlay(texture2d<half, access::read> inTexture [[texture(0)]],
+                                texture2d<half, access::read> maskTexture [[texture(1)]],
+                                texture2d<half, access::write> outTexture [[texture(2)]],
+                                constant OverlayColor &overlayColor [[buffer(0)]],
+                                uint2 gid [[thread_position_in_grid]]) {
+                                
+    if (gid.x >= inTexture.get_width() || gid.y >= inTexture.get_height()) {
+        return;
+    }
+
+    // 读取原始像素的 Alpha 和 蒙版的标识
+    half origAlpha = inTexture.read(gid).a;
+    // maskTexture 是单通道纹理，用 .r 读取
+    half maskValue = maskTexture.read(gid).r;
+
+    half4 outColor;
+    
+    // maskValue > 0.5 说明在连通域内部（包括图形实体和被包裹的镂空区域）
+    if (maskValue > 0.5h) {
+        half finalAlpha;
+        
+        // 【抗锯齿处理】: 如果原图 alpha 在 0~1 之间，说明是图形的平滑边缘，保留原 alpha。
+        // （因为泛洪算法遇到 alpha > 0 就会停止，所以边缘像素的 maskValue 一定是 1）
+        if (origAlpha > 0.0h && origAlpha < 1.0h) {
+            finalAlpha = origAlpha;
+        } else {
+            // 如果 origAlpha == 0 (内部镂空孔洞) 或 origAlpha == 1 (内部实心)，填满实色
+            finalAlpha = 1.0h;
+        }
+
+        // 应用用户选择的颜色，结合计算出的 Alpha
+        outColor = half4(half(overlayColor.color.r),
+                         half(overlayColor.color.g),
+                         half(overlayColor.color.b),
+                         finalAlpha);
+    } else {
+        // 外部背景，完全透明
+        outColor = half4(0.0h, 0.0h, 0.0h, 0.0h);
+    }
+
+    outTexture.write(outColor, gid);
+}

@@ -28,7 +28,7 @@ struct LTAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            coordinator.rootView()
+            TestView()// coordinator.rootView()
         }
         .environmentObject(homeCoordinator)
         .environmentObject(coordinator)
@@ -37,6 +37,27 @@ struct LTAppApp: App {
             if newValue == .active {
                 UNUserNotificationCenter.current().setBadgeCount(0)
             }
+        }
+    }
+}
+
+
+struct TestView: View {
+    @State var colorRenderer = ColorOverlayRenderer.shared
+    
+    var body: some View {
+        VStack {
+            Image(.pinnedStar)
+                .background {
+                    Image(uiImage: colorRenderer.applyOverlay(to: UIImage(resource: .pinnedStar), color: UIColor.red)!)
+                        .offset()
+                }
+            
+            Image(.dripper)
+                .background {
+                    Image(uiImage: colorRenderer.applyOverlay(to: UIImage(resource: .dripper), color: UIColor.red)!)
+                        .offset()
+                }
         }
     }
 }

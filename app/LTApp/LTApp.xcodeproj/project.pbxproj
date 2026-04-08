@@ -158,6 +158,8 @@
 		F87E9E832F6FF3920028D944 /* ReportHistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E822F6FF3920028D944 /* ReportHistoryRow.swift */; };
 		F87E9E852F6FF39F0028D944 /* UnreadReportHistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E842F6FF39F0028D944 /* UnreadReportHistoryRow.swift */; };
 		F87E9E872F70268B0028D944 /* CoinIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E862F70268B0028D944 /* CoinIconView.swift */; };
+		F882E8C72F86503800E3C85B /* ColorOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F882E8C62F86503800E3C85B /* ColorOverlayRenderer.swift */; };
+		F882E8C92F86505600E3C85B /* FloodPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F882E8C82F86505600E3C85B /* FloodPoint.swift */; };
 		F88E5FFE060A4CDAD0021795 /* UniversalResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FF8161A8C18829BAA0967 /* UniversalResponse.swift */; };
 		F8A0C81E2F2B50C7005D231D /* LTAppFeatureConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A0C81D2F2B50C7005D231D /* LTAppFeatureConfig.swift */; };
 		F8A19E442F801D670087DC63 /* FixedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A19E432F801D660087DC63 /* FixedHeader.swift */; };
@@ -375,6 +377,8 @@
 		F87E9E822F6FF3920028D944 /* ReportHistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportHistoryRow.swift; sourceTree = "<group>"; };
 		F87E9E842F6FF39F0028D944 /* UnreadReportHistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadReportHistoryRow.swift; sourceTree = "<group>"; };
 		F87E9E862F70268B0028D944 /* CoinIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinIconView.swift; sourceTree = "<group>"; };
+		F882E8C62F86503800E3C85B /* ColorOverlayRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorOverlayRenderer.swift; sourceTree = "<group>"; };
+		F882E8C82F86505600E3C85B /* FloodPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloodPoint.swift; sourceTree = "<group>"; };
 		F8A0C81D2F2B50C7005D231D /* LTAppFeatureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTAppFeatureConfig.swift; sourceTree = "<group>"; };
 		F8A19E432F801D660087DC63 /* FixedHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedHeader.swift; sourceTree = "<group>"; };
 		F8BE5EC12EE1640B009206C2 /* IconImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconImageView.swift; sourceTree = "<group>"; };
@@ -679,6 +683,8 @@
 		A003F063569C9ED12070D111 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				F882E8C82F86505600E3C85B /* FloodPoint.swift */,
+				F882E8C62F86503800E3C85B /* ColorOverlayRenderer.swift */,
 				F82BB77E2F39D73C00F9DB49 /* SVGIconProcessor.swift */,
 				F8F2F92F2F01069F00936ECD /* CalendarSlashLine.swift */,
 				F81AAB2E2EFA4E6900F1680F /* CalendarGridLines.swift */,
@@ -1133,6 +1139,7 @@
 				78DF79A388F79FC0EE57251D /* AppHomeRootViewModel.swift in Sources */,
 				050E2E3DD9B3C85C91D82F48 /* AppHomeView.swift in Sources */,
 				F8DE82392F32F07C00CFD13E /* UserHomeCoordinator.swift in Sources */,
+				F882E8C92F86505600E3C85B /* FloodPoint.swift in Sources */,
 				4FA62600328B6809B6C9C8D8 /* AppHomeViewModel.swift in Sources */,
 				852CE3147946402B34312109 /* AppScrollContentView.swift in Sources */,
 				A9A0644E8593A152539FDEBE /* AppScrollContentViewModel.swift in Sources */,
@@ -1143,6 +1150,7 @@
 				411879C93E870B65D2792153 /* AppTabbarView.swift in Sources */,
 				BE23B8FA23E7357F40A9042B /* AppTabbarViewModel.swift in Sources */,
 				FAA6D2B8FB0286BEE0D9140C /* AppleIDSignInView.swift in Sources */,
+				F882E8C72F86503800E3C85B /* ColorOverlayRenderer.swift in Sources */,
 				9AC14B324700ABD899419124 /* AppleIDSignInViewModel.swift in Sources */,
 				104D7AAC7350FCA5BBA95E54 /* AuthInterceptor.swift in Sources */,
 				E1D345809DCE577E4D466390 /* AuthRepository.swift in Sources */,
