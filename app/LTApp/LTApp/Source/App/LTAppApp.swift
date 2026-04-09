@@ -54,17 +54,14 @@ struct TestView: View {
     
     var body: some View {
         VStack {
-            Image(.pinnedStar)
-                .background {
-                    Image(uiImage: colorRenderer.applyOverlay(to: UIImage(resource: .pinnedStar), color: overlayColor)!)
-                        .offset()
-                }
+//            Image(.dripper)
+//                .background {
+//                    Image(uiImage: colorRenderer.applyOverlay(to: UIImage(resource: .dripper), color: .red)!)
+//                }
+//            
+//            Image(uiImage: colorRenderer.applyOverlay(to: UIImage(resource: .cup), color: overlayColor)!)
             
-            Image(.dripper)
-                .background {
-                    Image(uiImage: colorRenderer.applyOverlay(to: UIImage(resource: .dripper), color: overlayColor)!)
-                        .offset()
-                }
+            MTKViewRepresentable(renderer: colorRenderer)
             
             VStack(spacing: 12) {
                 ColorSliderRow(label: "R", value: $red, tint: .red)
@@ -72,6 +69,13 @@ struct TestView: View {
                 ColorSliderRow(label: "B", value: $blue, tint: .blue)
             }
             .padding()
+        }
+        .onChange(of: overlayColor) { oldValue, newValue in
+            colorRenderer.overlayColor = newValue
+        }
+        .onAppear {
+            colorRenderer.prepareForRealtimeRendering(image: UIImage(resource: .dripper), expandRadius: 30)
+            colorRenderer.overlayColor = .red
         }
     }
 }

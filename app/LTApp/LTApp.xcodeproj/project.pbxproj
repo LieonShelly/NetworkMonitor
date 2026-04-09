@@ -170,6 +170,7 @@
 		F8C266542EF286030000F5D6 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C266532EF286030000F5D6 /* NotificationService.swift */; };
 		F8C266562EF28B630000F5D6 /* NotificationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C266552EF28B630000F5D6 /* NotificationRequest.swift */; };
 		F8C266582EF2973F0000F5D6 /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C266572EF2973F0000F5D6 /* NotificationViewModel.swift */; };
+		F8C702CB2F875002006B84DD /* MTKViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C702CA2F875002006B84DD /* MTKViewRepresentable.swift */; };
 		F8D5A8092F2B54FB003D2D33 /* LTCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8D5A8082F2B54FB003D2D33 /* LTCommon.framework */; };
 		F8D5A80A2F2B54FB003D2D33 /* LTCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F8D5A8082F2B54FB003D2D33 /* LTCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F8D5A80C2F2B55BB003D2D33 /* AppVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5A80B2F2B55BB003D2D33 /* AppVariant.swift */; };
@@ -386,6 +387,7 @@
 		F8C266532EF286030000F5D6 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		F8C266552EF28B630000F5D6 /* NotificationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRequest.swift; sourceTree = "<group>"; };
 		F8C266572EF2973F0000F5D6 /* NotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
+		F8C702CA2F875002006B84DD /* MTKViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTKViewRepresentable.swift; sourceTree = "<group>"; };
 		F8D5A8082F2B54FB003D2D33 /* LTCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LTCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8D5A80B2F2B55BB003D2D33 /* AppVariant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVariant.swift; sourceTree = "<group>"; };
 		F8D888692EF12D5200D4E14F /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
@@ -683,6 +685,7 @@
 		A003F063569C9ED12070D111 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				F8C702CA2F875002006B84DD /* MTKViewRepresentable.swift */,
 				F882E8C82F86505600E3C85B /* FloodPoint.swift */,
 				F882E8C62F86503800E3C85B /* ColorOverlayRenderer.swift */,
 				F82BB77E2F39D73C00F9DB49 /* SVGIconProcessor.swift */,
@@ -1133,6 +1136,7 @@
 				527AE96C0AAF06A8BD53EA7B /* AppDataWithAuthorizationService.swift in Sources */,
 				B94E852EB4C83A226D8F2BC9 /* AppHomeRootView.swift in Sources */,
 				F8C266582EF2973F0000F5D6 /* NotificationViewModel.swift in Sources */,
+				F8C702CB2F875002006B84DD /* MTKViewRepresentable.swift in Sources */,
 				F818A3BD2F6A805500C475E5 /* WeeklyReportCurrentIcons.swift in Sources */,
 				F804C45D2F57DFA700DCC904 /* WeeklyReportDTO.swift in Sources */,
 				F82BB77F2F39D73C00F9DB49 /* SVGIconProcessor.swift in Sources */,
