@@ -7,12 +7,9 @@ private struct OverlayColor {
 
 @Observable
 public class ColorOverlayRenderer: @unchecked Sendable {
-    
     public static let shared = ColorOverlayRenderer()
-    
     private var device: MTLDevice?
     private var commandQueue: MTLCommandQueue?
-    
     private var dilatePipelineState: MTLComputePipelineState?
     private var applyOverlayPipelineState: MTLComputePipelineState?
     private var renderPipelineState: MTLRenderPipelineState?
@@ -54,11 +51,8 @@ public class ColorOverlayRenderer: @unchecked Sendable {
                     let renderPipelineDescriptor = MTLRenderPipelineDescriptor()
                     renderPipelineDescriptor.vertexFunction = vertexFunc
                     renderPipelineDescriptor.fragmentFunction = fragmentFunc
-                    // 注意：这里的像素格式必须与你的 MTKView 的 colorPixelFormat 保持一致！
-                    // MTKView 默认通常是 bgra8Unorm
                     renderPipelineDescriptor.colorAttachments[0].pixelFormat = .rgba8Unorm
                     
-                    // 如果你有透明底色需求，开启混合模式 (Alpha Blending)
                     renderPipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
                     renderPipelineDescriptor.colorAttachments[0].rgbBlendOperation = .add
                     renderPipelineDescriptor.colorAttachments[0].alphaBlendOperation = .add
