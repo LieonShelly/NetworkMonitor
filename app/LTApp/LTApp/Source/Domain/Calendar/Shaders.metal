@@ -122,9 +122,7 @@ kernel void dilate_mask(texture2d<half, access::read> inMask [[texture(0)]],
 }
 
 
-// ---------------------------------------------------------
 // Pass 2: 颜色叠加着色器
-// ---------------------------------------------------------
 struct OverlayColor {
     float4 color; // r, g, b, a (刚好 16 字节)
 };
@@ -160,4 +158,24 @@ kernel void apply_color_overlay(texture2d<half, access::read> inTexture [[textur
     }
 
     outTexture.write(outColor, gid);
+}
+
+struct QuadVertexOut {
+    float4 position [[position]]; // 屏幕空间坐标 (NDC: -1 到 1)
+    float2 texCoord;              // 纹理坐标 (0 到 1)
+};
+
+vertex QuadVertexOut quad_vertex_main(constant packed_float2 *vertices [[buffer(0)]],
+                                      constant packed_float2 *texCoords [[buffer(1)]],
+                                      uint vertexID [[vertex_id]]) {
+    QuadVertexOut out;
+    out.position = float4(vertices[vertexID], 0.0, 1.0);
+    out.texCoord = texCoords[vertexID];
+    return out;
+}
+
+fragment half4 quad_fragment_main(QuadVertexOut in [[stage_in]],
+                                  texture2d<half, access::sample> texture [[texture(0)]]) {
+    constexpr sampler textureSampler(mag_filter::linear, min_filter::linear);
+    return texture.sample(textureSampler, in.texCoord);
 }

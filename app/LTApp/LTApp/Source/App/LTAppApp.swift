@@ -80,6 +80,10 @@ struct TestView: View {
                 Button("保存") {
                    resultImage = colorRenderer.exportCurrentResult()
                 }
+                
+                Button("Clear") {
+                    colorRenderer.cleanupRealtimeCache()
+                }
             }
             .padding()
         }

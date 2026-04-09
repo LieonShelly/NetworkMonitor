@@ -15,7 +15,7 @@ public class ColorOverlayRenderer: @unchecked Sendable {
     
     private var dilatePipelineState: MTLComputePipelineState?
     private var applyOverlayPipelineState: MTLComputePipelineState?
-    
+    private var renderPipelineState: MTLRenderPipelineState?
     private let realtimeLock = NSLock()
     private var cachedInTexture: MTLTexture?
     private var cachedDilatedMaskTexture: MTLTexture?
@@ -47,6 +47,31 @@ public class ColorOverlayRenderer: @unchecked Sendable {
                 }
                 if let overlayFunc = library.makeFunction(name: "apply_color_overlay") {
                     self.applyOverlayPipelineState = try device.makeComputePipelineState(function: overlayFunc)
+                }
+                if let vertexFunc = library.makeFunction(name: "quad_vertex_main"),
+                   let fragmentFunc = library.makeFunction(name: "quad_fragment_main") {
+                    
+                    let renderPipelineDescriptor = MTLRenderPipelineDescriptor()
+                    renderPipelineDescriptor.vertexFunction = vertexFunc
+                    renderPipelineDescriptor.fragmentFunction = fragmentFunc
+                    // 注意：这里的像素格式必须与你的 MTKView 的 colorPixelFormat 保持一致！
+                    // MTKView 默认通常是 bgra8Unorm
+                    renderPipelineDescriptor.colorAttachments[0].pixelFormat = .rgba8Unorm
+                    
+                    // 如果你有透明底色需求，开启混合模式 (Alpha Blending)
+                    renderPipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
+                    renderPipelineDescriptor.colorAttachments[0].rgbBlendOperation = .add
+                    renderPipelineDescriptor.colorAttachments[0].alphaBlendOperation = .add
+                    renderPipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
+                    renderPipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .sourceAlpha
+                    renderPipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
+                    renderPipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha
+                    
+                    do {
+                        self.renderPipelineState = try device.makeRenderPipelineState(descriptor: renderPipelineDescriptor)
+                    } catch {
+                        print("Render Pipeline 初始化失败: \(error)")
+                    }
                 }
             } catch {
                 print("Metal Pipeline 初始化失败: \(error)")
@@ -148,7 +173,7 @@ public class ColorOverlayRenderer: @unchecked Sendable {
         return true
     }
     
-   private func renderToView() {
+    func renderToView() {
         realtimeLock.lock()
         let inTex = cachedInTexture
         let maskTex = cachedDilatedMaskTexture
@@ -171,8 +196,8 @@ public class ColorOverlayRenderer: @unchecked Sendable {
         
         guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { return }
         
-        let imgW = inTex.width
-        let imgH = inTex.height
+        var imgW = inTex.width
+        var imgH = inTex.height
         let w = applyOverlayPipelineState.threadExecutionWidth
         let h = applyOverlayPipelineState.maxTotalThreadsPerThreadgroup / w
         let threadsPerThreadgroup = MTLSizeMake(w, h, 1)
@@ -186,28 +211,47 @@ public class ColorOverlayRenderer: @unchecked Sendable {
         computeEncoder.dispatchThreadgroups(threadgroupsPerGrid, threadsPerThreadgroup: threadsPerThreadgroup)
         computeEncoder.endEncoding()
         
-        let drawableW = drawable.texture.width
-        let drawableH = drawable.texture.height
+        let viewW = Float(drawable.texture.width)
+        let viewH = Float(drawable.texture.height)
+        imgW = Int(outTex.width)
+        imgH = Int(outTex.height)
+
+        let scaleFitX = Float(viewW) / Float(imgW)
+        let scaleFitY = Float(viewH) / Float(imgH)
+        var finalSacle = min(scaleFitX, scaleFitY)
+        finalSacle = min(finalSacle, 1.0)
+        let drawW = Float(imgW) * finalSacle
+        let drawH = Float(imgH) * finalSacle
         
-        let copyW = min(imgW, drawableW)
-        let copyH = min(imgH, drawableH)
-        let dstX = max(0, (drawableW - imgW) / 2)
-        let dstY = max(0, (drawableH - imgH) / 2)
-        let srcX = max(0, (imgW - drawableW) / 2)
-        let srcY = max(0, (imgH - drawableH) / 2)
-        
-        guard let blitEncoder = commandBuffer.makeBlitCommandEncoder() else { return }
-        blitEncoder.copy(
-            from: outTex,
-            sourceSlice: 0, sourceLevel: 0,
-            sourceOrigin: MTLOrigin(x: srcX, y: srcY, z: 0),
-            sourceSize: MTLSize(width: copyW, height: copyH, depth: 1),
-            to: drawable.texture,
-            destinationSlice: 0, destinationLevel: 0,
-            destinationOrigin: MTLOrigin(x: dstX, y: dstY, z: 0)
-        )
-        blitEncoder.endEncoding()
-        
+        let ndcScaleX = drawW / viewW
+        let ndcScaleY = drawH / viewH
+
+        let vertices: [Float] = [
+            -ndcScaleX, -ndcScaleY,  // V0
+             ndcScaleX, -ndcScaleY,  // V1
+            -ndcScaleX,  ndcScaleY,  // V2
+             ndcScaleX,  ndcScaleY   // V3
+        ]
+
+        let texCoords: [Float] = [
+            0.0, 1.0, // V0 对应纹理左下
+            1.0, 1.0, // V1 对应纹理右下
+            0.0, 0.0, // V2 对应纹理左上
+            1.0, 0.0  // V3 对应纹理右上
+        ]
+
+        guard let renderPassDescriptor = mtkView.currentRenderPassDescriptor,
+              let renderPipelineState = renderPipelineState,
+              let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else { return }
+
+        renderEncoder.setRenderPipelineState(renderPipelineState)
+        renderEncoder.setVertexBytes(vertices, length: MemoryLayout<Float>.size * vertices.count, index: 0)
+        renderEncoder.setVertexBytes(texCoords, length: MemoryLayout<Float>.size * texCoords.count, index: 1)
+
+        // 将 Compute Shader 的输出纹理作为片元着色器的输入
+        renderEncoder.setFragmentTexture(outTex, index: 0)
+        renderEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
+        renderEncoder.endEncoding()
         commandBuffer.present(drawable)
         commandBuffer.commit()
     }
