@@ -43,7 +43,7 @@ struct MTKViewRepresentable: UIViewRepresentable {
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {}
 
         func draw(in view: MTKView) {
-            renderer.renderToView()
+//            renderer.renderToView()
             // 由 renderer.renderToView() 内部处理实际渲染
             // 此回调在 setNeedsDisplay 触发时被调用
         }
