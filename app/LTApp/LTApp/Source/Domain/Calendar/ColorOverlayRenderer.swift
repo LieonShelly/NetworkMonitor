@@ -146,10 +146,7 @@ public class ColorOverlayRenderer: @unchecked Sendable {
         commandBuffer.commit()
         commandBuffer.waitUntilCompleted()
         
-        // ==========================================
-        // 4. 将输出纹理读回 CPU 内存并转为 UIImage
-        // ==========================================
-        // (保持原样，直接输出放大的 UIImage)
+        
         var outRawData = [UInt8](repeating: 0, count: totalBytes)
         outTexture.getBytes(&outRawData, bytesPerRow: bytesPerRow, from: MTLRegionMake2D(0, 0, width, height), mipmapLevel: 0)
         

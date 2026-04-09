@@ -120,3 +120,44 @@ kernel void dilate_mask(texture2d<half, access::read> inMask [[texture(0)]],
     // 写入膨胀后的单通道 Mask
     outMask.write(half4(isEffective, 0.0h, 0.0h, 1.0h), gid);
 }
+
+
+// ---------------------------------------------------------
+// Pass 2: 颜色叠加着色器
+// ---------------------------------------------------------
+struct OverlayColor {
+    float4 color; // r, g, b, a (刚好 16 字节)
+};
+
+kernel void apply_color_overlay(texture2d<half, access::read> inTexture [[texture(0)]],
+                                texture2d<half, access::read> maskTexture [[texture(1)]], // 读取 Pass1 产物
+                                texture2d<half, access::write> outTexture [[texture(2)]],
+                                constant OverlayColor &params [[buffer(0)]],
+                                uint2 gid [[thread_position_in_grid]]) {
+                                
+    if (gid.x >= inTexture.get_width() || gid.y >= inTexture.get_height()) { return; }
+
+    half origAlpha = inTexture.read(gid).a;
+    half maskValue = maskTexture.read(gid).r;
+
+    half4 outColor;
+    
+    if (maskValue > 0.5h) {
+        half finalAlpha;
+        if (origAlpha > 0.0h && origAlpha < 1.0h) {
+            finalAlpha = origAlpha;
+        } else {
+            finalAlpha = 1.0h;
+        }
+        
+        outColor = half4(half(params.color.r), half(params.color.g), half(params.color.b), finalAlpha);
+        
+        if (origAlpha > 0.0h) {
+            outColor = inTexture.read(gid);
+        }
+    } else {
+        outColor = half4(0.0h, 0.0h, 0.0h, 0.0h);
+    }
+
+    outTexture.write(outColor, gid);
+}
