@@ -101,7 +101,7 @@ public class ColorOverlayRenderer: @unchecked Sendable {
         
         let maskTotalPixels = width * height
         var maskData = [UInt8](repeating: 0, count: maskTotalPixels)
-        generate_solid_mask(imageData: rawData, width: Int32(width), height: Int32(height), maskData: &maskData)
+        GraphicAlgorithm.generateSolidMask(imageData: rawData, width: Int32(width), height: Int32(height), maskData: &maskData)
         
         let rgbaDesc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba8Unorm, width: width, height: height, mipmapped: false)
         rgbaDesc.usage = [.shaderRead, .shaderWrite]
@@ -302,7 +302,7 @@ public class ColorOverlayRenderer: @unchecked Sendable {
         let maskTotalPixels = width * height
         var maskData = [UInt8](repeating: 0, count: maskTotalPixels)
         
-        generate_solid_mask(imageData: rawData, width: Int32(width), height: Int32(height), maskData: &maskData)
+        GraphicAlgorithm.generateSolidMask(imageData: rawData, width: Int32(width), height: Int32(height), maskData: &maskData)
         
         let rgbaDesc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba8Unorm, width: width, height: height, mipmapped: false)
         rgbaDesc.usage = [.shaderRead, .shaderWrite]
