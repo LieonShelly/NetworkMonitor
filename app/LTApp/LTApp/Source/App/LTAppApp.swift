@@ -28,7 +28,7 @@ struct LTAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            TestView()// coordinator.rootView()
+            coordinator.rootView()
         }
         .environmentObject(homeCoordinator)
         .environmentObject(coordinator)
@@ -66,7 +66,6 @@ struct TestView: View {
                     Image(uiImage: resultImage)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 24)
                 }
             }
            
@@ -79,6 +78,7 @@ struct TestView: View {
                 ColorSliderRow(label: "B", value: $blue, tint: .blue)
                 Button("保存") {
                    resultImage = colorRenderer.exportCurrentResult()
+                    
                 }
                 
                 Button("Clear") {
@@ -90,8 +90,8 @@ struct TestView: View {
         .onChange(of: overlayColor) { oldValue, newValue in
             colorRenderer.overlayColor = newValue
         }
-        .onAppear {
-            colorRenderer.prepareForRealtimeRendering(image: UIImage(resource: .dripper), expandRadius: 30)
+        .task {
+           await colorRenderer.prepareForRealtimeRenderingAsync(image: UIImage(resource: .dripper), expandRadius: 30)
             colorRenderer.overlayColor = .red
         }
     }

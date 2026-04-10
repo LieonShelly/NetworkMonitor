@@ -179,3 +179,23 @@ fragment half4 quad_fragment_main(QuadVertexOut in [[stage_in]],
     constexpr sampler textureSampler(mag_filter::linear, min_filter::linear);
     return texture.sample(textureSampler, in.texCoord);
 }
+
+
+fragment half4 overlay_fragment_main(QuadVertexOut in [[stage_in]],
+                                     texture2d<half, access::sample> inTexture [[texture(0)]],
+                                     texture2d<half, access::sample> maskTexture [[texture(1)]],
+                                     constant OverlayColor &params [[buffer(0)]]) {
+    constexpr sampler textureSampler(mag_filter::linear, min_filter::linear);
+    
+    half4 origColor = inTexture.sample(textureSampler, in.texCoord);
+    half maskValue = maskTexture.sample(textureSampler, in.texCoord).r;
+    
+    if (maskValue > 0.5h) {
+        if (origColor.a > 0.0h) {
+            return origColor;
+        }
+        half finalAlpha = 1.0h;
+        return half4(half(params.color.r), half(params.color.g), half(params.color.b), finalAlpha);
+    }
+    return half4(0.0h, 0.0h, 0.0h, 0.0h);
+}

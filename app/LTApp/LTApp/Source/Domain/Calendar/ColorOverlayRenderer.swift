@@ -21,6 +21,8 @@ public class ColorOverlayRenderer: @unchecked Sendable {
     private var cachedImageOrientation: UIImage.Orientation = .up
     private var isPrepared: Bool = false
     
+    public private(set) var isPreparing: Bool = false
+    
     public var overlayColor: UIColor? {
         didSet {
             guard isPrepared, overlayColor != nil else {
@@ -46,7 +48,7 @@ public class ColorOverlayRenderer: @unchecked Sendable {
                     self.applyOverlayPipelineState = try device.makeComputePipelineState(function: overlayFunc)
                 }
                 if let vertexFunc = library.makeFunction(name: "quad_vertex_main"),
-                   let fragmentFunc = library.makeFunction(name: "quad_fragment_main") {
+                   let fragmentFunc = library.makeFunction(name: "overlay_fragment_main") {
                     
                     let renderPipelineDescriptor = MTLRenderPipelineDescriptor()
                     renderPipelineDescriptor.vertexFunction = vertexFunc
@@ -80,6 +82,31 @@ public class ColorOverlayRenderer: @unchecked Sendable {
         cachedDilatedMaskTexture = nil
         cachedOutTexture = nil
         isPrepared = false
+    }
+    
+    @discardableResult
+    public func prepareForRealtimeRenderingAsync(
+        image: UIImage,
+        expandRadius: Int32 = 30
+    ) async -> Bool {
+        isPreparing = true
+        let success = await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                guard let self else {
+                    continuation.resume(returning: false)
+                    return
+                }
+                let result = self.prepareForRealtimeRendering(image: image, expandRadius: expandRadius)
+                continuation.resume(returning: result)
+            }
+        }
+        isPreparing = false
+        if success, overlayColor != nil {
+          await MainActor.run {
+                mtkView?.setNeedsDisplay()
+            }
+        }
+        return success
     }
     
     @discardableResult
@@ -123,7 +150,7 @@ public class ColorOverlayRenderer: @unchecked Sendable {
         GraphicAlgorithm.generateSolidMask(imageData: rawData, width: Int32(width), height: Int32(height), maskData: &maskData)
         
         let rgbaDesc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba8Unorm, width: width, height: height, mipmapped: false)
-        rgbaDesc.usage = [.shaderRead, .shaderWrite]
+        rgbaDesc.usage = [.shaderRead, .shaderWrite, .renderTarget]
         rgbaDesc.storageMode = .shared
         guard let inTexture = device.makeTexture(descriptor: rgbaDesc) else { return false }
         inTexture.replace(region: MTLRegionMake2D(0, 0, width, height), mipmapLevel: 0, withBytes: rawData, bytesPerRow: bytesPerRow)
@@ -171,14 +198,12 @@ public class ColorOverlayRenderer: @unchecked Sendable {
         realtimeLock.lock()
         let inTex = cachedInTexture
         let maskTex = cachedDilatedMaskTexture
-        let outTex = cachedOutTexture
         let prepared = isPrepared
         let color = overlayColor
         realtimeLock.unlock()
         
-        guard prepared, let inTex, let maskTex, let outTex, let color,
+        guard prepared, let inTex, let maskTex, let color,
               let commandQueue = commandQueue,
-              let applyOverlayPipelineState = applyOverlayPipelineState,
               let mtkView = mtkView,
               let drawable = mtkView.currentDrawable else { return }
         
@@ -188,50 +213,33 @@ public class ColorOverlayRenderer: @unchecked Sendable {
         
         guard let commandBuffer = commandQueue.makeCommandBuffer() else { return }
         
-        guard let computeEncoder = commandBuffer.makeComputeCommandEncoder() else { return }
-        
-        var imgW = inTex.width
-        var imgH = inTex.height
-        let w = applyOverlayPipelineState.threadExecutionWidth
-        let h = applyOverlayPipelineState.maxTotalThreadsPerThreadgroup / w
-        let threadsPerThreadgroup = MTLSizeMake(w, h, 1)
-        let threadgroupsPerGrid = MTLSizeMake((imgW + w - 1) / w, (imgH + h - 1) / h, 1)
-        
-        computeEncoder.setComputePipelineState(applyOverlayPipelineState)
-        computeEncoder.setTexture(inTex, index: 0)
-        computeEncoder.setTexture(maskTex, index: 1)
-        computeEncoder.setTexture(outTex, index: 2)
-        computeEncoder.setBytes(&overlayParams, length: MemoryLayout<OverlayColor>.stride, index: 0)
-        computeEncoder.dispatchThreadgroups(threadgroupsPerGrid, threadsPerThreadgroup: threadsPerThreadgroup)
-        computeEncoder.endEncoding()
-        
         let viewW = Float(drawable.texture.width)
         let viewH = Float(drawable.texture.height)
-        imgW = Int(outTex.width)
-        imgH = Int(outTex.height)
+        let imgW = Float(inTex.width)
+        let imgH = Float(inTex.height)
 
-        let scaleFitX = Float(viewW) / Float(imgW)
-        let scaleFitY = Float(viewH) / Float(imgH)
-        var finalSacle = min(scaleFitX, scaleFitY)
-        finalSacle = min(finalSacle, 1.0)
-        let drawW = Float(imgW) * finalSacle
-        let drawH = Float(imgH) * finalSacle
+        let scaleFitX = viewW / imgW
+        let scaleFitY = viewH / imgH
+        var finalScale = min(scaleFitX, scaleFitY)
+        finalScale = min(finalScale, 1.0)
+        let drawW = imgW * finalScale
+        let drawH = imgH * finalScale
         
         let ndcScaleX = drawW / viewW
         let ndcScaleY = drawH / viewH
 
         let vertices: [Float] = [
-            -ndcScaleX, -ndcScaleY,  // V0
-             ndcScaleX, -ndcScaleY,  // V1
-            -ndcScaleX,  ndcScaleY,  // V2
-             ndcScaleX,  ndcScaleY   // V3
+            -ndcScaleX, -ndcScaleY,
+             ndcScaleX, -ndcScaleY,
+            -ndcScaleX,  ndcScaleY,
+             ndcScaleX,  ndcScaleY
         ]
 
         let texCoords: [Float] = [
-            0.0, 1.0, // V0 对应纹理左下
-            1.0, 1.0, // V1 对应纹理右下
-            0.0, 0.0, // V2 对应纹理左上
-            1.0, 0.0  // V3 对应纹理右上
+            0.0, 1.0,
+            1.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0
         ]
 
         guard let renderPassDescriptor = mtkView.currentRenderPassDescriptor,
@@ -241,9 +249,9 @@ public class ColorOverlayRenderer: @unchecked Sendable {
         renderEncoder.setRenderPipelineState(renderPipelineState)
         renderEncoder.setVertexBytes(vertices, length: MemoryLayout<Float>.size * vertices.count, index: 0)
         renderEncoder.setVertexBytes(texCoords, length: MemoryLayout<Float>.size * texCoords.count, index: 1)
-
-        // 将 Compute Shader 的输出纹理作为片元着色器的输入
-        renderEncoder.setFragmentTexture(outTex, index: 0)
+        renderEncoder.setFragmentTexture(inTex, index: 0)
+        renderEncoder.setFragmentTexture(maskTex, index: 1)
+        renderEncoder.setFragmentBytes(&overlayParams, length: MemoryLayout<OverlayColor>.stride, index: 0)
         renderEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
         renderEncoder.endEncoding()
         commandBuffer.present(drawable)
@@ -263,40 +271,56 @@ public class ColorOverlayRenderer: @unchecked Sendable {
         
         guard prepared, let inTex, let maskTex, let outTex, let color,
               let commandQueue = commandQueue,
-              let applyOverlayPipelineState = applyOverlayPipelineState else { return nil }
+              let renderPipelineState = renderPipelineState else { return nil }
         
         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
         color.getRed(&r, green: &g, blue: &b, alpha: &a)
         var overlayParams = OverlayColor(color: SIMD4<Float>(Float(r), Float(g), Float(b), Float(a)))
         
+        // 离屏 render pass → cachedOutTexture
+        let renderPassDesc = MTLRenderPassDescriptor()
+        renderPassDesc.colorAttachments[0].texture = outTex
+        renderPassDesc.colorAttachments[0].loadAction = .clear
+        renderPassDesc.colorAttachments[0].clearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 0)
+        renderPassDesc.colorAttachments[0].storeAction = .store
+        
         guard let commandBuffer = commandQueue.makeCommandBuffer(),
-              let encoder = commandBuffer.makeComputeCommandEncoder() else { return nil }
+              let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDesc) else { return nil }
         
-        let w = applyOverlayPipelineState.threadExecutionWidth
-        let h = applyOverlayPipelineState.maxTotalThreadsPerThreadgroup / w
-        let threadsPerThreadgroup = MTLSizeMake(w, h, 1)
-        let width = inTex.width
-        let height = inTex.height
-        let threadgroupsPerGrid = MTLSizeMake((width + w - 1) / w, (height + h - 1) / h, 1)
+        // 全屏 quad 覆盖整个 outTexture
+        let vertices: [Float] = [
+            -1.0, -1.0,
+             1.0, -1.0,
+            -1.0,  1.0,
+             1.0,  1.0
+        ]
+        let texCoords: [Float] = [
+            0.0, 1.0,
+            1.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0
+        ]
         
-        encoder.setComputePipelineState(applyOverlayPipelineState)
-        encoder.setTexture(inTex, index: 0)
-        encoder.setTexture(maskTex, index: 1)
-        encoder.setTexture(outTex, index: 2)
-        encoder.setBytes(&overlayParams, length: MemoryLayout<OverlayColor>.stride, index: 0)
-        encoder.dispatchThreadgroups(threadgroupsPerGrid, threadsPerThreadgroup: threadsPerThreadgroup)
+        renderEncoder.setRenderPipelineState(renderPipelineState)
+        renderEncoder.setVertexBytes(vertices, length: MemoryLayout<Float>.size * vertices.count, index: 0)
+        renderEncoder.setVertexBytes(texCoords, length: MemoryLayout<Float>.size * texCoords.count, index: 1)
+        renderEncoder.setFragmentTexture(inTex, index: 0)
+        renderEncoder.setFragmentTexture(maskTex, index: 1)
+        renderEncoder.setFragmentBytes(&overlayParams, length: MemoryLayout<OverlayColor>.stride, index: 0)
+        renderEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
+        renderEncoder.endEncoding()
         
-        encoder.endEncoding()
         commandBuffer.commit()
         commandBuffer.waitUntilCompleted()
         
-        
+        // 从 outTexture 回读像素
+        let width = outTex.width
+        let height = outTex.height
         let bytesPerPixel = 4
         let bytesPerRow = width * bytesPerPixel
         let totalBytes = height * bytesPerRow
         var outRawData = [UInt8](repeating: 0, count: totalBytes)
         outTex.getBytes(&outRawData, bytesPerRow: bytesPerRow, from: MTLRegionMake2D(0, 0, width, height), mipmapLevel: 0)
-        
         
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         guard let outContext = CGContext(data: &outRawData, width: width, height: height,
