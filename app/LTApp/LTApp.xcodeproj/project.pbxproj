@@ -491,6 +491,7 @@
 			isa = PBXGroup;
 			children = (
 				F8E85AD42F751CF3002DDDCB /* PaperView.swift */,
+				F8FC02A12F90D7180066B66E /* NewInsightsHisotryListView.swift */,
 				F8238D132F7510DC00EF9D2C /* PrinterView.swift */,
 				F87E9E862F70268B0028D944 /* CoinIconView.swift */,
 				F87E9E842F6FF39F0028D944 /* UnreadReportHistoryRow.swift */,
@@ -1321,7 +1322,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LTApp/Resource/LTApp.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tianwei LIU (MU9J2K22B8)";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = R7S4TKW9JF;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = R7S4TKW9JF;
@@ -1334,7 +1335,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.little.things;
 				PRODUCT_NAME = LTApp;
 				PROVISIONING_PROFILE_SPECIFIER = little.things.dev.profile;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = new_dev;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = littile_thins_ios_dev;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1484,7 +1485,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.little.things;
 				PRODUCT_NAME = LTApp;
 				PROVISIONING_PROFILE_SPECIFIER = little.things.adhoc.profile;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = new_ad_hoc;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = littile_thins_ios_adhoc;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1661,7 +1662,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.little.things;
 				PRODUCT_NAME = LTApp;
 				PROVISIONING_PROFILE_SPECIFIER = little.things.adhoc.profile;
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = new_ad_hoc;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = littile_thins_ios_adhoc;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

@@ -28,7 +28,8 @@ struct InsightsView: View {
                     .transition(.opacity.animation(.easeInOut))
             case .history:
                 titleView
-                ReportHistoryView(viewModel: viewModel)
+//                ReportHistoryView(viewModel: viewModel)
+                NewInsightsHistoryListView(viewModel: viewModel)
                     .transition(.opacity.animation(.easeInOut))
             case .printing:
                 titleView

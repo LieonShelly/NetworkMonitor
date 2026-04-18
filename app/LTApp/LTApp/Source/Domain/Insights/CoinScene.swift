@@ -7,7 +7,7 @@
 import UIComponent
 @preconcurrency import SpriteKit
 
-class CoinScene: SKScene {
+class CoinScene: SKScene , @unchecked Sendable {
     override func didMove(to view: SKView) {
         let warmUpNode = SKCropNode()
         warmUpNode.maskNode = SKShapeNode(circleOfRadius: 1)
@@ -29,14 +29,15 @@ class CoinScene: SKScene {
             return SKTexture(image: image)
         }
         
-        SKTexture.preload(textures) { [weak self] in
+        nonisolated(unsafe) let preloadedTextures = textures
+        SKTexture.preload(preloadedTextures) { [weak self] in
             DispatchQueue.main.async {
-                let total = textures.count
+                let total = preloadedTextures.count
                 if total == 0 {
                     onCompleted?()
                     return
                 }
-                for (index, texture) in textures.enumerated() {
+                for (index, texture) in preloadedTextures.enumerated() {
                     let isLast = (index == total - 1)
                     DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 0.15) {
                         self?.createSingleCoin(texture: texture)

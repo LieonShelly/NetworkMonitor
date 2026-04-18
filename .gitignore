@@ -62,3 +62,4 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 fastlane/.buldversion
 fastlane/AuthKey_XK2Z7K45R8.p8
+.DS_Store
