@@ -125,6 +125,7 @@ struct ArcadeView: View {
     // MARK: - More Stamps
     private var moreStampsView: some View {
         VStack(spacing: .zero) {
+            Spacer()
             Text("\(moreStampsCount)")
                 .textStyle(size: 64, fontFamily: .dsDigital)
                 .foregroundStyle(AppColor.color(hex: 0x323232))
@@ -132,10 +133,9 @@ struct ArcadeView: View {
             Text("more stamps")
                 .textStyle(size: 31, fontFamily: .dsDigital)
                 .foregroundStyle(AppColor.color(hex: 0x323232))
+            Spacer()
         }
         .frame(maxWidth: .infinity)
-        .padding(.bottom, 50)
-        .padding(.top, 50 + 26)
     }
     
     private var moreStampsCount: Int {
@@ -146,50 +146,59 @@ struct ArcadeView: View {
     @ViewBuilder
     private var historyAndMoreStrapsSection: some View {
         let allItems = viewModel.unreadHisotrys + viewModel.readHisotrys
-        ScrollView(showsIndicators: false) {
-            LazyVStack(spacing: .zero) {
-                moreStampsView
-                HStack {
-                    Spacer()
-                    Image(.rightPloly)
-                        .resizable()
-                        .frame(width: 15, height: 15)
-                    Text("HISTORY")
-                        .textStyle(font: .annotation, color: AppColor.black)
-                        .padding(.horizontal, 16)
-                    Image(.leftPoly)
-                        .resizable()
-                        .frame(width: 15, height: 15)
-                    Spacer()
-                }
-                .padding(.bottom, 12)
-                
-                LazyVStack(spacing: 12) {
-                    ForEach(Array(allItems.enumerated()), id: \.element.id) { index, item in
-                        NewHistoryItemRow(history: item)
-                            .contentShape(.rect)
-                            .onTapGesture {
-                                Task {
-                                    try? await viewModel.didTapHistoryItem(item)
-                                }
-                            }
-                            .onAppear {
-                                if item.id == allItems.last?.id {
-                                    Task { await viewModel.loadMoreHistory() }
-                                }
-                            }
+        let containerVP: CGFloat = 26
+        let rowHeight: CGFloat = 80
+        let rowSpacing: CGFloat = 12
+        let historyHeaderHeight: CGFloat = 27 + 12 
+        let visibleListHeight: CGFloat = historyHeaderHeight + rowHeight + rowSpacing + rowHeight * 0.2 + containerVP * 2
+        
+        GeometryReader { geo in
+            let topHeight = max(0, geo.size.height - visibleListHeight)
+            
+            ScrollView(showsIndicators: false) {
+                LazyVStack(spacing: .zero) {
+                    moreStampsView
+                        .frame(height: topHeight)
+                    
+                    HStack {
+                        Spacer()
+                        Image(.rightPloly)
+                            .resizable()
+                            .frame(width: 15, height: 15)
+                        Text("HISTORY")
+                            .textStyle(font: .annotation, color: AppColor.black)
+                            .padding(.horizontal, 16)
+                        Image(.leftPoly)
+                            .resizable()
+                            .frame(width: 15, height: 15)
+                        Spacer()
                     }
+                    .padding(.bottom, 12)
+                    
+                    LazyVStack(spacing: 12) {
+                        ForEach(Array(allItems.enumerated()), id: \.element.id) { index, item in
+                            NewHistoryItemRow(history: item)
+                                .contentShape(.rect)
+                                .onTapGesture {
+                                    Task {
+                                        try? await viewModel.didTapHistoryItem(item)
+                                    }
+                                }
+                                .onAppear {
+                                    if item.id == allItems.last?.id {
+                                        Task { await viewModel.loadMoreHistory() }
+                                    }
+                                }
+                        }
+                    }
+                    .padding(.bottom, 26 + 12)
                 }
-                .padding(.bottom, 26 + 12)
-             
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 56)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(.horizontal, 56)
         }
     }
     
-    
-    // MARK: - Control Panel
     var controlPanel: some View {
         ZStack(alignment: .bottom) {
             HStack(spacing: .zero) {
