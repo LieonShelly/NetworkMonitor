@@ -123,19 +123,29 @@ struct ArcadeView: View {
     }
     
     // MARK: - More Stamps
-    private var moreStampsView: some View {
-        VStack(spacing: .zero) {
-            Spacer()
-            Text("\(moreStampsCount)")
-                .textStyle(size: 64, fontFamily: .dsDigital)
-                .foregroundStyle(AppColor.color(hex: 0x323232))
-            
-            Text("more stamps")
-                .textStyle(size: 31, fontFamily: .dsDigital)
-                .foregroundStyle(AppColor.color(hex: 0x323232))
-            Spacer()
-        }
-        .frame(maxWidth: .infinity)
+   @ViewBuilder private var moreStampsView: some View {
+       if let currentIcons = viewModel.currentIcons, currentIcons.minAnswersToGenerateReport != 0, currentIcons.minAnswersToGenerateReport >= currentIcons.icons.count {
+           VStack {
+               Spacer()
+               CountingDownView()
+               Spacer()
+           }
+           .frame(maxWidth: .infinity, maxHeight: .infinity)
+       } else {
+           VStack(spacing: .zero) {
+               Spacer()
+               Text("\(moreStampsCount)")
+                   .textStyle(size: 64, fontFamily: .dsDigital)
+                   .foregroundStyle(AppColor.color(hex: 0x323232))
+               
+               Text("more stamps")
+                   .textStyle(size: 31, fontFamily: .dsDigital)
+                   .foregroundStyle(AppColor.color(hex: 0x323232))
+               Spacer()
+           }
+           .frame(maxWidth: .infinity)
+       }
+        
     }
     
     private var moreStampsCount: Int {
@@ -145,7 +155,7 @@ struct ArcadeView: View {
     
     @ViewBuilder
     private var historyAndMoreStrapsSection: some View {
-        let allItems = viewModel.unreadHisotrys + viewModel.readHisotrys
+        let allItems: [WeeklyReportSummary] = viewModel.unreadHisotrys + viewModel.readHisotrys
         let containerVP: CGFloat = 26
         let rowHeight: CGFloat = 80
         let rowSpacing: CGFloat = 12
@@ -165,7 +175,7 @@ struct ArcadeView: View {
                         Image(.rightPloly)
                             .resizable()
                             .frame(width: 15, height: 15)
-                        Text("HISTORY")
+                        Text(allItems.isEmpty ? "NO HISTORY" : "HISTORY")
                             .textStyle(font: .annotation, color: AppColor.black)
                             .padding(.horizontal, 16)
                         Image(.leftPoly)
