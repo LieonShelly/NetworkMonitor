@@ -92,7 +92,7 @@ public struct WavyLine: Shape {
 public struct SeededGenerator: RandomNumberGenerator {
     private var state: UInt64
 
-    init(seed: Int) {
+    public init(seed: Int) {
         self.state = UInt64(seed)
     }
 

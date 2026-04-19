@@ -13,7 +13,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     let dataService: any AppDataWithAuthorizationServiceful
     @MainActor @Published var weeklyReport: WeeklyReport?
     @MainActor @Published var currentIcons: WeeklyReportCurrentIcons?
-    @MainActor @Published var state: UIState = .history
+    @MainActor @Published var state: UIState = .readyToPrint
     @MainActor @Published var weeklyIcons: [ConinIconStyle] = []
     @MainActor @Published var unreadHisotrys: [WeeklyReportSummary] = []
     @MainActor @Published var readHisotrys: [WeeklyReportSummary] = []
