@@ -21,6 +21,7 @@ struct ArcadeView: View {
         .onFirstAppear {
             Task {
                 try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
+                try? await viewModel.fetchHisotryData()
             }
         }
     }
@@ -81,7 +82,6 @@ struct ArcadeView: View {
         return "\(count) / \(total)"
     }
     
-    // MARK: - Token 图标行
     @ViewBuilder
     private var iconRow: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -105,19 +105,89 @@ struct ArcadeView: View {
         }
     }
     
-    // MARK: - Screen
     var screen: some View {
-        VStack {
-            
+        ZStack(alignment: .top) {
+            historyAndMoreStrapsSection
+            Rectangle()
+                .fill(Color.clear)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .overlay(
+                    Image(.screen)
+                        .resizable()
+                )
+                .padding(.horizontal, 18)
+                .offset(y: -2)
+                .allowsHitTesting(false)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(
-            Image(.screen)
-                .resizable()
-        )
-        .padding(.horizontal, 18)
-        .offset(y: -2)
+     
     }
+    
+    // MARK: - More Stamps
+    private var moreStampsView: some View {
+        VStack(spacing: .zero) {
+            Text("\(moreStampsCount)")
+                .textStyle(size: 64, fontFamily: .dsDigital)
+                .foregroundStyle(AppColor.color(hex: 0x323232))
+            
+            Text("more stamps")
+                .textStyle(size: 31, fontFamily: .dsDigital)
+                .foregroundStyle(AppColor.color(hex: 0x323232))
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.bottom, 50)
+        .padding(.top, 50 + 26)
+    }
+    
+    private var moreStampsCount: Int {
+        guard let currentIcons = viewModel.currentIcons else { return 0 }
+        return max(0, currentIcons.minAnswersToGenerateReport - currentIcons.icons.count)
+    }
+    
+    @ViewBuilder
+    private var historyAndMoreStrapsSection: some View {
+        let allItems = viewModel.unreadHisotrys + viewModel.readHisotrys
+        ScrollView(showsIndicators: false) {
+            LazyVStack(spacing: .zero) {
+                moreStampsView
+                HStack {
+                    Spacer()
+                    Image(.rightPloly)
+                        .resizable()
+                        .frame(width: 15, height: 15)
+                    Text("HISTORY")
+                        .textStyle(font: .annotation, color: AppColor.black)
+                        .padding(.horizontal, 16)
+                    Image(.leftPoly)
+                        .resizable()
+                        .frame(width: 15, height: 15)
+                    Spacer()
+                }
+                .padding(.bottom, 12)
+                
+                LazyVStack(spacing: 12) {
+                    ForEach(Array(allItems.enumerated()), id: \.element.id) { index, item in
+                        NewHistoryItemRow(history: item)
+                            .contentShape(.rect)
+                            .onTapGesture {
+                                Task {
+                                    try? await viewModel.didTapHistoryItem(item)
+                                }
+                            }
+                            .onAppear {
+                                if item.id == allItems.last?.id {
+                                    Task { await viewModel.loadMoreHistory() }
+                                }
+                            }
+                    }
+                }
+                .padding(.bottom, 26 + 12)
+             
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(.horizontal, 56)
+        }
+    }
+    
     
     // MARK: - Control Panel
     var controlPanel: some View {
