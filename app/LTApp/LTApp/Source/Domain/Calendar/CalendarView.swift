@@ -221,11 +221,11 @@ struct CalendarView: View {
                             .background {
                                 if isCurrentMonth(month: month) {
                                     RoundedRectangle(cornerRadius: 12)
-                                        .fill(AppColor.color(hex: 0x323232))
+                                        .fill(AppColor.greyDark)
                                 } else {
                                     RoundedRectangle(cornerRadius: 12)
                                         .stroke(style: .init(lineWidth: 1))
-                                        .foregroundStyle(AppColor.color(hex: 0x323232))
+                                        .foregroundStyle(AppColor.greyDark)
                                 }
                             }
                             .padding(.vertical, 6)

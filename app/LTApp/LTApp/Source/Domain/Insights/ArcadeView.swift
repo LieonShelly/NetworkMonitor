@@ -102,12 +102,14 @@ struct ArcadeView: View {
                     }
                 }
             }
+            .padding(.vertical, 10)
         }
+        .background(Color.random)
     }
     
     var screen: some View {
         ZStack(alignment: .top) {
-            historyAndMoreStrapsSection
+            historyAndMoreStrampsSection
             Rectangle()
                 .fill(Color.clear)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -122,30 +124,20 @@ struct ArcadeView: View {
      
     }
     
-    // MARK: - More Stamps
    @ViewBuilder private var moreStampsView: some View {
-       if let currentIcons = viewModel.currentIcons, currentIcons.minAnswersToGenerateReport != 0, currentIcons.minAnswersToGenerateReport >= currentIcons.icons.count {
-           VStack {
-               Spacer()
-               CountingDownView()
-               Spacer()
-           }
-           .frame(maxWidth: .infinity, maxHeight: .infinity)
+       if let currentIcons = viewModel.currentIcons, currentIcons.minAnswersToGenerateReport != 0, currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count {
+           CountingDownView()
+               .frame(maxWidth: .infinity, maxHeight: .infinity)
        } else {
            VStack(spacing: .zero) {
-               Spacer()
                Text("\(moreStampsCount)")
-                   .textStyle(size: 64, fontFamily: .dsDigital)
-                   .foregroundStyle(AppColor.color(hex: 0x323232))
+                   .textStyle(size: 64, color: AppColor.greyDark, fontFamily: .dsDigital)
                
                Text("more stamps")
-                   .textStyle(size: 31, fontFamily: .dsDigital)
-                   .foregroundStyle(AppColor.color(hex: 0x323232))
-               Spacer()
+                   .textStyle(size: 31, color: AppColor.greyDark, fontFamily: .dsDigital)
            }
-           .frame(maxWidth: .infinity)
+           .frame(maxWidth: .infinity, maxHeight: .infinity)
        }
-        
     }
     
     private var moreStampsCount: Int {
@@ -154,7 +146,7 @@ struct ArcadeView: View {
     }
     
     @ViewBuilder
-    private var historyAndMoreStrapsSection: some View {
+    private var historyAndMoreStrampsSection: some View {
         let allItems: [WeeklyReportSummary] = viewModel.unreadHisotrys + viewModel.readHisotrys
         let containerVP: CGFloat = 26
         let rowHeight: CGFloat = 80

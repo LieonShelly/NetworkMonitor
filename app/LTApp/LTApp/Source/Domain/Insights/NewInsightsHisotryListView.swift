@@ -51,7 +51,7 @@ struct NewInsightsHistoryListView: View {
             
             if let currentIcons =  viewModel.currentIcons,
                !currentIcons.icons.isEmpty,
-               currentIcons.minAnswersToGenerateReport >= currentIcons.icons.count {
+               currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count {
                 Button {
                     viewModel.onTapHistoryHeader()
                 } label: {
@@ -92,7 +92,7 @@ struct NewInsightsHistoryListView: View {
 
     private var iconCountText: String {
         guard let currentIcons = viewModel.currentIcons else { return "" }
-        return currentIcons.minAnswersToGenerateReport >= currentIcons.icons.count ? "FULL" : "\(currentIcons.icons.count)/\(currentIcons.minAnswersToGenerateReport)"
+        return currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count ? "FULL" : "\(currentIcons.icons.count)/\(currentIcons.minAnswersToGenerateReport)"
     }
 
     @ViewBuilder
