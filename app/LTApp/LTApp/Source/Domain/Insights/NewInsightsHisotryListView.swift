@@ -29,8 +29,6 @@ struct NewInsightsHistoryListView: View {
         }
     }
 
-    // MARK: - Current Week Header
-
     private var currentWeekHeader: some View {
         VStack(spacing: .zero) {
             // "CURRENT WEEK" label + count
@@ -47,37 +45,54 @@ struct NewInsightsHistoryListView: View {
 
             // Icon row
             iconRow
+                .frame(maxWidth: .infinity)
                 .padding(.top, 12)
                 .padding(.horizontal, 24)
-
-            // "go to arcade" button
-            Button {
-                viewModel.onTapHistoryHeader()
-            } label: {
-                Text("go to arcade")
-                    .textStyle(font: .body, color: AppColor.greyDark)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 41)
-                    .background(AppColor.oat)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(AppColor.greyDark, lineWidth: 2)
-                    }
+            
+            if let currentIcons =  viewModel.currentIcons,
+               !currentIcons.icons.isEmpty,
+               currentIcons.minAnswersToGenerateReport >= currentIcons.icons.count {
+                Button {
+                    viewModel.onTapHistoryHeader()
+                } label: {
+                    Text("ready to print")
+                        .textStyle(font: .body, color: AppColor.oat)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 41)
+                        .background {
+                            Image(.roundedBg).resizable()
+                                .renderingMode(.template)
+                                .foregroundStyle(AppColor.greyDark)
+                        }
+                }
+                .padding(.top, 16)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 16)
+            } else {
+                Button {
+                    viewModel.onTapHistoryHeader()
+                } label: {
+                    Text("go to arcade")
+                        .textStyle(font: .body, color: AppColor.greyDark)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 41)
+                        .background {
+                            Image(.roundedBg).resizable()
+                        }
+                }
+                .padding(.top, 16)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 16)
             }
-            .padding(.top, 16)
-            .padding(.horizontal, 16)
-            .padding(.bottom, 16)
         }
         .background {
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(AppColor.greyDark, lineWidth: 2)
+            Image(.rectCover).resizable()
         }
     }
 
     private var iconCountText: String {
         guard let currentIcons = viewModel.currentIcons else { return "" }
-        return "\(currentIcons.icons.count)/\(currentIcons.minAnswersToGenerateReport)"
+        return currentIcons.minAnswersToGenerateReport >= currentIcons.icons.count ? "FULL" : "\(currentIcons.icons.count)/\(currentIcons.minAnswersToGenerateReport)"
     }
 
     @ViewBuilder
@@ -117,10 +132,9 @@ struct NewInsightsHistoryListView: View {
                         .frame(width: 32, height: 32)
                 }
             }
+            Spacer()
         }
     }
-
-    // MARK: - History Section
 
     @ViewBuilder
     private var historySection: some View {
@@ -194,15 +208,13 @@ private struct NewHistoryItemRow: View {
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
-        .background(AppColor.oat)
-        .overlay {
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(AppColor.greyMedium, lineWidth: 2)
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .background(content: {
+            Image(.rectCover)
+                .resizable()
+        })
+        
     }
 
-    /// Formats period as "22 - 28 FEB" matching the Figma design
     private var periodText: String {
         let calendar = AppCalendar.current
         let startDay = calendar.component(.day, from: history.periodStart)
