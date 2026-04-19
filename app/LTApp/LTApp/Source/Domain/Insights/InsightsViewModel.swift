@@ -18,7 +18,13 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var unreadHisotrys: [WeeklyReportSummary] = []
     @MainActor @Published var readHisotrys: [WeeklyReportSummary] = []
     @MainActor @Published var reportsPaginator: Paginator<WeeklyReportSummary>!
-    @MainActor @Published var printUIState: ReadyToPrintUIState = .empty
+    @Published var arcadeState: ArcadeViewState = .unFull
+    var isFull: Bool {
+        guard let currentIcons else { return false }
+        let isFull = currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count
+            && currentIcons.minAnswersToGenerateReport != 0
+        return isFull
+    }
     var todayQuestions: [Question] = []
     var goToQoTFlow: (() -> Void)?
     
@@ -29,10 +35,13 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         case printing
     }
     
-    enum ReadyToPrintUIState {
+    enum ArcadeViewState {
+        case countingDown
         case readyToPrint
+        case printingLoading
+        case printingLoadingDone
         case unread
-        case empty
+        case unFull
     }
     
     init(dataService: any AppDataWithAuthorizationServiceful,) {
@@ -70,35 +79,6 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         let currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
         await MainActor.run {
             self.currentIcons = currentIcons
-            self.weeklyIcons = currentIcons.icons.map { .normal($0)}
-            let normalCount = self.weeklyIcons.count
-            if currentIcons.minAnswersToGenerateReport > self.weeklyIcons.count {
-                self.weeklyIcons.append(.plus)
-               let placeholders = (0 ..< currentIcons.minAnswersToGenerateReport - normalCount - 1).map { _ in ConinIconStyle.empty }
-                self.weeklyIcons.append(contentsOf: placeholders)
-            }
-        }
-    }
-    
-    func fetchReadyToPrintData() async throws {
-        let currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
-        let ready = currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count
-        var printUIState: ReadyToPrintUIState = .empty
-        var unreads: [WeeklyReportSummary] = []
-        
-        if currentIcons.icons.isEmpty {
-            printUIState = .empty
-        } else if ready {
-            printUIState = .readyToPrint
-        } else {
-            unreads = try await dataService.fetchUnreadWeeklyReportsUseCase.execute(limit: nil, cursor: nil).reports
-            printUIState = !unreads.isEmpty ? .unread : .empty
-            
-        }
-        await MainActor.run {
-            self.printUIState = printUIState
-            self.currentIcons = currentIcons
-            self.unreadHisotrys = unreads
             self.weeklyIcons = currentIcons.icons.map { .normal($0)}
             let normalCount = self.weeklyIcons.count
             if currentIcons.minAnswersToGenerateReport > self.weeklyIcons.count {
@@ -180,6 +160,33 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     @MainActor
     func onTapAdd() {
         goToQoTFlow?()
+    }
+    
+    
+    @MainActor
+    func refreshArcadeState() async {
+        guard let currentIcons = currentIcons else {
+            arcadeState = .unFull
+            return
+        }
+        
+        let isFull = currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count
+            && currentIcons.minAnswersToGenerateReport != 0
+        
+        if isFull {
+            let calendar = AppCalendar.current
+            let now = Date()
+            let weekday = calendar.component(.weekday, from: now)
+            if weekday == 1 {
+                arcadeState = .readyToPrint
+            } else {
+                arcadeState = .countingDown
+            }
+        } else if !unreadHisotrys.isEmpty {
+            arcadeState = .unread
+        } else {
+            arcadeState = .unFull
+        }
     }
     
     deinit {

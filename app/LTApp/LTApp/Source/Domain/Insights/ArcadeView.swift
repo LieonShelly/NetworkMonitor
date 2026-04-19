@@ -7,10 +7,19 @@
 
 import SwiftUI
 import UIComponent
+import SpriteKit
+import Kingfisher
 
-struct ArcadeView: View {
+struct ArcadeView: View, ImageCacheKeyType {
     @ObservedObject var viewModel: InsightsViewModel
     private let processorId = "metal.icon.processor.v3_thickness_2"
+    @State private var scene: CoinScene?
+    @State private var sceneSize: CGSize = .zero
+    @State private var started: Bool = false
+    
+    enum Constants {
+        static let rpPadding: CGFloat = 12 + 20 + 28
+    }
     
     var body: some View {
         VStack(spacing: .zero) {
@@ -22,6 +31,7 @@ struct ArcadeView: View {
             Task {
                 try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
                 try? await viewModel.fetchHisotryData()
+//                await viewModel.refreshArcadeState()
             }
         }
     }
@@ -104,7 +114,6 @@ struct ArcadeView: View {
             }
             .padding(.vertical, 10)
         }
-        .background(Color.random)
     }
     
     var screen: some View {
@@ -124,31 +133,63 @@ struct ArcadeView: View {
      
     }
     
-   @ViewBuilder private var moreStampsView: some View {
-       if let currentIcons = viewModel.currentIcons, currentIcons.minAnswersToGenerateReport != 0, currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count {
-           CountingDownView()
-               .frame(maxWidth: .infinity, maxHeight: .infinity)
-       } else {
-           VStack(spacing: .zero) {
-               Text("\(moreStampsCount)")
-                   .textStyle(size: 64, color: AppColor.greyDark, fontFamily: .dsDigital)
-               
-               Text("more stamps")
-                   .textStyle(size: 31, color: AppColor.greyDark, fontFamily: .dsDigital)
-           }
-           .frame(maxWidth: .infinity, maxHeight: .infinity)
-       }
-    }
-    
     private var moreStampsCount: Int {
         guard let currentIcons = viewModel.currentIcons else { return 0 }
         return max(0, currentIcons.minAnswersToGenerateReport - currentIcons.icons.count)
     }
     
     @ViewBuilder
+    var readHistoryView: some View {
+        let allItems: [WeeklyReportSummary] = viewModel.readHisotrys
+        
+        HStack {
+            Spacer()
+            Image(.rightPloly)
+                .resizable()
+                .frame(width: 15, height: 15)
+            Text(allItems.isEmpty ? "NO HISTORY" : "HISTORY")
+                .textStyle(font: .annotation, color: AppColor.black)
+                .padding(.horizontal, 16)
+            Image(.leftPoly)
+                .resizable()
+                .frame(width: 15, height: 15)
+            Spacer()
+        }
+        .padding(.bottom, 12)
+        
+        LazyVStack(spacing: 12) {
+            ForEach(Array(viewModel.readHisotrys.enumerated()), id: \.element.id) { index, item in
+                NewHistoryItemRow(history: item)
+                    .contentShape(.rect)
+                    .onTapGesture {
+                        Task {
+                            try? await viewModel.didTapHistoryItem(item)
+                        }
+                    }
+                    .onAppear {
+                        if item.id == allItems.last?.id {
+                            Task { await viewModel.loadMoreHistory() }
+                        }
+                    }
+            }
+        }
+        .padding(.bottom, 26 + 12)
+    }
+    
+    var moreStampsView: some View {
+        VStack(spacing: .zero) {
+            Text("\(moreStampsCount)")
+                .textStyle(size: 64, color: AppColor.greyDark, fontFamily: .dsDigital)
+            
+            Text("more stamps")
+                .textStyle(size: 31, color: AppColor.greyDark, fontFamily: .dsDigital)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    @ViewBuilder
     private var historyAndMoreStrampsSection: some View {
-        let allItems: [WeeklyReportSummary] = viewModel.unreadHisotrys + viewModel.readHisotrys
-        let containerVP: CGFloat = 26
+        let containerVP: CGFloat = 28
         let rowHeight: CGFloat = 80
         let rowSpacing: CGFloat = 12
         let historyHeaderHeight: CGFloat = 27 + 12 
@@ -157,48 +198,109 @@ struct ArcadeView: View {
         GeometryReader { geo in
             let topHeight = max(0, geo.size.height - visibleListHeight)
             
+            
             ScrollView(showsIndicators: false) {
                 LazyVStack(spacing: .zero) {
-                    moreStampsView
-                        .frame(height: topHeight)
-                    
-                    HStack {
-                        Spacer()
-                        Image(.rightPloly)
-                            .resizable()
-                            .frame(width: 15, height: 15)
-                        Text(allItems.isEmpty ? "NO HISTORY" : "HISTORY")
-                            .textStyle(font: .annotation, color: AppColor.black)
-                            .padding(.horizontal, 16)
-                        Image(.leftPoly)
-                            .resizable()
-                            .frame(width: 15, height: 15)
-                        Spacer()
-                    }
-                    .padding(.bottom, 12)
-                    
-                    LazyVStack(spacing: 12) {
-                        ForEach(Array(allItems.enumerated()), id: \.element.id) { index, item in
-                            NewHistoryItemRow(history: item)
-                                .contentShape(.rect)
-                                .onTapGesture {
-                                    Task {
-                                        try? await viewModel.didTapHistoryItem(item)
-                                    }
-                                }
-                                .onAppear {
-                                    if item.id == allItems.last?.id {
-                                        Task { await viewModel.loadMoreHistory() }
-                                    }
-                                }
+                    switch viewModel.arcadeState {
+                    case .countingDown:
+                        CountingDownView()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .frame(height: topHeight)
+                        readHistoryView
+                  
+                    case .readyToPrint:
+                        ZStack {
+                            if let scene = scene {
+                                iconLoadingView(scene: scene)
+                                    .opacity(started ? 1 : 0)
+                                    .frame(height: geo.size.height)
+                            }
+                            if !started {
+                                rpIdleView
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                    .frame(height: geo.size.height)
+                            }
                         }
+                        .frame(height: geo.size.height)
+                        .padding(.horizontal, 40)
+                        .animation(.easeInOut, value: started)
+                    case .printingLoading:
+                      EmptyView()
+                    case .printingLoadingDone:
+                        EmptyView()
+                    case .unread:
+                        readHistoryView
+                            .padding(.horizontal, 56)
+                    case .unFull:
+                        moreStampsView
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .frame(height: topHeight)
+                        readHistoryView
+                            .padding(.horizontal, 56)
                     }
-                    .padding(.bottom, 26 + 12)
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.horizontal, 56)
+              
+            }
+            .onFirstAppear {
+                let width = geo.size.width - 40 * 2
+                let height = geo.size.height - 28 * 2
+                sceneSize = CGSize(width: width, height: height)
+                
+                let newScene = CoinScene(size: sceneSize)
+                newScene.scaleMode = .aspectFit
+                newScene.backgroundColor = .clear
+                scene = newScene
             }
         }
+    }
+    
+    func iconLoadingView(scene: CoinScene) -> some View {
+        SpriteView(scene: scene, options: [.allowsTransparency, .shouldCullNonVisibleNodes])
+    }
+    
+    var rpIdleView: some View {
+        VStack(spacing: .zero) {
+            Image(.invader)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 72, height: 72)
+                .padding(.bottom, 8)
+            
+            Text("READY TO PRINT".uppercased())
+                .multilineTextAlignment(.center)
+                .textStyle(size: 40, fontFamily: .dsDigital)
+            
+            Button {
+                guard let scene = scene, let icons = viewModel.currentIcons?.icons else { return }
+                let paths = icons.map { cacheKey($0.url)}
+                    .map { KingfisherManager.shared.cache.cachePath(forKey: $0, processorIdentifier: processorId) }
+                scene.dropCoinsBatch(localPaths: paths , count: paths.count) {
+                    Task {
+                        try? await viewModel.generateReport()
+                    }
+                }
+                started = true
+            } label: {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(AppColor.black)
+                    .frame(width: 155, height: 52)
+                    .overlay {
+                        Image(.startReport)
+                            .resizable()
+                            .scaledToFit()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 95, height: 32)
+                    }
+                    .background {
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(AppColor.black, lineWidth: 1)
+                            .offset(x: 3, y: 6)
+                    }
+            }
+            .padding(.top, 55)
+        }
+        .frame(maxWidth: .infinity)
     }
     
     var controlPanel: some View {

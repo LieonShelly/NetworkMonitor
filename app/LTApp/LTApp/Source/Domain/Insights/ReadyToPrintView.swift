@@ -31,9 +31,6 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
             startView
         }
         .defaultBackground()
-        .task {
-            try? await viewModel.fetchReadyToPrintData()
-        }
     }
     
     @ViewBuilder
@@ -104,16 +101,16 @@ struct ReadyToPrintView: View, ImageCacheKeyType {
                 if let scene = scene {
                     iconLoadingView(scene: scene).opacity(started ? 1 : 0)
                 }
-                if !started {
-                    switch viewModel.printUIState {
-                    case .readyToPrint:
-                        rpIdleView
-                    case .unread:
-                        unreadView
-                    case .empty:
-                        emptyView
-                    }
-                }
+//                if !started {
+//                    switch viewModel.printUIState {
+//                    case .readyToPrint:
+//                        rpIdleView
+//                    case .unread:
+//                        unreadView
+//                    case .empty:
+//                        emptyView
+//                    }
+//                }
             }
             .animation(.easeInOut, value: started)
             .overlay {
