@@ -21,8 +21,8 @@ struct InsightsView: View {
             case .readyToPrint:
                 titleView
 //                ReadyToPrintView(viewModel: viewModel)
-                ArcadeView()
-                    .padding(.bottom, 112)
+                ArcadeView(viewModel: viewModel)
+                    .padding(.bottom, 70)
                     .transition(.opacity.animation(.easeInOut))
             case .reported:
                 ReportedView(viewModel: viewModel)

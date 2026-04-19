@@ -103,6 +103,7 @@
 		EA36E3C0AF3849BFE0986450 /* QuestionCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87216B9ACF82845B585A0B88 /* QuestionCardViewModel.swift */; };
 		EAEE0A40DC9D8080566E01AB /* PinQuestionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCCEDD7C0D9E4209FD9A015A /* PinQuestionUseCase.swift */; };
 		ED5163CA2F948DCC00B39243 /* ArcadeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5163C92F948DCC00B39243 /* ArcadeView.swift */; };
+		ED5163CC2F94CF5800B39243 /* NewHistoryItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5163CB2F94CF5800B39243 /* NewHistoryItemRow.swift */; };
 		ED58957B2F93E57700FF7B57 /* NewInsightsHisotryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED58957A2F93E57700FF7B57 /* NewInsightsHisotryListView.swift */; };
 		ED6B9CE126E3CFB5306162CB /* LogoutInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA14C5747FBE99D911A634F /* LogoutInterceptor.swift */; };
 		EFC187983F274A3E98DC55A4 /* FetchThreadQuestionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275858D84F27880CE5767708 /* FetchThreadQuestionsUseCase.swift */; };
@@ -328,6 +329,7 @@
 		EB8D98F8D1A53FCEB574B3A7 /* AnwserQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnwserQuestionView.swift; sourceTree = "<group>"; };
 		ED113BC35D7BE1C2397B9CA7 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		ED5163C92F948DCC00B39243 /* ArcadeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcadeView.swift; sourceTree = "<group>"; };
+		ED5163CB2F94CF5800B39243 /* NewHistoryItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHistoryItemRow.swift; sourceTree = "<group>"; };
 		ED58957A2F93E57700FF7B57 /* NewInsightsHisotryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInsightsHisotryListView.swift; sourceTree = "<group>"; };
 		EFD4727A2532FF7F43570B0B /* SessionDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDataRepository.swift; sourceTree = "<group>"; };
 		F47135D07C75B8747AF6FC84 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
@@ -494,6 +496,7 @@
 		3A7D36EC338FF4B7178AF189 /* Insights */ = {
 			isa = PBXGroup;
 			children = (
+				ED5163CB2F94CF5800B39243 /* NewHistoryItemRow.swift */,
 				ED5163C92F948DCC00B39243 /* ArcadeView.swift */,
 				F8E85AD42F751CF3002DDDCB /* PaperView.swift */,
 				F8238D132F7510DC00EF9D2C /* PrinterView.swift */,
@@ -1212,6 +1215,7 @@
 				ED6B9CE126E3CFB5306162CB /* LogoutInterceptor.swift in Sources */,
 				F8642C902EE04EF000D92A07 /* MetalIconProcessor.swift in Sources */,
 				F8FE2C322F20B82200B8A266 /* BaseViewModelType.swift in Sources */,
+				ED5163CC2F94CF5800B39243 /* NewHistoryItemRow.swift in Sources */,
 				77BA7C884C2D706C5876FFDF /* LoopingStackCardView.swift in Sources */,
 				A53173906931B98B4452965C /* NaviBar.swift in Sources */,
 				F87E9E812F6FF3820028D944 /* ReportHistoryHeader.swift in Sources */,
