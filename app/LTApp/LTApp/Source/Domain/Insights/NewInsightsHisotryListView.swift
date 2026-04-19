@@ -19,11 +19,11 @@ struct NewInsightsHistoryListView: View {
             .padding(.bottom, 40 + 16 * 2)
         }
         .refreshable {
-            try? await viewModel.fetchHisotryData()
+            try? await viewModel.fetchHistory()
         }
         .onFirstAppear {
             Task.detached {
-                try? await viewModel.fetchHisotryData()
+                try? await viewModel.fetchHistory()
                 try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
             }
         }

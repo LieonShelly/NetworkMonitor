@@ -18,9 +18,8 @@ struct InsightsView: View {
     var body: some View {
         VStack(spacing: .zero) {
             switch viewModel.state {
-            case .readyToPrint:
+            case .arcade:
                 titleView
-//                ReadyToPrintView(viewModel: viewModel)
                 ArcadeView(viewModel: viewModel)
                     .padding(.bottom, 70)
                     .transition(.opacity.animation(.easeInOut))
@@ -45,7 +44,7 @@ struct InsightsView: View {
         ZStack(alignment: .trailing) {
             if viewModel.state != .history, viewModel.state != .printing {
                 Button {
-                    viewModel.state = .history
+                    viewModel.state = .arcade
                 } label: {
                     if viewModel.unreadHisotrys.isEmpty {
                         Image(.folderOpen)

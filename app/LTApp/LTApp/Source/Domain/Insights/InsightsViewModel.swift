@@ -13,7 +13,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     let dataService: any AppDataWithAuthorizationServiceful
     @MainActor @Published var weeklyReport: WeeklyReport?
     @MainActor @Published var currentIcons: WeeklyReportCurrentIcons?
-    @MainActor @Published var state: UIState = .readyToPrint
+    @MainActor @Published var state: UIState = .arcade
     @MainActor @Published var weeklyIcons: [ConinIconStyle] = []
     @MainActor @Published var unreadHisotrys: [WeeklyReportSummary] = []
     @MainActor @Published var readHisotrys: [WeeklyReportSummary] = []
@@ -29,7 +29,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     var goToQoTFlow: (() -> Void)?
     
     enum UIState {
-        case readyToPrint
+        case arcade
         case reported
         case history
         case printing
@@ -38,8 +38,6 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     enum ArcadeViewState {
         case countingDown
         case readyToPrint
-        case printingLoading
-        case printingLoadingDone
         case unread
         case unFull
     }
@@ -89,23 +87,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         }
     }
     
-    func fetchHisotryData() async throws {
-        let currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
-        await reportsPaginator.loadFirst()
-        await MainActor.run {
-            self.currentIcons = currentIcons
-            self.weeklyIcons = currentIcons.icons.map { .normal($0)}
-            let normalCount = self.weeklyIcons.count
-            if currentIcons.minAnswersToGenerateReport > self.weeklyIcons.count {
-                self.weeklyIcons.append(.plus)
-               let placeholders = (0 ..< currentIcons.minAnswersToGenerateReport - normalCount - 1).map { _ in ConinIconStyle.empty }
-                self.weeklyIcons.append(contentsOf: placeholders)
-            }
-            self.unreadHisotrys = reportsPaginator.items.filter { $0.readAt == nil }
-            self.readHisotrys = reportsPaginator.items.filter { $0.readAt != nil }
-        }
-    }
-    
+
     @MainActor
     func generateReport() async throws {
         guard weeklyReport == nil else { return self.state = .printing }
@@ -154,7 +136,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     
     @MainActor
     func onTapHistoryHeader() {
-        self.state = .readyToPrint
+        self.state = .arcade
     }
     
     @MainActor

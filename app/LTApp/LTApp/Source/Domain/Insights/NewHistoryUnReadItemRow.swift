@@ -1,0 +1,54 @@
+//
+//  NewHistoryUnReadItemRow.swift
+//  LTApp
+//
+//  Created by 李仁军 on 2026/4/19.
+//
+
+import SwiftUI
+import UIComponent
+
+struct NewHistoryUnReadItemRow: View {
+    let history: WeeklyReportSummary
+    
+    
+    var  body: some View {
+        
+        ZStack(alignment: .top) {
+            
+            Text(periodText)
+                .textStyle(size: 11, color: AppColor.color(hex: 0x888888), fontFamily: .ibmPlexMonoRegular)
+                .padding(.top, 8)
+
+            Image(.rectangle56)
+                .resizable()
+                .frame(height: 88)
+                .frame(maxWidth: .infinity)
+                .overlay {
+                    ZStack {
+                        Image(.ellipse142)
+                            .resizable()
+                            .frame(width: 32, height: 32)
+                        Image(.qMark)
+                            .resizable()
+                            .frame(width: 14, height: 30)
+                    }
+                }
+        }
+    }
+    
+    
+    private var periodText: String {
+        let calendar = AppCalendar.current
+        let startDay = calendar.component(.day, from: history.periodStart)
+        let endDay = calendar.component(.day, from: history.periodEnd)
+        let endMonth = history.periodEnd.monthDesc(isShort: true).uppercased()
+
+        if calendar.isDate(history.periodStart, equalTo: history.periodEnd, toGranularity: .month) {
+            return "\(startDay) - \(endDay) \(endMonth)"
+        } else {
+            let startMonth = history.periodStart.monthDesc(isShort: true).uppercased()
+            return "\(startDay) \(startMonth) - \(endDay) \(endMonth)"
+        }
+    }
+}

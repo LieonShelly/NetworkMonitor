@@ -30,8 +30,8 @@ struct ArcadeView: View, ImageCacheKeyType {
         .onFirstAppear {
             Task {
                 try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
-                try? await viewModel.fetchHisotryData()
-//                await viewModel.refreshArcadeState()
+                try? await viewModel.fetchHistory()
+                await viewModel.refreshArcadeState()
             }
         }
     }
@@ -176,6 +176,24 @@ struct ArcadeView: View, ImageCacheKeyType {
         .padding(.bottom, 26 + 12)
     }
     
+    
+    
+    @ViewBuilder
+    var unReadHistoryView: some View {
+        LazyVStack(spacing: 12) {
+            ForEach(Array(viewModel.unreadHisotrys.enumerated()), id: \.element.id) { index, item in
+                NewHistoryUnReadItemRow(history: item)
+                    .contentShape(.rect)
+                    .onTapGesture {
+                        Task {
+                            try? await viewModel.didTapHistoryItem(item)
+                        }
+                    }
+            }
+        }
+        .padding(.bottom, 42)
+    }
+    
     var moreStampsView: some View {
         VStack(spacing: .zero) {
             Text("\(moreStampsCount)")
@@ -224,11 +242,12 @@ struct ArcadeView: View, ImageCacheKeyType {
                         .frame(height: geo.size.height)
                         .padding(.horizontal, 40)
                         .animation(.easeInOut, value: started)
-                    case .printingLoading:
-                      EmptyView()
-                    case .printingLoadingDone:
-                        EmptyView()
                     case .unread:
+                        unReadCountView
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .frame(height: topHeight)
+                        unReadHistoryView
+                            .padding(.horizontal, 56)
                         readHistoryView
                             .padding(.horizontal, 56)
                     case .unFull:
@@ -253,6 +272,17 @@ struct ArcadeView: View, ImageCacheKeyType {
                 scene = newScene
             }
         }
+    }
+    
+    var unReadCountView: some View {
+        VStack(spacing: .zero) {
+            Text("\(viewModel.unreadHisotrys.count)")
+                .textStyle(size: 64, color: AppColor.greyDark, fontFamily: .dsDigital)
+            
+            Text("unread")
+                .textStyle(size: 31, color: AppColor.greyDark, fontFamily: .dsDigital)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     func iconLoadingView(scene: CoinScene) -> some View {

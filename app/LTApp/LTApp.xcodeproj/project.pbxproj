@@ -102,6 +102,7 @@
 		E5F8328463EFF76CF5E46E9D /* Persistence.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D54F84E08AA8FC5FBA83ED /* Persistence.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EA36E3C0AF3849BFE0986450 /* QuestionCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87216B9ACF82845B585A0B88 /* QuestionCardViewModel.swift */; };
 		EAEE0A40DC9D8080566E01AB /* PinQuestionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCCEDD7C0D9E4209FD9A015A /* PinQuestionUseCase.swift */; };
+		ED1664E42F9531ED001CF969 /* NewHistoryUnReadItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1664E32F9531ED001CF969 /* NewHistoryUnReadItemRow.swift */; };
 		ED5163CA2F948DCC00B39243 /* ArcadeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5163C92F948DCC00B39243 /* ArcadeView.swift */; };
 		ED5163CC2F94CF5800B39243 /* NewHistoryItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5163CB2F94CF5800B39243 /* NewHistoryItemRow.swift */; };
 		ED5163CE2F94E4B800B39243 /* CountingDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5163CD2F94E4B800B39243 /* CountingDownView.swift */; };
@@ -156,7 +157,6 @@
 		F87E9E772F6FA6DC0028D944 /* MarkWeeklyReportReadUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E762F6FA6DC0028D944 /* MarkWeeklyReportReadUseCase.swift */; };
 		F87E9E792F6FA6EE0028D944 /* WeeklyReportReadResultDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E782F6FA6EE0028D944 /* WeeklyReportReadResultDTO.swift */; };
 		F87E9E7B2F6FA7380028D944 /* WeeklyReportReadResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E7A2F6FA7380028D944 /* WeeklyReportReadResult.swift */; };
-		F87E9E7D2F6FC4AD0028D944 /* ReportHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E7C2F6FC4AD0028D944 /* ReportHistoryView.swift */; };
 		F87E9E7F2F6FE0F10028D944 /* ReportedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E7E2F6FE0F10028D944 /* ReportedView.swift */; };
 		F87E9E812F6FF3820028D944 /* ReportHistoryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E802F6FF3820028D944 /* ReportHistoryHeader.swift */; };
 		F87E9E832F6FF3920028D944 /* ReportHistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E9E822F6FF3920028D944 /* ReportHistoryRow.swift */; };
@@ -329,6 +329,7 @@
 		EB18B18DB1403A5E4F474A33 /* IconRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconRequest.swift; sourceTree = "<group>"; };
 		EB8D98F8D1A53FCEB574B3A7 /* AnwserQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnwserQuestionView.swift; sourceTree = "<group>"; };
 		ED113BC35D7BE1C2397B9CA7 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		ED1664E32F9531ED001CF969 /* NewHistoryUnReadItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHistoryUnReadItemRow.swift; sourceTree = "<group>"; };
 		ED5163C92F948DCC00B39243 /* ArcadeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcadeView.swift; sourceTree = "<group>"; };
 		ED5163CB2F94CF5800B39243 /* NewHistoryItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHistoryItemRow.swift; sourceTree = "<group>"; };
 		ED5163CD2F94E4B800B39243 /* CountingDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountingDownView.swift; sourceTree = "<group>"; };
@@ -380,7 +381,6 @@
 		F87E9E762F6FA6DC0028D944 /* MarkWeeklyReportReadUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkWeeklyReportReadUseCase.swift; sourceTree = "<group>"; };
 		F87E9E782F6FA6EE0028D944 /* WeeklyReportReadResultDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReportReadResultDTO.swift; sourceTree = "<group>"; };
 		F87E9E7A2F6FA7380028D944 /* WeeklyReportReadResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReportReadResult.swift; sourceTree = "<group>"; };
-		F87E9E7C2F6FC4AD0028D944 /* ReportHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportHistoryView.swift; sourceTree = "<group>"; };
 		F87E9E7E2F6FE0F10028D944 /* ReportedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportedView.swift; sourceTree = "<group>"; };
 		F87E9E802F6FF3820028D944 /* ReportHistoryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportHistoryHeader.swift; sourceTree = "<group>"; };
 		F87E9E822F6FF3920028D944 /* ReportHistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportHistoryRow.swift; sourceTree = "<group>"; };
@@ -498,6 +498,7 @@
 		3A7D36EC338FF4B7178AF189 /* Insights */ = {
 			isa = PBXGroup;
 			children = (
+				ED1664E32F9531ED001CF969 /* NewHistoryUnReadItemRow.swift */,
 				ED5163CB2F94CF5800B39243 /* NewHistoryItemRow.swift */,
 				ED5163C92F948DCC00B39243 /* ArcadeView.swift */,
 				F8E85AD42F751CF3002DDDCB /* PaperView.swift */,
@@ -513,7 +514,6 @@
 				F81E12182F694E1000DAD57B /* ReadyToPrintView.swift */,
 				F804C45E2F57E57200DCC904 /* InsightsViewModel.swift */,
 				E01D237BCB9DFB43B17A86FE /* InsightsView.swift */,
-				F87E9E7C2F6FC4AD0028D944 /* ReportHistoryView.swift */,
 				F87E9E7E2F6FE0F10028D944 /* ReportedView.swift */,
 			);
 			path = Insights;
@@ -1157,6 +1157,7 @@
 				F8DE82392F32F07C00CFD13E /* UserHomeCoordinator.swift in Sources */,
 				F882E8C92F86505600E3C85B /* GraphicAlgorithm.swift in Sources */,
 				4FA62600328B6809B6C9C8D8 /* AppHomeViewModel.swift in Sources */,
+				ED1664E42F9531ED001CF969 /* NewHistoryUnReadItemRow.swift in Sources */,
 				852CE3147946402B34312109 /* AppScrollContentView.swift in Sources */,
 				A9A0644E8593A152539FDEBE /* AppScrollContentViewModel.swift in Sources */,
 				9BB548E33C85CA305BC4EFAA /* AppTabbar.swift in Sources */,
@@ -1268,7 +1269,6 @@
 				42D99842A51E63130D7CCA07 /* ThreadQuestionDTO.swift in Sources */,
 				F87E9E7B2F6FA7380028D944 /* WeeklyReportReadResult.swift in Sources */,
 				F85859F42EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift in Sources */,
-				F87E9E7D2F6FC4AD0028D944 /* ReportHistoryView.swift in Sources */,
 				F875E80B2F1DE7D00050BD23 /* CancellableBox.swift in Sources */,
 				F84409E72EE32B33004A40B2 /* InnerPageRoutingModifier.swift in Sources */,
 				3FE852BF220DC18C0B275302 /* ThreadView.swift in Sources */,

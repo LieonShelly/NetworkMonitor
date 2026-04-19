@@ -30,7 +30,7 @@ struct ReportedView: View {
                     .resizable()
                     .frame(width: 32, height: 32)
                     .onTapGesture {
-                        viewModel.state = .history
+                        viewModel.state = .arcade
                     }
                 Spacer()
                 Text("\(report.periodStart.yyyymmdd) - \(report.periodEnd.yyyymmdd)")
