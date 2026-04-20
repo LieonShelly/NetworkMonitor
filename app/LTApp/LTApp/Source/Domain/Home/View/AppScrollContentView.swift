@@ -32,7 +32,8 @@ struct AppScrollContentView: View {
                     InsightsView(viewModel: viewModel.insightsViewModel)
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(2)
-                    UserHomeView(viewModel: viewModel.userViewModel)
+//                    UserHomeView(viewModel: viewModel.userViewModel)
+                    NewUserHomeView()
                         .frame(width: proxy.size.width, height: proxy.size.height)
                         .id(3)
                 }
