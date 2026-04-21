@@ -105,6 +105,7 @@
 		ED1664E42F9531ED001CF969 /* NewHistoryUnReadItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1664E32F9531ED001CF969 /* NewHistoryUnReadItemRow.swift */; };
 		ED44F8F62F9630C300521804 /* NewUserHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44F8F52F9630C300521804 /* NewUserHomeView.swift */; };
 		ED44F8F82F96369D00521804 /* NewUserRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44F8F72F96369D00521804 /* NewUserRow.swift */; };
+		ED44F8FA2F964B0C00521804 /* AboutMeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44F8F92F964B0C00521804 /* AboutMeView.swift */; };
 		ED5163CA2F948DCC00B39243 /* ArcadeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5163C92F948DCC00B39243 /* ArcadeView.swift */; };
 		ED5163CC2F94CF5800B39243 /* NewHistoryItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5163CB2F94CF5800B39243 /* NewHistoryItemRow.swift */; };
 		ED5163CE2F94E4B800B39243 /* CountingDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5163CD2F94E4B800B39243 /* CountingDownView.swift */; };
@@ -334,6 +335,7 @@
 		ED1664E32F9531ED001CF969 /* NewHistoryUnReadItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHistoryUnReadItemRow.swift; sourceTree = "<group>"; };
 		ED44F8F52F9630C300521804 /* NewUserHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserHomeView.swift; sourceTree = "<group>"; };
 		ED44F8F72F96369D00521804 /* NewUserRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserRow.swift; sourceTree = "<group>"; };
+		ED44F8F92F964B0C00521804 /* AboutMeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutMeView.swift; sourceTree = "<group>"; };
 		ED5163C92F948DCC00B39243 /* ArcadeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArcadeView.swift; sourceTree = "<group>"; };
 		ED5163CB2F94CF5800B39243 /* NewHistoryItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHistoryItemRow.swift; sourceTree = "<group>"; };
 		ED5163CD2F94E4B800B39243 /* CountingDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountingDownView.swift; sourceTree = "<group>"; };
@@ -854,6 +856,7 @@
 		F2B87C1418A6CF83D4B56360 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				ED44F8F92F964B0C00521804 /* AboutMeView.swift */,
 				ED44F8F72F96369D00521804 /* NewUserRow.swift */,
 				ED44F8F52F9630C300521804 /* NewUserHomeView.swift */,
 				F82BB7752F39C0B800F9DB49 /* QuestionOfTodaySettingItem.swift */,
@@ -1309,6 +1312,7 @@
 				F818A3BB2F6A803800C475E5 /* WeeklyReportCurrentIconsDTO.swift in Sources */,
 				F82BB7812F39DFED00F9DB49 /* FetchQodStrategyOptionsUseCase.swift in Sources */,
 				F87E9E792F6FA6EE0028D944 /* WeeklyReportReadResultDTO.swift in Sources */,
+				ED44F8FA2F964B0C00521804 /* AboutMeView.swift in Sources */,
 				FC384158B10A64A8B751A47A /* UserRowItem.swift in Sources */,
 				F86ECAC92EF39F4E007EEA24 /* PostNotificationUseCase.swift in Sources */,
 				F81E12212F69618500DAD57B /* CoinScene.swift in Sources */,
