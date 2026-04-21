@@ -346,6 +346,8 @@ struct ArcadeView: View, ImageCacheKeyType {
                     .resizable()
                     .frame(width: 20, height: 69)
                 Spacer()
+                controlbtns
+                Spacer()
                 Image(.vector131)
                     .resizable()
                     .frame(width: 20, height: 69)
@@ -360,4 +362,63 @@ struct ArcadeView: View, ImageCacheKeyType {
         .offset(y: -12)
         .frame(height: 85)
     }
+    
+    var controlbtns: some View {
+        HStack(spacing: .zero) {
+            machineBtn
+            Spacer()
+            HStack(spacing: .zero) {
+                tickerbtn
+                    .offset(x: 10)
+                tickerbtn
+                    .offset(y: 20)
+                tickerbtn
+                    .offset(x: -10)
+            }
+            .frame(width: 40 * 3)
+            .padding(.trailing,  50)
+            .offset(y: -10)
+        }
+        .overlay(content: {
+            joystickerView
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .offset(y: -50)
+                .padding(.trailing,  10)
+            
+        })
+        .frame(height: 70)
+    }
+    
+    var machineBtn: some View {
+        Image(.ticketMachine)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 103, height: 25)
+    }
+    
+    var tickerbtn: some View {
+        Image(.tickerButton)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 40, height: 25)
+    }
+    
+    var joystickerView: some View {
+        VStack(spacing: .zero) {
+            Image(.joystickTop)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 48, height: 106)
+                .offset(y: 10)
+                .zIndex(2)
+            
+            Image(.joystickBottom)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 48, height: 25)
+                .zIndex(1)
+            
+        }
+    }
+
 }

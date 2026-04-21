@@ -2,7 +2,7 @@
   "mcpServers": {
     "figma-desktop": {
       "url": "http://127.0.0.1:3845/mcp",
-      "disabled": true
+      "disabled": false
     },
     "FigmaLocalBridge": {
       "command": "/Users/renjun.li/Desktop/LittleThings/flutter_framework/apps/figma_ui_mcp/server/venv/bin/python3",
