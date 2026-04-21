@@ -21,7 +21,7 @@ struct NewHistoryItemRow: View {
                     .textStyle(font: .annotation, color: AppColor.greyMedium)
 
                 Text(history.summary)
-                    .textStyle(font: .title, color: AppColor.greyMedium)
+                    .textStyle(font: .title, color: AppColor.greyDark)
                     .lineLimit(2)
             }
             .frame(maxWidth: .infinity, alignment: .leading)

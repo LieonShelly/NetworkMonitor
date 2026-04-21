@@ -13,6 +13,7 @@ struct NewInsightsHistoryListView: View {
         ScrollView {
             VStack(spacing: .zero) {
                 currentWeekHeader
+                unReadHistoryView
                 historySection
             }
             .padding(.horizontal, 32)
@@ -135,12 +136,32 @@ struct NewInsightsHistoryListView: View {
             Spacer()
         }
     }
+    
+    @ViewBuilder
+    var unReadHistoryView: some View {
+        if !viewModel.unreadHisotrys.isEmpty {
+            VStack(alignment: .leading, spacing: 14) {
+                Text("UNREAD(\(viewModel.unreadHisotrys.count))")
+                    .textStyle(font: .annotation, color: AppColor.greyMedium)
+                    .padding(.top, 24)
+                ForEach(Array(viewModel.unreadHisotrys.enumerated()), id: \.element.id) { index, item in
+                    NewHistoryUnReadItemRow(history: item)
+                        .contentShape(.rect)
+                        .onTapGesture {
+                            Task {
+                                try? await viewModel.didTapHistoryItem(item)
+                            }
+                        }
+                }
+            }
+        }
+    }
 
     @ViewBuilder
     private var historySection: some View {
-        let allItems = viewModel.unreadHisotrys + viewModel.readHisotrys
+        let allItems = viewModel.readHisotrys
         if !allItems.isEmpty {
-            VStack(alignment: .leading, spacing: 14) {
+            LazyVStack(alignment: .leading, spacing: 14) {
                 Text("HISTORY")
                     .textStyle(font: .annotation, color: AppColor.greyMedium)
                     .padding(.top, 24)

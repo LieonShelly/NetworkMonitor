@@ -99,7 +99,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     func fetchHistory() async throws {
         await reportsPaginator.loadFirst()
         await MainActor.run {
-            self.unreadHisotrys = reportsPaginator.items.filter { $0.readAt == nil }
+            self.unreadHisotrys = reportsPaginator.items.filter { $0.readAt != nil }
             self.readHisotrys = reportsPaginator.items.filter { $0.readAt != nil }
         }
     }
@@ -107,7 +107,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     @MainActor
     func loadMoreHistory() async {
         await reportsPaginator.loadMore()
-        self.unreadHisotrys = reportsPaginator.items.filter { $0.readAt == nil }
+        self.unreadHisotrys = reportsPaginator.items.filter { $0.readAt != nil }
         self.readHisotrys = reportsPaginator.items.filter { $0.readAt != nil }
     }
     

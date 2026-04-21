@@ -120,6 +120,12 @@ struct ArcadeView: View, ImageCacheKeyType {
         ZStack(alignment: .top) {
             historyAndMoreStrampsSection
             Rectangle()
+                .fill(AppColor.backgroundPage)
+                .frame(height: 5)
+                .frame(maxHeight: .infinity, alignment: .bottom)
+                .allowsHitTesting(false)
+            
+            Rectangle()
                 .fill(Color.clear)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .overlay(

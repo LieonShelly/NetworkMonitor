@@ -42,17 +42,17 @@ struct InsightsView: View {
     
     var titleView: some View {
         ZStack(alignment: .trailing) {
-            if viewModel.state != .history, viewModel.state != .printing {
+            if viewModel.state != .reported || viewModel.state != .printing {
                 Button {
-                    viewModel.state = .arcade
+                    viewModel.state = viewModel.state == .history ? .arcade : .history
                 } label: {
-                    if viewModel.unreadHisotrys.isEmpty {
+                    if viewModel.state == .arcade {
                         Image(.folderOpen)
                             .resizable()
                             .frame(width: 32, height: 32)
                             .foregroundStyle(AppColor.color(hex: 0x000000))
                     } else {
-                        Image(.folderOpenDot)
+                        Image(.arcade)
                             .resizable()
                             .frame(width: 32, height: 32)
                             .foregroundStyle(AppColor.color(hex: 0x000000))
@@ -61,7 +61,7 @@ struct InsightsView: View {
             }
             HStack(spacing: .zero) {
                 Spacer()
-                Text("AI Insights")
+                Text("Time Arcade")
                     .textStyle(size: 33)
                 Spacer()
             }

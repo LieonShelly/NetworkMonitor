@@ -12,7 +12,7 @@
       "env": {
         "FORCE_RELOAD": "1"
       },
-      "disabled": false,
+      "disabled": true,
       "disabledTools": []
     }
   }
