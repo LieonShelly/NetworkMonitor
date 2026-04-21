@@ -29,7 +29,7 @@ struct ArcadeView: View, ImageCacheKeyType {
             screen
             controlPanel
         }
-        .onFirstAppear {
+        .onAppear {
             Task {
                 try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
                 try? await viewModel.fetchHistory()
@@ -233,6 +233,7 @@ struct ArcadeView: View, ImageCacheKeyType {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .frame(height: topHeight)
                         readHistoryView
+                            .padding(.horizontal, 56)
                   
                     case .readyToPrint:
                         ZStack {

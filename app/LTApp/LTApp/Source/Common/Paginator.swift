@@ -36,7 +36,6 @@ final class Paginator<T: Sendable>: ObservableObject {
 
     func loadFirst() async {
         state = .loading
-        items = []
         nextCursor = nil
         
         do {

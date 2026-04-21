@@ -21,6 +21,7 @@ struct NewInsightsHistoryListView: View {
         }
         .refreshable {
             try? await viewModel.fetchHistory()
+            try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
         }
         .onFirstAppear {
             Task.detached {
@@ -50,9 +51,7 @@ struct NewInsightsHistoryListView: View {
                 .padding(.top, 12)
                 .padding(.horizontal, 24)
             
-            if let currentIcons =  viewModel.currentIcons,
-               !currentIcons.icons.isEmpty,
-               currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count {
+            if viewModel.state == .arcade {
                 Button {
                     viewModel.onTapHistoryHeader()
                 } label: {
