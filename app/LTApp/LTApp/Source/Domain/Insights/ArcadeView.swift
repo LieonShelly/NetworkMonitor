@@ -16,6 +16,8 @@ struct ArcadeView: View, ImageCacheKeyType {
     @State private var scene: CoinScene?
     @State private var sceneSize: CGSize = .zero
     @State private var started: Bool = false
+    @State private var joystickAngle: Double = 0
+    @State private var tickerPressed: [Bool] = [false, false, false]
     
     enum Constants {
         static let rpPadding: CGFloat = 12 + 20 + 28
@@ -368,11 +370,11 @@ struct ArcadeView: View, ImageCacheKeyType {
             machineBtn
             Spacer()
             HStack(spacing: .zero) {
-                tickerbtn
+                tickerbtn(index: 0)
                     .offset(x: 10)
-                tickerbtn
+                tickerbtn(index: 1)
                     .offset(y: 20)
-                tickerbtn
+                tickerbtn(index: 2)
                     .offset(x: -10)
             }
             .frame(width: 40 * 3)
@@ -396,28 +398,56 @@ struct ArcadeView: View, ImageCacheKeyType {
             .frame(width: 103, height: 25)
     }
     
-    var tickerbtn: some View {
+    func tickerbtn(index: Int) -> some View {
         Image(.tickerButton)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 40, height: 25)
+            .scaleEffect(tickerPressed[index] ? 0.85 : 1.0)
+            .offset(y: tickerPressed[index] ? 2 : 0)
+            .animation(.easeInOut(duration: 0.08), value: tickerPressed[index])
+            .onTapGesture {
+                tickerPressed[index] = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
+                    tickerPressed[index] = false
+                }
+            }
     }
     
     var joystickerView: some View {
-        VStack(spacing: .zero) {
+        let maxAngle: Double = 25
+        
+        return VStack(spacing: .zero) {
             Image(.joystickTop)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 48, height: 106)
+                .rotation3DEffect(
+                    .degrees(joystickAngle),
+                    axis: (x: 1, y: 1, z: 1),
+                    anchor: .bottom,
+                    perspective: 0
+                )
                 .offset(y: 10)
                 .zIndex(2)
+                .gesture(
+                    DragGesture()
+                        .onChanged { value in
+                            let angle = Double(value.translation.width) * 0.5
+                            joystickAngle = min(max(angle, -maxAngle), maxAngle)
+                        }
+                        .onEnded { _ in
+                            withAnimation(.interpolatingSpring(stiffness: 300, damping: 12)) {
+                                joystickAngle = 0
+                            }
+                        }
+                )
             
             Image(.joystickBottom)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 48, height: 25)
                 .zIndex(1)
-            
         }
     }
 
