@@ -28,7 +28,6 @@ struct InsightsView: View {
                     .transition(.opacity.animation(.easeInOut))
             case .history:
                 titleView
-//                ReportHistoryView(viewModel: viewModel)
                 NewInsightsHistoryListView(viewModel: viewModel)
                     .transition(.opacity.animation(.easeInOut))
             case .printing:
@@ -41,7 +40,7 @@ struct InsightsView: View {
     }
     
     var titleView: some View {
-        ZStack(alignment: .trailing) {
+        FixedHeader(title: "Time Arcade", size: .plain, trailing: {
             if viewModel.state != .reported || viewModel.state != .printing {
                 Button {
                     viewModel.state = viewModel.state == .history ? .arcade : .history
@@ -59,15 +58,6 @@ struct InsightsView: View {
                     }
                 }
             }
-            HStack(spacing: .zero) {
-                Spacer()
-                Text("Time Arcade")
-                    .textStyle(size: 33)
-                Spacer()
-            }
-        }
-        .frame(height: 32)
-        .padding(.horizontal, 24)
-        .padding(.bottom, 12)
+        })
     }
 }

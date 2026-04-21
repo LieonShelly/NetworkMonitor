@@ -29,7 +29,7 @@ struct ArcadeView: View, ImageCacheKeyType {
             screen
             controlPanel
         }
-        .onAppear {
+        .onFirstAppear {
             Task {
                 try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
                 try? await viewModel.fetchHistory()
@@ -269,6 +269,11 @@ struct ArcadeView: View, ImageCacheKeyType {
                 }
                 .frame(maxWidth: .infinity)
               
+            }
+            .refreshable {
+                try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
+                try? await viewModel.fetchHistory()
+                await viewModel.refreshArcadeState()
             }
             .onFirstAppear {
                 let width = geo.size.width - 40 * 2
