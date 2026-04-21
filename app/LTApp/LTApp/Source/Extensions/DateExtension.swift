@@ -145,6 +145,14 @@ extension Date {
         let parts = monthYearString.components(separatedBy: ", ")
         return "\(parts[0]) \(ordinalDay), \(parts[1])"
     }
+    
+    
+    static var isWeekDay: Bool {
+        let calendar = AppCalendar.current
+        let now = Date()
+        let weekday = calendar.component(.weekday, from: now)
+        return weekday == 1
+    }
 }
 
 struct AppDateFormatter {

@@ -13,12 +13,12 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     let dataService: any AppDataWithAuthorizationServiceful
     @MainActor @Published var weeklyReport: WeeklyReport?
     @MainActor @Published var currentIcons: WeeklyReportCurrentIcons?
-    @MainActor @Published var state: UIState = .arcade
     @MainActor @Published var weeklyIcons: [ConinIconStyle] = []
     @MainActor @Published var unreadHisotrys: [WeeklyReportSummary] = []
     @MainActor @Published var readHisotrys: [WeeklyReportSummary] = []
     @MainActor @Published var reportsPaginator: Paginator<WeeklyReportSummary>!
     @Published var arcadeState: ArcadeViewState = .unFull
+    weak var router: InsightsRouter?
     var isFull: Bool {
         guard let currentIcons else { return false }
         let isFull = currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count
@@ -27,13 +27,6 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     }
     var todayQuestions: [Question] = []
     var goToQoTFlow: (() -> Void)?
-    
-    enum UIState {
-        case arcade
-        case reported
-        case history
-        case printing
-    }
     
     enum ArcadeViewState {
         case countingDown
@@ -90,10 +83,13 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
 
     @MainActor
     func generateReport() async throws {
-        guard weeklyReport == nil else { return self.state = .printing }
+        guard weeklyReport == nil else {
+            router?.push(.printing)
+            return
+        }
         let report = try await dataService.fetchWeeklyReportUseCase.execute(week: nil)
         self.weeklyReport = report
-        self.state = .printing
+        router?.push(.printing)
     }
     
     func fetchHistory() async throws {
@@ -127,7 +123,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         let report = try await dataService.fetchWeeklyReportUseCase.execute(week: history.week)
         await MainActor.run {
             self.weeklyReport = report
-            self.state = .reported
+            router?.push(.reported)
         }
     }
     
@@ -138,7 +134,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     
     @MainActor
     func onTapHistoryHeader() {
-        self.state = .arcade
+        router?.popToRoot()
     }
     
     @MainActor
@@ -158,10 +154,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
             && currentIcons.minAnswersToGenerateReport != 0
         
         if isFull {
-            let calendar = AppCalendar.current
-            let now = Date()
-            let weekday = calendar.component(.weekday, from: now)
-            if weekday == 1 {
+           if Date.isWeekDay {
                 arcadeState = .readyToPrint
             } else {
                 arcadeState = .countingDown

@@ -10,6 +10,7 @@ import UIComponent
 
 struct ReportedView: View {
     @ObservedObject var viewModel: InsightsViewModel
+    @EnvironmentObject var router: InsightsRouter
     
     var body: some View {
         VStack(spacing: .zero) {
@@ -21,24 +22,19 @@ struct ReportedView: View {
                 .padding(.bottom, 80)
             }
         }
+        .defaultBackground()
     }
     
     @ViewBuilder var topBar: some View {
         if let report = viewModel.weeklyReport {
-            HStack {
-                Image(.back)
-                    .resizable()
-                    .frame(width: 32, height: 32)
-                    .onTapGesture {
-                        viewModel.state = .arcade
-                    }
-                Spacer()
+            FixedHeader(title: "", trailing: {
                 Text("\(report.periodStart.yyyymmdd) - \(report.periodEnd.yyyymmdd)")
                     .textStyle(size: 16, color: AppColor.color(hex: 0x423D3D), fontFamily: .poppinsRegular)
-            }
-            .frame(height: 32)
-            .padding(.horizontal, 24)
-            .padding(.bottom, 6)
+            }, backAction:  {
+                withAnimation {
+                    router.pop()
+                }
+            })
         }
     }
 }

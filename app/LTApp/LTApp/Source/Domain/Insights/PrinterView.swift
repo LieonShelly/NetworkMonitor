@@ -11,6 +11,7 @@ import SwiftUI
 
 struct PrinterView: View {
     @ObservedObject var viewModel: InsightsViewModel
+    @EnvironmentObject var router: InsightsRouter
     @State private var isPrinting = false
     
     var body: some View {
@@ -38,7 +39,7 @@ struct PrinterView: View {
                         withAnimation(.easeInOut(duration: 2.0), completionCriteria: .logicallyComplete, {
                             isPrinting.toggle()
                         }, completion: {
-                            viewModel.state = .reported
+                            router.replace(.reported)
                         })
                     }
                     

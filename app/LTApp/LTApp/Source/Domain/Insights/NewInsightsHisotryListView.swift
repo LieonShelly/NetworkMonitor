@@ -51,7 +51,7 @@ struct NewInsightsHistoryListView: View {
                 .padding(.top, 12)
                 .padding(.horizontal, 24)
             
-            if viewModel.state == .arcade {
+            if viewModel.isFull && Date.isWeekDay {
                 Button {
                     viewModel.onTapHistoryHeader()
                 } label: {
