@@ -44,8 +44,7 @@ struct ArcadeView: View, ImageCacheKeyType {
                 iconCountView
                 iconRow
             }
-            .padding(.leading, 48)
-            .padding(.trailing, 10)
+            .padding(.leading, 24)
             .frame(maxWidth: .infinity)
             .frame(height: 64)
             .background {
@@ -84,7 +83,6 @@ struct ArcadeView: View, ImageCacheKeyType {
             Image(.rectangle53)
                 .resizable()
         )
-        .padding(.trailing, 24)
     }
     
     private var iconCountText: String {
@@ -114,6 +112,8 @@ struct ArcadeView: View, ImageCacheKeyType {
                     }
                 }
             }
+            .padding(.leading, 24)
+            .padding(.trailing, 10)
             .padding(.vertical, 10)
         }
     }
