@@ -7,6 +7,7 @@ import UIComponent
 
 struct AppHomeView: View {
     @StateObject var viewModel: AppHomeViewModel
+    @StateObject private var tabbarVisibility = TabbarVisibility()
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @State var showPage: Bool = false
     @State var subPagePrensented: Bool = false
@@ -19,6 +20,7 @@ struct AppHomeView: View {
         GeometryReader { proxy in
             homeView(proxy)
         }
+        .environmentObject(tabbarVisibility)
         .innerPageRoute($viewModel.subPageRoute)
     }
     
@@ -47,11 +49,15 @@ struct AppHomeView: View {
                 ZStack(alignment: .bottom) {
                     scrollContentView()
                         .frame(width: proxy.size.width)
-                    tabbar()
-                        .frame(width: proxy.size.width)
+                    if tabbarVisibility.isVisible {
+                        tabbar()
+                            .frame(width: proxy.size.width)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
                 }
                 .toolbarVisibility(.hidden, for: .navigationBar)
                 .transition(.opacity)
+                .animation(.easeInOut(duration: 0.25), value: tabbarVisibility.isVisible)
             }
         }
         .frame(width: proxy.size.width)

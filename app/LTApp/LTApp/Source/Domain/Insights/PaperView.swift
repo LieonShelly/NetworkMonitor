@@ -161,8 +161,8 @@ struct PaperView: View {
             
             VStack(spacing: .zero) {
                 if let gemIcon = gem.icon {
-                    DefaultOriginalIconImageView(url: gemIcon.url)
-                        .frame(width: 100, height: 100)
+                    OriginalIconView(url: gemIcon.url) {}
+                        .frame(width: 100)
                         .padding(.top, 40)
                 }
     

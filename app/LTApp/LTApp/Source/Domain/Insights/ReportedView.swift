@@ -11,6 +11,7 @@ import UIComponent
 struct ReportedView: View {
     @ObservedObject var viewModel: InsightsViewModel
     @EnvironmentObject var router: InsightsRouter
+    @EnvironmentObject var tabbarVisibility: TabbarVisibility
     
     var body: some View {
         VStack(spacing: .zero) {
@@ -23,6 +24,12 @@ struct ReportedView: View {
             }
         }
         .defaultBackground()
+        .onAppear {
+            tabbarVisibility.isVisible = false
+        }
+        .onDisappear {
+            tabbarVisibility.isVisible = true
+        }
     }
     
     @ViewBuilder var topBar: some View {
