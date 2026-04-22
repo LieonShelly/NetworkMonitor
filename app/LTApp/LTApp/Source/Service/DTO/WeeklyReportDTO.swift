@@ -13,6 +13,7 @@ public struct WeeklyReportDTO: Decodable {
     let readAt: String?
     let reportJson: ReportContentDTO
     let icons: [IconDto]
+    let count: ReportCountDTO?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -23,13 +24,27 @@ public struct WeeklyReportDTO: Decodable {
         case readAt = "read_at"
         case reportJson = "report_json"
         case icons
+        case count
     }
+}
+
+public struct ReportCountDTO: Decodable {
+    let categories: [ReportCategoryCountDTO]
+    let total: Int
+}
+
+public struct ReportCategoryCountDTO: Decodable {
+    let id: String
+    let name: String
+    let count: Int
 }
 
 public struct ReportContentDTO: Decodable {
     let summary: String
+    let glance: String?
     let gem: GemContentDTO
-    let analyticalOverview: [AnalyticalSectionDTO]
+    let reminders: [String]?
+    let analyticalOverview: [AnalyticalSectionDTO]?
 }
 
 public struct AnalyticalSectionDTO: Decodable {
@@ -54,7 +69,8 @@ extension WeeklyReportDTO {
             reflectionCount: reflectionCount,
             readAt: readAtDate,
             reportJson: reportJson.toDomain(),
-            icons: icons.map { $0.toDomain() }
+            icons: icons.map { $0.toDomain() },
+            count: count?.toDomain()
         )
     }
 }
@@ -63,9 +79,26 @@ extension ReportContentDTO {
     func toDomain() -> ReportContent {
         return ReportContent(
             summary: summary,
+            glance: glance,
             gem: gem.toDomain(),
-            analyticalOverview: analyticalOverview.map { $0.toDomain() }
+            reminders: reminders ?? [],
+            analyticalOverview: (analyticalOverview ?? []).map { $0.toDomain() }
         )
+    }
+}
+
+extension ReportCountDTO {
+    func toDomain() -> ReportCount {
+        return ReportCount(
+            categories: categories.map { $0.toDomain() },
+            total: total
+        )
+    }
+}
+
+extension ReportCategoryCountDTO {
+    func toDomain() -> ReportCategoryCount {
+        return ReportCategoryCount(id: id, name: name, count: count)
     }
 }
 
@@ -81,15 +114,27 @@ extension AnalyticalSectionDTO {
 
 
 public struct GemContentDTO: Decodable {
-    let scene: String
-    let evidence: String
+    let icon: GemIconDTO?
     let insight: String
+    let evidence: String
+    let answerId: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case icon, insight, evidence
+        case answerId = "answer_id"
+    }
     
     func toDomain() -> GemContent {
         return GemContent(
-            scene: scene,
+            icon: icon.map { GemIcon(id: $0.id, url: $0.url) },
+            insight: insight,
             evidence: evidence,
-            insight: insight
+            answerId: answerId
         )
     }
+}
+
+public struct GemIconDTO: Decodable {
+    let id: String
+    let url: String
 }
