@@ -43,22 +43,6 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         }
     }
     
-    func fetchData() async throws {
-        let report = try await dataService.fetchWeeklyReportUseCase.execute(week: nil)
-        let currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
-        await MainActor.run {
-            self.weeklyReport = report
-            self.currentIcons = currentIcons
-            self.weeklyIcons = currentIcons.icons.map { .normal($0)}
-            let normalCount = self.weeklyIcons.count
-            if currentIcons.minAnswersToGenerateReport > self.weeklyIcons.count {
-                self.weeklyIcons.append(.plus)
-               let placeholders = (0 ..< currentIcons.minAnswersToGenerateReport - normalCount - 1).map { _ in ConinIconStyle.empty }
-                self.weeklyIcons.append(contentsOf: placeholders)
-            }
-        }
-    }
-    
     func fetchCurrentWeekReport() async throws {
         let report = try await dataService.fetchWeeklyReportUseCase.execute(week: nil)
         await MainActor.run {
@@ -90,15 +74,6 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         let report = try await dataService.fetchWeeklyReportUseCase.execute(week: nil)
         self.weeklyReport = report
         router?.push(.printing)
-        
-        guard let result = try? await dataService.markWeeklyReportReadUseCase.execute(week: report.week) else { return }
-        if var unread = unreadHisotrys.filter({ $0.id == report.id }).first {
-            unread.readAt = result.readAt
-            readHisotrys.append(unread)
-            readHisotrys.sort(by: { $0.periodStart > $1.periodEnd })
-            unreadHisotrys.removeAll(where: { $0.id == report.id })
-        }
-        await refreshArcadeState()
         
     }
     
@@ -167,7 +142,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
            if Date.isWeekDay {
                 arcadeState = .readyToPrint
             } else {
-                arcadeState = .readyToPrint
+                arcadeState = .countingDown
             }
         } else if !unreadHisotrys.isEmpty {
             arcadeState = .unread

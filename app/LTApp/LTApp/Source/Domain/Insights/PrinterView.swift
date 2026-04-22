@@ -46,6 +46,13 @@ struct PrinterView: View {
             }
             .padding(.top, 43)
         }
+        .onDisappear {
+            Task.detached {
+                try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
+                try? await viewModel.fetchHistory()
+                await viewModel.refreshArcadeState()
+            }
+        }
     }
 }
 

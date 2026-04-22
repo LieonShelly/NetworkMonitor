@@ -32,47 +32,21 @@ struct PaperView: View {
             }
         })
         .background(AppColor.white)
-        .padding(.horizontal, 32)
+        .padding(.horizontal, value(32))
         .defaultBackground()
     }
     
-    @ViewBuilder
-    var summaryView: some View {
-        if let report = viewModel.weeklyReport {
-            VStack(spacing: .zero) {
-                iconListView(report: report)
-                line(axis: .horizontal)
-                summaryContentView(report: report)
-            }
-            .overlay(content: {
-                VStack {
-                    line(axis: .horizontal)
-                    Spacer()
-                    line(axis: .horizontal)
-                }
-            })
-            .overlay(content: {
-                HStack {
-                    line(axis: .vertical)
-                    Spacer()
-                    line(axis: .vertical)
-                }
-            })
-            .padding(.horizontal, isSmall ? 14: 32)
-        }
-        
-    }
     
     @ViewBuilder func iconListView(report: WeeklyReport) -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 6) {
+            HStack(spacing: value(6)) {
                 ForEach(report.icons, id: \.iconId) { iconData in
                     IconView(iconData: iconData)
                 }
             }
         }
-        .frame(height: 56)
-        .padding(.horizontal, 20)
+        .frame(height: value(56))
+        .padding(.horizontal, value(20))
         .overlay(alignment: .bottom, content: {
             line(axis: .horizontal)
         })
@@ -85,9 +59,9 @@ struct PaperView: View {
         if let glance = report.reportJson.glance {
             Text(glance)
                 .textStyle(font: .title, color: AppColor.greyDark)
-                .padding(.horizontal, 20)
-                .padding(.top, 24)
-                .padding(.bottom, 8)
+                .padding(.horizontal, value(20))
+                .padding(.top, value(24))
+                .padding(.bottom, value(8))
         }
     }
     
@@ -95,15 +69,15 @@ struct PaperView: View {
         let summary = report.reportJson.summary
         Text(summary)
             .textStyle(font: .body, color: AppColor.greyDark)
-            .padding(.horizontal, 20)
-            .padding(.bottom, 42)
+            .padding(.horizontal, value(20))
+            .padding(.bottom, value(42))
     }
     
     
     @ViewBuilder func categoryView(report: WeeklyReport) -> some View {
         let divider =  ZStack(alignment: .bottom) {
             Rectangle()
-                .frame(width: 15, height: 15)
+                .frame(width: value(15), height: value(15))
             Image(.vector137)
                 .resizable()
                 .frame(height: 1)
@@ -114,13 +88,13 @@ struct PaperView: View {
             VStack(alignment: .leading, spacing: .zero) {
                 Text("// The Little Invoice")
                     .textStyle(font: .annotation, color: AppColor.grey)
-                    .padding(.bottom, 28)
-                VStack(alignment: .leading, spacing: 16) {
+                    .padding(.bottom, value(28))
+                VStack(alignment: .leading, spacing: value(16)) {
                     ForEach(count.categories, id: \.id) { category in
-                        HStack(spacing: 8) {
+                        HStack(spacing: value(8)) {
                             Rectangle()
                                 .fill(Color.random)
-                                .frame(width: 24, height: 24)
+                                .frame(width: value(24), height: value(24))
                             Text(category.name)
                                 .textStyle(font: .annotation, color: AppColor.greyDark)
                             divider
@@ -133,9 +107,9 @@ struct PaperView: View {
                     }
                     
                     divider
-                        .padding(.bottom, 5)
+                        .padding(.bottom, value(5))
                     
-                    HStack(spacing: 8) {
+                    HStack(spacing: value(8)) {
                         Text("total")
                             .textStyle(font: .annotation, color: AppColor.greyDark)
                         
@@ -147,7 +121,7 @@ struct PaperView: View {
                     
                 }
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, value(20))
           
             
         }
@@ -162,23 +136,23 @@ struct PaperView: View {
             VStack(spacing: .zero) {
                 if let gemIcon = gem.icon {
                     OriginalIconView(url: gemIcon.url) {}
-                        .frame(width: 100)
-                        .padding(.top, 40)
+                        .frame(width: value(100))
+                        .padding(.top, value(40))
                 }
     
                 Text(gem.evidence)
                     .textStyle(font: .title, color: AppColor.greyDark)
-                    .padding(.top, 20)
+                    .padding(.top, value(20))
                 
                 Text(gem.insight)
                     .textStyle(font: .body, color: AppColor.greyDark)
-                    .padding(.top, 16)
+                    .padding(.top, value(16))
           
             }
             .frame(maxWidth: .infinity, alignment: .center)
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 45)
+        .padding(.horizontal, value(20))
+        .padding(.top, value(45))
     }
     
     @ViewBuilder func remindersView(report: WeeklyReport) -> some View {
@@ -187,15 +161,15 @@ struct PaperView: View {
         VStack(alignment: .leading, spacing: .zero) {
             Text("// A few little inspo for next week...")
                 .textStyle(font: .annotation, color: AppColor.grey)
-                .padding(.bottom, 22)
+                .padding(.bottom, value(22))
             
-            VStack(alignment: .leading, spacing: 15) {
+            VStack(alignment: .leading, spacing: value(15)) {
                 ForEach(reminders, id: \.self) { text in
-                    HStack(alignment: .top, spacing: 16) {
+                    HStack(alignment: .top, spacing: value(16)) {
                         Image(.rectangle64)
                             .resizable()
-                            .frame(width: 16, height: 16)
-                            .padding(.top, 4)
+                            .frame(width: value(16), height: value(16))
+                            .padding(.top, value(4))
                         
                         Text(text)
                             .textStyle(font: .title)
@@ -207,31 +181,21 @@ struct PaperView: View {
             }
             .frame(maxWidth: .infinity, alignment: .center)
         }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 42)
+        .padding(.horizontal, value(20))
+        .padding(.vertical, value(42))
         
         Image(.subtract)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(height: 20)
+            .frame(height: value(20))
             .frame(maxWidth: .infinity)
             .offset(y: 2)
     }
         
     
-    
-    @ViewBuilder func summaryContentView(report: WeeklyReport) -> some View {
-            Text(report.reportJson.summary)
-                .textStyle(size: isSmall ? 9: 13, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, isSmall ? 10: 20)
-                .padding(.bottom, isSmall ? 8: 16)
-        }
-    
-    
     func line(axis: Axis, segmentCount: Int = 100, seed: Int = 400) -> some View {
         WavyLine(segmentCount: isSmall ? segmentCount / 2: segmentCount, seed: isSmall ? Int(seed / 2): seed, axis: axis)
-            .stroke(style: StrokeStyle(lineWidth: 2, lineCap: .round))
+            .stroke(style: StrokeStyle(lineWidth: isSmall ? 1 : 2, lineCap: .round))
             .foregroundColor(AppColor.color(hex: 0x000000))
             .if(axis == .horizontal, transform: {
                 $0.frame(height: 2)
@@ -242,4 +206,9 @@ struct PaperView: View {
         
         
     }
+    
+    private func value(_ value: CGFloat) -> CGFloat {
+        isSmall ? value * 0.5 : value
+    }
 }
+

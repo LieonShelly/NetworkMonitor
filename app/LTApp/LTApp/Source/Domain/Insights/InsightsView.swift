@@ -46,7 +46,7 @@ final class InsightsRouter: ObservableObject {
     }
 }
 
-// MARK: - InsightsView
+
 struct InsightsView: View {
     @StateObject var viewModel: InsightsViewModel
     @StateObject private var router = InsightsRouter()

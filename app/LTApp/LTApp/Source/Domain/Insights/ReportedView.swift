@@ -35,13 +35,27 @@ struct ReportedView: View {
     @ViewBuilder var topBar: some View {
         if let report = viewModel.weeklyReport {
             FixedHeader(title: "", trailing: {
-                Text("\(report.periodStart.yyyymmdd) - \(report.periodEnd.yyyymmdd)")
-                    .textStyle(size: 16, color: AppColor.color(hex: 0x423D3D), fontFamily: .poppinsRegular)
+                Text(periodText(report))
+                    .textStyle(size: 16, color: AppColor.black, fontFamily: .littleThing)
             }, backAction:  {
                 withAnimation {
                     router.pop()
                 }
             })
+        }
+    }
+    
+    private func periodText(_ report: WeeklyReport) -> String {
+        let calendar = AppCalendar.current
+        let startDay = calendar.component(.day, from: report.periodStart)
+        let endDay = calendar.component(.day, from: report.periodEnd)
+        let endMonth = report.periodEnd.monthDesc(isShort: true).uppercased()
+
+        if calendar.isDate(report.periodStart, equalTo: report.periodEnd, toGranularity: .month) {
+            return "\(startDay) - \(endDay) \(endMonth)"
+        } else {
+            let startMonth = report.periodStart.monthDesc(isShort: true).uppercased()
+            return "\(startDay) \(startMonth) - \(endDay) \(endMonth)"
         }
     }
 }
