@@ -36,6 +36,7 @@ public struct ReportCountDTO: Decodable {
 public struct ReportCategoryCountDTO: Decodable {
     let id: String
     let name: String
+    let url: String
     let count: Int
 }
 
@@ -98,7 +99,7 @@ extension ReportCountDTO {
 
 extension ReportCategoryCountDTO {
     func toDomain() -> ReportCategoryCount {
-        return ReportCategoryCount(id: id, name: name, count: count)
+        return ReportCategoryCount(id: id, name: name, url: url, count: count)
     }
 }
 

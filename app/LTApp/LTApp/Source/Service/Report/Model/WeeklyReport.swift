@@ -57,5 +57,6 @@ public struct ReportCount: Sendable {
 public struct ReportCategoryCount: Sendable, Identifiable {
     public let id: String
     let name: String
+    let url: String
     let count: Int
 }

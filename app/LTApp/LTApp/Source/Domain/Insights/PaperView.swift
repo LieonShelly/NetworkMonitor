@@ -77,6 +77,7 @@ struct PaperView: View {
     @ViewBuilder func categoryView(report: WeeklyReport) -> some View {
         let divider =  ZStack(alignment: .bottom) {
             Rectangle()
+                .fill(Color.clear)
                 .frame(width: value(15), height: value(15))
             Image(.vector137)
                 .resizable()
@@ -86,7 +87,7 @@ struct PaperView: View {
         
         if let count = report.count {
             VStack(alignment: .leading, spacing: .zero) {
-                Text("// The Little Invoice")
+                Text("// The tittle invoice")
                     .textStyle(font: .annotation, color: AppColor.grey)
                     .padding(.bottom, value(28))
                 VStack(alignment: .leading, spacing: value(16)) {
@@ -130,7 +131,7 @@ struct PaperView: View {
     @ViewBuilder func oneLittleMomentView(report: WeeklyReport) -> some View {
         let gem = report.reportJson.gem
         VStack(alignment: .leading, spacing: .zero) {
-            Text("// The Little Invoice")
+            Text("// The little invoice")
                 .textStyle(font: .annotation, color: AppColor.grey)
             
             VStack(spacing: .zero) {
