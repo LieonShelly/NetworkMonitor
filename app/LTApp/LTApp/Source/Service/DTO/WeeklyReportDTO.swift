@@ -41,7 +41,7 @@ public struct ReportCategoryCountDTO: Decodable {
 }
 
 public struct ReportContentDTO: Decodable {
-    let summary: String
+    let summary: String?
     let glance: String?
     let gem: GemContentDTO
     let reminders: [String]?

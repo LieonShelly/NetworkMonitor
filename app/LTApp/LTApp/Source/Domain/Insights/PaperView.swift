@@ -66,11 +66,12 @@ struct PaperView: View {
     }
     
     @ViewBuilder func summaryView(report: WeeklyReport) -> some View {
-        let summary = report.reportJson.summary
-        Text(summary)
-            .textStyle(font: .body, color: AppColor.greyDark)
-            .padding(.horizontal, value(20))
-            .padding(.bottom, value(42))
+        if let summary = report.reportJson.summary {
+            Text(summary)
+                .textStyle(font: .body, color: AppColor.greyDark)
+                .padding(.horizontal, value(20))
+                .padding(.bottom, value(42))
+        }
     }
     
     

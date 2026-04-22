@@ -31,7 +31,7 @@ public struct GemContent: Sendable {
 
 
 public struct ReportContent: Sendable {
-    let summary: String
+    let summary: String?
     let glance: String?
     let gem: GemContent
     let reminders: [String]
