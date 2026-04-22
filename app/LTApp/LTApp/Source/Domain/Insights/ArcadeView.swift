@@ -270,6 +270,7 @@ struct ArcadeView: View, ImageCacheKeyType {
                 .frame(maxWidth: .infinity)
               
             }
+            .scrollDisabled(viewModel.arcadeState == .readyToPrint)
             .refreshable {
                 try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
                 try? await viewModel.fetchHistory()

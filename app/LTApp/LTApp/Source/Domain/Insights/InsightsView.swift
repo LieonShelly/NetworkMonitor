@@ -8,7 +8,6 @@
 import SwiftUI
 import UIComponent
 
-// MARK: - Insights 页面路由
 enum InsightsPage: Equatable, Hashable {
     case arcade
     case history
@@ -16,7 +15,6 @@ enum InsightsPage: Equatable, Hashable {
     case printing
 }
 
-// MARK: - 页面堆栈管理器
 @MainActor
 final class InsightsRouter: ObservableObject {
     @Published private(set) var stack: [InsightsPage] = [.arcade]

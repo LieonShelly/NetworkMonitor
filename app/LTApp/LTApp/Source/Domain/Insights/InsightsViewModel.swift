@@ -90,6 +90,16 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         let report = try await dataService.fetchWeeklyReportUseCase.execute(week: nil)
         self.weeklyReport = report
         router?.push(.printing)
+        
+        guard let result = try? await dataService.markWeeklyReportReadUseCase.execute(week: report.week) else { return }
+        if var unread = unreadHisotrys.filter({ $0.id == report.id }).first {
+            unread.readAt = result.readAt
+            readHisotrys.append(unread)
+            readHisotrys.sort(by: { $0.periodStart > $1.periodEnd })
+            unreadHisotrys.removeAll(where: { $0.id == report.id })
+        }
+        await refreshArcadeState()
+        
     }
     
     func fetchHistory() async throws {
@@ -157,7 +167,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
            if Date.isWeekDay {
                 arcadeState = .readyToPrint
             } else {
-                arcadeState = .countingDown
+                arcadeState = .readyToPrint
             }
         } else if !unreadHisotrys.isEmpty {
             arcadeState = .unread
