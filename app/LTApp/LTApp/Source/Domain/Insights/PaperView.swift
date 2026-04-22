@@ -137,7 +137,7 @@ struct PaperView: View {
                 if let gemIcon = gem.icon {
                     OriginalIconView(url: gemIcon.url) {}
                         .frame(width: value(100))
-                        .padding(.top, value(40))
+                        .padding(.top, value(20))
                 }
     
                 Text(gem.evidence)
@@ -176,6 +176,7 @@ struct PaperView: View {
                             .multilineTextAlignment(.leading)
                             .lineLimit(2)
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
           
             }
