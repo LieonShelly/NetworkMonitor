@@ -6,7 +6,12 @@
 import SwiftUI
 import UIComponent
 
+
+
 struct NewUserHomeView: View {
+    
+    @EnvironmentObject var homeCoordinator: HomeCoordinator
+    
     var body: some View {
         VStack(spacing: .zero) {
             FixedHeader(title: "Self")
@@ -18,13 +23,19 @@ struct NewUserHomeView: View {
                         title: "About me...",
                         subtitle: "Set your display name"
                     )
+                    .onTapGesture {
+                        homeCoordinator.push(UserRoute.aboutMeSetting)
+                    }
                     
                     // Talk to me as
                     NewUserRow(
                         icon: Image(.personaOutlet),
                         title: "Talk to me as...",
                         subtitle: "Choose the tone of voice for your insights"
-                    )
+                    )  .onTapGesture {
+                        homeCoordinator.push(UserRoute.personaSetting)
+                    }
+                    
                     
                     // Inspire me with
                     NewUserRow(
@@ -32,6 +43,9 @@ struct NewUserHomeView: View {
                         title: "Inspire me with...",
                         subtitle: "Browse and pin your favorite sparks"
                     )
+                    .onTapGesture {
+                        homeCoordinator.push(HomeRoute.questionLib)
+                   }
                     
                     // Everyday, ask me
                     NewUserRow(
@@ -39,6 +53,9 @@ struct NewUserHomeView: View {
                         title: "Everyday, ask me...",
                         subtitle: "Set up your daily sparks"
                     )
+                    .onTapGesture {
+                        homeCoordinator.push(UserRoute.qustionOfTodaySettings)
+                    }
                     
                     // Whisper to me at
                     NewUserRow(
@@ -46,6 +63,9 @@ struct NewUserHomeView: View {
                         title: "Whisper to me at...",
                         subtitle: "Your daily journal reminder"
                     )
+                    .onTapGesture {
+                        homeCoordinator.push(UserRoute.reminderSetting)
+                    }
                 }
                 .padding(.top, 16)
             }

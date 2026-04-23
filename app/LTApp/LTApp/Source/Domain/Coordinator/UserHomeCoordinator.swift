@@ -27,6 +27,12 @@ final class UserHomeCoordinator: Coordinator, ObservableObject, Sendable {
         switch route {
         case .qustionOfTodaySettings:
             return AnyView(QuestionOfTodaySettingView(viewModel: .init(dataService: appDataService)))
+        case .aboutMeSetting:
+            return AnyView(AboutMeView())
+        case .personaSetting:
+            return AnyView(EmptyView())
+        case .reminderSetting:
+            return AnyView(EmptyView())
         }
     }
     
@@ -36,5 +42,8 @@ final class UserHomeCoordinator: Coordinator, ObservableObject, Sendable {
 }
 
 enum UserRoute: Route {
+    case aboutMeSetting
+    case personaSetting
     case qustionOfTodaySettings
+    case reminderSetting
 }
