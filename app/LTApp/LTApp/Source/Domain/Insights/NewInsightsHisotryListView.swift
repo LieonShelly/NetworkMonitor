@@ -98,42 +98,46 @@ struct NewInsightsHistoryListView: View {
     @ViewBuilder
     private var iconRow: some View {
         let processorId = "metal.icon.processor.v3_thickness_2"
-        HStack(spacing: 8) {
-            ForEach(0..<viewModel.weeklyIcons.count, id: \.self) { index in
-                let iconStyle = viewModel.weeklyIcons[index]
-                switch iconStyle {
-                case .normal(let icon):
-                    CoinIconView(url: icon.url, processorId: processorId)
-                        .frame(width: 32, height: 32)
-                case .plus:
-                    Circle()
-                        .fill(Color.clear)
-                        .stroke(
-                            AppColor.black,
-                            style: StrokeStyle(lineWidth: 1, dash: [4, 4])
-                        )
-                        .frame(width: 32, height: 32)
-                        .overlay {
-                            Image(systemName: "plus")
-                                .resizable()
-                                .frame(width: 12, height: 12)
-                                .foregroundStyle(AppColor.black)
-                        }
-                        .onTapGesture {
-                            viewModel.onTapAdd()
-                        }
-                case .empty:
-                    Circle()
-                        .fill(Color.clear)
-                        .stroke(
-                            AppColor.black,
-                            style: StrokeStyle(lineWidth: 1, dash: [4, 4])
-                        )
-                        .frame(width: 32, height: 32)
+        ScrollView(.horizontal) {
+            HStack(spacing: 8) {
+                ForEach(0..<viewModel.weeklyIcons.count, id: \.self) { index in
+                    let iconStyle = viewModel.weeklyIcons[index]
+                    switch iconStyle {
+                    case .normal(let icon):
+                        CoinIconView(url: icon.url, processorId: processorId)
+                            .frame(width: 32, height: 32)
+                    case .plus:
+                        Circle()
+                            .fill(Color.clear)
+                            .stroke(
+                                AppColor.black,
+                                style: StrokeStyle(lineWidth: 1, dash: [4, 4])
+                            )
+                            .frame(width: 32, height: 32)
+                            .overlay {
+                                Image(systemName: "plus")
+                                    .resizable()
+                                    .frame(width: 12, height: 12)
+                                    .foregroundStyle(AppColor.black)
+                            }
+                            .onTapGesture {
+                                viewModel.onTapAdd()
+                            }
+                    case .empty:
+                        Circle()
+                            .fill(Color.clear)
+                            .stroke(
+                                AppColor.black,
+                                style: StrokeStyle(lineWidth: 1, dash: [4, 4])
+                            )
+                            .frame(width: 32, height: 32)
+                    }
                 }
+                Spacer()
             }
-            Spacer()
         }
+        .frame(height: 36)
+      
     }
     
     @ViewBuilder

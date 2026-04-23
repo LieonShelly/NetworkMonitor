@@ -112,10 +112,10 @@ struct ArcadeView: View, ImageCacheKeyType {
                     }
                 }
             }
-            .padding(.leading, 24)
-            .padding(.trailing, 10)
+            .padding(.leading, 14)
             .padding(.vertical, 10)
         }
+        .padding(.horizontal, 10)
     }
     
     var screen: some View {
