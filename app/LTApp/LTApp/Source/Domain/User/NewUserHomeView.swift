@@ -75,8 +75,10 @@ struct NewUserHomeView: View {
                 try? await viewModel.fetchUserInfo()
             }
         }
-        .task {
-            try? await viewModel.fetchUserInfo()
+        .onFirstAppear {
+            Task {
+                try? await viewModel.fetchUserInfo()
+            }
         }
     }
 }
