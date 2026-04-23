@@ -40,3 +40,4 @@ struct NewUserRow: View {
         .contentShape(.rect)
     }
 }
+

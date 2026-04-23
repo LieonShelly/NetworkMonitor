@@ -5,9 +5,9 @@
 import Foundation
 
 struct UserInfoDTO: Decodable {
-    let qodStrategy: String
+    let qodStrategy: String?
     let lastLoginAt: String?
-    let hasPinnedQuestion: Bool
+    let hasPinnedQuestion: Bool?
     let email: String?
     let nickname: String?
     let reportPersonaId: String?
@@ -35,14 +35,14 @@ extension UserInfoDTO {
     func toDomain() -> User {
         let lastLoginAt = ISO8601DateFormatter().date(from: lastLoginAt ?? "") ?? Date()
         return User(
-            qodStrategy: .init(rawValue: qodStrategy) ?? .random,
+            qodStrategy: QodStrategy(rawValue: qodStrategy ?? "") ?? .random,
             lastLoginAt: lastLoginAt,
             hasPinnedQuestion: hasPinnedQuestion,
             email: email,
             nickname: nickname,
             reportPersonaId: reportPersonaId,
             reportPersona: reportPersona.map { ReportPersona(id: $0.id, label: $0.label) },
-            reminderSlot: ReminderSlot(rawValue: reminderSlot ?? "") ?? nil
+            reminderSlot: ReminderSlot(rawValue: reminderSlot ?? "")
         )
     }
 }
