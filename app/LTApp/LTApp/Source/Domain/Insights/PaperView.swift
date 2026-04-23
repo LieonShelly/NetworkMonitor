@@ -59,6 +59,7 @@ struct PaperView: View {
         if let glance = report.reportJson.glance {
             Text(glance)
                 .textStyle(font: .title, color: AppColor.greyDark)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, value(20))
                 .padding(.top, value(24))
                 .padding(.bottom, value(8))
@@ -69,6 +70,7 @@ struct PaperView: View {
         if let summary = report.reportJson.summary {
             Text(summary)
                 .textStyle(font: .body, color: AppColor.greyDark)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, value(20))
                 .padding(.bottom, value(42))
         }
@@ -145,10 +147,14 @@ struct PaperView: View {
     
                 Text(gem.evidence)
                     .textStyle(font: .title, color: AppColor.greyDark)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding(.top, value(20))
+                    .padding(.horizontal, value(29))
                 
                 Text(gem.insight)
                     .textStyle(font: .body, color: AppColor.greyDark)
+                    .fixedSize(horizontal: false, vertical: true)
                     .padding(.top, value(16))
           
             }
@@ -177,13 +183,11 @@ struct PaperView: View {
                         Text(text)
                             .textStyle(font: .title)
                             .multilineTextAlignment(.leading)
-                            .lineLimit(2)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
           
             }
-            .frame(maxWidth: .infinity, alignment: .center)
         }
         .padding(.horizontal, value(20))
         .padding(.vertical, value(42))

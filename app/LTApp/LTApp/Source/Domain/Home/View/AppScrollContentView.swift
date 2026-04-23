@@ -6,6 +6,7 @@ import SwiftUI
 
 struct AppScrollContentView: View {
     @ObservedObject var viewModel: AppScrollContentViewModel
+    @EnvironmentObject var tabbarVisibility: TabbarVisibility
     let addAction: (([Question]) -> Void)?
     let onTapAnswerAction: ((TodayAnswerSubmittedViewModel?) -> Void)?
     
@@ -39,6 +40,7 @@ struct AppScrollContentView: View {
             }
             .scrollPosition($viewModel.scrollPosition)
             .scrollTargetBehavior(.paging)
+            .scrollDisabled(!tabbarVisibility.isVisible)
             .onScrollGeometryChange(for: CGPoint.self, of: { $0.contentOffset }) { oldValue, newValue in
                 let progress = newValue.x / proxy.size.width
                 viewModel.updateScrollProgress(progress)

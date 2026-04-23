@@ -56,22 +56,28 @@ struct InsightsView: View {
     }
     
     var body: some View {
-        ZStack {
-            VStack(spacing: .zero) {
-                titleView
-                ArcadeView(viewModel: viewModel)
-                    .padding(.bottom, 70)
-            }
-            .opacity(router.current == .arcade ? 1 : 0)
-            .allowsHitTesting(router.current == .arcade)
-            
-            ForEach(Array(router.stack.enumerated()), id: \.element) { index, page in
-                if page != .arcade {
-                    pageView(for: page)
-                        .transition(.opacity)
-                        .zIndex(Double(index))
+        GeometryReader { geo in
+            ZStack {
+                VStack(spacing: .zero) {
+                    titleView
+                    ArcadeView(viewModel: viewModel)
+                        .padding(.bottom, 70)
+                }
+                .frame(width: geo.size.width)
+                .opacity(router.current == .arcade ? 1 : 0)
+                .allowsHitTesting(router.current == .arcade)
+                
+                ForEach(Array(router.stack.enumerated()), id: \.element) { index, page in
+                    if page != .arcade {
+                        pageView(for: page)
+                            .frame(width: geo.size.width)
+                            .transition(.opacity)
+                            .zIndex(Double(index))
+                    }
                 }
             }
+            .frame(width: geo.size.width, height: geo.size.height)
+            .clipped()
         }
         .animation(.easeInOut(duration: 0.25), value: router.stack)
         .defaultBackground()
