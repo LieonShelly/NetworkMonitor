@@ -63,6 +63,7 @@ platform :ios do
 
   lane :generate_project do
     sh("xcodegen generate -s project/project.yml")
+    sh("xcodegen generate -s ../app/LTApp/project.yml --project ../app/LTApp")
   end
 
 end
