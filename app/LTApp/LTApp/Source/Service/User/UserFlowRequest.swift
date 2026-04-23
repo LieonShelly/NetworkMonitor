@@ -1,48 +1,63 @@
 //
-//  UserSettingRequest.swift
-//  LTApp
-//
-//  Created by Renjun Li on 2026/2/5.
+//  LTApp, This code is protected by intellectual property rights.
 //
 
 import Foundation
 import LTNetwork
 
-enum UserFlowRequest: Request, @unchecked Sendable{
+enum UserFlowRequest: Request, @unchecked Sendable {
     case userInfo
+    case updateNickname(_ nickname: String?)
     case qodStrategyOptions
     case updateQodStrategy(_ strategy: String)
+    case saveTimezone(_ timestamp: String)
+    case fetchReminder
+    case updateReminder(_ slot: String?)
     
     var endPoint: any EndPoint {
         var path: String = "/api"
         switch self {
-        case .userInfo:
+        case .userInfo, .updateNickname:
             path += "/me"
         case .updateQodStrategy:
             path += "/qod-strategy"
         case .qodStrategyOptions:
             path += "/qod-strategy-options"
+        case .saveTimezone:
+            path += "/timezone"
+        case .fetchReminder, .updateReminder:
+            path += "/me/reminder"
         }
         return DefaultEndPoint.baseURL(path: path)
     }
     
     var method: HttpMethod {
         switch self {
-        case .userInfo:
+        case .userInfo, .qodStrategyOptions, .fetchReminder:
             return .get
-        case .updateQodStrategy:
+        case .updateNickname, .updateQodStrategy, .saveTimezone, .updateReminder:
             return .post
-        case .qodStrategyOptions:
-            return .get
         }
     }
     
     var payload: HttpPayload {
         switch self {
-        case .userInfo, .qodStrategyOptions:
+        case .userInfo, .qodStrategyOptions, .fetchReminder:
             return .empty
         case let .updateQodStrategy(strategy):
             return .json(body: ["qod_strategy": strategy], urlParameter: nil)
+        case let .saveTimezone(timestamp):
+            return .json(body: ["timestamp": timestamp], urlParameter: nil)
+        case let .updateNickname(nickname):
+            if let nickname {
+                return .json(body: ["nickname": nickname], urlParameter: nil)
+            }
+            return .json(body: ["nickname": NSNull()], urlParameter: nil)
+        case let .updateReminder(slot):
+            if let slot {
+                return .json(body: ["slot": slot], urlParameter: nil)
+            }
+            return .json(body: ["slot": NSNull()], urlParameter: nil)
         }
     }
 }

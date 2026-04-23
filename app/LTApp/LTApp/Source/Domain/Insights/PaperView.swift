@@ -94,9 +94,10 @@ struct PaperView: View {
                 VStack(alignment: .leading, spacing: value(16)) {
                     ForEach(count.categories, id: \.id) { category in
                         HStack(spacing: value(8)) {
-                            Rectangle()
-                                .fill(Color.random)
+                            
+                            SVGImageView(url: category.url)
                                 .frame(width: value(24), height: value(24))
+                            
                             Text(category.name)
                                 .textStyle(font: .annotation, color: AppColor.greyDark)
                             divider

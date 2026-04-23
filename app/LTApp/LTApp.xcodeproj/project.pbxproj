@@ -112,6 +112,12 @@
 		ED5163CE2F94E4B800B39243 /* CountingDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5163CD2F94E4B800B39243 /* CountingDownView.swift */; };
 		ED58957B2F93E57700FF7B57 /* NewInsightsHisotryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED58957A2F93E57700FF7B57 /* NewInsightsHisotryListView.swift */; };
 		ED6B9CE126E3CFB5306162CB /* LogoutInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA14C5747FBE99D911A634F /* LogoutInterceptor.swift */; };
+		ED8F6AA82F9A067A005CB988 /* SaveTimezoneResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F6AA72F9A067A005CB988 /* SaveTimezoneResult.swift */; };
+		ED8F6AAA2F9A0695005CB988 /* SaveTimezoneDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F6AA92F9A0695005CB988 /* SaveTimezoneDTO.swift */; };
+		ED8F6AAC2F9A06A6005CB988 /* SaveTimezoneUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F6AAB2F9A06A6005CB988 /* SaveTimezoneUseCase.swift */; };
+		ED8F6AB02F9A09DB005CB988 /* UpdateNicknameUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F6AAE2F9A09DB005CB988 /* UpdateNicknameUseCase.swift */; };
+		ED8F6AB12F9A09DB005CB988 /* FetchReminderUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F6AAD2F9A09DB005CB988 /* FetchReminderUseCase.swift */; };
+		ED8F6AB22F9A09DB005CB988 /* UpdateReminderUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F6AAF2F9A09DB005CB988 /* UpdateReminderUseCase.swift */; };
 		EFC187983F274A3E98DC55A4 /* FetchThreadQuestionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275858D84F27880CE5767708 /* FetchThreadQuestionsUseCase.swift */; };
 		F0083B5ACFA2CDE8498A47E5 /* AuthRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DAB8550C5F8FE713E8C905 /* AuthRequest.swift */; };
 		F1B48CC86B724385430FEC21 /* CalendarDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB376B93C7F5FF4B131FD9F /* CalendarDay.swift */; };
@@ -341,6 +347,12 @@
 		ED5163CB2F94CF5800B39243 /* NewHistoryItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHistoryItemRow.swift; sourceTree = "<group>"; };
 		ED5163CD2F94E4B800B39243 /* CountingDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountingDownView.swift; sourceTree = "<group>"; };
 		ED58957A2F93E57700FF7B57 /* NewInsightsHisotryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewInsightsHisotryListView.swift; sourceTree = "<group>"; };
+		ED8F6AA72F9A067A005CB988 /* SaveTimezoneResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTimezoneResult.swift; sourceTree = "<group>"; };
+		ED8F6AA92F9A0695005CB988 /* SaveTimezoneDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTimezoneDTO.swift; sourceTree = "<group>"; };
+		ED8F6AAB2F9A06A6005CB988 /* SaveTimezoneUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTimezoneUseCase.swift; sourceTree = "<group>"; };
+		ED8F6AAD2F9A09DB005CB988 /* FetchReminderUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchReminderUseCase.swift; sourceTree = "<group>"; };
+		ED8F6AAE2F9A09DB005CB988 /* UpdateNicknameUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateNicknameUseCase.swift; sourceTree = "<group>"; };
+		ED8F6AAF2F9A09DB005CB988 /* UpdateReminderUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateReminderUseCase.swift; sourceTree = "<group>"; };
 		EFD4727A2532FF7F43570B0B /* SessionDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDataRepository.swift; sourceTree = "<group>"; };
 		F47135D07C75B8747AF6FC84 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		F4DD5E97D8DF693CCE6F4AD8 /* OnboardingSentence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSentence.swift; sourceTree = "<group>"; };
@@ -787,6 +799,7 @@
 				DD1F88B0511D44095E2B4950 /* AnswerDTO.swift */,
 				9F353E3389A4E275B7135D3E /* CategoryDTO.swift */,
 				CE817C60707A10F2069E3CCD /* DayReflectionsDTO.swift */,
+				ED8F6AA92F9A0695005CB988 /* SaveTimezoneDTO.swift */,
 				04BEB990EEAF0DDCAB4D5041 /* IconDto.swift */,
 				10489822281726627B1BDEAA /* OnboardingSentenceDTO.swift */,
 				BE435CC8EA6E55BBCB6FCB2C /* QuestionDTO.swift */,
@@ -845,6 +858,11 @@
 				F82BB7802F39DFED00F9DB49 /* FetchQodStrategyOptionsUseCase.swift */,
 				F82BB7772F39C72C00F9DB49 /* UpdateStrategyUseCase.swift */,
 				F8DF26652F349B5100E91FFF /* UserFlowRepository.swift */,
+				ED8F6AA72F9A067A005CB988 /* SaveTimezoneResult.swift */,
+				ED8F6AAB2F9A06A6005CB988 /* SaveTimezoneUseCase.swift */,
+				ED8F6AAD2F9A09DB005CB988 /* FetchReminderUseCase.swift */,
+				ED8F6AAE2F9A09DB005CB988 /* UpdateNicknameUseCase.swift */,
+				ED8F6AAF2F9A09DB005CB988 /* UpdateReminderUseCase.swift */,
 				F8DF26612F34989900E91FFF /* UserFlowRequest.swift */,
 				1D04D8EB432535FB52F0F20E /* User.swift */,
 				146ED45DD2787D6230E0BDBB /* UserManagementServiceful.swift */,
@@ -1172,6 +1190,9 @@
 				9BB548E33C85CA305BC4EFAA /* AppTabbar.swift in Sources */,
 				D6553CA92EF7F5086C2D3652 /* AppTabbarItem.swift in Sources */,
 				F87E9E832F6FF3920028D944 /* ReportHistoryRow.swift in Sources */,
+				ED8F6AB02F9A09DB005CB988 /* UpdateNicknameUseCase.swift in Sources */,
+				ED8F6AB12F9A09DB005CB988 /* FetchReminderUseCase.swift in Sources */,
+				ED8F6AB22F9A09DB005CB988 /* UpdateReminderUseCase.swift in Sources */,
 				F86ECACB2EF3A11C007EEA24 /* NotificationFlagUseCase.swift in Sources */,
 				411879C93E870B65D2792153 /* AppTabbarView.swift in Sources */,
 				BE23B8FA23E7357F40A9042B /* AppTabbarViewModel.swift in Sources */,
@@ -1260,7 +1281,9 @@
 				F7EEBCB8F06F2AFB8348CBE5 /* ReflectionDetailViewModel.swift in Sources */,
 				90EEE169E4EB789087FD78CB /* ReflectionRepository.swift in Sources */,
 				18ABAFA988FCC8639957F437 /* ReflectionRequest.swift in Sources */,
+				ED8F6AAC2F9A06A6005CB988 /* SaveTimezoneUseCase.swift in Sources */,
 				B50E9C044696FF0546AAB1D6 /* RefreshTokenInterceptor.swift in Sources */,
+				ED8F6AAA2F9A0695005CB988 /* SaveTimezoneDTO.swift in Sources */,
 				F8642C8A2EE0330000D92A07 /* MetalImageProcessor.swift in Sources */,
 				B32DD58620F9F1AD5A4748B1 /* RefreshTokenUseCase.swift in Sources */,
 				F8DF26622F34989A00E91FFF /* UserFlowRequest.swift in Sources */,
@@ -1315,6 +1338,7 @@
 				ED44F8FA2F964B0C00521804 /* AboutMeView.swift in Sources */,
 				FC384158B10A64A8B751A47A /* UserRowItem.swift in Sources */,
 				F86ECAC92EF39F4E007EEA24 /* PostNotificationUseCase.swift in Sources */,
+				ED8F6AA82F9A067A005CB988 /* SaveTimezoneResult.swift in Sources */,
 				F81E12212F69618500DAD57B /* CoinScene.swift in Sources */,
 				ED58957B2F93E57700FF7B57 /* NewInsightsHisotryListView.swift in Sources */,
 				4EECAD353BB7BC9928A7AC4B /* ViewExtension.swift in Sources */,

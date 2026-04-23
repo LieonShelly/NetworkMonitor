@@ -43,6 +43,11 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         print("Device Token: \(token)")
         Task {
             try? await appCoordinator.appDataService.postNotificationDeviceTokenUseCase.execute(deviceToken: token)
+            let formatter = ISO8601DateFormatter()
+            formatter.formatOptions = [.withInternetDateTime]
+            formatter.timeZone = .current
+            let timestamp = formatter.string(from: Date())
+            try? await appCoordinator.appDataService.saveTimezoneUseCase.execute(timestamp: timestamp)
         }
     }
     

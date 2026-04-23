@@ -188,18 +188,20 @@ struct ArcadeView: View, ImageCacheKeyType {
     
     @ViewBuilder
     var unReadHistoryView: some View {
-        LazyVStack(spacing: 12) {
-            ForEach(Array(viewModel.unreadHisotrys.enumerated()), id: \.element.id) { index, item in
-                NewHistoryUnReadItemRow(history: item)
-                    .contentShape(.rect)
-                    .onTapGesture {
-                        Task {
-                            try? await viewModel.didTapHistoryItem(item)
+        if !viewModel.unreadHisotrys.isEmpty {
+            LazyVStack(spacing: 12) {
+                ForEach(Array(viewModel.unreadHisotrys.enumerated()), id: \.element.id) { index, item in
+                    NewHistoryUnReadItemRow(history: item)
+                        .contentShape(.rect)
+                        .onTapGesture {
+                            Task {
+                                try? await viewModel.didTapHistoryItem(item)
+                            }
                         }
-                    }
+                }
             }
+            .padding(.bottom, 42)
         }
-        .padding(.bottom, 42)
     }
     
     var moreStampsView: some View {

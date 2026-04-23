@@ -155,3 +155,143 @@
 - 错误响应:
     - week 缺失或格式错误（非 YYYY-Wnn）：返回 400 Bad Request
     - 该周报不存在：返回 404 Not Found
+
+
+### 1.6 保存用户时区
+- URL: POST /api/timezone
+- 描述: 接收一个带 UTC 偏移的 ISO 8601 时间戳，解析其中的时区偏移并存储到用户记录中，用于后续按本地时间推送每日提醒（Daily Whisper）
+- 认证: 需要
+- 请求参数:
+	``` json
+	{
+  		"timestamp": "2026-04-05T09:00:00+08:00"
+	}
+	```
+	- timestamp：必填，ISO 8601 格式，必须包含 UTC 偏移（如 +08:00、-05:00、+00:00）
+- 响应示例:
+	``` json
+		{
+			"success": true,
+			"data": {
+				"timezone": "+08:00"
+			}
+		}
+	```
+
+- 错误响应:
+	- timestamp 缺失：返回 400 Bad Request
+	- timestamp 不含 UTC 偏移：返回 400 Bad Request
+
+
+
+
+### 1.9 获取个人信息
+- URL: GET /api/me
+- 描述: 获取当前登录用户的个人信息
+- 认证: 需要
+- 响应示例:
+```json
+{
+  "success": true,
+  "data": {
+    "email": "user@example.com",
+    "nickname": "Yuyi",
+    "qod_strategy": "RANDOM",
+    "last_login_at": "2026-02-03T08:00:00.000Z",
+    "has_pinned_question": true,
+    "report_persona_id": "cludpersona123456789",
+    "report_persona": {
+      "id": "cludpersona123456789",
+      "label": "Persona 1: The Soul Gardener"
+    },
+    "reminder_slot": "EVENING"
+  }
+}
+```
+- 说明:
+  - email：用户邮箱（可能为 null）
+  - nickname：用户昵称，未设置时为 null
+  - qod_strategy：用户的「今日问题」策略，取值为 RANDOM、PINNED、MIXED
+  - last_login_at：最后登录时间，ISO 8601 格式
+  - has_pinned_question：当前用户是否至少 pin 了一道题（boolean）
+  - report_persona_id：当前选中的周报 AI Persona 的 id，未选时为 null
+  - report_persona：当前选中的 Persona 摘要（id、label），未选时为 null。可用于前端展示当前选中项，完整列表见 GET /api/ai-insights/personas
+  - reminder_slot：每日推送提醒时段，null 表示已关闭。详见 GET /api/me/reminder
+
+### 1.10 更新昵称
+- URL: POST /api/me
+- 描述: 更新当前登录用户昵称
+- 认证: 需要
+- 请求参数:
+``` json
+{
+  "nickname": "Yuyi"
+}
+```
+- 参数说明:
+  - nickname：可选；string | null
+  - 传字符串：保存前会去除首尾空格，空字符串会被当作 null（清空昵称）
+  - 传 null：清空昵称
+  - 不传该字段（如 {}）：不做修改
+- 响应示例:
+```json
+{
+  "success": true,
+  "data": {
+    "nickname": "Yuyi"
+  }
+}
+```
+- 错误响应:
+  - nickname 类型非法（非 string 且非 null）：返回 400 Bad Request
+  - nickname 长度超过 64：返回 400 Bad Request
+
+### 1.11 获取每日提醒时段
+- URL: GET /api/me/reminder
+- 描述: 获取当前登录用户的每日推送提醒时段
+- 认证: 需要
+- 响应示例:
+```json
+{
+  "success": true,
+  "data": {
+    "slot": "EVENING"
+  }
+}
+```
+- 说明:
+  - slot 取值及对应推送时间（用户本地时间）：
+  ```
+  MORNING	10:30
+  AFTERNOON	15:00
+  EVENING	21:30
+  null	已关闭提醒
+  新用户默认为 EVENING
+  ```
+
+### 1.12 设置每日提醒时段
+- URL: POST /api/me/reminder
+- 描述: 设置当前登录用户的每日推送提醒时段，推送按用户本地时间（由 POST /api/timezone 设置）触发
+- 认证: 需要
+- 请求参数:
+```json
+{
+  "slot": "MORNING"
+}
+```
+- 参数说明:
+  - slot：可选；取值 MORNING / AFTERNOON / EVENING / null
+  - 传具体时段：更新为对应时段
+  - 传 null：关闭每日提醒
+  - 不传该字段（如 {}）：不做修改，仅返回当前值
+- 响应示例:
+```json
+{
+  "success": true,
+  "data": {
+    "slot": "MORNING"
+  }
+}
+```
+- 错误响应:
+  - slot 值非法（非 MORNING、AFTERNOON、EVENING、null）：返回 400 Bad Request

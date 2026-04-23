@@ -32,6 +32,10 @@ public protocol AppDataWithAuthorizationServiceful {
     var fetchReadWeeklyReportsUseCase: any FetchReadWeeklyReportsUseCaseType { get }
     var fetchUnreadWeeklyReportsUseCase: any FetchUnreadWeeklyReportsUseCaseType { get }
     var markWeeklyReportReadUseCase: any MarkWeeklyReportReadUseCaseType { get }
+    var saveTimezoneUseCase: any SaveTimezoneUseCaseType { get }
+    var updateNicknameUseCase: any UpdateNicknameUseCaseType { get }
+    var fetchReminderUseCase: any FetchReminderUseCaseType { get }
+    var updateReminderUseCase: any UpdateReminderUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
@@ -158,5 +162,21 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var markWeeklyReportReadUseCase: any MarkWeeklyReportReadUseCaseType = {
         return MarkWeeklyReportReadUseCase(repository: reportRepository)
+    }()
+    
+    public lazy var saveTimezoneUseCase: any SaveTimezoneUseCaseType = {
+        return SaveTimezoneUseCase(repository: userFlowRepository)
+    }()
+    
+    public lazy var updateNicknameUseCase: any UpdateNicknameUseCaseType = {
+        return UpdateNicknameUseCase(repository: userFlowRepository)
+    }()
+    
+    public lazy var fetchReminderUseCase: any FetchReminderUseCaseType = {
+        return FetchReminderUseCase(repository: userFlowRepository)
+    }()
+    
+    public lazy var updateReminderUseCase: any UpdateReminderUseCaseType = {
+        return UpdateReminderUseCase(repository: userFlowRepository)
     }()
 }
