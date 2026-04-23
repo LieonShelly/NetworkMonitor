@@ -9,22 +9,22 @@ import UIComponent
 
 struct PersonaSettingView: View {
     @StateObject var viewModel: PersonaSettingViewModel
+
     
     init(viewModel: PersonaSettingViewModel) {
         self._viewModel = .init(wrappedValue: viewModel)
     }
     
     var body: some View {
-        VStack(spacing: .zero) {
+        ContainerWithFixedHeader {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: .zero) {
                     Text("Talk to me as...")
                         .textStyle(font: .heading, color: AppColor.black)
-                        .padding(.top, 20)
 
                     Text("Choose the tone of voice for your insights")
                         .textStyle(font: .caption, color: AppColor.greyMedium)
-                        .padding(.top, 4)
+                        .padding(.top, 6)
                     
                     VStack(spacing: 16) {
                         ForEach(viewModel.personas) { persona in
@@ -33,7 +33,7 @@ struct PersonaSettingView: View {
                     }
                     .padding(.top, 24)
                 }
-                .padding(.horizontal, 24)
+                .padding(.horizontal, 32)
             }
             
             DefaultAppButton(
@@ -48,6 +48,7 @@ struct PersonaSettingView: View {
             .padding(.bottom, 16)
         }
         .defaultBackground()
+        .toolbarVisibility(.hidden, for: .navigationBar)
         .onFirstAppear {
             Task {
                 await viewModel.fetchPersonas()

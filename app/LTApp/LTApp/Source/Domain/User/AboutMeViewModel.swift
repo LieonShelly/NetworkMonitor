@@ -58,5 +58,6 @@ final class AboutMeViewModel: ObservableObject, @unchecked Sendable {
             print("saveNickname error: \(error)")
         }
         isSaving = false
+        try? await dataService.userManagementService.fetchUserInfo()
     }
 }

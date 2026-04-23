@@ -7,19 +7,19 @@ import SwiftUI
 import UIComponent
 
 struct ReminderSettingView: View {
+    @EnvironmentObject var homeCoordinator: HomeCoordinator
     @StateObject var viewModel: ReminderSettingViewModel
     
     var body: some View {
-        VStack(spacing: .zero) {
+        ContainerWithFixedHeader {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: .zero) {
                     Text("Whisper to me at...")
                         .textStyle(font: .heading, color: AppColor.black)
-                        .padding(.top, 20)
                 
                     Text("Your daily journal reminder")
                         .textStyle(font: .caption, color: AppColor.greyMedium)
-                        .padding(.top, 4)
+                        .padding(.top, 6)
                     
                     HStack {
                         Text("Daily reminder")
@@ -41,7 +41,7 @@ struct ReminderSettingView: View {
                         .transition(.opacity)
                     }
                 }
-                .padding(.horizontal, 24)
+                .padding(.horizontal, 32)
                 .animation(.easeInOut(duration: 0.2), value: viewModel.isEnabled)
             }
             
@@ -60,6 +60,7 @@ struct ReminderSettingView: View {
             }
         }
         .defaultBackground()
+        .toolbarVisibility(.hidden, for: .navigationBar)
         .onFirstAppear {
             Task {
                 await viewModel.fetchReminder()

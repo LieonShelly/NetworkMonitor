@@ -2,8 +2,6 @@
 //  QuestionOfTodaySettingViewModel.swift
 //  LTApp
 //
-//  Created by Renjun Li on 2026/2/4.
-//
 
 import SwiftUI
 import Combine
@@ -11,7 +9,15 @@ import Combine
 class QuestionOfTodaySettingViewModel: ObservableObject, @unchecked Sendable {
     let dataService: any AppDataWithAuthorizationServiceful
     @MainActor @Published var list: [QuestionOfTodaySettingItem] = []
+    @MainActor @Published var selectedValue: String?
+    @MainActor @Published var isSaving: Bool = false
+    private var originalSelectedValue: String?
     private var cancellables: Set<AnyCancellable> = .init()
+    
+    @MainActor
+    var hasChanges: Bool {
+        selectedValue != nil && selectedValue != originalSelectedValue
+    }
     
     init(dataService: any AppDataWithAuthorizationServiceful) {
         self.dataService = dataService
@@ -19,27 +25,32 @@ class QuestionOfTodaySettingViewModel: ObservableObject, @unchecked Sendable {
     
     @MainActor
     func fetchData() async throws {
-        var list = await dataService.fetchQodStrategyOptionsUseCase.execute()
+        let list = await dataService.fetchQodStrategyOptionsUseCase.execute()
         dataService
             .userManagementService
             .user
-            .sink { userInfo in
-                if let index = list.firstIndex(where: {$0.qodStrategyValue == userInfo?.qodStrategy.rawValue}) {
-                    list[index] = list[index].copyWith(selected: true)
-                }
+            .sink { [weak self] userInfo in
+                guard let self else { return }
                 self.list = list
+                if let strategy = userInfo?.qodStrategy.rawValue {
+                    self.selectedValue = strategy
+                    self.originalSelectedValue = strategy
+                }
             }
             .store(in: &cancellables)
     }
     
-    func onTap(_ item: QuestionOfTodaySettingItem) async {
-        await dataService.updateStrategyUseCase.execute(item.qodStrategyValue)
-        await MainActor.run {
-            if let index = list.firstIndex(where: { $0.id == item.id }) {
-                var list = self.list.map { $0.copyWith(selected: false )}
-                list[index] = list[index].copyWith(selected: true)
-                self.list = list
-            }
-        }
+    @MainActor
+    func select(_ item: QuestionOfTodaySettingItem) {
+        selectedValue = item.qodStrategyValue
+    }
+    
+    @MainActor
+    func save() async {
+        guard let selectedValue, hasChanges else { return }
+        isSaving = true
+        await dataService.updateStrategyUseCase.execute(selectedValue)
+        originalSelectedValue = selectedValue
+        isSaving = false
     }
 }

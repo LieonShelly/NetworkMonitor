@@ -15,55 +15,57 @@ struct AboutMeView: View {
     }
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: .zero) {
-                Text("About me...")
-                    .textStyle(font: .heading, color: AppColor.black)
-                    .padding(.horizontal, 24)
-                    .padding(.top, 20)
-                
+        ContainerWithFixedHeader {
+            ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: .zero) {
-                    nameSection
+                    Text("About me...")
+                        .textStyle(font: .heading, color: AppColor.black)
+                        .padding(.horizontal, 32)
                     
-                    if isNameFocused {
-                        saveButton
-                            .padding(.top, 16)
-                            .padding(.bottom, 8)
+                    VStack(alignment: .leading, spacing: .zero) {
+                        nameSection
+                        if isNameFocused {
+                            saveButton
+                                .padding(.top, 16)
+                                .padding(.bottom, 8)
+                        }
+                        divider
+                        
+                        emailSection
+                        
+                        divider
                     }
-                    divider
+                    .padding(.horizontal, 32)
                     
-                    emailSection
-                    
-                    divider
+                    Button {
+                        // logout action
+                    } label: {
+                        Text("Logout")
+                            .textStyle(size: 16, color: AppColor.color(hex: 0xE75C06), fontFamily: .poppinsRegular)
+                    }
+                    .padding(.top, 24)
+                    .padding(.horizontal, 32)
                 }
-                .padding(.top, 32)
-                .padding(.horizontal, 32)
-                
-                Button {
-                    // logout action
-                } label: {
-                    Text("Logout")
-                        .textStyle(size: 16, color: AppColor.color(hex: 0xE75C06), fontFamily: .poppinsRegular)
+            }
+            .defaultBackground()
+            .toolbarVisibility(.hidden, for: .navigationBar)
+            .animation(.easeInOut, value: isNameFocused)
+            .onTapGesture {
+                isNameFocused = false
+            }
+            
+            .onFirstAppear {
+                Task {
+                   try? await viewModel.fetchUserInfo()
                 }
-                .padding(.top, 24)
-                .padding(.horizontal, 32)
             }
+            .onChange(of: isNameFocused, { oldvalue, newValue in
+                if !newValue && !viewModel.hasChanges {
+                    viewModel.nickname = viewModel.displayName
+                }
+            })
         }
-        .defaultBackground()
-        .animation(.easeInOut, value: isNameFocused)
-        .onTapGesture {
-            isNameFocused = false
-        }
-        .onFirstAppear {
-            Task {
-               try? await viewModel.fetchUserInfo()
-            }
-        }
-        .onChange(of: isNameFocused, { oldvalue, newValue in
-            if !newValue && !viewModel.hasChanges {
-                viewModel.nickname = viewModel.displayName
-            }
-        })
+        
     }
     
     private var nameSection: some View {
