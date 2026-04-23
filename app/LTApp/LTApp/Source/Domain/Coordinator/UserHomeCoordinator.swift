@@ -28,7 +28,7 @@ final class UserHomeCoordinator: Coordinator, ObservableObject, Sendable {
         case .qustionOfTodaySettings:
             return AnyView(QuestionOfTodaySettingView(viewModel: .init(dataService: appDataService)))
         case .aboutMeSetting:
-            return AnyView(AboutMeView())
+            return AnyView(AboutMeView(viewModel: .init(dataService: appDataService)))
         case .personaSetting:
             return AnyView(EmptyView())
         case .reminderSetting:

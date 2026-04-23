@@ -37,5 +37,6 @@ struct NewUserRow: View {
                 .frame(width: 32, height: 32)
         }
         .padding(.horizontal, 24)
+        .contentShape(.rect)
     }
 }

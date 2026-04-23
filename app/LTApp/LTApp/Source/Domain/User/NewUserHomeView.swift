@@ -6,11 +6,13 @@
 import SwiftUI
 import UIComponent
 
-
-
 struct NewUserHomeView: View {
-    
+    @StateObject var viewModel: NewUserHomeViewModel
     @EnvironmentObject var homeCoordinator: HomeCoordinator
+    
+    init(viewModel: NewUserHomeViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         VStack(spacing: .zero) {
@@ -21,7 +23,7 @@ struct NewUserHomeView: View {
                     NewUserRow(
                         icon: Image(.userOutlet),
                         title: "About me...",
-                        subtitle: "Set your display name"
+                        subtitle: viewModel.nickname
                     )
                     .onTapGesture {
                         homeCoordinator.push(UserRoute.aboutMeSetting)
@@ -69,6 +71,12 @@ struct NewUserHomeView: View {
                 }
                 .padding(.top, 16)
             }
+            .refreshable {
+                try? await viewModel.fetchUserInfo()
+            }
+        }
+        .task {
+            try? await viewModel.fetchUserInfo()
         }
     }
 }

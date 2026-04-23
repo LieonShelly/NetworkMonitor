@@ -15,13 +15,13 @@ class AppScrollContentViewModel: ObservableObject {
     @Published var isTapping: Bool = false
     let calendarViewModel: CalendarViewModel
     let threadViewModel: ThreadViewModel
-    let userViewModel: UserHomeViewModel
+    let userViewModel: NewUserHomeViewModel
     let insightsViewModel: InsightsViewModel
     
     init(service: any AppDataWithAuthorizationServiceful, ) {
         calendarViewModel = CalendarViewModel(service: service)
         threadViewModel = ThreadViewModel(service: service)
-        userViewModel = UserHomeViewModel(dataService: service)
+        userViewModel = NewUserHomeViewModel(dataService: service)
         insightsViewModel = InsightsViewModel(dataService: service)
     }
     

@@ -6,7 +6,7 @@ import Foundation
 import Combine
 import Persistence
 
-public protocol UserManagementServiceful {
+public protocol UserManagementServiceful: Sendable {
     var user: AnyPublisher<User?, Never> { get }
     
     func fetchUserInfo() async throws
@@ -16,12 +16,12 @@ public protocol UserManagementServiceful {
     func clear() throws
 }
 
-public final class UserManagementService: UserManagementServiceful {
+public final class UserManagementService: @unchecked Sendable, UserManagementServiceful {
 
     public var user: AnyPublisher<User?, Never> {
         userSubject.eraseToAnyPublisher()
     }
-    private var userKey = "user.little.thing"
+    private let userKey = "user.little.thing"
     private let userSubject: CurrentValueSubject<User?, Never> = .init(nil)
     let storage: UserDefaultStorage = .init()
     let repository: any UserFlowRepositoryType

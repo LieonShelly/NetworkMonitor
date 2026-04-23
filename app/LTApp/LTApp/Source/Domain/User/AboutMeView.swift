@@ -7,68 +7,119 @@ import SwiftUI
 import UIComponent
 
 struct AboutMeView: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: .zero) {
-            // 标题
-            Text("About me...")
-                .textStyle(font: .heading, color: AppColor.black)
-                .padding(.horizontal, 24)
-                .padding(.top, 20)
-            
-            // 表单区域
-            VStack(alignment: .leading, spacing: .zero) {
-                // Name
-                aboutMeRow(label: "Name", value: "Set your display name")
-                
-                // 分隔线
-                divider
-                
-                // Email
-                aboutMeRow(label: "Email", value: "example@email.com")
-                
-                // 分隔线
-                divider
-            }
-            .padding(.top, 32)
-            .padding(.horizontal, 32)
-            
-            // Logout 按钮
-            Button {
-                // logout action
-            } label: {
-                HStack(spacing: 8) {
-                    Text("Logout")
-                        .textStyle(size: 16, color: AppColor.color(hex: 0xE75C06), fontFamily: .poppinsRegular)
-                    
-                    Image(systemName: "arrow.right")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 16, height: 16)
-                        .foregroundStyle(AppColor.color(hex: 0xE75C06))
-                }
-            }
-            .padding(.top, 32)
-            .padding(.horizontal, 32)
-            
-            Spacer()
-            
-        }
-        .defaultBackground()
+    @StateObject var viewModel: AboutMeViewModel
+    @FocusState private var isNameFocused: Bool
+    
+    init(viewModel: AboutMeViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
-    // MARK: - 表单行
-    private func aboutMeRow(label: String, value: String) -> some View {
+    var body: some View {
+        ScrollView(showsIndicators: false) {
+            VStack(alignment: .leading, spacing: .zero) {
+                Text("About me...")
+                    .textStyle(font: .heading, color: AppColor.black)
+                    .padding(.horizontal, 24)
+                    .padding(.top, 20)
+                
+                VStack(alignment: .leading, spacing: .zero) {
+                    nameSection
+                    
+                    if isNameFocused {
+                        saveButton
+                            .padding(.top, 16)
+                            .padding(.bottom, 8)
+                    }
+                    divider
+                    
+                    emailSection
+                    
+                    divider
+                }
+                .padding(.top, 32)
+                .padding(.horizontal, 32)
+                
+                Button {
+                    // logout action
+                } label: {
+                    Text("Logout")
+                        .textStyle(size: 16, color: AppColor.color(hex: 0xE75C06), fontFamily: .poppinsRegular)
+                }
+                .padding(.top, 24)
+                .padding(.horizontal, 32)
+            }
+        }
+        .defaultBackground()
+        .animation(.easeInOut, value: isNameFocused)
+        .onTapGesture {
+            isNameFocused = false
+        }
+        .onFirstAppear {
+            Task {
+               try? await viewModel.fetchUserInfo()
+            }
+        }
+        .onChange(of: isNameFocused, { oldvalue, newValue in
+            if !newValue && !viewModel.hasChanges {
+                viewModel.nickname = viewModel.displayName
+            }
+        })
+    }
+    
+    private var nameSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(label)
+            Text("Name")
                 .textStyle(font: .caption, color: AppColor.greyMedium)
             
-            Text(value)
+            ZStack(alignment: .leading) {
+                if viewModel.nickname.isEmpty && !isNameFocused {
+                    Text("Set your display name")
+                        .textStyle(size: 16, color: AppColor.black, fontFamily: .poppinsRegular)
+                }
+                TextField("", text: $viewModel.nickname)
+                    .textStyle(size: 16, color: AppColor.black, fontFamily: .poppinsRegular)
+                    .focused($isNameFocused)
+                    .tint(AppColor.black)
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                isNameFocused = true
+            }
+        }
+        .padding(.vertical, 16)
+    }
+    
+    private var saveButton: some View {
+        Button {
+            Task {
+                await viewModel.saveNickname()
+                isNameFocused = false
+            }
+        } label: {
+            Text("Save")
+                .textStyle(size: 16, color: viewModel.hasChanges ? AppColor.oat : AppColor.greyMedium, fontFamily: .poppinsRegular)
+                .frame(maxWidth: .infinity)
+                .frame(height: 52)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(viewModel.hasChanges ? AppColor.black : AppColor.greyLight)
+                )
+        }
+        .disabled(!viewModel.hasChanges || viewModel.isSaving)
+        .transition(.opacity.combined(with: .move(edge: .top)))
+    }
+    
+    private var emailSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Email")
+                .textStyle(font: .caption, color: AppColor.greyMedium)
+            
+            Text(viewModel.email.isEmpty ? "—" : viewModel.email)
                 .textStyle(size: 16, color: AppColor.black, fontFamily: .poppinsRegular)
         }
         .padding(.vertical, 16)
     }
     
-    // MARK: - 分隔线
     private var divider: some View {
         Rectangle()
             .fill(AppColor.greyLight)
