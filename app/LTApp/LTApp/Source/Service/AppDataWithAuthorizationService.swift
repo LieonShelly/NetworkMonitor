@@ -36,6 +36,8 @@ public protocol AppDataWithAuthorizationServiceful {
     var updateNicknameUseCase: any UpdateNicknameUseCaseType { get }
     var fetchReminderUseCase: any FetchReminderUseCaseType { get }
     var updateReminderUseCase: any UpdateReminderUseCaseType { get }
+    var fetchPersonasUseCase: any FetchPersonasUseCaseType { get }
+    var updateReportPersonaUseCase: any UpdateReportPersonaUseCaseType { get }
 }
 
 public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServiceful, @unchecked Sendable {
@@ -178,5 +180,13 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var updateReminderUseCase: any UpdateReminderUseCaseType = {
         return UpdateReminderUseCase(repository: userFlowRepository)
+    }()
+    
+    public lazy var fetchPersonasUseCase: any FetchPersonasUseCaseType = {
+        return FetchPersonasUseCase(repository: userFlowRepository)
+    }()
+    
+    public lazy var updateReportPersonaUseCase: any UpdateReportPersonaUseCaseType = {
+        return UpdateReportPersonaUseCase(repository: userFlowRepository)
     }()
 }

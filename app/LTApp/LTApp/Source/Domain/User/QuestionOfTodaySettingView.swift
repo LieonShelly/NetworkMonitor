@@ -54,10 +54,10 @@ struct QuestionOfTodaySettingView: View {
                 Spacer()
                 
                 if item.selected {
-                    Image(.hook)
+                    Image(systemName: "checkmark.circle.fill")
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
                         .frame(width: 24, height: 24)
+                        .foregroundStyle(AppColor.black)
                 }
             }
             

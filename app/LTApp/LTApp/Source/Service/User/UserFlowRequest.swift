@@ -13,6 +13,8 @@ enum UserFlowRequest: Request, @unchecked Sendable {
     case saveTimezone(_ timestamp: String)
     case fetchReminder
     case updateReminder(_ slot: String?)
+    case fetchPersonas
+    case updateReportPersona(_ personaId: String)
     
     var endPoint: any EndPoint {
         var path: String = "/api"
@@ -27,22 +29,26 @@ enum UserFlowRequest: Request, @unchecked Sendable {
             path += "/timezone"
         case .fetchReminder, .updateReminder:
             path += "/me/reminder"
+        case .fetchPersonas:
+            path += "/ai-insights/personas"
+        case .updateReportPersona:
+            path += "/ai-insights/report-persona"
         }
         return DefaultEndPoint.baseURL(path: path)
     }
     
     var method: HttpMethod {
         switch self {
-        case .userInfo, .qodStrategyOptions, .fetchReminder:
+        case .userInfo, .qodStrategyOptions, .fetchReminder, .fetchPersonas:
             return .get
-        case .updateNickname, .updateQodStrategy, .saveTimezone, .updateReminder:
+        case .updateNickname, .updateQodStrategy, .saveTimezone, .updateReminder, .updateReportPersona:
             return .post
         }
     }
     
     var payload: HttpPayload {
         switch self {
-        case .userInfo, .qodStrategyOptions, .fetchReminder:
+        case .userInfo, .qodStrategyOptions, .fetchReminder, .fetchPersonas:
             return .empty
         case let .updateQodStrategy(strategy):
             return .json(body: ["qod_strategy": strategy], urlParameter: nil)
@@ -58,6 +64,8 @@ enum UserFlowRequest: Request, @unchecked Sendable {
                 return .json(body: ["slot": slot], urlParameter: nil)
             }
             return .json(body: ["slot": NSNull()], urlParameter: nil)
+        case let .updateReportPersona(personaId):
+            return .json(body: ["report_persona_id": personaId], urlParameter: nil)
         }
     }
 }

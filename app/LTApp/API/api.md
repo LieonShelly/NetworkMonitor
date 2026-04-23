@@ -295,3 +295,48 @@
 ```
 - 错误响应:
   - slot 值非法（非 MORNING、AFTERNOON、EVENING、null）：返回 400 Bad Request
+
+
+
+### 6.1 获取 Report Persona 列表
+- URL: GET /api/ai-insights/personas
+- 描述: 获取所有可用的 Report Persona 选项，供前端选择
+- 认证: 需要
+- 响应示例:
+```json
+[
+  {
+    "id": "cludpersona123456789",
+    "label": "Empathetic Friend",
+    "description": "A warm and supportive tone that focuses on emotional connection"
+  },
+  {
+    "id": "cludpersona098765432",
+    "label": "Analytical Coach",
+    "description": "A structured and insightful tone that focuses on patterns and growth"
+  }
+]
+```
+- 说明:
+  - 按 label 字母升序排列
+  - description 可能为 null
+  
+### 6.2 更新 Report Persona
+- URL: POST /api/ai-insights/report-persona
+- 描述: 更新当前用户的 Report Persona（影响周报生成风格）
+- 认证: 需要
+- 请求参数:
+```json
+{
+  "report_persona_id": "cludpersona123456789"
+}
+```
+- 响应示例:
+```json
+{
+  "report_persona_id": "cludpersona123456789"
+}
+```
+- 错误响应:
+  - report_persona_id 未提供：返回 400 Bad Request
+  - report_persona_id 无效（不存在）：返回 400 Bad Request

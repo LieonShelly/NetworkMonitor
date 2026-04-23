@@ -121,6 +121,10 @@
 		ED8F6AB62F9A1524005CB988 /* NewUserHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F6AB52F9A1524005CB988 /* NewUserHomeViewModel.swift */; };
 		ED8F6AB82F9A1795005CB988 /* PersonaSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F6AB72F9A1795005CB988 /* PersonaSettingView.swift */; };
 		ED8F6ABA2F9A17BE005CB988 /* PersonaSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F6AB92F9A17BE005CB988 /* PersonaSettingViewModel.swift */; };
+		ED8F6ABE2F9A1B57005CB988 /* UpdateReportPersonaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F6ABD2F9A1B57005CB988 /* UpdateReportPersonaUseCase.swift */; };
+		ED8F6ABF2F9A1B57005CB988 /* FetchPersonasUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F6ABB2F9A1B57005CB988 /* FetchPersonasUseCase.swift */; };
+		ED8F6AC02F9A1B57005CB988 /* PersonaModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F6ABC2F9A1B57005CB988 /* PersonaModels.swift */; };
+		ED8F6AC22F9A1B60005CB988 /* PersonaDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8F6AC12F9A1B60005CB988 /* PersonaDTO.swift */; };
 		EFC187983F274A3E98DC55A4 /* FetchThreadQuestionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275858D84F27880CE5767708 /* FetchThreadQuestionsUseCase.swift */; };
 		F0083B5ACFA2CDE8498A47E5 /* AuthRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DAB8550C5F8FE713E8C905 /* AuthRequest.swift */; };
 		F1B48CC86B724385430FEC21 /* CalendarDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB376B93C7F5FF4B131FD9F /* CalendarDay.swift */; };
@@ -358,6 +362,10 @@
 		ED8F6AB52F9A1524005CB988 /* NewUserHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserHomeViewModel.swift; sourceTree = "<group>"; };
 		ED8F6AB72F9A1795005CB988 /* PersonaSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaSettingView.swift; sourceTree = "<group>"; };
 		ED8F6AB92F9A17BE005CB988 /* PersonaSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaSettingViewModel.swift; sourceTree = "<group>"; };
+		ED8F6ABB2F9A1B57005CB988 /* FetchPersonasUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchPersonasUseCase.swift; sourceTree = "<group>"; };
+		ED8F6ABC2F9A1B57005CB988 /* PersonaModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaModels.swift; sourceTree = "<group>"; };
+		ED8F6ABD2F9A1B57005CB988 /* UpdateReportPersonaUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateReportPersonaUseCase.swift; sourceTree = "<group>"; };
+		ED8F6AC12F9A1B60005CB988 /* PersonaDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaDTO.swift; sourceTree = "<group>"; };
 		EFD4727A2532FF7F43570B0B /* SessionDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDataRepository.swift; sourceTree = "<group>"; };
 		F47135D07C75B8747AF6FC84 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		F4DD5E97D8DF693CCE6F4AD8 /* OnboardingSentence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSentence.swift; sourceTree = "<group>"; };
@@ -807,6 +815,7 @@
 				04BEB990EEAF0DDCAB4D5041 /* IconDto.swift */,
 				10489822281726627B1BDEAA /* OnboardingSentenceDTO.swift */,
 				BE435CC8EA6E55BBCB6FCB2C /* QuestionDTO.swift */,
+				ED8F6AC12F9A1B60005CB988 /* PersonaDTO.swift */,
 				FC3BB1A5F6EF38CD8369837F /* ThreadQuestionDTO.swift */,
 				273FF8161A8C18829BAA0967 /* UniversalResponse.swift */,
 				3E2A303C6121C53C8CCA6C7E /* LoginInfoDTO.swift */,
@@ -863,6 +872,9 @@
 				F82BB7772F39C72C00F9DB49 /* UpdateStrategyUseCase.swift */,
 				F8DF26652F349B5100E91FFF /* UserFlowRepository.swift */,
 				ED8F6AA72F9A067A005CB988 /* SaveTimezoneResult.swift */,
+				ED8F6ABB2F9A1B57005CB988 /* FetchPersonasUseCase.swift */,
+				ED8F6ABC2F9A1B57005CB988 /* PersonaModels.swift */,
+				ED8F6ABD2F9A1B57005CB988 /* UpdateReportPersonaUseCase.swift */,
 				ED8F6AAB2F9A06A6005CB988 /* SaveTimezoneUseCase.swift */,
 				ED8F6AAD2F9A09DB005CB988 /* FetchReminderUseCase.swift */,
 				ED8F6AAE2F9A09DB005CB988 /* UpdateNicknameUseCase.swift */,
@@ -1309,6 +1321,9 @@
 				F8F122D02F289AA5008DB4AB /* DeleteAnswersUseCase.swift in Sources */,
 				42D99842A51E63130D7CCA07 /* ThreadQuestionDTO.swift in Sources */,
 				F87E9E7B2F6FA7380028D944 /* WeeklyReportReadResult.swift in Sources */,
+				ED8F6ABE2F9A1B57005CB988 /* UpdateReportPersonaUseCase.swift in Sources */,
+				ED8F6ABF2F9A1B57005CB988 /* FetchPersonasUseCase.swift in Sources */,
+				ED8F6AC02F9A1B57005CB988 /* PersonaModels.swift in Sources */,
 				F85859F42EE28B8300BF8E02 /* TodayAnswerSubmittedViewModel.swift in Sources */,
 				F875E80B2F1DE7D00050BD23 /* CancellableBox.swift in Sources */,
 				F84409E72EE32B33004A40B2 /* InnerPageRoutingModifier.swift in Sources */,
@@ -1333,6 +1348,7 @@
 				1E9FEF639D7E9255FC28548A /* LoginInfoDTO.swift in Sources */,
 				F87E9E852F6FF39F0028D944 /* UnreadReportHistoryRow.swift in Sources */,
 				F8A0C81E2F2B50C7005D231D /* LTAppFeatureConfig.swift in Sources */,
+				ED8F6AC22F9A1B60005CB988 /* PersonaDTO.swift in Sources */,
 				F804C4582F57DF7B00DCC904 /* FetchWeeklyReportUseCase.swift in Sources */,
 				F804C4592F57DF7B00DCC904 /* WeeklyReport.swift in Sources */,
 				F804C45A2F57DF7B00DCC904 /* ReportRequest.swift in Sources */,

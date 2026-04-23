@@ -13,6 +13,8 @@ public protocol UserFlowRepositoryType {
     func saveTimezone(_ timestamp: String) async throws -> SaveTimezoneResult
     func fetchReminder() async throws -> ReminderResult
     func updateReminder(_ slot: String?) async throws -> ReminderResult
+    func fetchPersonas() async throws -> [PersonaOption]
+    func updateReportPersona(_ personaId: String) async throws -> UpdateReportPersonaResult
 }
 
 public final class UserFlowRepository: UserFlowRepositoryType, @unchecked Sendable {
@@ -66,6 +68,20 @@ public final class UserFlowRepository: UserFlowRepositoryType, @unchecked Sendab
         let request = UserFlowRequest.updateReminder(slot)
         let response = try await apiClient.sendRequest(request)
         let dto: UniversalResponse<ReminderDTO> = try response.parseJson()
+        return dto.data.toDomain()
+    }
+    
+    public func fetchPersonas() async throws -> [PersonaOption] {
+        let request = UserFlowRequest.fetchPersonas
+        let response = try await apiClient.sendRequest(request)
+        let dto: UniversalResponse<[PersonaOptionDTO]> = try response.parseJson()
+        return dto.data.map { $0.toDomain() }
+    }
+    
+    public func updateReportPersona(_ personaId: String) async throws -> UpdateReportPersonaResult {
+        let request = UserFlowRequest.updateReportPersona(personaId)
+        let response = try await apiClient.sendRequest(request)
+        let dto: UniversalResponse<UpdateReportPersonaDTO> = try response.parseJson()
         return dto.data.toDomain()
     }
 }
