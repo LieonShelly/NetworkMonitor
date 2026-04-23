@@ -3,11 +3,16 @@
 //  LTApp
 //
 
+
 import SwiftUI
 import UIComponent
 
 struct PersonaSettingView: View {
     @StateObject var viewModel: PersonaSettingViewModel
+    
+    init(viewModel: PersonaSettingViewModel) {
+        self._viewModel = .init(wrappedValue: viewModel)
+    }
     
     var body: some View {
         VStack(spacing: .zero) {

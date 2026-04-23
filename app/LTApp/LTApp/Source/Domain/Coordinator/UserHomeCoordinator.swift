@@ -32,7 +32,7 @@ final class UserHomeCoordinator: Coordinator, ObservableObject, Sendable {
         case .personaSetting:
             return AnyView(PersonaSettingView(viewModel: .init(dataService: self.appDataService)))
         case .reminderSetting:
-            return AnyView(EmptyView())
+            return AnyView(ReminderSettingView(viewModel: .init(dataService: self.appDataService)))
         }
     }
     
