@@ -23,21 +23,13 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Description of what the lane does
 
-### ios internal_test
+### ios format_svg_imagesets
 
 ```sh
-[bundle exec] fastlane ios internal_test
+[bundle exec] fastlane ios format_svg_imagesets
 ```
 
-
-
-### ios generate_project
-
-```sh
-[bundle exec] fastlane ios generate_project
-```
-
-
+格式化 SVG imageset 的 Contents.json，移除多余的 scale 条目，只保留一个 universal 条目
 
 ----
 

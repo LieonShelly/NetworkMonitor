@@ -5,32 +5,7 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000534">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="1: increment_build_number" time="1.239033">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="2: build_app" time="49.571824">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="3: app_store_connect_api_key" time="0.023773">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="4: upload_to_testflight" time="190.036471">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="5: git reset --hard" time="0.103443">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000163">
         
       </testcase>
     
