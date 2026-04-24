@@ -9,6 +9,7 @@ import Foundation
 import UserNotifications
 import UIKit
 import UIComponent
+import GoogleSignIn
 
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var appCoordinator: AppCoordinator!
@@ -52,5 +53,16 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {
         print("注册远程通知失败: \(error)")
+    }
+    
+    
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        var handled: Bool
+         handled = GIDSignIn.sharedInstance.handle(url)
+         if handled {
+           return true
+         }
+         return false
     }
 }

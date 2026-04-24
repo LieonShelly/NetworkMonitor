@@ -27,6 +27,9 @@ packages:
   SVGKit:
     url: https://github.com/SVGKit/SVGKit
     from: "3.0.0"
+  GoogleSignIn:
+    url: https://github.com/google/GoogleSignIn-iOS
+    from: "9.0.0"
 
 targets:
   LTApp:
@@ -34,9 +37,7 @@ targets:
     platform: iOS
     sources:
       - LTApp/Source
-      - LTApp/Resource/Assets.xcassets
-      - LTApp/Resource/LaunchScreen.storyboard
-      - LTApp/Resource/Info.plist
+      - LTApp/Resource
     settings:
       groups:
         - BaseTargetSetting
@@ -70,6 +71,7 @@ targets:
         product: SVGKit
       - package: SVGKit
         product: SVGKitSwift
+      - package: GoogleSignIn
       - framework: LTNetwork.framework
         implicit: true
       - framework: Persistence.framework
