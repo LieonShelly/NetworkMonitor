@@ -139,16 +139,21 @@ extension CalendarViewModel {
     }
     
     @MainActor
-    func scrollToCurrentMonth() {
+    func scrollToCurrentMonth(animated: Bool = true) {
         let endMonth = Date()
         if let month = months.first(where: { $0.itemType == .normal && $0.date.isSameMonth(endMonth)}) {
             currentMonth = month
-            didTapMontHeaderItem = true
-            withAnimation(.easeInOut, completionCriteria: .logicallyComplete) {
+            if animated {
+                didTapMontHeaderItem = true
+                withAnimation(.easeInOut, completionCriteria: .logicallyComplete) {
+                    self.contentScrollPostion = month.id
+                    self.monthScrollPostion = month.id
+                } completion: {
+                    self.didTapMontHeaderItem = false
+                }
+            } else {
                 self.contentScrollPostion = month.id
                 self.monthScrollPostion = month.id
-            } completion: {
-                self.didTapMontHeaderItem = false
             }
         }
     }

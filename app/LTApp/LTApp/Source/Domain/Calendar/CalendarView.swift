@@ -53,7 +53,7 @@ struct CalendarView: View {
         .onFirstAppear {
             Task.detached {
                 await viewModel.generateMonths()
-                await viewModel.scrollToCurrentMonth()
+                await viewModel.scrollToCurrentMonth(animated: false)
                 try? await viewModel.fetchData()
                 try? await viewModel.fetchDataTodayQuestions()
             }
