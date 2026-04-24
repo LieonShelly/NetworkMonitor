@@ -77,8 +77,6 @@ struct SignInView: View {
         }
     }
     
-
-    
     var rootViewController: UIViewController? {
         return UIApplication.shared.connectedScenes
             .filter({ $0.activationState == .foregroundActive })

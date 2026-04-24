@@ -141,15 +141,14 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         
         let isFull = currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count
             && currentIcons.minAnswersToGenerateReport != 0
-        
-        if isFull {
-           if Date.isWeekDay {
+        if !unreadHisotrys.isEmpty {
+            arcadeState = .unread
+        } else if isFull {
+            if Date.isWeekDay {
                 arcadeState = .readyToPrint
             } else {
                 arcadeState = .countingDown
             }
-        } else if !unreadHisotrys.isEmpty {
-            arcadeState = .unread
         } else {
             arcadeState = .unFull
         }
