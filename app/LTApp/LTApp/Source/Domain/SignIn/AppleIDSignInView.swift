@@ -5,7 +5,7 @@
 import SwiftUI
 import AuthenticationServices
 import UIComponent
-
+import GoogleSignIn
 
 struct AppleIDSignInView: View {
     @EnvironmentObject var coordinator: PreHomeCoordinator
@@ -20,12 +20,22 @@ struct AppleIDSignInView: View {
                 icon
                 title
             }
-           Spacer()
-            signInBtn
+            Spacer()
+            loginBtn
         }
         .defaultBackground()
         .toolbarVisibility(.hidden, for: .navigationBar)
         .transition(.asymmetric(insertion: .identity, removal: .opacity))
+        .onFirstAppear {
+            viewModel.onLoginSuccess = { [weak coordinator, weak appCoordinator] in
+                guard let coordinator, let appCoordinator else { return }
+                if viewModel.onboardingEnabled {
+                    coordinator.push(PreHomeRoute.splash)
+                } else {
+                    appCoordinator.changeRoot(.home(.init()))
+                }
+            }
+        }
     }
     
     var icon: some View {
@@ -40,51 +50,80 @@ struct AppleIDSignInView: View {
     }
     
     var signInBtn: some View {
-        SignInWithAppleButton(.signIn) { request in
+        Button {
+            let provider = ASAuthorizationAppleIDProvider()
+            let request = provider.createRequest()
             request.requestedScopes = [.fullName, .email]
-        } onCompletion: { result in
-            switch result {
-            case .success(let authResult):
-                guard let credential = authResult.credential as? ASAuthorizationAppleIDCredential else {
-                    return
-                }
-                guard let idToken = credential.identityToken, let idTokenStr = String(data: idToken, encoding: .utf8) else {
-                    return
-                }
-                var authorizationCode = ""
-                if let authorizationCodeData = credential.authorizationCode, let code = String(data: authorizationCodeData, encoding: .utf8) {
-                    authorizationCode = code
-                }
-                Task.detached {
-                    do {
-                        try await viewModel.login(authorizationCode: authorizationCode, identityToken: idTokenStr)
-                        await route()
-                    } catch {
-                        
-                    }
-                   
-                }
-            case let .failure(error):
-                print(error)
+            let controller = ASAuthorizationController(authorizationRequests: [request])
+            controller.delegate = viewModel
+            controller.performRequests()
+        } label: {
+            HStack(spacing: 5) {
+                Image(systemName: "apple.logo")
+                    .renderingMode(.template)
+                    .foregroundStyle(AppColor.white)
+                    .font(.system(size: 19, weight: .semibold))
+                
+                Text("Sign in with Apple")
+                    .textStyle(size: 19, color: AppColor.white, fontFamily: .sfProBold)
             }
+            .frame(maxWidth: .infinity)
+            .frame(height: 54)
+            .background(AppColor.black)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
         }
-        .signInWithAppleButtonStyle(.black)
-        .frame(height: 54)
-        .padding(.horizontal, 30)
-        .padding(.bottom, 168)
-//       .onTapGesture {
-//           route()
-//            Task.detached {
-//                do {
-//                    try await viewModel.login(authorizationCode: "", identityToken: "")
-//                    await route()
-//                } catch {
-//                  await MainActor.run {
-//                        showError = true
-//                    }
-//                }
-//            }
-//        }
+    }
+    
+
+    
+    var rootViewController: UIViewController? {
+        return UIApplication.shared.connectedScenes
+            .filter({ $0.activationState == .foregroundActive })
+            .compactMap { $0 as? UIWindowScene }
+            .compactMap { $0.keyWindow }
+            .first?.rootViewController
+    }
+    
+    var loginBtn: some View {
+        VStack(spacing: 16) {
+            signInBtn
+            googleBtn
+        }
+        .padding(.horizontal, 26)
+        .padding(.bottom, 40)
+    }
+    
+    var googleBtn: some View {
+        Button {
+            guard let rootViewController = self.rootViewController else {
+                return
+            }
+            GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { result, error in
+                guard let result else {
+                    print("Error signing in: \(String(describing: error))")
+                    return
+                }
+                guard let idToken = result.user.idToken?.tokenString else {
+                    return
+                }
+            }
+        } label: {
+            HStack(spacing: 5) {
+                Image(.google)
+                    .resizable()
+                    .frame(width: 22.8, height: 22.8)
+                Text("Sign in with Google")
+                    .textStyle(size: 19, color: AppColor.greyDark, fontFamily: .sfProBold)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 54)
+            .background(AppColor.white)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(AppColor.color(hex: 0x1D1D1D), lineWidth: 1)
+            )
+        }
     }
     
     @MainActor
@@ -97,4 +136,5 @@ struct AppleIDSignInView: View {
             )
         }
     }
+    
 }

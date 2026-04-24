@@ -4,11 +4,11 @@
 
 import Foundation
 
-public protocol AuthUseCaseType {
+public protocol AuthUseCaseType: Sendable {
     func execute(authorizationCode: String, identityToken: String) async throws
 }
 
-public final class AuthUseCase: AuthUseCaseType {
+public final class AuthUseCase: AuthUseCaseType, @unchecked Sendable {
     private let repository: AuthRepositoryType
     
     public init(repository: AuthRepositoryType) {

@@ -101,6 +101,7 @@
 		6E58F4B35CD407F2CCBAB9BE /* TodayAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CA00CE313CE0740939576D /* TodayAnswerView.swift */; };
 		6F7A1DCDD58F12D04457388E /* ClendarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73313226AEFA8BCA6FB163F /* ClendarItemView.swift */; };
 		70E2DF7DFDA4CEB51E8A4367 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBE66502789B64FD8428045 /* Question.swift */; };
+		72FB82FA72E1F0EC7B27E108 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B4A722CA6CBB66A97311AD93 /* GoogleSignInSwift */; };
 		73C2B2E014778D809F569BF0 /* WeeklyReportsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C85D7B81BD685508AE4449 /* WeeklyReportsList.swift */; };
 		77BA7C884C2D706C5876FFDF /* LoopingStackCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4E3F2059D4D782A1856AF9 /* LoopingStackCardView.swift */; };
 		78607FF7A55949A58E9A4656 /* LTCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51666906B1A725328BBE69D1 /* LTCommon.framework */; };
@@ -466,6 +467,7 @@
 				42C49B642F690103F79AD5CA /* SVGKit in Frameworks */,
 				7D208A25AAA2CE6107DCC126 /* SVGKitSwift in Frameworks */,
 				E82F43092BD09B72621C64F8 /* GoogleSignIn in Frameworks */,
+				72FB82FA72E1F0EC7B27E108 /* GoogleSignInSwift in Frameworks */,
 				1839021BEAE2CE1AEBF0C209 /* LTNetwork.framework in Frameworks */,
 				89904D6029B5AB3D488D6000 /* Persistence.framework in Frameworks */,
 				30DADA89529C20B4B71D5352 /* UIComponent.framework in Frameworks */,
@@ -1108,6 +1110,7 @@
 				9D8C4802BDE576096036C21B /* SVGKit */,
 				5262E3B68372C0E79DDA3BD8 /* SVGKitSwift */,
 				B3872417ACE3B354567C25F9 /* GoogleSignIn */,
+				B4A722CA6CBB66A97311AD93 /* GoogleSignInSwift */,
 			);
 			productName = LTApp;
 			productReference = 3D3670EBA2012A0EEEC3429D /* LTApp.app */;
@@ -1781,6 +1784,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DFF75BC92357A137030A104A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignIn;
+		};
+		B4A722CA6CBB66A97311AD93 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DFF75BC92357A137030A104A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

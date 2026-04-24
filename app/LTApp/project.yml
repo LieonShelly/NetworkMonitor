@@ -72,6 +72,9 @@ targets:
       - package: SVGKit
         product: SVGKitSwift
       - package: GoogleSignIn
+        product: GoogleSignIn
+      - package: GoogleSignIn
+        product: GoogleSignInSwift
       - framework: LTNetwork.framework
         implicit: true
       - framework: Persistence.framework
