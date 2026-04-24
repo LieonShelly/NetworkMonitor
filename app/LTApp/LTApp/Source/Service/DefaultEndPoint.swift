@@ -31,7 +31,7 @@ enum DefaultEndPoint: EndPoint {
             case .baseURL(let path):
                 var components = URLComponents(string: path)
                 components?.scheme = "https"
-                components?.host = "things.vsvx-infotech.com"
+                components?.host = "api.thelilthings.app"
                 return components!.url!
             }
         }
