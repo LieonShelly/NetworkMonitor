@@ -63,5 +63,6 @@ final class AboutMeViewModel: ObservableObject, @unchecked Sendable {
     
     func logout() async {
         try? dataService.userManagementService.clear()
+        try? await dataService.authUseCasse.logout()
     }
 }

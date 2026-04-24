@@ -8,6 +8,7 @@ import LTNetwork
 public protocol AuthRepositoryType {
     func login(authorizationCode: String, identityToken: String) async throws
     func googleLogin(idToken: String) async throws
+    func logout() async throws
 }
 
 public final class AuthRepository: AuthRepositoryType {
@@ -37,6 +38,10 @@ public final class AuthRepository: AuthRepositoryType {
             accessToken: userDto.data.accessToken,
             refreshToken: userDto.data.refreshToken
         )
+    }
+    
+    public func logout() async throws {
+        authTokenProvider.clear()
     }
     
 }

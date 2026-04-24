@@ -7,6 +7,7 @@ import Foundation
 public protocol AuthUseCaseType: Sendable {
     func execute(authorizationCode: String, identityToken: String) async throws
     func executeGoogleLogin(idToken: String) async throws
+    func logout() async throws
 }
 
 public final class AuthUseCase: AuthUseCaseType, @unchecked Sendable {
@@ -22,6 +23,10 @@ public final class AuthUseCase: AuthUseCaseType, @unchecked Sendable {
     
     public func executeGoogleLogin(idToken: String) async throws {
         try await repository.googleLogin(idToken: idToken)
+    }
+    
+    public func logout() async throws {
+        try await repository.logout()
     }
 }
 
