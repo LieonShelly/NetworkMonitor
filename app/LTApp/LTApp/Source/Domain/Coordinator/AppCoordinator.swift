@@ -16,7 +16,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
     let rootViewProvider: any RootViewProviding
     private var cancellables: Set<AnyCancellable> = .init()
     
-    init(environment: AppEnvironment = .dev) {
+    init(environment: AppEnvironment = .release) {
         let enviroment = environment
         let interceptorClient = ApiClient(
             environment: enviroment,
