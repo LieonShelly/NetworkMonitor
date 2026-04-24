@@ -340,3 +340,31 @@
 - 错误响应:
   - report_persona_id 未提供：返回 400 Bad Request
   - report_persona_id 无效（不存在）：返回 400 Bad Request
+
+### 1.2 Google 登录
+- URL: POST /api/auth/google
+- 描述: 使用 Google ID Token 登录（首次登录自动注册）
+- 请求参数:
+```json
+{
+  "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg..."
+}
+```
+- 响应示例:
+```json
+{
+  "success": true,
+  "data": {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user": {
+      "id": "clud1234567890abcdef",
+      "email": "user@gmail.com",
+      "qod_strategy": "RANDOM"
+    }
+  }
+}
+- 说明:
+  - idToken 由客户端通过 Google Sign-In SDK 获取
+  - 首次登录时自动创建用户，已有账号则更新 last_login_at
+  - user.qod_strategy 取值为 RANDOM、PINNED、MIXED

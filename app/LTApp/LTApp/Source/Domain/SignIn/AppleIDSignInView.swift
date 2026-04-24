@@ -106,6 +106,9 @@ struct AppleIDSignInView: View {
                 guard let idToken = result.user.idToken?.tokenString else {
                     return
                 }
+                Task.detached {
+                   try? await viewModel.loginWihtGoogle(identityToken: idToken)
+                }
             }
         } label: {
             HStack(spacing: 5) {

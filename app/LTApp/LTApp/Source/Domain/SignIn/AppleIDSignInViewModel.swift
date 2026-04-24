@@ -8,8 +8,6 @@ import GoogleSignIn
 
 class AppleIDSignInViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate, @unchecked Sendable {
     private let service: any AppDataWithAuthorizationServiceful
-    
-    /// 登录成功后触发路由的回调
     var onLoginSuccess: (() -> Void)?
     
     var onboardingEnabled: Bool {
@@ -29,6 +27,11 @@ class AppleIDSignInViewModel: NSObject, ObservableObject, ASAuthorizationControl
         debugPrint("authorizationCode:\(authorizationCode)")
         debugPrint("identityToken:\(identityToken)")
         try await service.authUseCasse.execute(authorizationCode: authorizationCode, identityToken: identityToken)
+    }
+    
+    func loginWihtGoogle(identityToken: String) async throws {
+        debugPrint("identityToken:\(identityToken)")
+        try await service.authUseCasse.executeGoogleLogin(idToken: identityToken)
     }
     
     

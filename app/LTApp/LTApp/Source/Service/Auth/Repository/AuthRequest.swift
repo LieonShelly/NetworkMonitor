@@ -7,6 +7,7 @@ import LTNetwork
 
 enum AuthRequest: Request {
     case login(authorizationCode: String, identityToken: String)
+    case googleLogin(idToken: String)
     case refreshToken(_ refreshToken: String)
     
     var endPoint: any EndPoint {
@@ -14,6 +15,8 @@ enum AuthRequest: Request {
         switch self {
         case .login:
             path += "/auth/apple"
+        case .googleLogin:
+            path += "/auth/google"
         case .refreshToken:
             path += "/auth/refresh"
         }
@@ -28,6 +31,8 @@ enum AuthRequest: Request {
         switch self {
         case let .login(authorizationCode, identityToken):
             return .json(body: ["authorizationCode": authorizationCode, "identityToken": identityToken])
+        case let .googleLogin(idToken):
+            return .json(body: ["idToken": idToken])
         case let .refreshToken(value):
             return .json(body: ["refresh_token": value])
         }
