@@ -35,8 +35,8 @@ final class PreHomeCoordinator: ObservableObject, Coordinator, @unchecked Sendab
         }
         switch route {
         case .login:
-            let viewModel = AppleIDSignInViewModel(service: appDataService)
-            return AnyView(AppleIDSignInView(viewModel: viewModel))
+            let viewModel = SignInViewModel(service: appDataService)
+            return AnyView(SignInView(viewModel: viewModel))
         case .splash:
             let viewModel = SplashViewModel(service: appDataService)
             return AnyView(SplashView(viewModel: viewModel))

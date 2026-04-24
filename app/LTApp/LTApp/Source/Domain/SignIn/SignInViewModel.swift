@@ -6,7 +6,7 @@ import Combine
 import AuthenticationServices
 import GoogleSignIn
 
-class AppleIDSignInViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate, @unchecked Sendable {
+class SignInViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate, @unchecked Sendable {
     private let service: any AppDataWithAuthorizationServiceful
     var onLoginSuccess: (() -> Void)?
     

@@ -7,10 +7,10 @@ import AuthenticationServices
 import UIComponent
 import GoogleSignIn
 
-struct AppleIDSignInView: View {
+struct SignInView: View {
     @EnvironmentObject var coordinator: PreHomeCoordinator
     @EnvironmentObject var appCoordinator: AppCoordinator
-    @ObservedObject var viewModel: AppleIDSignInViewModel
+    @ObservedObject var viewModel: SignInViewModel
     @State var showError: Bool = false
     
     var body: some View {
