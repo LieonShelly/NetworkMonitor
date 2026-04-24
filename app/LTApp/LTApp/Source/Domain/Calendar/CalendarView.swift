@@ -54,6 +54,7 @@ struct CalendarView: View {
             Task.detached {
                 await viewModel.generateMonths()
                 await viewModel.scrollToCurrentMonth()
+                try? await viewModel.fetchData()
                 try? await viewModel.fetchDataTodayQuestions()
             }
         }
