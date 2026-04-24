@@ -9,6 +9,7 @@ import UIComponent
 struct AboutMeView: View {
     @StateObject var viewModel: AboutMeViewModel
     @FocusState private var isNameFocused: Bool
+    @EnvironmentObject var appCoordinator: AppCoordinator
     
     init(viewModel: AboutMeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -38,7 +39,10 @@ struct AboutMeView: View {
                     .padding(.horizontal, 32)
                     
                     Button {
-                        // logout action
+                        Task {
+                            await viewModel.logout()
+                            appCoordinator.changeRoot(.preHome)
+                        }
                     } label: {
                         Text("Logout")
                             .textStyle(size: 16, color: AppColor.color(hex: 0xE75C06), fontFamily: .poppinsRegular)

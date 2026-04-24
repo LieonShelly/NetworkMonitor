@@ -63,7 +63,7 @@ public class KeyChainStorage: KeyValueStorageType {
 }
 
 
-public class UserDefaultStorage: KeyDataStorageType {
+public class UserDefaultStorage: KeyDataStorageType, @unchecked Sendable {
     private let userDefault: UserDefaults = .standard
     
     public init() {}

@@ -51,6 +51,9 @@ struct SignInView: View {
     
     var signInBtn: some View {
         Button {
+//            Task {
+//                try? await viewModel.loginWithApple(authorizationCode: "", identityToken: "")
+//            }
             let provider = ASAuthorizationAppleIDProvider()
             let request = provider.createRequest()
             request.requestedScopes = [.fullName, .email]

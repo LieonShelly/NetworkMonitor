@@ -5,6 +5,7 @@
 import Foundation
 import Combine
 import Persistence
+import GoogleSignIn
 
 public protocol UserManagementServiceful: Sendable {
     var user: AnyPublisher<User?, Never> { get }
@@ -37,8 +38,12 @@ public final class UserManagementService: @unchecked Sendable, UserManagementSer
     }
     
     public func clear() throws {
-        storage.delete(userKey)
         userSubject.value = nil
+        let userKey = self.userKey
+        Task.detached {
+            self.storage.delete(userKey)
+            GIDSignIn.sharedInstance.signOut()
+        }
     }
     
     public func fetchUserInfo() async throws {

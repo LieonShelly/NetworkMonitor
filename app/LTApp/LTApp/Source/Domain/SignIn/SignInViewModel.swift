@@ -27,12 +27,17 @@ class SignInViewModel: NSObject, ObservableObject, ASAuthorizationControllerDele
         debugPrint("authorizationCode:\(authorizationCode)")
         debugPrint("identityToken:\(identityToken)")
         try await service.authUseCasse.execute(authorizationCode: authorizationCode, identityToken: identityToken)
+        await MainActor.run {
+            self.onLoginSuccess?()
+        }
     }
     
     func loginWihtGoogle(identityToken: String) async throws {
         debugPrint("identityToken:\(identityToken)")
         try await service.authUseCasse.executeGoogleLogin(idToken: identityToken)
-        onLoginSuccess?()
+        await MainActor.run {
+            self.onLoginSuccess?()
+        }
     }
     
     
@@ -51,9 +56,6 @@ class SignInViewModel: NSObject, ObservableObject, ASAuthorizationControllerDele
             guard let self else { return }
             do {
                 try await self.loginWithApple(authorizationCode: authorizationCode, identityToken: idTokenStr)
-                await MainActor.run {
-                    self.onLoginSuccess?()
-                }
             } catch {
                 print("Apple sign in error: \(error)")
             }

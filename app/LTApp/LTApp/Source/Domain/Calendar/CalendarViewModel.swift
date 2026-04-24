@@ -34,6 +34,10 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         self.service = service
     }
     
+    deinit {
+        debugPrint("deinit-CalendarViewModel")
+    }
+    
     func queryCurrenntIconStatus(_ iconId: String) {
         Task.detached {
             try await self.fetchData()

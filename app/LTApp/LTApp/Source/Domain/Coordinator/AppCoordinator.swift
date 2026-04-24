@@ -74,22 +74,30 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
     }
     
     func changeRoot(_ type: AppRootType) {
-        root = type
+        withAnimation(.easeInOut(duration: 0.5)) {
+            root = type
+        }
     }
     
-    func rootView() -> AnyView {
-        switch root {
-        case .preHome:
-            return AnyView(PreHomeContentView())
-        case let .home(viewModel):
-            return AnyView(AppHomeRootView(viewModel: viewModel))
+    func rootView() -> some View {
+        Group {
+            switch root {
+            case .preHome:
+                PreHomeContentView()
+            case let .home(viewModel):
+                AppHomeRootView(viewModel: viewModel)
+            }
         }
+        .transition(.opacity)
+        .id(root)
     }
     
     func launch() {
         rootViewProvider.root
             .sink { [weak self] root in
-                self?.root = .preHome
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    self?.root = root
+                }
             }
             .store(in: &cancellables)
     }
@@ -102,14 +110,28 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
 }
 
 
-enum AppRootType {
+enum AppRootType: Equatable, Hashable {
     case preHome
     case home(_ viewModel: AppHomeRootViewModel)
-}
-
-
-enum AppRoute: Route {
     
+    var id: String {
+        switch self {
+        case .preHome:
+            return "prehome"
+        case .home:
+            return "home"
+        }
+    }
+   
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: AppRootType, rhs: AppRootType) -> Bool {
+        switch (lhs, rhs) {
+        case (.preHome, .preHome): return true
+        case (.home, .home): return true
+        default: return false
+        }
+    }
 }
-
-
