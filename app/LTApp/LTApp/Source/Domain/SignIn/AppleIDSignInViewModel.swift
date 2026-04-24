@@ -32,6 +32,7 @@ class AppleIDSignInViewModel: NSObject, ObservableObject, ASAuthorizationControl
     func loginWihtGoogle(identityToken: String) async throws {
         debugPrint("identityToken:\(identityToken)")
         try await service.authUseCasse.executeGoogleLogin(idToken: identityToken)
+        onLoginSuccess?()
     }
     
     

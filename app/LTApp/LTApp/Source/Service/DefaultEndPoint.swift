@@ -13,7 +13,8 @@ enum DefaultEndPoint: EndPoint {
         case .baseURL(let path):
             var components = URLComponents(string: path)
             components?.scheme = "https"
-            components?.host = "things.dvacode.tech"
+//            components?.host = "things.dvacode.tech"
+            components?.host = "things.vsvx-infotech.com"
             return components!.url!
         }
     }
