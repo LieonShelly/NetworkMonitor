@@ -18,9 +18,13 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
     
     init(environment: AppEnvironment = .release) {
         let enviroment = environment
+        let sslPinningValidator = SSLPinningValidator(
+            environment: enviroment
+        )
         let interceptorClient = ApiClient(
             environment: enviroment,
-            interceptors: []
+            interceptors: [],
+            sslPinningValidator: sslPinningValidator
         )
         let keyChain = KeyChainStorage()
         let userDefaultStorage = UserDefaultStorage()
@@ -43,7 +47,9 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
                 tokenInterceptor,
                 refreshTokenInterceptor,
                 logoutInterceptor,
-            ])
+            ],
+            sslPinningValidator: sslPinningValidator
+        )
         let authRepository = AuthRepository(
             apiClient: apiClient,
             authTokenProvider: sessionManager
