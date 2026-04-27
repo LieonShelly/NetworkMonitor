@@ -20,4 +20,9 @@ final class TodayAnswerSubmittedViewModel: ObservableObject, @unchecked Sendable
         self.service = service
         self.title = answer.createYmd?.monthDayDesc ?? ""
     }
+    
+    func markIconAsRead(_ icon: IconData) async {
+        guard let iconId = icon.iconId else { return }
+        let _ = try? await service.markIconReadUseCase.execute(iconId)
+    }
 }

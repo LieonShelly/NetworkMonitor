@@ -85,8 +85,11 @@ struct TodayAnswerSubmittedView: View {
     
     @ViewBuilder
     var imageView: some View {
-        if showBtn, let url = viewModel.answer.icon?.url, !url.isEmpty {
+        if showBtn, let icon = viewModel.answer.icon, let url = icon.url, !url.isEmpty {
             OriginalIconView(url: url) { } onSuccess: {
+                Task.detached {
+                    await viewModel.markIconAsRead(icon)
+                }
                 withAnimation(.easeInOut(duration: 4)) {
                     imageCoverScale = 0
                 }

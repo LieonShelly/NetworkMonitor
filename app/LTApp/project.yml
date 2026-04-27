@@ -30,6 +30,9 @@ packages:
   GoogleSignIn:
     url: https://github.com/google/GoogleSignIn-iOS
     from: "9.0.0"
+  rive-ios:
+    url: https://github.com/rive-app/rive-ios
+    from: "6.13.0"
 
 targets:
   LTApp:
@@ -75,6 +78,8 @@ targets:
         product: GoogleSignIn
       - package: GoogleSignIn
         product: GoogleSignInSwift
+      - package: rive-ios
+        product: RiveRuntime
       - framework: LTNetwork.framework
         implicit: true
       - framework: Persistence.framework

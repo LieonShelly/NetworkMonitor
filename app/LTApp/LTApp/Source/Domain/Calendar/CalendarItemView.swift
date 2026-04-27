@@ -8,7 +8,7 @@
 import UIComponent
 import SwiftUI
 
-struct ClendarItemView: View {
+struct CalendarItemView: View {
     let day: CalendarDay
     let addAction: (() -> Void)
     let didTapIcon: ((Answer) -> Void)
@@ -238,29 +238,7 @@ struct ClendarItemView: View {
     
     @ViewBuilder
     func iconView(_ answer: Answer, size: CGSize = .init(width: 24, height: 24)) -> some View {
-      
-        if let icon = answer.icon {
-            switch icon.status {
-            case .pending:
-                Image(.lock)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: size.width, height: size.height)
-            default:
-                if let url = icon.url {
-                    ThumbnailIconImageView(url: url) {
-                        placeholderIcon
-                    }
-                    .frame(width: size.width, height: size.height)
-                } else {
-                    placeholderIcon
-                        .frame(width: size.width, height: size.height)
-                }
-            }
-        } else if !answer.content.isEmpty {
-            placeholderIcon
-                .frame(width: size.width, height: size.height)
-        }
+        IconView(iconData: answer.icon, size: size)
     }
     
     

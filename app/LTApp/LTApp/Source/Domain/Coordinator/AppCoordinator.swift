@@ -102,7 +102,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
         rootViewProvider.root
             .sink { [weak self] root in
                 withAnimation(.easeInOut(duration: 0.5)) {
-                    self?.root = .preHome
+                    self?.root = root
                 }
             }
             .store(in: &cancellables)
@@ -112,6 +112,10 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
         let appVariant = AppVariant(currentStage: .release)
         let featureToggle = FeatureToggle(appVariant: appVariant)
         InjectionValues.register(FeatureToggling.self, component: featureToggle)
+
+        let riveResource = RiveResource()
+        InjectionValues.register(RiveResourceType.self, component: riveResource)
+        riveResource.preloadResources()
     }
 }
 

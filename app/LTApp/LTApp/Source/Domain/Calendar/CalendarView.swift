@@ -162,7 +162,7 @@ struct CalendarView: View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: columnsG, alignment: .center, spacing: .zero) {
                 ForEach(month.days, id: \.id) { day in
-                    ClendarItemView(
+                    CalendarItemView(
                         day: day,
                         addAction: {
                             addAction?(viewModel.organize())
