@@ -9,6 +9,7 @@ struct OnboardingSentenceDTO: Decodable {
     var page2nd: String
     var page3rd: String
     var page4th: String
+    var page5th: String
 }
 
 
@@ -18,7 +19,8 @@ extension OnboardingSentenceDTO {
             page1st: page1st,
             page2st: page2nd,
             page3st: page3rd,
-            page4st: page4th
+            page4st: page4th,
+            page5st: page5th
         )
     }
 }

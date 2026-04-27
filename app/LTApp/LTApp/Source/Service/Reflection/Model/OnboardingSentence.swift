@@ -10,4 +10,5 @@ public struct OnboardingSentence {
     var page2st: String
     var page3st: String
     var page4st: String
+    var page5st: String
 }

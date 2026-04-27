@@ -8,6 +8,7 @@ import GoogleSignIn
 
 class SignInViewModel: NSObject, ObservableObject, ASAuthorizationControllerDelegate, @unchecked Sendable {
     private let service: any AppDataWithAuthorizationServiceful
+    @MainActor @Published var sentence: OnboardingSentence?
     var onLoginSuccess: (() -> Void)?
     
     var onboardingEnabled: Bool {
@@ -22,6 +23,18 @@ class SignInViewModel: NSObject, ObservableObject, ASAuthorizationControllerDele
             }
         }
     }
+    
+    func fetchData() async {
+        do {
+            let sentence =  try await service.fetchOnboardingSentenceUseCase.execute()
+            await MainActor.run {
+                self.sentence = sentence
+            }
+        } catch {
+            print(error)
+        }
+    }
+
     
     func loginWithApple(authorizationCode: String, identityToken: String) async throws {
         debugPrint("authorizationCode:\(authorizationCode)")

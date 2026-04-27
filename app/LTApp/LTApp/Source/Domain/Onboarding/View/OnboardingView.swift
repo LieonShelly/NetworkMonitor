@@ -53,7 +53,7 @@ struct OnboardingView: View {
     
     var title: some View {
         HStack {
-            Text("Pick a focus area you want to start with")
+            Text(viewModel.sentence?.page3st ?? "Pick a focus area you want to start with")
                 .multilineTextAlignment(.leading)
                 .textStyle(font: .heading)
             Spacer()

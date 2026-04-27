@@ -14,7 +14,7 @@ struct QuestionLibView: View {
     
     var body: some View {
         VStack(spacing: .zero) {
-            FixedHeader(title: "Question Library", size: .plain, backAction: {
+            FixedHeader(title: "Spark Library", size: .plain, backAction: {
                 homeCoordinator.pop()
             })
             ScrollView {

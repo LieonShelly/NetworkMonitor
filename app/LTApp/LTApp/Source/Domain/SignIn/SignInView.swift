@@ -26,6 +26,9 @@ struct SignInView: View {
         .defaultBackground()
         .toolbarVisibility(.hidden, for: .navigationBar)
         .transition(.asymmetric(insertion: .identity, removal: .opacity))
+        .task {
+            await viewModel.fetchData()
+        }
         .onFirstAppear {
             viewModel.onLoginSuccess = { [weak coordinator, weak appCoordinator] in
                 guard let coordinator, let appCoordinator else { return }
@@ -35,6 +38,7 @@ struct SignInView: View {
                     appCoordinator.changeRoot(.home(.init()))
                 }
             }
+            
         }
     }
     
@@ -45,21 +49,21 @@ struct SignInView: View {
     }
     
     var title: some View {
-        Text("the little things")
+        Text( viewModel.sentence?.page1st ?? "the little things")
             .textStyle(size: 36, fontFamily: .littleThing)
     }
     
     var signInBtn: some View {
         Button {
-//            Task {
-//                try? await viewModel.loginWithApple(authorizationCode: "", identityToken: "")
-//            }
+            Task {
+                try? await viewModel.loginWithApple(authorizationCode: "c4025c61c279e40d380cb82379fb21cf3.0.prxxu.S6aOuKxUVSn_vMI6uuAyXw", identityToken: "eyJraWQiOiI1UkZPU2lOSVVtIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmxpdHRsZS50aGluZ3MiLCJleHAiOjE3NzczNjUyMzYsImlhdCI6MTc3NzI3ODgzNiwic3ViIjoiMDAxNzc0LmZiNmI2MWIyOTkyZTQ2ODM4YmVlMzRlNzgxYTZhMTE0LjEwMjEiLCJjX2hhc2giOiJrdTBKcmNJY2VDUnRtOTlxTkRpQ1VnIiwiZW1haWwiOiJieGJiZGR4eW40QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc19wcml2YXRlX2VtYWlsIjp0cnVlLCJhdXRoX3RpbWUiOjE3NzcyNzg4MzYsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.SsZQ1FGG3rl1Rd0Jgp_nKsyLa1MH5-M10kt_ZEyf_lB1B-e9qnDPCT6ApT0FaCbPn5ANS5Si3qVAaHVyidQBB_xkXitJnRetwR7wtXQTusGBCxykolhpbxYnAfXGk65thT2fafSNUFs_OBknuRgjfj5lgFUTai1HiGIm3_BAaw08SVwEIbI-yJjsSXJh42zfOrxON5pHDymEk0G7r5PFJ9s3BcXs_T0tIMnolL0FJ5w7I2nF-qNOn2mc1a2By-UDxe4EJaumhh6xRWCFNbPtQVB55k-StWVsEDKMgiN5MuqDAVUAOiUmy-yXzUWXqqhbEV118Ov-1Naqfg4SkgApAQ")
+            }
             let provider = ASAuthorizationAppleIDProvider()
             let request = provider.createRequest()
             request.requestedScopes = [.fullName, .email]
             let controller = ASAuthorizationController(authorizationRequests: [request])
             controller.delegate = viewModel
-            controller.performRequests()
+//            controller.performRequests()
         } label: {
             HStack(spacing: 5) {
                 Image(systemName: "apple.logo")

@@ -102,7 +102,7 @@ struct FirstQuestionView: View {
        let idleH = max((parent.size.height - Constants.spacing) * Constants.answerHPercent, 0)
         AnswerInputView(
             text: $viewModel.answerText,
-            placeholder: "Write anything...."
+            placeholder: "Jot down a tiny moment worth keeping..."
         )
         .frame(height: idleH)
         

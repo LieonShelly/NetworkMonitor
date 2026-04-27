@@ -66,7 +66,7 @@ struct OnboardingNotificationView: View {
             LoadingView()
                 .frame(width: 290, height: 200)
             
-            Text("Weaving your thoughts...")
+            Text("Weaving your moments...")
                 .textStyle(font: .heading)
                 .padding(.vertical, 36)
         }

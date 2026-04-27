@@ -26,6 +26,7 @@ final class PreHomeCoordinator: ObservableObject, Coordinator, @unchecked Sendab
     
     func start() {
         path.append(PreHomeRoute.login)
+        appDataService.onboardingAccessUseCase.reset()
     }
     
     func build(_ route: any Route) -> AnyView? {
@@ -43,7 +44,7 @@ final class PreHomeCoordinator: ObservableObject, Coordinator, @unchecked Sendab
             let viewModel = OnboardingViewModel(service: appDataService)
             return AnyView(OnboardingView(viewModel: viewModel))
         case let .welcome(category):
-            let viewModel = WelcomeViewModel(category: category)
+            let viewModel = WelcomeViewModel(service: appDataService, category: category)
             return AnyView(WelcomeView(viewModel: viewModel))
         case let .firstQuestion(category):
             let viewModel = FirstQuestionViewModel(

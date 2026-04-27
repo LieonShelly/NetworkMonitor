@@ -85,15 +85,15 @@ struct SummaryView: View {
     
     var text: some View {
         HStack {
-            Text("Awesome! \n\n Since \(summary.firstAnswerAt.formatDateToEnglishStyle()), you’ve reflected on this question")
+            Text("Since \(summary.firstAnswerAt.formatDateToEnglishStyle()), you’ve captured this spark")
                 .foregroundStyle(AppColor.greyMedium)
                 .font(AppFont.body.font)
             
-            + Text(" \(summary.totalAnswers) times over \(summary.daysOver) days. \n\n")
+            + Text("\(summary.totalAnswers) times \n\n")
                 .foregroundStyle(AppColor.greyMedium)
                 .font(AppFont.bodyBold.font)
             
-           +  Text("Returning to the same topic over time helps you quietly notice the little things that make you happy, see your own gentle growth, and remember moments of warmth even on rainy days. \n\nTake a deep breath, and keep going—your journey matters. ☕✨")
+           +  Text("Revisiting the same moments together over time reveals the quiet rhythms of your days. It’s a gentle reminder of what brings you warmth, even when it rains. Take a breath, and let the thread grow at your own pace.")
                 .foregroundStyle(AppColor.greyMedium)
                 .font(AppFont.body.font)
               

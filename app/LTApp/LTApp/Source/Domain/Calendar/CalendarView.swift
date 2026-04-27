@@ -198,8 +198,8 @@ struct CalendarView: View {
     @ViewBuilder
     func footerView(momth: CalendarMonth) -> some View {
         let text =  momth.date.isSameMonth(Date()) ?
-        "\(momth.iconCount) icons created this month \n \(momth.moreDaysTogo) more days to go!" :
-        "\(momth.iconCount) icons created this month"
+        "\(momth.iconCount) stamps collected so far \n take your time with the  \(momth.moreDaysTogo) days ahead" :
+        "\(momth.iconCount) stamps collected this month"
         Text(text)
             .multilineTextAlignment(.center)
             .textStyle(font: .section, color: AppColor.black)

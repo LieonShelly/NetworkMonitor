@@ -137,7 +137,7 @@ struct TodayAnswerSubmittedView: View {
                     .frame(width: 290, height: 200)
                     .transition(.opacity)
                 
-                Text("Weaving your thoughts...")
+                Text("Weaving your moments...")
                     .textStyle(font: .heading)
                     .padding(.vertical, 36)
                     .transition(.opacity)

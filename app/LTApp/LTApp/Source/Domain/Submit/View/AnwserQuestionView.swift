@@ -52,7 +52,7 @@ struct AnwserQuestionView: View {
     var answerInputView: some View {
         AnswerInputView(
             text: $viewModel.answerText,
-            placeholder: "Write anything...."
+            placeholder: "Jot down a tiny moment worth keeping..."
         )
             .padding(.horizontal, 24)
             .frame(height: keyboardObserver.keyboardShown ? 150 : 286)

@@ -14,7 +14,7 @@ struct SplashView: View {
         case third
     }
     @EnvironmentObject var coordinator: PreHomeCoordinator
-    @State var currentPage: CurrentPage = .second
+    @State var currentPage: CurrentPage = .first
     @StateObject var viewModel: SplashViewModel
     
     init(viewModel: SplashViewModel) {
@@ -43,7 +43,7 @@ struct SplashView: View {
     
     var firstScreen: some View {
         AnimatedMultilineText(
-            text: viewModel.sentence?.page1st ?? "big thoughts, tiny moments.",
+            text: viewModel.sentence?.page2st ?? "big thoughts, tiny moments.",
             font: AppFont.heading.uifont,
             width: 188) {
                 currentPage = .second
@@ -52,7 +52,7 @@ struct SplashView: View {
     
     
     var secondScreen: some View {
-        AnimatedMultilineText(text:  viewModel.sentence?.page2st ?? "grow your reflections into insights with guided questions", font: AppFont.heading.uifont, width: 307) {
+        AnimatedMultilineText(text:  viewModel.sentence?.page3st ?? "grow your reflections into insights with guided questions", font: AppFont.heading.uifont, width: 307) {
             withAnimation(.easeInOut(duration: 1)) {
                 currentPage = .third
             }
@@ -71,7 +71,7 @@ struct SplashView: View {
     
     var thirdSceen: some View {
         VStack(spacing: .zero) {
-            Text(viewModel.sentence?.page3st ?? "each answer will generate a unique icon of your own ")
+            Text(viewModel.sentence?.page4st ?? "each answer will generate a unique icon of your own ")
                 .multilineTextAlignment(.center)
                 .lineLimit(10)
                 .frame(width: 335)

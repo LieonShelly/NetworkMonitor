@@ -39,6 +39,7 @@ struct WelcomeView: View {
             }
         }
         .task {
+            await viewModel.fetchData()
             try? await Task.sleep(for: .seconds(0.25))
             withAnimation(.easeInOut) {
                 showPage = true
@@ -71,7 +72,7 @@ struct WelcomeView: View {
             Spacer()
             if showSecondPageText {
                 AnimatedMultilineText(
-                    text: "answer your first question to get started",
+                    text: viewModel.sentence?.page5st ?? "answer your first question to get started",
                     font: AppFont.heading.uifont,
                     width: 305,
                     animationCompleted: {

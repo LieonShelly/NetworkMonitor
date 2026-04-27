@@ -24,7 +24,7 @@ struct TodayQuestionView: View {
     }
     
     var titleView: some View {
-        Text("Daily Prompt")
+        Text("Today's Spark")
             .textStyle(font: .caption, color: AppColor.greyMedium)
               .padding(.horizontal, 16)
               .padding(.top, 16)

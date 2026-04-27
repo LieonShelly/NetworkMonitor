@@ -349,10 +349,10 @@ struct ThreadView: View {
     
     @ViewBuilder
     func emptyList() -> some View {
-        emptyStateLibSection(title: "Pin your fav question here for easy access!", icon: .library, btnTitle: "browse question library ") {
+        emptyStateLibSection(title: "Pin your fav spark here to easily find it again", icon: .library, btnTitle: "Browse the Spark Library ") {
             homeCoordinator.push(HomeRoute.questionLib)
         }
-        emptyStateLibSection(title: "Start writing to make your own thread", icon: .threadAdd, btnTitle: "view question of the day ") {
+        emptyStateLibSection(title: "Capture a moment to start stringing your thread", icon: .threadAdd, btnTitle: "Explore Today's Spark") {
             addAnswerAction?([])
         }
     }

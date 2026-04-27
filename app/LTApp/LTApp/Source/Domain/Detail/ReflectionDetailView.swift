@@ -117,7 +117,7 @@ struct ReflectionDetailView: View {
             Button {
                 showSummary.toggle()
             } label: {
-                Text("\(sumary.totalAnswers) answers, \(sumary.daysOver) days ")
+                Text("\(sumary.totalAnswers) Stamps, \(sumary.daysOver) Days")
                     .textStyle(font: .caption, color: AppColor.white)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 8)
