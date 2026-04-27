@@ -64,7 +64,7 @@ struct WelcomeView: View {
             }
         )
             .frame(width: 305)
-            .transition(.asymmetric(insertion: .identity, removal: .move(edge: .leading)))
+            .transition(.asymmetric(insertion: .identity, removal: .move(edge: .leading)).combined(with: .opacity))
     }
     
     var secondTextView: some View {

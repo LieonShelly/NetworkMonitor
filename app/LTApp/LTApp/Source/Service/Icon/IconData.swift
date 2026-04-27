@@ -9,8 +9,8 @@ import Foundation
 
 public enum IconStatus: String, Sendable {
     case pending = "PENDING"
-    case unlock = "UNLOCK" // url 已经生成
-    case locked = "LOCKED" // 图片已经完全展示
+    case unlock = "UNLOCK" //
+    case locked = "LOCKED" // url 已经生成， 图片已经完全展示后, 前端调后端的接口把状态更新为 unlock
     case failed = "FAILED"
 }
 

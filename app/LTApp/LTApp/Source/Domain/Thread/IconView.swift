@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIComponent
 
 class IconViewModel: ObservableObject, @unchecked Sendable {
     var answer: Answer
@@ -88,34 +89,21 @@ struct IconView: View {
         if let icon = iconData {
             switch icon.status {
             case .pending:
+                LoadingView()
+                    .frame(width: size.width, height: size.height)
+            case .failed:
+                EmptyView()
+            case .locked:
                 Image(.lock)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: size.width, height: size.height)
-            default:
+            case .unlock:
                 if let url = icon.url {
-                    ThumbnailIconImageView(url: url) {
-                        placeholderIcon
-                    }
-                    .frame(width: size.width, height: size.height)
-                } else {
-                    placeholderIcon
+                    ThumbnailIconImageView(url: url) { }
                         .frame(width: size.width, height: size.height)
                 }
             }
-        } else {
-            placeholderIcon
-                .frame(width: size.width, height: size.height)
         }
-    }
-    
-    var placeholderIcon: some View {
-        Circle()
-            .fill(Color.clear)
-            .overlay(content: {
-                Image(.calendarDripper)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            })
     }
 }
