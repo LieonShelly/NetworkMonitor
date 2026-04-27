@@ -9,8 +9,7 @@ import Foundation
 
 public enum IconStatus: String, Sendable {
     case pending = "PENDING"
-    case unlock = "UNLOCK" //
-    case locked = "LOCKED" // url 已经生成， 图片已经完全展示后, 前端调后端的接口把状态更新为 unlock
+    case generated = "GENERATED"
     case failed = "FAILED"
 }
 
@@ -18,6 +17,7 @@ public struct IconData: Sendable {
     let status: IconStatus
     let url: String?
     let iconId: String?
+    let readAt: Date?
 }
 
 extension IconGeneratingStatus {
@@ -28,10 +28,15 @@ extension IconGeneratingStatus {
 
 extension IconDto {
     func toDomain() -> IconData {
+        let readAtDate: Date? = {
+            guard let readAt else { return nil }
+            return AppDateFormatter.iso8601.date(from: readAt)
+        }()
         return  .init(
             status: .init(rawValue: status?.rawValue ?? "") ?? .failed,
             url: url ?? "",
-            iconId: id
+            iconId: id,
+            readAt: readAtDate
         )
     }
 }

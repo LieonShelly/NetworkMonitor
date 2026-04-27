@@ -11,12 +11,15 @@ import LTNetwork
 
 enum IconRequest: Request {
     case generate(_ iconId: String)
+    case markRead(_ iconId: String)
     
     var endPoint: any EndPoint {
         var path: String = "/api"
         switch self {
         case let .generate(iconId):
             path += "/icon/progress/\(iconId)"
+        case let .markRead(iconId):
+            path += "/answers/icons/\(iconId)/read"
         }
         return DefaultEndPoint.baseURL(path: path)
     }
@@ -25,6 +28,8 @@ enum IconRequest: Request {
         switch self {
         case .generate:
                 .get
+        case .markRead:
+                .post
         }
     }
     

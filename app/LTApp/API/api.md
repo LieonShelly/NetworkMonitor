@@ -368,3 +368,26 @@
   - idToken 由客户端通过 Google Sign-In SDK 获取
   - 首次登录时自动创建用户，已有账号则更新 last_login_at
   - user.qod_strategy 取值为 RANDOM、PINNED、MIXED
+
+
+
+### 3.4 标记 Icon 已读
+
+- **URL**: `POST /api/answers/icons/:id/read`
+- **描述**: 将指定 icon 标记为已读（幂等）。如果该 icon 已经是已读，返回原有 `read_at`。
+- **认证**: 需要
+- **路径参数**:
+  - `id`: icon ID
+- **响应示例**:
+  ```json
+  {
+    "success": true,
+    "data": {
+      "id": "cludicon123456789",
+      "read_at": "2026-04-26T14:10:00.000Z"
+    }
+  }
+  ```
+- **错误响应**:
+  - icon 不存在：返回 `404 Not Found`
+  - 无权限（icon 不属于当前用户）：返回 `403 Forbidden`

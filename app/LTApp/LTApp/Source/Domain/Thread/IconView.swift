@@ -85,7 +85,6 @@ struct IconView: View {
     
     @ViewBuilder
     func iconView(_ iconData: IconData?, size: CGSize = .init(width: 24, height: 24)) -> some View {
-      
         if let icon = iconData {
             switch icon.status {
             case .pending:
@@ -93,15 +92,17 @@ struct IconView: View {
                     .frame(width: size.width, height: size.height)
             case .failed:
                 EmptyView()
-            case .locked:
-                Image(.lock)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: size.width, height: size.height)
-            case .unlock:
-                if let url = icon.url {
-                    ThumbnailIconImageView(url: url) { }
+            case .generated:
+                if iconData?.readAt == nil {
+                    Image(.lock)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                         .frame(width: size.width, height: size.height)
+                } else {
+                    if let url = icon.url {
+                        ThumbnailIconImageView(url: url) { }
+                            .frame(width: size.width, height: size.height)
+                    }
                 }
             }
         }
