@@ -6,7 +6,7 @@ import Combine
 
 final class OnboardingViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var list: [Category] = []
-    @MainActor @Published var sentence: OnboardingSentence?
+    @Published var sentence: OnboardingSentence?
     
     private let service: any AppDataWithAuthorizationServiceful
     

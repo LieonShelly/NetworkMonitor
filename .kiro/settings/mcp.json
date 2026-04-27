@@ -3,17 +3,6 @@
     "figma-desktop": {
       "url": "http://127.0.0.1:3845/mcp",
       "disabled": false
-    },
-    "FigmaLocalBridge": {
-      "command": "/Users/renjun.li/Desktop/LittleThings/flutter_framework/apps/figma_ui_mcp/server/venv/bin/python3",
-      "args": [
-        "/Users/renjun.li/Desktop/LittleThings/flutter_framework/apps/figma_ui_mcp/server/figma_bridge.py"
-      ],
-      "env": {
-        "FORCE_RELOAD": "1"
-      },
-      "disabled": true,
-      "disabledTools": []
     }
   }
 }

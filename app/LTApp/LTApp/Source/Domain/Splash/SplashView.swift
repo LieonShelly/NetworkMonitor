@@ -9,12 +9,11 @@ import AudioToolbox
 
 struct SplashView: View {
     enum CurrentPage {
-        case first
         case second
         case third
     }
     @EnvironmentObject var coordinator: PreHomeCoordinator
-    @State var currentPage: CurrentPage = .first
+    @State var currentPage: CurrentPage = .second
     @StateObject var viewModel: SplashViewModel
     
     init(viewModel: SplashViewModel) {
@@ -25,12 +24,10 @@ struct SplashView: View {
         VStack {
             if viewModel.sentence != nil {
                 switch currentPage {
-                case .first:
-                    firstScreen
                 case .second:
                     secondScreen
                 case .third:
-                    thirdSceen
+                    thirdScreen
                 }
             }
         }
@@ -41,25 +38,19 @@ struct SplashView: View {
             }
     }
     
-    var firstScreen: some View {
-        AnimatedMultilineText(
-            text: viewModel.sentence?.page2st ?? "big thoughts, tiny moments.",
-            font: AppFont.heading.uifont,
-            width: 188) {
-                currentPage = .second
-            }
-    }
-    
-    
     var secondScreen: some View {
-        AnimatedMultilineText(text:  viewModel.sentence?.page3st ?? "grow your reflections into insights with guided questions", font: AppFont.heading.uifont, width: 307) {
-            withAnimation(.easeInOut(duration: 1)) {
-                currentPage = .third
+        AnimatedMultilineText(
+            text: viewModel.sentence?.page2st ?? "grow your moments into insights with daily sparks.",
+            font: AppFont.heading.uifont,
+            width: 220) {
+                
+                withAnimation(.easeInOut(duration: 0.4)) {
+                    currentPage = .third
+                }
             }
-            
-        }
-        .transition(.asymmetric(insertion: .identity, removal: .move(edge: .leading)))
+            .transition(.asymmetric(insertion: .identity, removal: .move(edge: .leading)).combined(with: .opacity))
     }
+    
     
     var icons: [ImageResource] = [
         .necktie, .heart, .flower, .fire,
@@ -69,9 +60,9 @@ struct SplashView: View {
     @State var showText: Bool = false
     private let alwaysVisibleIndices: Set<Int> = []
     
-    var thirdSceen: some View {
+    var thirdScreen: some View {
         VStack(spacing: .zero) {
-            Text(viewModel.sentence?.page4st ?? "each answer will generate a unique icon of your own ")
+            Text(viewModel.sentence?.page3st ?? "every moment you capture turns into a unique stamp to keep")
                 .multilineTextAlignment(.center)
                 .lineLimit(10)
                 .frame(width: 335)
@@ -99,7 +90,7 @@ struct SplashView: View {
             .frame(height: 86)
             Spacer()
         }
-        .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .identity))
+        .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .identity).combined(with: .opacity))
         .task {
             try? await Task.sleep(for: .seconds(0.8))
             await revealIconsRandomly()

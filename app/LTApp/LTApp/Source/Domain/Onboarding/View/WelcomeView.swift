@@ -72,7 +72,7 @@ struct WelcomeView: View {
             Spacer()
             if showSecondPageText {
                 AnimatedMultilineText(
-                    text: viewModel.sentence?.page5st ?? "answer your first question to get started",
+                    text: viewModel.sentence?.page5st ?? "the canvas is yours, leave your first thought here to begin",
                     font: AppFont.heading.uifont,
                     width: 305,
                     animationCompleted: {
