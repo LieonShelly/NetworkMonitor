@@ -23,7 +23,6 @@ struct PaperView: View {
                 remindersView(report: weeklyReport)
             }
         }
-       
         .overlay(content: {
             HStack {
                 line(axis: .vertical, segmentCount: 200, seed: 800)
@@ -32,6 +31,7 @@ struct PaperView: View {
             }
         })
         .background(AppColor.white)
+        .shadow(color: AppColor.color(hex: 0x5E5E5E, alpha: 0.25), radius: 25, x: 0, y: 6.88)
         .padding(.horizontal, value(32))
         .defaultBackground()
     }

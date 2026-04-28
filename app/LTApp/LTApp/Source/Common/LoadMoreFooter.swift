@@ -23,7 +23,7 @@ struct LoadMoreFooter: View {
         case .noMore:
             HStack {
                 Spacer()
-                Text("No more data")
+                Text("")
                     .textStyle(size: 18, color: AppColor.color(hex: 0x000000), fontFamily: .feltTipSeniorRegular)
                 Spacer()
             }

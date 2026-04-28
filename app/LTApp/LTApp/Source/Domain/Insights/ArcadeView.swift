@@ -87,9 +87,7 @@ struct ArcadeView: View, ImageCacheKeyType {
     
     private var iconCountText: String {
         guard let currentIcons = viewModel.currentIcons else { return "0 / 0" }
-        let count = currentIcons.icons.count
-        let total = currentIcons.minAnswersToGenerateReport
-        return "\(count) / \(total)"
+        return currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count ? "FULL" : "\(currentIcons.icons.count)/\(currentIcons.minAnswersToGenerateReport)"
     }
     
     @ViewBuilder
