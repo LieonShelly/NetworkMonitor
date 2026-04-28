@@ -18,6 +18,7 @@ struct ArcadeView: View, ImageCacheKeyType {
     @State private var started: Bool = false
     @State private var joystickAngle: Double = 0
     @State private var tickerPressed: [Bool] = [false, false, false]
+    @State private var contentWidth: CGFloat = 0
     
     enum Constants {
         static let rpPadding: CGFloat = 12 + 20 + 28
@@ -90,29 +91,61 @@ struct ArcadeView: View, ImageCacheKeyType {
         return currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count ? "FULL" : "\(currentIcons.icons.count)/\(currentIcons.minAnswersToGenerateReport)"
     }
     
+    private var isFull: Bool {
+        guard let currentIcons = viewModel.currentIcons else { return false }
+        return currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count
+    }
+    
+    @ViewBuilder
+    private var iconContent: some View {
+        HStack(spacing: 6) {
+            ForEach(0..<viewModel.weeklyIcons.count, id: \.self) { index in
+                let iconStyle = viewModel.weeklyIcons[index]
+                switch iconStyle {
+                case .normal(let icon):
+                    CoinIconView(url: icon.url, processorId: processorId)
+                case .empty, .plus:
+                    Circle()
+                        .fill(Color.clear)
+                        .stroke(
+                            AppColor.black,
+                            style: StrokeStyle(lineWidth: 1, dash: [4, 4])
+                        )
+                        .frame(width: 28, height: 28)
+                }
+            }
+        }
+        .background(
+            GeometryReader { contentGeo in
+                Color.clear
+                    .onAppear { contentWidth = contentGeo.size.width }
+                    .onChange(of: contentGeo.size.width) { oldValue, newValue in contentWidth = newValue }
+            }
+        )
+    }
+
     @ViewBuilder
     private var iconRow: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 6) {
-                ForEach(0..<viewModel.weeklyIcons.count, id: \.self) { index in
-                    let iconStyle = viewModel.weeklyIcons[index]
-                    switch iconStyle {
-                    case .normal(let icon):
-                        CoinIconView(url: icon.url, processorId: processorId)
-                    case .empty, .plus:
-                        Circle()
-                            .fill(Color.clear)
-                            .stroke(
-                                AppColor.black,
-                                style: StrokeStyle(lineWidth: 1, dash: [4, 4])
-                            )
-                            .frame(width: 28, height: 28)
+        GeometryReader { geo in
+            let isScrollable = (contentWidth + 14) > geo.size.width
+            let shouldAutoPlay = isFull && isScrollable
+            
+            Group {
+                if shouldAutoPlay {
+                    InfiniteMarqueeView(contentWidth: contentWidth, spacing: 6, paddingLeading: 14, paddingVertical: 10) {
+                        iconContent
+                    }
+                } else {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        iconContent
+                            .padding(.leading, 14)
+                            .padding(.vertical, 10)
                     }
                 }
             }
-            .padding(.leading, 14)
-            .padding(.vertical, 10)
         }
+        .clipped()
+        .frame(height: 48)
         .padding(.horizontal, 10)
     }
     
@@ -272,9 +305,7 @@ struct ArcadeView: View, ImageCacheKeyType {
             }
             .scrollDisabled(viewModel.arcadeState == .readyToPrint)
             .refreshable {
-                try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
-                try? await viewModel.fetchHistory()
-                await viewModel.refreshArcadeState()
+               await refresh()
             }
             .onFirstAppear {
                 let width = geo.size.width - 40 * 2
@@ -287,6 +318,12 @@ struct ArcadeView: View, ImageCacheKeyType {
                 scene = newScene
             }
         }
+    }
+    
+    func refresh() async {
+        try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
+        try? await viewModel.fetchHistory()
+        await viewModel.refreshArcadeState()
     }
     
     var unReadCountView: some View {
