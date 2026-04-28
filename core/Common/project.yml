@@ -9,7 +9,7 @@ settings:
     - BaseProjectSetting
 
 targets:
-  LTCommon:
+  Common:
     type: framework
     platform: iOS
     sources:
@@ -17,9 +17,9 @@ targets:
     settings:
       groups:
         - BaseTargetSetting
-shemes:
-  LTCommon:
+schemes:
+  Common:
     templates:
       - DefaultSchemeTemplate
-    templateArributes:
-      testTargetName: LTCommon
+    templateAttributes:
+      testTargetName: Common

@@ -86,7 +86,7 @@ targets:
         implicit: true
       - framework: UIComponent.framework
         implicit: true
-      - framework: LTCommon.framework
+      - framework: Common.framework
         implicit: true
 
   LTAppTests:

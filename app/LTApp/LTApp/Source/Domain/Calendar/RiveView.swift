@@ -7,7 +7,7 @@
 
 import SwiftUI
 import RiveRuntime
-import LTCommon
+import Common
 
 struct RiveView: View {
     @State var rive: Rive?

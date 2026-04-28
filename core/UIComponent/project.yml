@@ -26,9 +26,9 @@ targets:
     dependencies:
     - package: Lottie
       product: Lottie
-shemes:
+schemes:
   UIComponent:
     templates:
       - DefaultSchemeTemplate
-    templateArributes:
+    templateAttributes:
       testTargetName: UIComponent

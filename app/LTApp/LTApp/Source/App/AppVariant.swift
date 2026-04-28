@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LTCommon
+import Common
 
 public struct AppVariant: AppVariantType {
     

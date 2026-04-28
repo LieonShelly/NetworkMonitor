@@ -7,7 +7,7 @@
 
 import Foundation
 import RiveRuntime
-import LTCommon
+import Common
 
 public enum RiveFileType: String, CaseIterable, @unchecked Sendable {
     case lockAnimated = "lock-animated"

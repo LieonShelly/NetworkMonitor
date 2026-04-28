@@ -8,7 +8,7 @@
 import SwiftUI
 import UIComponent
 import RiveRuntime
-import LTCommon
+import Common
 
 struct AnswerIconView: View {
     var answer: Answer

@@ -1,6 +1,13 @@
 configs:
   Debug: debug
   Release: release
+  Release-Debug: release
+
+settings:
+  configs:
+    Release-Debug:
+      SWIFT_OPTIMIZATION_LEVEL: "-Onone"
+      OTHER_SWIFT_FLAGS: "-DDEBUG"
 
 options:
   xcodeVersion: "16.0"
@@ -24,13 +31,13 @@ settingGroups:
       IPHONEOS_DEPLOYMENT_TARGET: 18.0
       ENABLE_USER_SCRIPT_SANDBOXING: false
 
-SchemeTemplates:
+schemeTemplates:
   DefaultSchemeTemplate:
     templates:
       - DefaultScheme
     build:
       targets:
-        ${scheme_name}: build
+        ${scheme_name}: all
   
   DefaultScheme:
     test:

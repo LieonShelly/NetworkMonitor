@@ -17,9 +17,9 @@ targets:
     settings:
       groups:
         - BaseTargetSetting
-shemes:
+schemes:
   Persistence:
     templates:
       - DefaultSchemeTemplate
-    templateArributes:
+    templateAttributes:
       testTargetName: Persistence

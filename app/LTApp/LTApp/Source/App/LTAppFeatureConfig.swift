@@ -5,7 +5,7 @@
 //  Created by Renjun Li on 2026/1/29.
 //
 
-import LTCommon
+import Common
 
 enum LTAppFeatureConfig: FeatureConfig {
     case logout

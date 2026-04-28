@@ -4,7 +4,7 @@
 
 import Foundation
 import RiveRuntime
-import LTCommon
+import Common
 
 struct SendableFile: @unchecked Sendable {
     let file: File
