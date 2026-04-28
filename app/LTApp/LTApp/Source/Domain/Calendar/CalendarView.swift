@@ -168,6 +168,7 @@ struct CalendarView: View {
                             addAction?(viewModel.organize())
                         }, didTapIcon: { answer in
                             onTapAnswerAction?(viewModel.generateAnswerDetailViewModel(answer))
+                            viewModel.markIconAsRead(answer)
                         }
                     )
                     .frame(height: itemH)

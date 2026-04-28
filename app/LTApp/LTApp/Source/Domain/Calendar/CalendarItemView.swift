@@ -89,7 +89,9 @@ struct CalendarItemView: View {
         .padding(.top, top)
         .padding(.bottom, bottom)
         .onTapGesture {
-            didTapIcon(answer)
+            if answer.icon?.readAt != nil {
+                didTapIcon(answer)
+            }
         }
     }
     
@@ -112,7 +114,9 @@ struct CalendarItemView: View {
                         .padding(.trailing, hPadding)
                 }
                 .onTapGesture {
-                    didTapIcon(answer)
+                    if answer.icon?.readAt != nil {
+                        didTapIcon(answer)
+                    }
                 }
                 
             }
@@ -123,7 +127,9 @@ struct CalendarItemView: View {
                     Spacer()
                 }
                 .onTapGesture {
-                    didTapIcon(answer)
+                    if answer.icon?.readAt != nil {
+                        didTapIcon(answer)
+                    }
                 }
             }
         }
@@ -147,7 +153,9 @@ struct CalendarItemView: View {
                         .padding(.trailing, hPadding)
                 }
                 .onTapGesture {
-                    didTapIcon(answer)
+                    if answer.icon?.readAt != nil {
+                        didTapIcon(answer)
+                    }
                 }
                 
             }
@@ -157,7 +165,9 @@ struct CalendarItemView: View {
                 Spacer()
             }
             .onTapGesture {
-                didTapIcon(answers[1])
+                if answers[1].icon?.readAt != nil {
+                    didTapIcon(answers[1])
+                }
             }
             if let answer = answers.last {
                 HStack {
@@ -166,7 +176,9 @@ struct CalendarItemView: View {
                         .padding(.trailing, hPadding)
                 }
                 .onTapGesture {
-                    didTapIcon(answer)
+                    if answer.icon?.readAt != nil {
+                        didTapIcon(answer)
+                    }
                 }
             }
         }
@@ -191,7 +203,9 @@ struct CalendarItemView: View {
                     Spacer()
                 }
                 .onTapGesture {
-                    didTapIcon(answer)
+                    if answer.icon?.readAt != nil {
+                        didTapIcon(answer)
+                    }
                 }
                 
             }
@@ -202,7 +216,9 @@ struct CalendarItemView: View {
                
             }
             .onTapGesture {
-                didTapIcon(answers[1])
+                if answers[1].icon?.readAt != nil {
+                    didTapIcon(answers[1])
+                }
             }
             if let answer = answers.last {
                 ZStack(alignment: .trailing) {
@@ -212,7 +228,9 @@ struct CalendarItemView: View {
                         Spacer()
                     }
                     .onTapGesture {
-                        didTapIcon(answer)
+                        if answer.icon?.readAt != nil {
+                            didTapIcon(answer)
+                        }
                     }
                     
                     Text("\(answers.count - 3)+")
@@ -226,19 +244,11 @@ struct CalendarItemView: View {
         .padding(.bottom, bottom)
     }
     
-    var placeholderIcon: some View {
-        Circle()
-            .fill(Color.clear)
-            .overlay(content: {
-                Image(.calendarDripper)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            })
-    }
-    
     @ViewBuilder
     func iconView(_ answer: Answer, size: CGSize = .init(width: 24, height: 24)) -> some View {
-        IconView(iconData: answer.icon, size: size)
+        IconView(iconData: answer.icon, size: size) {
+            didTapIcon(answer)
+        }
     }
     
     
@@ -284,50 +294,5 @@ struct CalendarItemView: View {
             .frame(width: 20, height: 15)
             .padding(.bottom, 15)
             .opacity(day.isCurrentMonth ? 1 : 0)
-    }
-}
-
-
-
-struct AddBtnView: View {
-    let addAction: (() -> Void)
-    let addIconsize: CGSize
-    let blurBgSize: CGSize
-    
-    var body: some View {
-        addBtn
-    }
-    
-    @State private var isBreathing = false
-    @ViewBuilder
-    var addBtn: some View {
-        Spacer()
-        Button {
-            addAction()
-        } label: {
-            LinearGradient(
-                colors: [
-                    AppColor.color(hex: 0x040404),
-                    AppColor.color(hex: 0x656565)
-                ],
-                startPoint: .init(x: 0, y: 0),
-                endPoint: .init(x: 1, y: 0.7)
-            )
-            .cornerRadius(blurBgSize.width * 0.5, corners: .allCorners)
-            .blur(radius: 3)
-            .frame(width: blurBgSize.width, height: blurBgSize.height)
-            .overlay {
-                Image(.smallAdd)
-                    .resizable()
-                    .frame(width: addIconsize.width, height: addIconsize.height)
-            }
-            .scaleEffect(isBreathing ? 1.2 : 1.0)
-            .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true),
-                       value: isBreathing
-            )
-            .task {
-                isBreathing = true
-            }
-        }
     }
 }

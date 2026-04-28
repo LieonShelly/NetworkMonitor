@@ -196,6 +196,16 @@ extension CalendarViewModel {
         return .init(answer: answer, question: question, service: service)
     }
     
+    func markIconAsRead(_ answer: Answer) {
+        guard answer.icon?.readAt == nil else { return }
+        Task {
+           try? await Task.sleep(for: .milliseconds(500))
+            guard let icon = answer.icon, let iconId = icon.iconId else { return }
+            let _ = try? await service.markIconReadUseCase.execute(iconId)
+           try? await fetchData()
+        }
+    }
+    
     func generateMonthsInRange(from startDate: Date, to endDate: Date) async -> [CalendarMonth] {
         let calendar = Calendar.current
         var months: [CalendarMonth] = []

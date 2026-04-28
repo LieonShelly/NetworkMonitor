@@ -209,6 +209,7 @@
 		EA36E3C0AF3849BFE0986450 /* QuestionCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87216B9ACF82845B585A0B88 /* QuestionCardViewModel.swift */; };
 		EAEE0A40DC9D8080566E01AB /* PinQuestionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCCEDD7C0D9E4209FD9A015A /* PinQuestionUseCase.swift */; };
 		ED6B9CE126E3CFB5306162CB /* LogoutInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA14C5747FBE99D911A634F /* LogoutInterceptor.swift */; };
+		ED7ADD852FA05FEF002BCA91 /* AddBtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7ADD842FA05FEF002BCA91 /* AddBtnView.swift */; };
 		EDA164A62F9F9EA90061392A /* RiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA164A52F9F9EA90061392A /* RiveView.swift */; };
 		EDF2D7902F9F909800782AD4 /* lock-tapped.riv in Resources */ = {isa = PBXBuildFile; fileRef = EDF2D78F2F9F909800782AD4 /* lock-tapped.riv */; };
 		EDF2D7922F9F95C200782AD4 /* IconViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF2D7912F9F95C200782AD4 /* IconViewModel.swift */; };
@@ -453,6 +454,7 @@
 		EB18B18DB1403A5E4F474A33 /* IconRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconRequest.swift; sourceTree = "<group>"; };
 		EB8D98F8D1A53FCEB574B3A7 /* AnwserQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnwserQuestionView.swift; sourceTree = "<group>"; };
 		ED113BC35D7BE1C2397B9CA7 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		ED7ADD842FA05FEF002BCA91 /* AddBtnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBtnView.swift; sourceTree = "<group>"; };
 		EDA164A52F9F9EA90061392A /* RiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiveView.swift; sourceTree = "<group>"; };
 		EDF2D78F2F9F909800782AD4 /* lock-tapped.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = "lock-tapped.riv"; sourceTree = "<group>"; };
 		EDF2D7912F9F95C200782AD4 /* IconViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconViewModel.swift; sourceTree = "<group>"; };
@@ -814,6 +816,7 @@
 		A003F063569C9ED12070D111 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				ED7ADD842FA05FEF002BCA91 /* AddBtnView.swift */,
 				EDA164A52F9F9EA90061392A /* RiveView.swift */,
 				BAB376B93C7F5FF4B131FD9F /* CalendarDay.swift */,
 				21933E5AB34751B6690F42AB /* CalendarGridLines.swift */,
@@ -1285,6 +1288,7 @@
 				F8653D158C566ADBE66E781E /* FetchOnboardingSentenceUseCase.swift in Sources */,
 				967FA7E6F926CD6A14B0E40C /* FetchPersonasUseCase.swift in Sources */,
 				0DDDF99A62030EC577F298AB /* FetchQodStrategyOptionsUseCase.swift in Sources */,
+				ED7ADD852FA05FEF002BCA91 /* AddBtnView.swift in Sources */,
 				1D8107E406D3EF6E9BDF7835 /* FetchQuestionsWithCategoryUseCase.swift in Sources */,
 				8AC686E31FEFDE547432B7C0 /* FetchReminderUseCase.swift in Sources */,
 				2A7D622E3B2DF60EAA8B40AA /* FetchThreadQuestionsUseCase.swift in Sources */,

@@ -34,11 +34,14 @@ struct AnswerIconView: View {
 struct IconView: View {
     var iconData: IconData?
     var size: CGSize = .init(width: 24, height: 24)
+    var onTap: (() -> Void)?
+    @State private var isUnlocking = false
     
     
-    init(iconData: IconData?, size: CGSize = .init(width: 24, height: 24)) {
+    init(iconData: IconData?, size: CGSize = .init(width: 24, height: 24), onTap: (() -> Void)? = nil) {
         self.iconData = iconData
         self.size = size
+        self.onTap = onTap
     }
     
     var body: some View {
@@ -47,24 +50,49 @@ struct IconView: View {
     
     @ViewBuilder
     func iconView(_ iconData: IconData?, size: CGSize = .init(width: 24, height: 24)) -> some View {
-        if let icon = iconData {
-            switch icon.status {
-            case .pending:
-                LoadingView()
-                    .frame(width: size.width, height: size.height)
-            case .failed:
-                EmptyView()
-            case .generated:
-                if iconData?.readAt == nil {
-                    RiveView(resouce: .lockAnimated)
-                        .frame(width: size.width, height: size.height)
-                } else {
-                    if let url = icon.url {
-                        ThumbnailIconImageView(url: url) { }
-                            .frame(width: size.width, height: size.height)
+        Group {
+            if let icon = iconData {
+                switch icon.status {
+                case .pending:
+                    LoadingView()
+                case .failed:
+                    EmptyView()
+                case .generated:
+                  if iconData?.readAt == nil {
+                        if isUnlocking {
+                            unlockingAnimatedView
+                        } else {
+                            lockView
+                                .contentShape(Rectangle().inset(by: -10))
+                                .onTapGesture {
+                                    isUnlocking = true
+                                    Task {
+                                        try? await Task.sleep(for: .seconds(1))
+                                        onTap?()
+                                        try? await Task.sleep(for: .seconds(1))
+                                        isUnlocking = false
+                                    }
+                                }
+                        }
+                    } else {
+                        if let url = icon.url {
+                            ThumbnailIconImageView(url: url) { }
+                             
+                                
+                        }
                     }
                 }
             }
         }
+        .frame(width: size.width, height: size.height)
+      
+    }
+    
+    var lockView: some View {
+        RiveView(resouce: .lockAnimated)
+    }
+    
+    var unlockingAnimatedView: some View {
+        RiveView(resouce: .lockTapped)
     }
 }
