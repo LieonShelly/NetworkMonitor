@@ -26,7 +26,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     }
     
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let identifier = response.notification.request.identifier
         print(response.notification.request.content.userInfo)
         guard let userInfo = response.notification.request.content.userInfo as? [String: any Sendable] else {
             return  completionHandler()

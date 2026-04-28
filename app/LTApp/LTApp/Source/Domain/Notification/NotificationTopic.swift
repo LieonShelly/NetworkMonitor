@@ -10,6 +10,7 @@ import Combine
 enum NotificationTopic: String, Codable {
     case iconFinished = "icon_finished"
     case todayQuestion = "today_question"
+    case reportReady = "report_ready"
 }
 
 struct NotificationPayload: Codable {

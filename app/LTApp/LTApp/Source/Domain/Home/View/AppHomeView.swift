@@ -22,6 +22,9 @@ struct AppHomeView: View {
         }
         .environmentObject(tabbarVisibility)
         .innerPageRoute($viewModel.subPageRoute)
+        .onFirstAppear {
+            viewModel.observeNotification()
+        }
     }
     
     fileprivate func scrollContentView() -> AppScrollContentView {

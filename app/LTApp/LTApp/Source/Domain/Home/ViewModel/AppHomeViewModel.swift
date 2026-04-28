@@ -79,7 +79,7 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
             switch topic {
             case .iconFinished:
                 Task {
-                    try? await  contentViewModel.calendarViewModel.fetchData()
+                    try? await contentViewModel.calendarViewModel.fetchData()
                     self.selected(0)
                 }
             case .todayQuestion:
@@ -89,6 +89,11 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
                        try? await calendarViewModel.fetchDataTodayQuestions()
                     }
                     pushToAddTodayAnsnwer(calendarViewModel.organize())
+                }
+            case .reportReady:
+                Task {
+                    self.selected(2)
+                    contentViewModel.insightsViewModel.router?.popToRoot()
                 }
             }
         }
