@@ -8,6 +8,12 @@ import Combine
 
 struct AppTabbar: View {
     @ObservedObject var viewModel: AppTabbarViewModel
+    enum Constants {
+        static let height: CGFloat = 40
+        static let vP: CGFloat = 16
+        
+        static let tabbarTotalH = height + vP * 2
+    }
     
     var body: some View {
         HStack(spacing: 24) {
@@ -19,11 +25,11 @@ struct AppTabbar: View {
                         viewModel.didTapTabrItem(item)
                     }
                 )
-                .frame(width: 40, height: 40)
+                .frame(width: 40, height: Constants.height)
             }
         }
         .padding(.horizontal, 42)
-        .padding(.vertical, 16)
+        .padding(.vertical, Constants.vP)
         .background(
             background
         )

@@ -8,11 +8,11 @@ import Kingfisher
 
 struct CalendarView: View {
     enum Constants {
-        static let itemSize: CGSize = .init(width: 30, height: 30)
         static let maxRowCount: CGFloat = 7
         static let cornorRadius: CGFloat = 4
         static let weekDayBottom: CGFloat = 70
         static let hP: CGFloat = 24
+        static let qotBottom: CGFloat = 10
     }
     @EnvironmentObject var homeCoordinator: HomeCoordinator
     @StateObject var viewModel: CalendarViewModel
@@ -42,9 +42,9 @@ struct CalendarView: View {
                     TodayQuestionView(question: head) {
                         addAction?(viewModel.organize())
                     }
-                    .offset(y: -(40 + 16 * 2))
+                    .offset(y: -(AppTabbar.Constants.tabbarTotalH))
                     .padding(.horizontal, 40)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, Constants.qotBottom)
                     .transition(.opacity.animation(.easeInOut))
                 }
             }
@@ -126,39 +126,44 @@ struct CalendarView: View {
     func monthListView(proxy: GeometryProxy) -> some View {
         let parentWith = proxy.size.width - Constants.hP * 2
         let months = viewModel.months.filter { $0.isValildMonth }
-        ScrollView(.horizontal) {
-            LazyHStack(spacing: .zero) {
-                ForEach(months) { month in
-                    oneMonthView(month: month, proxy: proxy)
+        GeometryReader { geo in
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: .zero) {
+                    ForEach(months) { month in
+                        oneMonthView(month: month, proxy: proxy, containerHeight: geo.size.height)
+                    }
                 }
             }
+            .scrollTargetBehavior(.paging)
+            .scrollPosition(id: $viewModel.contentScrollPostion, anchor: .center)
+            .onScrollGeometryChange(for: CGFloat.self, of: { $0.contentOffset.x}, action: { oldValue, newValue in
+                let index = newValue / parentWith
+                viewModel.onMonthContentScroll(index)
+            })
+            .onScrollPhaseChange({ oldPhase, newPhase in
+                switch newPhase {
+                case .idle:
+                    Task {
+                        try? await viewModel.fetchData()
+                    }
+                default: break
+                }
+            })
         }
-        .scrollTargetBehavior(.paging)
-        .scrollPosition(id: $viewModel.contentScrollPostion, anchor: .center)
-        .onScrollGeometryChange(for: CGFloat.self, of: { $0.contentOffset.x}, action: { oldValue, newValue in
-            let index = newValue / parentWith
-            viewModel.onMonthContentScroll(index)
-        })
-        .onScrollPhaseChange({ oldPhase, newPhase in
-            switch newPhase {
-            case .idle:
-                Task {
-                    try? await viewModel.fetchData()
-                }
-            default: break
-            }
-        })
         .padding(.horizontal, Constants.hP)
         .padding(.vertical, 24)
     }
     
     @ViewBuilder
-    func oneMonthView(month: CalendarMonth, proxy: GeometryProxy) -> some View {
+    func oneMonthView(month: CalendarMonth, proxy: GeometryProxy, containerHeight: CGFloat) -> some View {
+        let maxQoTH: CGFloat = 120
+        let innerContainerH = containerHeight - AppTabbar.Constants.tabbarTotalH - Constants.qotBottom - maxQoTH
         let parentWith = proxy.size.width - Constants.hP * 2
         let columns: Int = 7
         let columnW: CGFloat = parentWith / CGFloat(columns)
         let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: .zero, alignment: .center)}
-        let itemH: CGFloat = 88
+        let rowCount = CGFloat(max(1, (month.days.count + 6) / 7))
+        let itemH: CGFloat = innerContainerH / rowCount
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: columnsG, alignment: .center, spacing: .zero) {
                 ForEach(month.days, id: \.id) { day in

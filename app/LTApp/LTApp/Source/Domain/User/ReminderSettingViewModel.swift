@@ -13,7 +13,7 @@ final class ReminderSettingViewModel: ObservableObject {
         (.afternoon, "Afternoon"),
         (.evening, "Evening")
     ]
-    @Published var selectedSlot: ReminderSlot? = .evening
+    @Published var selectedSlot: ReminderSlot? = nil
     @Published var isEnabled: Bool = true
     @Published var isSaving: Bool = false
     
