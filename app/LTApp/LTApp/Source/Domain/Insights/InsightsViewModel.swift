@@ -96,6 +96,11 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     
     @MainActor
     func didTapHistoryItem(_ history: WeeklyReportSummary) async throws {
+        let report = try await dataService.fetchWeeklyReportUseCase.execute(week: history.week)
+        await MainActor.run {
+            self.weeklyReport = report
+            router?.push(history.readAt == nil ? .printing : .reported)
+        }
         if history.readAt == nil {
             let result = try await dataService.markWeeklyReportReadUseCase.execute(week: history.week)
             if var unread = unreadHisotrys.first(where: { $0.id == history.id }) {
@@ -108,11 +113,6 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
                 self.readHisotrys = updatedRead
                 self.unreadHisotrys = updatedUnread
             }
-        }
-        let report = try await dataService.fetchWeeklyReportUseCase.execute(week: history.week)
-        await MainActor.run {
-            self.weeklyReport = report
-            router?.push(.reported)
         }
     }
     

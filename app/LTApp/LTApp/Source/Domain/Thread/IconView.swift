@@ -77,8 +77,6 @@ struct IconView: View {
                     } else {
                         if let url = icon.url {
                             ThumbnailIconImageView(url: url) { }
-                             
-                                
                         }
                     }
                 }
