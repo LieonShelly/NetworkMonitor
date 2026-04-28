@@ -18,7 +18,7 @@ struct ThreadView: View {
         static let iconSize: CGFloat = 24
         static let iconItemSpacing: CGFloat = 8
         static let iconColumns: Int = 7
-        static let listHP: CGFloat = 24
+        static let listHP: CGFloat = 32
         static let pinIconW: CGFloat = 24
         static let quesiontTilteHp: CGFloat = 24
         static let categoryHeight: CGFloat = 88

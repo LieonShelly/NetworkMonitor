@@ -90,7 +90,7 @@ struct PaperView: View {
         
         if let count = report.count {
             VStack(alignment: .leading, spacing: .zero) {
-                Text("// The tittle invoice")
+                Text("// The Little Invoice")
                     .textStyle(font: .annotation, color: AppColor.grey)
                     .padding(.bottom, value(28))
                 VStack(alignment: .leading, spacing: value(16)) {
@@ -135,7 +135,7 @@ struct PaperView: View {
     @ViewBuilder func oneLittleMomentView(report: WeeklyReport) -> some View {
         let gem = report.reportJson.gem
         VStack(alignment: .leading, spacing: .zero) {
-            Text("// The little invoice")
+            Text("// One Little Moment")
                 .textStyle(font: .annotation, color: AppColor.grey)
             
             VStack(spacing: .zero) {
@@ -168,7 +168,7 @@ struct PaperView: View {
         let reminders = report.reportJson.reminders
 
         VStack(alignment: .leading, spacing: .zero) {
-            Text("// A few little inspo for next week...")
+            Text("// A Few Little Inspo For Next Week...")
                 .textStyle(font: .annotation, color: AppColor.grey)
                 .padding(.bottom, value(22))
             
