@@ -15,7 +15,7 @@ final class QuestionCardViewModel: ObservableObject, @unchecked Sendable {
     var changeToNext: ( @MainActor () -> Void)?
     @Published var offset: CGFloat = .zero
     @Published var viewSize: CGSize = .zero
-    @Published var randomAnge: CGFloat = 2
+    @Published var randomAnge: CGFloat = 4
     
     init(question: Question,
          index: Int,

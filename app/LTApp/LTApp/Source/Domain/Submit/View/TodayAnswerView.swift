@@ -141,12 +141,13 @@ struct TodayAnswerView: View {
     
     @ViewBuilder
     func answerInputView(parent: GeometryProxy) -> some View  {
-        let idleH = max((parent.size.height - Constants.spacing) * Constants.answerHPercent, 0)
+        let idleH = max((parent.size.height - Constants.spacing - Constants.spacing) * Constants.answerHPercent, 0)
         AnswerInputView(
             text: $viewModel.answerText,
             placeholder: "Jot down a tiny moment worth keeping..."
         )
         .frame(height: idleH)
+        .padding(.top, Constants.spacing)
     }
     
     var okBtn: some View {

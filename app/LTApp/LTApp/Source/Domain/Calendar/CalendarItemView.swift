@@ -58,7 +58,7 @@ struct CalendarItemView: View {
             VStack {
                 Text(day.date.dayDesc())
                     .textStyle(font: .subSection,
-                               color: day.isAbsent || day.dayType == .future ? AppColor.greyNeutral : AppColor.greyDark)
+                               color: dateTextColor(day))
                     .background {
                         if day.isToday, day.reflections == nil {
                             Image(.brushCycle)
@@ -75,6 +75,22 @@ struct CalendarItemView: View {
         .padding(.leading, 4)
         .padding(.top, 4)
         .opacity(day.isCurrentMonth ? 1 : 0)
+    }
+    
+    func dateTextColor(_ day: CalendarDay) -> Color {
+        switch day.dayType {
+        case .past:
+            if day.reflections == nil {
+                return AppColor.greyNeutral
+            }
+        case .today:
+            if day.reflections == nil {
+                return AppColor.greyNeutral
+            }
+        case .future:
+            break
+        }
+      return  AppColor.greyDark
     }
     
     @ViewBuilder

@@ -14,14 +14,14 @@ struct AnswerInputView: View {
         ZStack(alignment: .topLeading) {
             TextEditor(text: $text)
                 .scrollContentBackground(.hidden)
-                .textStyle(size: 12, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
+                .textStyle(size: 14, color: AppColor.color(hex: 0x323232), fontFamily: .poppinsRegular)
                 .tint(AppColor.color(hex: 0x323232))
                 .padding(.top, 10)
                 .padding(.leading, 10)
                
             if text.isEmpty {
                 Text(placeholder)
-                    .textStyle(size: 12, color: AppColor.color(hex: 0x6f6f6f), fontFamily: .poppinsRegular)
+                    .textStyle(size: 14, color: AppColor.color(hex: 0x6f6f6f), fontFamily: .poppinsRegular)
                     .padding(.top, 17)
                     .padding(.leading, 13)
             }
