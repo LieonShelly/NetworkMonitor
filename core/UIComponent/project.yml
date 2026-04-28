@@ -12,7 +12,7 @@ settings:
 packages:
   Lottie:
     url: https://github.com/airbnb/lottie-ios
-    exactVersion: 4.5.1
+    from: "4.5.1"
 
 targets:
   UIComponent:

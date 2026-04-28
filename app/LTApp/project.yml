@@ -19,6 +19,7 @@ settings:
     Release-Debug:
       SWIFT_OPTIMIZATION_LEVEL: "-Onone"
       OTHER_SWIFT_FLAGS: "-DDEBUG"
+      ONLY_ACTIVE_ARCH: "YES"
 
 packages:
   Kingfisher:
