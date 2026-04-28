@@ -15,10 +15,11 @@ enum NotificationTopic: String, Codable {
 
 struct NotificationPayload: Codable {
     var topic: NotificationTopic
+    var data: String?
 }
 
 protocol NotificationHandlingType: Sendable {
-    var topic: AnyPublisher<NotificationTopic, Never> { get }
+    var payload: AnyPublisher<NotificationPayload, Never> { get }
     
     func didRecieveNotification(_ userInfo: [String: any Sendable]) async
 }

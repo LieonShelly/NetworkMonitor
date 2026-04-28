@@ -105,6 +105,20 @@ extension CalendarViewModel {
         }
     }
     
+    @MainActor
+    func searchAnswer(_ answerId: String) async throws ->  Answer? {
+        let currentMonth = Date()
+        let endMonth = currentMonth.endOfMonth()
+        let startMonth = currentMonth.startOfMonth()
+        let reflections = try await service.calendarReflectionsUseCase.execute(
+            startMonth: startMonth,
+            endMonth: endMonth
+        )
+       return reflections
+            .flatMap(\.reflections)
+            .first(where: { $0.id == answerId })
+    }
+    
     func fetchDataTodayQuestions() async throws {
         let questions = try await service.fetchTodayQuestionsUseCase.execute()
         await MainActor.run {

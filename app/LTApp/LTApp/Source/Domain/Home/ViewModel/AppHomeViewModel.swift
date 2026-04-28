@@ -74,13 +74,18 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
     
    @MainActor
     func observeNotification() {
-        self.notificationHandler.topic.sink { [weak self] topic in
+        self.notificationHandler.payload.sink { [weak self] data in
             guard let self else { return }
-            switch topic {
+            switch data.topic {
             case .iconFinished:
                 Task {
-                    try? await contentViewModel.calendarViewModel.fetchData()
+                    let calendarViewModel = contentViewModel.calendarViewModel
+                    guard let idData = data.data?.data(using: .utf8) else { return }
+                    guard let iconNotification = try? JSONDecoder().decode(IconNotificationData.self, from: idData) else { return }
+                    guard let answer = try? await calendarViewModel.searchAnswer(iconNotification.answerId) else { return }
+                    guard let viewModel = calendarViewModel.generateAnswerDetailViewModel(answer) else { return }
                     self.selected(0)
+                    route(.answerDetail(viewModel))
                 }
             case .todayQuestion:
                 Task {
@@ -146,5 +151,12 @@ enum InnerPageRouteState: Equatable {
         default:
             return false
         }
+    }
+}
+
+struct IconNotificationData: Codable {
+    let answerId: String
+    enum CodingKeys: String, CodingKey {
+        case answerId = "answer_id"
     }
 }

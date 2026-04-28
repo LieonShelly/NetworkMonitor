@@ -11,8 +11,8 @@ import Foundation
 @MainActor
 class NotificationHandler: @preconcurrency NotificationHandlingType, @unchecked Sendable {
     
-    var topic: AnyPublisher<NotificationTopic, Never> {
-        topicSubject
+    var payload: AnyPublisher<NotificationPayload, Never> {
+        payloadSubject
             .filter { $0 != nil }
             .map { $0! }
             .eraseToAnyPublisher()
@@ -22,7 +22,7 @@ class NotificationHandler: @preconcurrency NotificationHandlingType, @unchecked 
         print("NotificationHandler-deinit")
     }
     
-    private let topicSubject: CurrentValueSubject<NotificationTopic?, Never> = .init(nil)
+    private let payloadSubject: CurrentValueSubject<NotificationPayload?, Never> = .init(nil)
     
     func didRecieveNotification(_ userInfo: [String : any Sendable]) async {
         guard let customPayload = userInfo["custom"] as? [String: Any] else { return }
@@ -32,6 +32,6 @@ class NotificationHandler: @preconcurrency NotificationHandlingType, @unchecked 
         guard let payload = try? JSONDecoder().decode(NotificationPayload.self, from: data) else {
             return
         }
-        topicSubject.send(payload.topic)
+        payloadSubject.send(payload)
     }
 }
