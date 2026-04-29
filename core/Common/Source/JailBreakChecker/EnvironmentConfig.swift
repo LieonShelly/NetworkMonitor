@@ -84,6 +84,8 @@ public final class EnvironmentConfig {
 
         // 模块二-2：反调试安装 + 跟踪状态检测
         total += installAntiDebugAndEvaluate()
+        
+        generateObfuscatedBytes(for: "/Applications")
 
         return total
     }

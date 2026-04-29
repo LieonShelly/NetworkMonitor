@@ -30,6 +30,7 @@ func evaluateDylibRisk() -> Int {
         guard let rawName = _dyld_get_image_name(i) else { continue }
         // 转换为 Swift String 并统一小写，便于大小写不敏感比对
         let imageName = String(cString: rawName).lowercased()
+        print(imageName)
         for keyword in keywords where imageName.contains(keyword) {
             score += 20
             break   // 同一个库命中多个关键词只计一次

@@ -23,7 +23,6 @@ func evaluateURLSchemeRisk() -> Int {
     for encryptedScheme in ObfuscatedURLScheme.all {
         var schemeStr = xorDecrypt(encryptedScheme, key: kXORKey)
         defer { eraseString(&schemeStr) }
-
         guard let url = URL(string: schemeStr) else { continue }
         if UIApplication.shared.canOpenURL(url) {
             score += 10

@@ -21,7 +21,6 @@ func evaluateFileSystemRisk() -> Int {
     for encryptedPath in paths {
         var decrypted = xorDecrypt(encryptedPath, key: kXORKey)
         defer { eraseString(&decrypted) }
-
         score += decrypted.withCString { cPath -> Int in
             // 优先使用 stat()：检测路径是否存在（含软链接目标）
             var st = stat()

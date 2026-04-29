@@ -390,7 +390,7 @@
 		9946673DA279A5A3F74BF4AE /* QuestionOfTodaySettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingItem.swift; sourceTree = "<group>"; };
 		9993DF6E3A941EE9D1FAF266 /* QuestionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionCardView.swift; sourceTree = "<group>"; };
 		99E2E2F27C12616A29FDF44F /* LTAppFeatureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTAppFeatureConfig.swift; sourceTree = "<group>"; };
-		9A58C1EE3894B3BD3A320141 /* lock-tapped.riv */ = {isa = PBXFileReference; path = "lock-tapped.riv"; sourceTree = "<group>"; };
+		9A58C1EE3894B3BD3A320141 /* lock-tapped.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = "lock-tapped.riv"; sourceTree = "<group>"; };
 		9BDAB7457AD38C219D4125D1 /* SaveTimezoneUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTimezoneUseCase.swift; sourceTree = "<group>"; };
 		9CC182739AAD226C77247794 /* WeeklyReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReport.swift; sourceTree = "<group>"; };
 		9E48DDA96EDFC46D378411CE /* AppTabbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabbarItem.swift; sourceTree = "<group>"; };
@@ -401,7 +401,7 @@
 		A2AC3ECD67EDD0DA13A5CABC /* CalendarReflectionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarReflectionsUseCase.swift; sourceTree = "<group>"; };
 		A3B88EEE2F5FACEDC61CF29D /* TodayAnswerSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayAnswerSubmittedViewModel.swift; sourceTree = "<group>"; };
 		A5653DA3D1F0BE41202F5A93 /* CalendarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarItemView.swift; sourceTree = "<group>"; };
-		A59545BAF995479B0ADA444F /* lock-animated.riv */ = {isa = PBXFileReference; path = "lock-animated.riv"; sourceTree = "<group>"; };
+		A59545BAF995479B0ADA444F /* lock-animated.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = "lock-animated.riv"; sourceTree = "<group>"; };
 		A87A82B08CA8CCAEF901BBD1 /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		A894E354041CCC836695890E /* AppHomeRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHomeRootView.swift; sourceTree = "<group>"; };
 		A8B5043EEA7BC29B1EF9543D /* ReadyToPrintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyToPrintView.swift; sourceTree = "<group>"; };
