@@ -19,8 +19,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         try! AppFont.registerFonts()
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
-        EnvironmentConfig.checkDeviceIntegrity()
-        debugPrint(EnvironmentConfig.deviceIntegrityToken)
         return true
     }
     

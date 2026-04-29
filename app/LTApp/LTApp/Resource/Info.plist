@@ -33,12 +33,6 @@
 	<string>1</string>
 	<key>GIDClientID</key>
 	<string>92621954916-ujfsjlbj9ubbs26ifcv0dq0af8jltck4.apps.googleusercontent.com</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>cydia</string>
-		<string>sileo</string>
-		<string>zbra</string>
-	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UIDeviceFamily</key>
