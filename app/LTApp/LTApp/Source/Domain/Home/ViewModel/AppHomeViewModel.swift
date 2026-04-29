@@ -110,7 +110,7 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
         if questions.count > 1 {
             let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
                 Task {
-                    self?.contentViewModel.calendarViewModel.queryCurrenntIconStatus(iconId)
+                    self?.queryCurrenntIconStatus(iconId)
                     self?.contentViewModel.calendarViewModel.showTodayQuestion = false
                 }
                 
@@ -119,7 +119,7 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
         } else {
             let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
                 Task {
-                    self?.contentViewModel.calendarViewModel.queryCurrenntIconStatus(iconId)
+                    self?.queryCurrenntIconStatus(iconId)
                 }
                 
             })
@@ -130,6 +130,19 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
     @MainActor func selected(_ index: Int) {
         contentViewModel.scrollTo(index)
     }
+    
+    
+    func queryCurrenntIconStatus(_ iconId: String) {
+        Task.detached {
+            try await self.contentViewModel.calendarViewModel.fetchData()
+            try await self.contentViewModel.threadViewModel.fetchDataInCurrentCategory()
+            let streams = self.service.queryIconStatusUseCase.execute(iconId)
+            for try await _ in streams {}
+            try await self.contentViewModel.calendarViewModel.fetchData()
+            try await self.contentViewModel.threadViewModel.fetchDataInCurrentCategory()
+        }
+    }
+    
 }
 
 enum InnerPageRouteState: Equatable {

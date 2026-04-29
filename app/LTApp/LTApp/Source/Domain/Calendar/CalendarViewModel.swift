@@ -38,20 +38,6 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         debugPrint("deinit-CalendarViewModel")
     }
     
-    func queryCurrenntIconStatus(_ iconId: String) {
-        Task.detached {
-            try await self.fetchData()
-            let streams = self.service.queryIconStatusUseCase.execute(iconId)
-            for try await stream in streams {
-                await MainActor.run {
-                    self.todayUpdatingIcon = stream.toDomain()
-                }
-            }
-            try await self.fetchData()
-        }
-    }
-    
-    
     @MainActor
     func organize() -> [Question] {
         let count = self.todayQuestions.count

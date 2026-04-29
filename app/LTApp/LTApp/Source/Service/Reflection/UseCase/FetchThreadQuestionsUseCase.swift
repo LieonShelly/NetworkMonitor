@@ -59,6 +59,7 @@ extension ThreadQuestion {
     func toThreadItem() -> ThreadQuestionItem {
         if answers.count > 1 {
             let otherAnswerItems = Array(answers[1 ..< answers.count])
+                .filter { $0.icon != nil }
                 .map {ThreadAnswerItem(type: .noraml($0))}
             return ThreadQuestionItem(
                 id: id,

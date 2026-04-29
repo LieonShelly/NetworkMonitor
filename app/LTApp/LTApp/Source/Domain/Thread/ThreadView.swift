@@ -47,9 +47,11 @@ struct ThreadView: View {
                 }
             }
             .innerPageRoute($viewModel.subPageRoute)
-            .task {
-                try? await viewModel.fetchCategories()
-                try? await viewModel.fetchDataInCurrentCategory()
+            .onAppear {
+                Task.detached {
+                    try? await viewModel.fetchCategories()
+                    try? await viewModel.fetchDataInCurrentCategory()
+                }
             }
         }
     }
