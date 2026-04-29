@@ -46,11 +46,29 @@ final class ReflectionDetailViewModel: @preconcurrency BaseViewModelType, Observ
     @MainActor
     func generateTodayViewModel(_ questions: [Question]) -> TodayAnswerViewModel {
         let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
-            Task {
-            }
+            self?.queryCurrenntIconStatus(iconId)
             
         })
         return todayAnswerViewModel
+    }
+    
+    func queryCurrenntIconStatus(_ iconId: String) {
+        Task.detached {
+            try await self.fetchData()
+            let streams = self.service.queryIconStatusUseCase.execute(iconId)
+            for try await _ in streams {}
+            try await self.fetchData()
+        }
+    }
+    
+    func markIconAsRead(_ answer: Answer) {
+        guard answer.icon?.readAt == nil else { return }
+        Task {
+            try? await Task.sleep(for: .milliseconds(500))
+            guard let icon = answer.icon, let iconId = icon.iconId else { return }
+            let _ = try? await service.markIconReadUseCase.execute(iconId)
+            try? await fetchData()
+        }
     }
     
     func checkIconStatusInCurrentQuestionList(_ answers: [Answer]) {

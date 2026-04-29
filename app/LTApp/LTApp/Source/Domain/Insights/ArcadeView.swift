@@ -30,8 +30,8 @@ struct ArcadeView: View, ImageCacheKeyType {
             screen
             controlPanel
         }
-        .onFirstAppear {
-            Task {
+        .onAppear {
+            Task.detached {
                 try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
                 try? await viewModel.fetchHistory()
                 await viewModel.refreshArcadeState()

@@ -86,13 +86,12 @@ struct ReflectionDetailView: View {
                 totalView
                 LazyVStack(spacing: .zero) {
                     ForEach(viewModel.answers, id: \.uid) { answer in
-                        DetailAnswerRow(answer: answer)
+                        DetailAnswerRow(answer: answer) {
+                            viewModel.route(.answerDetail(.init(answer: answer, question: viewModel.question, service: viewModel.service)))
+                            viewModel.markIconAsRead(answer)
+                        }
                             .contentShape(.rect)
                             .transition(.opacity.animation(.easeInOut))
-                            .onTapGesture {
-                                viewModel.route(.answerDetail(.init(answer: answer, question: viewModel.question, service: viewModel.service)))
-                            }
-                           
                             .onLongPressGesture(minimumDuration: 0.5) {
                                 showDelete = true
                                 viewModel.longPressAnswer = answer
