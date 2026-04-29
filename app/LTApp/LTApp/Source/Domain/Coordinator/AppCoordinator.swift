@@ -102,7 +102,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
         rootViewProvider.root
             .sink { [weak self] root in
                 withAnimation(.easeInOut(duration: 0.5)) {
-                    self?.root = root
+                    self?.root = .preHome
                 }
             }
             .store(in: &cancellables)

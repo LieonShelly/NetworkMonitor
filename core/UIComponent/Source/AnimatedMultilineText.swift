@@ -9,6 +9,8 @@ public struct AnimatedMultilineText: View {
     let font: UIFont
     var textColor: Color = AppColor.textPrimary
     let animationDuration: Double = 0.5
+    let characterDelay: Double = 0.05
+    let lineBreakDelay: Double = 0.12
     let alignment: TextAlignment = .center
     let animationCompleted: (() -> Void)
     private let width: CGFloat
@@ -84,11 +86,10 @@ public struct AnimatedMultilineText: View {
     }
     
     func delayDuration(currentRowIndex: Int, charIndex: Int) -> Double {
-        let animationDuration: Double = animationDuration
         let preLinesDuration: Double = lines[0 ..< currentRowIndex].reduce(0) { total, line in
-            return total + animationDuration + 0.05 * Double(line.count)
+            return total + lineBreakDelay + characterDelay * Double(line.count)
         }
-        let currentColumnDuration = Double(charIndex) * 0.05
+        let currentColumnDuration = Double(charIndex) * characterDelay
         return preLinesDuration + currentColumnDuration
     }
 }
