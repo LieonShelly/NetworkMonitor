@@ -24,10 +24,13 @@ struct CoinIconView: View {
             .stroke(AppColor.color(hex: 0x000000), lineWidth: 1)
             .frame(width: 28, height: 28)
             .overlay(content: {
-                ThumbnailIconImageView(url: url, processorIdentifier: processorId) {
-                    
+                
+                VStack {
+                    ThumbnailIconImageView(url: url, processorIdentifier: processorId) {
+                        
+                    }
+                    .frame(width: 18, height: 18)
                 }
-                .frame(width: 18, height: 18)
             })
             .background {
                 Circle()

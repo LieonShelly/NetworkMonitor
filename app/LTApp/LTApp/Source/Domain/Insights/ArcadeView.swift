@@ -132,7 +132,11 @@ struct ArcadeView: View, ImageCacheKeyType {
             
             Group {
                 if shouldAutoPlay {
-                    InfiniteMarqueeView(contentWidth: contentWidth, spacing: 6, paddingLeading: 14, paddingVertical: 10) {
+                    InfiniteMarqueeView(
+                        contentWidth: contentWidth,
+                        spacing: 6,
+                        paddingLeading: 14, paddingVertical: 10
+                    ) {
                         iconContent
                     }
                 } else {
