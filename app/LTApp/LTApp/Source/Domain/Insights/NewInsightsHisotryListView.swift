@@ -98,7 +98,7 @@ struct NewInsightsHistoryListView: View {
     @ViewBuilder
     private var iconRow: some View {
         let processorId = "metal.icon.processor.v3_thickness_2"
-        ScrollView(.horizontal) {
+        ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
                 ForEach(0..<viewModel.weeklyIcons.count, id: \.self) { index in
                     let iconStyle = viewModel.weeklyIcons[index]

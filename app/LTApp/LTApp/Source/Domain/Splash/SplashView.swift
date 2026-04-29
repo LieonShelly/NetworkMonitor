@@ -9,11 +9,12 @@ import AudioToolbox
 
 struct SplashView: View {
     enum CurrentPage {
+        case first
         case second
         case third
     }
     @EnvironmentObject var coordinator: PreHomeCoordinator
-    @State var currentPage: CurrentPage = .second
+    @State var currentPage: CurrentPage = .first
     @StateObject var viewModel: SplashViewModel
     
     init(viewModel: SplashViewModel) {
@@ -24,6 +25,8 @@ struct SplashView: View {
         VStack {
             if viewModel.sentence != nil {
                 switch currentPage {
+                case .first:
+                    firstScreen
                 case .second:
                     secondScreen
                 case .third:
@@ -37,6 +40,19 @@ struct SplashView: View {
                 await viewModel.fetchData()
             }
     }
+    
+    var firstScreen: some View {
+        AnimatedMultilineText(
+            text: viewModel.sentence?.page1st ?? "big thoughts, tiny moments.",
+            font: AppFont.heading.uifont,
+            width: 220) {
+                withAnimation(.easeInOut(duration: 0.4)) {
+                    currentPage = .second
+                }
+            }
+            .transition(.asymmetric(insertion: .identity, removal: .move(edge: .leading)).combined(with: .opacity))
+    }
+    
     
     var secondScreen: some View {
         AnimatedMultilineText(

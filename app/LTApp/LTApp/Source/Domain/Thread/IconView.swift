@@ -13,11 +13,12 @@ import Common
 struct AnswerIconView: View {
     var answer: Answer
     var size: CGSize = .init(width: 24, height: 24)
+    var onTap: (() -> Void)?
     
-    
-    init(answer: Answer, size: CGSize = .init(width: 24, height: 24)) {
+    init(answer: Answer, size: CGSize = .init(width: 24, height: 24), onTap: (() -> Void)?) {
         self.answer = answer
         self.size = size
+        self.onTap = onTap
     }
     
     var body: some View {
@@ -27,7 +28,7 @@ struct AnswerIconView: View {
     @ViewBuilder
     func iconView(_ answer: Answer, size: CGSize = .init(width: 24, height: 24)) -> some View {
       
-        IconView(iconData: answer.icon, size: size)
+        IconView(iconData: answer.icon, size: size, showLockIcon: true, onTap: onTap)
     }
 }
 
@@ -35,13 +36,15 @@ struct IconView: View {
     var iconData: IconData?
     var size: CGSize = .init(width: 24, height: 24)
     var onTap: (() -> Void)?
+    private let showLockIcon: Bool
     @State private var isUnlocking = false
     
     
-    init(iconData: IconData?, size: CGSize = .init(width: 24, height: 24), onTap: (() -> Void)? = nil) {
+    init(iconData: IconData?, size: CGSize = .init(width: 24, height: 24), showLockIcon: Bool = true, onTap: (() -> Void)? = nil) {
         self.iconData = iconData
         self.size = size
         self.onTap = onTap
+        self.showLockIcon = showLockIcon
     }
     
     var body: some View {
@@ -50,7 +53,7 @@ struct IconView: View {
     
     @ViewBuilder
     func iconView(_ iconData: IconData?, size: CGSize = .init(width: 24, height: 24)) -> some View {
-        Group {
+        VStack {
             if let icon = iconData {
                 switch icon.status {
                 case .pending:
@@ -58,27 +61,34 @@ struct IconView: View {
                 case .failed:
                     EmptyView()
                 case .generated:
-                  if iconData?.readAt == nil {
-                        if isUnlocking {
-                            unlockingAnimatedView
-                        } else {
-                            lockView
-                                .contentShape(Rectangle().inset(by: -10))
-                                .onTapGesture {
-                                    isUnlocking = true
-                                    Task {
-                                        try? await Task.sleep(for: .seconds(1))
-                                        onTap?()
-                                        try? await Task.sleep(for: .seconds(1))
-                                        isUnlocking = false
-                                    }
-                                }
-                        }
+                    if showLockIcon {
+                        if iconData?.readAt == nil {
+                              if isUnlocking {
+                                  unlockingAnimatedView
+                              } else {
+                                  lockView
+                                      .contentShape(Rectangle().inset(by: -10))
+                                      .onTapGesture {
+                                          isUnlocking = true
+                                          Task {
+                                              try? await Task.sleep(for: .seconds(1))
+                                              onTap?()
+                                              try? await Task.sleep(for: .seconds(1))
+                                              isUnlocking = false
+                                          }
+                                      }
+                              }
+                          } else {
+                              if let url = icon.url {
+                                  ThumbnailIconImageView(url: url) { }
+                              }
+                          }
                     } else {
                         if let url = icon.url {
                             ThumbnailIconImageView(url: url) { }
                         }
                     }
+               
                 }
             }
         }

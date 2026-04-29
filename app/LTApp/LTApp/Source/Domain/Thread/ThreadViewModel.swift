@@ -60,7 +60,16 @@ final class ThreadViewModel: ObservableObject, @unchecked Sendable, @preconcurre
        self.checkIconStatusInCurrentQuestionList(questionList)
     }
     
-
+    func markIconAsRead(_ answer: Answer) {
+        guard answer.icon?.readAt == nil else { return }
+        Task {
+            try? await Task.sleep(for: .milliseconds(500))
+            guard let icon = answer.icon, let iconId = icon.iconId else { return }
+            let _ = try? await service.markIconReadUseCase.execute(iconId)
+            try? await fetchDataInCurrentCategory()
+        }
+    }
+    
     @MainActor
     func didTapShowMore(_ question: ThreadQuestionItem) {
         showHandlingMap[question.id] = !(showHandlingMap[question.id] ?? false)

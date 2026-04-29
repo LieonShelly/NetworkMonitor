@@ -70,7 +70,7 @@ extension WeeklyReportDTO {
             reflectionCount: reflectionCount,
             readAt: readAtDate,
             reportJson: reportJson.toDomain(),
-            icons: icons.map { $0.toDomain() },
+            icons: icons.map { $0.toDomain(.generated) },
             count: count?.toDomain()
         )
     }

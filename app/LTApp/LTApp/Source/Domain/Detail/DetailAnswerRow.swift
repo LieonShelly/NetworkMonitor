@@ -8,6 +8,7 @@ import UIComponent
 
 struct DetailAnswerRow: View {
     let answer: Answer
+    var onTap: (() -> Void)?
     
     var body: some View {
         HStack(alignment: .top, spacing: .zero) {
@@ -31,7 +32,7 @@ struct DetailAnswerRow: View {
     
     var iconView: some View {
         VStack(spacing: .zero) {
-            AnswerIconView(answer: answer)
+            AnswerIconView(answer: answer, onTap: onTap)
             line(answer)
                 .padding(.vertical, 8)
         }

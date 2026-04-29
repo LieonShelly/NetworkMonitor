@@ -138,10 +138,10 @@ struct ThreadView: View {
                         addNewBtn(question)
                     case let .noraml(answer):
                         AnswerIconView(answer: answer,
-                                 size: .init(width: Constants.iconSize, height: Constants.iconSize))
-                            .onTapGesture {
-                                onTapAnswerAction?(.init(answer: answer, question: .init(id: question.id, title: question.title), service: viewModel.service))
-                            }
+                                       size: .init(width: Constants.iconSize, height: Constants.iconSize)) {
+                            viewModel.markIconAsRead(answer)
+                            onTapAnswerAction?(.init(answer: answer, question: .init(id: question.id, title: question.title), service: viewModel.service))
+                        }
                     case .placeholder:
                         Rectangle()
                             .fill(Color.clear)
@@ -362,12 +362,11 @@ struct ThreadView: View {
         if let answerItem = question.latestAnswerItem, let answer = answerItem.answer {
             HStack(alignment: .top, spacing: .zero) {
                 AnswerIconView(answer: answer,
-                         size: .init(width: Constants.iconSize, height: Constants.iconSize))
-                    .onTapGesture {
-                        let question = question.toQuestion()
-                        onTapAnswerAction?(.init(answer: answer, question: .init(id: question.id, title: question.title), service: viewModel.service))
-                    }
-                
+                               size: .init(width: Constants.iconSize, height: Constants.iconSize)) {
+                    let question = question.toQuestion()
+                    onTapAnswerAction?(.init(answer: answer, question: .init(id: question.id, title: question.title), service: viewModel.service))
+                    viewModel.markIconAsRead(answer)
+                }
                 Text(answer.content)
                     .multilineTextAlignment(.leading)
                     .textStyle(font: .body, color: AppColor.greyMedium)

@@ -30,7 +30,7 @@ struct PaperView: View {
                 line(axis: .vertical, segmentCount: 200, seed: 800)
             }
         })
-        .background(AppColor.white)
+        .defaultBackground()
         .shadow(color: AppColor.color(hex: 0x5E5E5E, alpha: 0.25), radius: 25, x: 0, y: 6.88)
         .padding(.horizontal, value(32))
         .defaultBackground()
@@ -41,7 +41,7 @@ struct PaperView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: value(6)) {
                 ForEach(report.icons, id: \.iconId) { iconData in
-                    IconView(iconData: iconData)
+                    IconView(iconData: iconData, showLockIcon: false)
                 }
             }
         }

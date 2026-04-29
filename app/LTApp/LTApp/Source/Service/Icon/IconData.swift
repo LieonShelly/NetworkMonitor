@@ -27,13 +27,13 @@ extension IconGeneratingStatus {
 }
 
 extension IconDto {
-    func toDomain() -> IconData {
+    func toDomain(_ outstatus: IconStatus = .failed) -> IconData {
         let readAtDate: Date? = {
             guard let readAt else { return nil }
             return AppDateFormatter.iso8601.date(from: readAt)
         }()
         return  .init(
-            status: .init(rawValue: status?.rawValue ?? "") ?? .failed,
+            status: .init(rawValue: status?.rawValue ?? "") ?? outstatus,
             url: url ?? "",
             iconId: id,
             readAt: readAtDate

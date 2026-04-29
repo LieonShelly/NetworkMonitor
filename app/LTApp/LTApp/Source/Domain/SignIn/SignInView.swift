@@ -49,21 +49,21 @@ struct SignInView: View {
     }
     
     var title: some View {
-        Text( viewModel.sentence?.page1st ?? "the little things")
+        Text("the little things")
             .textStyle(size: 36, fontFamily: .littleThing)
     }
     
     var signInBtn: some View {
         Button {
-//            Task {
-//                try? await viewModel.loginWithApple(authorizationCode: "", identityToken: "")
-//            }
+            Task {
+                try? await viewModel.loginWithApple(authorizationCode: "c06952f550b694c578857b3c766e7881f.0.srxxu.hNwt3UNVrW3MsHoEoZSCOA", identityToken: "eyJraWQiOiI1aXEzM2xKQllqIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmxpdHRsZS50aGluZ3MiLCJleHAiOjE3Nzc1MzM1MTUsImlhdCI6MTc3NzQ0NzExNSwic3ViIjoiMDAxNzc0LmZiNmI2MWIyOTkyZTQ2ODM4YmVlMzRlNzgxYTZhMTE0LjEwMjEiLCJjX2hhc2giOiJFQkUtM252Z2p6UTUtN1FaUEdRVUN3IiwiZW1haWwiOiJieGJiZGR4eW40QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc19wcml2YXRlX2VtYWlsIjp0cnVlLCJhdXRoX3RpbWUiOjE3Nzc0NDcxMTUsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.vUqGujGpgqg6S7_FYAj18yGSiVPd_LsbGn5c4UdLzfKgypQwjd_mVktVDcIf606YtlQgRwjixFl-U5GQTUIxDikhjlO1mPKGSen8Oy0vE5B_8q9QtSpU48u7adMAjY5NUhCyH8x-YyunZ3Dfoc159e9fyfHMFeaEAyRusxRXuILTh9CJiKSHtFUwm0XNpA3fpnRETrQknhBtR6Tc9siFuAlWmeAOl91UwWvAb9ZaA4ETbUJt_W44KyTdEfKKdgGXEtKu5oDM0FAB7La2-YO311Fh-80KBbHGauGMFV5QPTqCeeW_p5NAf6JqdMvtZ1Gw0RiDzJC9FvEt3KsTMaN1bw")
+            }
             let provider = ASAuthorizationAppleIDProvider()
             let request = provider.createRequest()
             request.requestedScopes = [.fullName, .email]
             let controller = ASAuthorizationController(authorizationRequests: [request])
             controller.delegate = viewModel
-            controller.performRequests()
+//            controller.performRequests()
         } label: {
             HStack(spacing: 5) {
                 Image(systemName: "apple.logo")

@@ -26,7 +26,7 @@ struct OnboardingNotificationView: View {
             loadingView
             
             Spacer()
-            Text("A unique icon is being created based on what you wrote, we will let you know when it’s ready! ")
+            Text("Your memory is taking shape. We’ll let you know when it’s ready.")
                 .textStyle(font: .body, color: AppColor.color(hex: 0x323232))
                 .padding(.bottom, 16)
                 .padding(.horizontal, 32)
