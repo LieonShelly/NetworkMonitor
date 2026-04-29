@@ -32,8 +32,8 @@ final class HomeCoordinator: Coordinator, ObservableObject, Sendable {
             return AnyView(QuestionLibView(viewModel: QuestionLibViewModel(service: appDataService)))
         case .questioDetail:
             return AnyView(QuestionLibView(viewModel: QuestionLibViewModel(service: appDataService)))
-        case let .reflectionDetail(questionId, title):
-            return AnyView(ReflectionDetailView(viewModel: .init(service: appDataService, questionId: questionId, title: title)))
+        case let .reflectionDetail(question):
+            return AnyView(ReflectionDetailView(viewModel: .init(service: appDataService, question: question)))
         case let .addNewAnswer(question):
             return AnyView(
                 AnwserQuestionView(viewModel: .init(question: question, service: appDataService))
@@ -51,7 +51,7 @@ enum HomeRoute: Route {
     case home
     case questionLib
     case questioDetail
-    case reflectionDetail(questionId: String, title: String)
+    case reflectionDetail(question: Question)
     case addNewAnswer(question: Question)
 }
 

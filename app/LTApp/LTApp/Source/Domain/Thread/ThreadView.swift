@@ -247,8 +247,7 @@ struct ThreadView: View {
         .onTapGesture {
             homeCoordinator.push(
                 HomeRoute.reflectionDetail(
-                    questionId: question.id,
-                    title: question.title
+                    question: question.toQuestion()
                 )
             )
         }

@@ -20,13 +20,12 @@ final class ReflectionDetailViewModel: @preconcurrency BaseViewModelType, Observ
     @MainActor
     init(
         service: any AppDataWithAuthorizationServiceful,
-        questionId: String,
-        title: String
+        question: Question
     ) {
         self.service = service
-        self.questionId = questionId
-        self.title = title
-        question = Question(id: questionId, title: title)
+        self.questionId = question.id
+        self.title = question.title
+        self.question = question
     }
     
     func fetchData() async throws {

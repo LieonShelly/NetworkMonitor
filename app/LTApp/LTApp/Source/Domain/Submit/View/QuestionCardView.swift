@@ -11,10 +11,12 @@ struct QuestionCardView: View {
     
     var body: some View {
         VStack {
-            Text("# \(question.category?.name ?? "")")
-                .textStyle(font: .section, color: AppColor.color(hex: 0xADA35F))
-                .padding(.top, 10)
-            Spacer()
+            if let name = question.category?.name {
+                Text("# \(name)")
+                    .textStyle(font: .section, color: AppColor.color(hex: 0xADA35F))
+                    .padding(.top, 10)
+                Spacer()
+            }
         }
         .frame(maxWidth: .infinity)
         .background {
