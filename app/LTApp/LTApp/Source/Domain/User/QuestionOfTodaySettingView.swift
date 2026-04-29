@@ -30,6 +30,7 @@ struct QuestionOfTodaySettingView: View {
                             strategyRow(item)
                         }
                     }
+                    .frame(maxWidth: .infinity)
                     .padding(.top, 24)
                 }
                 .padding(.horizontal, 32)

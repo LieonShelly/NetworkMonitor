@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol FetchQodStrategyOptionsUseCaseType {
+public protocol FetchQodStrategyOptionsUseCaseType: Sendable {
     func execute() async -> [QuestionOfTodaySettingItem]
 }
 

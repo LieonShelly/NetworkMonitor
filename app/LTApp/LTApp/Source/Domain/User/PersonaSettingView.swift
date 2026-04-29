@@ -31,6 +31,7 @@ struct PersonaSettingView: View {
                             personaRow(persona)
                         }
                     }
+                    .frame(maxWidth: .infinity)
                     .padding(.top, 24)
                 }
                 .padding(.horizontal, 32)

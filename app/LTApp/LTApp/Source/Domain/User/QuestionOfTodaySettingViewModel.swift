@@ -6,6 +6,7 @@
 import SwiftUI
 import Combine
 
+@MainActor
 class QuestionOfTodaySettingViewModel: ObservableObject, @unchecked Sendable {
     let dataService: any AppDataWithAuthorizationServiceful
     @MainActor @Published var list: [QuestionOfTodaySettingItem] = []
@@ -21,23 +22,25 @@ class QuestionOfTodaySettingViewModel: ObservableObject, @unchecked Sendable {
     
     init(dataService: any AppDataWithAuthorizationServiceful) {
         self.dataService = dataService
-    }
-    
-    @MainActor
-    func fetchData() async throws {
-        let list = await dataService.fetchQodStrategyOptionsUseCase.execute()
         dataService
             .userManagementService
             .user
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] userInfo in
                 guard let self else { return }
-                self.list = list
                 if let strategy = userInfo?.qodStrategy.rawValue {
                     self.selectedValue = strategy
                     self.originalSelectedValue = strategy
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    @MainActor
+    func fetchData() async throws {
+        let list = await dataService.fetchQodStrategyOptionsUseCase.execute()
+        try? await dataService.userManagementService.fetchUserInfo()
+        self.list = list
     }
     
     @MainActor

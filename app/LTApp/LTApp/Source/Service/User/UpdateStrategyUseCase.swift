@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol UpdateStrategyUseCaseType {
+public protocol UpdateStrategyUseCaseType: Sendable {
     func execute(_ strategy: String) async
 }
 
