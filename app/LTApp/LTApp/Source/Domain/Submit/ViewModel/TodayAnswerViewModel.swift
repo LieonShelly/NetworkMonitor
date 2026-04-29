@@ -20,7 +20,7 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var createAt: Date?
     @MainActor @Published var pageState: PageState = .unsubmit
     var submittedViewModel: TodayAnswerSubmittedViewModel?
-    
+    var submitted: Bool = false
     private var submittedAction: ((_ iconId: String) -> Void)?
     let title: String
     let service: any AppDataWithAuthorizationServiceful
@@ -64,6 +64,10 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
     
     
     func submit() async throws {
+        if submitted {
+            return
+        }
+        submitted = true
         await MainActor.run {
             createAt = Date()
         }
