@@ -255,73 +255,59 @@ let fileSink = LTFileLogSink(configuration: .init(
 
 ### 内部逻辑流程
 
-```plantuml
-@startuml
-skinparam activity {
-    BackgroundColor White
-    BorderColor #333333
-    ArrowColor #666666
-}
+```mermaid
+flowchart TD
+    %% 外部触发路径
+    Timer([定时器触发]) -.-> FlushQueue
+    Lifecycle([App 生命周期触发]) -.-> FlushQueue
+    Manual([手动触发 flush]) -.-> FlushQueue
 
-title LTFileLogSink 核心逻辑流程图
+    %% 主流程开始
+    Start([开始: log]) --> Log{等级 >= minimumLevel?}
+    Log -- 否 --> End([结束])
+    Log -- 是 --> Async[派发到私有串行队列]
+    
+    subgraph Enqueue [入队处理: enqueue]
+        Async --> Encode[JSON 编码 + 换行符]
+        Encode --> CheckSize{单条 > 缓冲上限?}
+        CheckSize -- 是 --> FlushDirect[flushOnQueue]
+        FlushDirect --> WriteDirect[write 写单条数据]
+        WriteDirect --> End
+        
+        CheckSize -- 否 --> AddBuffer[进入 buffer 数组]
+        AddBuffer --> Enforce[容量限制 enforceBufferLimits]
+        Enforce --> ShouldFlush{满足 flush 阈值?}
+        ShouldFlush -- 是 --> FlushQueue[flushOnQueue]
+        ShouldFlush -- 否 --> End
+    end
+    
+    subgraph Flush [数据聚合: flushOnQueue]
+        FlushQueue --> IsEmpty{buffer 不为空?}
+        IsEmpty -- 否 --> End
+        IsEmpty -- 是 --> Agg[聚合 buffer 为 Data]
+        Agg --> Reset[清空 buffer & 重置计数]
+        Reset --> Write[调用 write 方法]
+    end
+    
+    subgraph Disk [磁盘写入: write]
+        Write --> NeedRotate{文件是否过大?}
+        NeedRotate -- 是 --> Rotate[轮转 rotateIfNeeded]
+        Rotate --> Open[打开文件句柄]
+        NeedRotate -- 否 --> Open
+        Open --> WriteFile[写入 Data 到文件末尾]
+        WriteFile --> UpdateSize[更新文件大小计数]
+        UpdateSize --> NeedPurge{触发了轮转?}
+        NeedPurge -- 是 --> Purge[清理旧文件 purgeOldFiles]
+        Purge --> End
+        NeedPurge -- 否 --> End
+    end
 
-start
-
-:**log(event)**;
-if (等级 >= minimumLevel?) then (是)
-    :派发到私有串行队列 (**queue.async**);
-    partition "enqueue(event)" {
-        :JSON 编码 + 拼接换行符;
-        if (单条数据 > maxBufferedBytes?) then (是)
-            :**flushOnQueue()**;
-            :直接写入文件 **write(record)**;
-        else (否)
-            :进入 buffer 数组;
-            :执行容量限制 **enforceBufferLimits()**;
-            note right: 根据策略丢弃最旧/最新
-            if (满足 flush 阈值?) then (是)
-                note left: 数量或字节数达到配置阈值
-                :执行异步落盘 **flushOnQueue()**;
-            endif
-        endif
-    }
-else (否)
-    stop
-endif
-
-partition "flushOnQueue()" {
-    if (buffer 不为空?) then (是)
-        :聚合 buffer 为连续 Data 对象;
-        :清空 buffer 并重置计数;
-        :调用 **write(data)**;
-    endif
-}
-
-partition "write(data)" {
-    if (写入后大小 > maximumFileSize?) then (是)
-        :执行文件轮转 **rotateIfNeeded()**;
-        note right: 关闭旧句柄，生成新 URL
-    endif
-    :获取或打开当前文件句柄;
-    :写入 Data 到文件末尾;
-    :更新已写入字节计数;
-    if (已触发轮转?) then (是)
-        :清理旧文件 **purgeOldFiles()**;
-        note right: 保持文件总数在 maximumFileCount 以内
-    endif
-}
-
-stop
-
-legend right
-  **其它触发 flush 的路径:**
-  * 定时器触发: 基于 flushInterval 定期执行
-  * 生命周期触发: App 进入后台或即将终止时强制同步
-  * 手动触发: 显式调用 flush() 或 flushAndWait()
-endlegend
-
-@enduml
+    %% 样式美化
+    style Enqueue fill:#f9f9f9,stroke:#333
+    style Flush fill:#f0f7ff,stroke:#005cc5
+    style Disk fill:#fff5f5,stroke:#d73a49
 ```
+
 
 
 `includeNonExportableEvents` 设为 `true` 时，普通 `OSLogMessage` 入口也会生成文件事件，但这类事件没有 `message` 文本，只包含等级、category、环境、文件名、函数名、行号等元信息。
