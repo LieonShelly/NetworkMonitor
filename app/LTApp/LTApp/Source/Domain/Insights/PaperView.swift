@@ -23,14 +23,23 @@ struct PaperView: View {
                 remindersView(report: weeklyReport)
             }
         }
+        .background(AppColor.oat)
+        .clipShape(bottomWaveMask)
         .overlay(content: {
             HStack {
                 line(axis: .vertical, segmentCount: 200, seed: 800)
                 Spacer()
                 line(axis: .vertical, segmentCount: 200, seed: 800)
             }
+            .clipShape(bottomWaveMask)
         })
-        .defaultBackground()
+        .overlay(alignment: .bottom) {
+            BottomWaveStroke(scallopRadius: value(10), bottomInset: value(2), edgeInset: value(8))
+                .stroke(
+                    AppColor.color(hex: 0x000000),
+                    style: StrokeStyle(lineWidth: isSmall ? 1 : 1.7, lineCap: .butt, lineJoin: .round)
+                )
+        }
         .shadow(color: AppColor.color(hex: 0x5E5E5E, alpha: 0.25), radius: 25, x: 0, y: 6.88)
         .padding(.horizontal, value(32))
         .defaultBackground()
@@ -191,15 +200,11 @@ struct PaperView: View {
         }
         .padding(.horizontal, value(20))
         .padding(.vertical, value(42))
-        
-        Image(.subtract)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(height: value(20))
-            .frame(maxWidth: .infinity)
-            .offset(y: 2)
     }
         
+    private var bottomWaveMask: some Shape {
+        BottomWaveMask(scallopRadius: value(10), bottomInset: value(2), edgeInset: value(8))
+    }
     
     func line(axis: Axis, segmentCount: Int = 100, seed: Int = 400) -> some View {
         WavyLine(segmentCount: isSmall ? segmentCount / 2: segmentCount, seed: isSmall ? Int(seed / 2): seed, axis: axis)
@@ -220,3 +225,96 @@ struct PaperView: View {
     }
 }
 
+private struct BottomWaveMask: Shape {
+    let scallopRadius: CGFloat
+    let bottomInset: CGFloat
+    let edgeInset: CGFloat
+    
+    func path(in rect: CGRect) -> Path {
+        let layout = BottomWaveLayout(
+            rect: rect,
+            preferredRadius: scallopRadius,
+            bottomInset: bottomInset,
+            edgeInset: edgeInset
+        )
+        
+        var path = Path()
+        path.move(to: .init(x: rect.minX, y: rect.minY))
+        path.addLine(to: .init(x: rect.maxX, y: rect.minY))
+        path.addLine(to: .init(x: rect.maxX, y: layout.centerY))
+        path.addLine(to: .init(x: layout.rightWaveEndX, y: layout.centerY))
+        
+        for index in stride(from: layout.count - 1, through: 0, by: -1) {
+            let centerX = layout.waveStartX + layout.radius + CGFloat(index) * layout.diameter
+            path.addArc(
+                center: .init(x: centerX, y: layout.centerY),
+                radius: layout.radius,
+                startAngle: .degrees(0),
+                endAngle: .degrees(180),
+                clockwise: true
+            )
+        }
+        
+        path.addLine(to: .init(x: layout.leftWaveStartX, y: layout.centerY))
+        path.addLine(to: .init(x: rect.minX, y: layout.centerY))
+        path.closeSubpath()
+        return path
+    }
+}
+
+private struct BottomWaveStroke: Shape {
+    let scallopRadius: CGFloat
+    let bottomInset: CGFloat
+    let edgeInset: CGFloat
+    
+    func path(in rect: CGRect) -> Path {
+        let layout = BottomWaveLayout(
+            rect: rect,
+            preferredRadius: scallopRadius,
+            bottomInset: bottomInset,
+            edgeInset: edgeInset
+        )
+        
+        var path = Path()
+        path.move(to: .init(x: rect.maxX, y: layout.centerY))
+        path.addLine(to: .init(x: layout.rightWaveEndX, y: layout.centerY))
+        
+        for index in stride(from: layout.count - 1, through: 0, by: -1) {
+            let centerX = layout.waveStartX + layout.radius + CGFloat(index) * layout.diameter
+            path.addArc(
+                center: .init(x: centerX, y: layout.centerY),
+                radius: layout.radius,
+                startAngle: .degrees(0),
+                endAngle: .degrees(180),
+                clockwise: true
+            )
+        }
+        
+        path.addLine(to: .init(x: rect.minX, y: layout.centerY))
+        return path
+    }
+}
+
+private struct BottomWaveLayout {
+    let radius: CGFloat
+    let diameter: CGFloat
+    let count: Int
+    let centerY: CGFloat
+    let waveStartX: CGFloat
+    let leftWaveStartX: CGFloat
+    let rightWaveEndX: CGFloat
+    
+    init(rect: CGRect, preferredRadius: CGFloat, bottomInset: CGFloat, edgeInset: CGFloat) {
+        let safeRadius = max(1, preferredRadius)
+        let safeInset = max(0, edgeInset)
+        let waveWidth = max(safeRadius * 2, rect.width - safeInset * 2)
+        let estimatedCount = max(1, Int(round(waveWidth / (safeRadius * 2))))
+        count = estimatedCount
+        diameter = waveWidth / CGFloat(estimatedCount)
+        radius = diameter / 2
+        centerY = rect.maxY - radius - bottomInset
+        waveStartX = rect.minX + (rect.width - waveWidth) / 2
+        leftWaveStartX = waveStartX
+        rightWaveEndX = waveStartX + waveWidth
+    }
+}
