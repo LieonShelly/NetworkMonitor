@@ -68,6 +68,12 @@ PaymentLog.logger.info("Payment finished status=\(statusCode, privacy: .public)"
 PaymentLog.logger.error("Payment failed orderId=\(orderId, privacy: .private(mask: .hash))")
 ```
 
+如果当前日志内容已经确认可以明文展示，并且希望避开 `OSLogMessage` 插值的编辑器诊断噪音，可以使用 `public` 字符串入口：
+
+```swift
+PaymentLog.logger.info(public: "Payment finished status=\(statusCode)")
+```
+
 需要进入文件日志、远程日志或用户反馈导出的日志，使用 `exportable` 入口：
 
 ```swift
@@ -80,7 +86,7 @@ PaymentLog.logger.warning(
 )
 ```
 
-## 两类日志入口
+## 三类日志入口
 
 ### OSLogMessage 入口
 
@@ -92,6 +98,17 @@ logger.error("statusCode=\(statusCode, privacy: .public)")
 这类入口保留 Apple `OSLogMessage` 的编译器优化和隐私能力，适合绝大多数诊断日志。
 
 注意：`OSLogMessage` 无法被安全、完整地转换为普通 `String`。因此这类日志会写入系统日志，但不会带着原始文本进入 file sink 或 remote sink。
+
+### Public String 入口
+
+```swift
+logger.info(public: "screen=\(screenName)")
+logger.warning(public: "retryCount=\(retryCount)")
+```
+
+这类入口接收普通 `String`，并把整条消息作为 `.public` 内容写入 `OSLog.Logger`。它适合非敏感、临时诊断或不需要 `OSLogMessage` privacy 插值的场景，也能避开部分 Xcode SourceKit 对 `OSLogMessage` facade 的误报。
+
+注意：`public` 入口不会生成带 `message` 的 `LTLogEvent`，默认不会进入 file sink、remote sink 或用户反馈导出。需要导出的日志仍然使用 `exportable` 入口。
 
 ### Exportable 入口
 
@@ -213,7 +230,13 @@ let fileSink = LTFileLogSink(configuration: .init(
     maximumFileSize: 1024 * 1024,
     maximumFileCount: 5,
     minimumLevel: .notice,
-    includeNonExportableEvents: false
+    includeNonExportableEvents: false,
+    flushInterval: 5,
+    flushEventCount: 20,
+    flushByteCount: 64 * 1024,
+    maximumBufferedEventCount: 500,
+    maximumBufferedBytes: 512 * 1024,
+    overflowStrategy: .dropOldest
 ))
 ```
 
@@ -224,8 +247,22 @@ let fileSink = LTFileLogSink(configuration: .init(
 - 最多保留 5 个日志文件。
 - 只记录 `notice` 及以上等级。
 - 默认只记录 `exportable` 日志。
+- 日志先进入内存 buffer，不会每条日志都打开文件写入。
+- 满 20 条、满 64 KB、或每 5 秒自动批量 flush。
+- buffer 最多保留 500 条或 512 KB，超过后默认丢弃最旧记录。
+- App 进入后台、即将终止、用户反馈导出前会强制 flush。
+- 文件 sink 持有当前日志文件的 `FileHandle`，rotation 使用累计写入字节数判断，避免每条日志查询文件属性。
 
 `includeNonExportableEvents` 设为 `true` 时，普通 `OSLogMessage` 入口也会生成文件事件，但这类事件没有 `message` 文本，只包含等级、category、环境、文件名、函数名、行号等元信息。
+
+手动 flush：
+
+```swift
+fileSink.flush()
+fileSink.flushAndWait()
+```
+
+`flush()` 是异步落盘；`flushAndWait()` 会等待当前 buffer 写完，适合用户反馈导出前、调试验证或 App 生命周期收尾场景。全局 `LTLog.exportFeedbackLogs()` 会通过 `logFileURLs()` 自动触发 file sink flush。
 
 ## 用户反馈日志导出
 
@@ -465,6 +502,12 @@ logger.info("userId=\(userId, privacy: .private(mask: .hash))")
 logger.info("statusCode=\(statusCode, privacy: .public)")
 ```
 
+已确认可明文展示的普通字符串可以使用 `public` 入口：
+
+```swift
+logger.info(public: "statusCode=\(statusCode)")
+```
+
 Exportable 日志需要业务方自行保证内容已脱敏：
 
 ```swift
@@ -565,6 +608,7 @@ LTRemoteLogSink(
 - `subsystem` 使用宿主 App 的 bundle identifier。
 - 每个业务模块自行定义自己的 `category`。
 - 普通诊断日志使用 `OSLogMessage` 入口。
+- 已确认可明文展示且不需要导出的诊断日志，可以使用 `public` 字符串入口。
 - 需要导出的日志使用 `exportable` 入口。
 - 线上 remote sink 最低等级不低于 `.warning`。
 - 线上 remote sink 开启采样和限流。

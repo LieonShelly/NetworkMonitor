@@ -117,6 +117,69 @@ public struct LTLogger: Sendable {
     }
 
     public func trace(
+        public message: @autoclosure () -> String,
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logPublic(level: .trace, message: message, file: file, function: function, line: line)
+    }
+
+    public func debug(
+        public message: @autoclosure () -> String,
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logPublic(level: .debug, message: message, file: file, function: function, line: line)
+    }
+
+    public func info(
+        public message: @autoclosure () -> String,
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logPublic(level: .info, message: message, file: file, function: function, line: line)
+    }
+
+    public func notice(
+        public message: @autoclosure () -> String,
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logPublic(level: .notice, message: message, file: file, function: function, line: line)
+    }
+
+    public func warning(
+        public message: @autoclosure () -> String,
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logPublic(level: .warning, message: message, file: file, function: function, line: line)
+    }
+
+    public func error(
+        public message: @autoclosure () -> String,
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logPublic(level: .error, message: message, file: file, function: function, line: line)
+    }
+
+    public func fault(
+        public message: @autoclosure () -> String,
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logPublic(level: .fault, message: message, file: file, function: function, line: line)
+    }
+
+    public func trace(
         exportable message: @autoclosure () -> String,
         metadata: LTLogMetadata = [:],
         file: StaticString = #fileID,
@@ -184,6 +247,22 @@ public struct LTLogger: Sendable {
         line: UInt = #line
     ) {
         logExportable(level: .fault, message: message(), metadata: metadata, file: file, function: function, line: line)
+    }
+
+    private func logPublic(
+        level: LTLogLevel,
+        message: () -> String,
+        file: StaticString,
+        function: StaticString,
+        line: UInt
+    ) {
+        guard LTLogStore.shared.isEnabled(level) else {
+            return
+        }
+
+        let publicMessage = message()
+        logger(level).log(level: level.osLogType, "\(publicMessage, privacy: .public)")
+        record(level, nil, [:], file, function, line)
     }
 
     private func logExportable(

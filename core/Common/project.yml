@@ -13,7 +13,9 @@ targets:
     type: framework
     platform: iOS
     sources:
-      - Source
+      - path: Source
+        excludes:
+          - "**/README.md"
     settings:
       groups:
         - BaseTargetSetting

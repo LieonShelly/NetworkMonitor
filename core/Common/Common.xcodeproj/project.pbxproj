@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		025B86FE3DB2758F98467F87 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FD28026B152C555FB6D00011 /* README.md */; };
 		0DB99392B36CBCB04C5F43AA /* LTLogConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F3D8780031CC88482B482E /* LTLogConfiguration.swift */; };
 		1BDF30A0A2D03BB11DFC38EF /* URLSchemeProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A83F04B4FBE2608F40BCA1 /* URLSchemeProbe.swift */; };
 		33F352E97DFA403C3B7A5A06 /* FeatureRolloutStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF1944D74D70ACF52E4FF8A /* FeatureRolloutStage.swift */; };
@@ -23,7 +22,6 @@
 		8A4EDB8C7BF762D1242C4938 /* FeatureToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958161FBD9C0E970D1BFC379 /* FeatureToggle.swift */; };
 		9F5D9FAC7BF46A22FA1063DD /* FetureConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE189BBA4F4EEB903EB8053 /* FetureConfig.swift */; };
 		A1D40DE2A41964505A039683 /* FeatureToggling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 091093EAE7C72DD6AB605489 /* FeatureToggling.swift */; };
-		A304340E567F6AB72E4E4ACA /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DB8F9E1551F3B4EB0DBBAC58 /* README.md */; };
 		B0BA691847D30212CE2B7920 /* Injected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8425DD95260652BF849FE448 /* Injected.swift */; };
 		B7D62A33FDAAE4727B97F436 /* LTLogFeedbackExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDC01950A44FDC469BB76DD /* LTLogFeedbackExporter.swift */; };
 		BCA688B150D6E12B1C472ECC /* LTFileLogSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B18415FAFFBD1918510DEE /* LTFileLogSink.swift */; };
@@ -67,11 +65,9 @@
 		CFE189BBA4F4EEB903EB8053 /* FetureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetureConfig.swift; sourceTree = "<group>"; };
 		D014FC01F6E85E536DAA182F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D465418924FEEF173F521D5D /* LTLogPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogPolicy.swift; sourceTree = "<group>"; };
-		DB8F9E1551F3B4EB0DBBAC58 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EB07425B3B2DE1EA9B83DBE0 /* LTLogEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogEvent.swift; sourceTree = "<group>"; };
 		F263B2F2B184FDB2EB43AE7F /* AppVariantType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVariantType.swift; sourceTree = "<group>"; };
 		F863FBEE27A749E502F2A72B /* DylibProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DylibProbe.swift; sourceTree = "<group>"; };
-		FD28026B152C555FB6D00011 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -101,7 +97,6 @@
 			isa = PBXGroup;
 			children = (
 				36BA215C52772A5F88EFCD40 /* EnvironmentConfig.swift */,
-				DB8F9E1551F3B4EB0DBBAC58 /* README.md */,
 				4B518D5EE2B36E7A845CCD68 /* Internal */,
 			);
 			path = JailBreakChecker;
@@ -123,7 +118,6 @@
 				3505F8BD3FA79A71AE76EFFC /* LTLogStore.swift */,
 				C8EE6DC48AF957B95F58DD48 /* LTRemoteLogSink.swift */,
 				1628351B6BADBD75F4427707 /* LTTestLogSink.swift */,
-				FD28026B152C555FB6D00011 /* README.md */,
 			);
 			path = Logger;
 			sourceTree = "<group>";
@@ -177,7 +171,6 @@
 			buildConfigurationList = 97BF576076886CD83B76B8B1 /* Build configuration list for PBXNativeTarget "Common" */;
 			buildPhases = (
 				C43FBAEB93088F1FA18F08DA /* Sources */,
-				BD50F1B05281191BCBDB2893 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -219,18 +212,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		BD50F1B05281191BCBDB2893 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				025B86FE3DB2758F98467F87 /* README.md in Resources */,
-				A304340E567F6AB72E4E4ACA /* README.md in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C43FBAEB93088F1FA18F08DA /* Sources */ = {

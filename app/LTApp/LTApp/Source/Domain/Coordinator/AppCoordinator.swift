@@ -75,6 +75,15 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
             tokenExpired: logoutInterceptor
         )
         self.notificationHandler = NotificationHandler()
+        LTLog.configure(
+            .init(
+                subsystem: "com.little.things",
+                minimumLevel: .trace,
+                environment: .production,
+                sinks: [
+                    LTFileLogSink()
+                ])
+        )
         self.inject()
         self.launch()
     }
@@ -144,4 +153,9 @@ enum AppRootType: Equatable, Hashable {
         default: return false
         }
     }
+}
+
+
+enum AppLog {
+    static let logger = LTLog.logger(category: "app")
 }
