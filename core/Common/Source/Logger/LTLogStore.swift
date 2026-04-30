@@ -12,6 +12,7 @@ final class LTLogStore: @unchecked Sendable {
 
     private let lock = NSRecursiveLock()
     private var configuration = LTLogConfiguration()
+    private var rateLimiter = LTLogRateLimiter(policy: .disabled)
 
     private init() { }
 
@@ -19,6 +20,8 @@ final class LTLogStore: @unchecked Sendable {
         lock.lock()
         defer { lock.unlock() }
         self.configuration = configuration
+        rateLimiter = LTLogRateLimiter(policy: configuration.rateLimitPolicy)
+        LTBreadcrumbStore.shared.configure(configuration.breadcrumbConfiguration)
     }
 
     func currentConfiguration() -> LTLogConfiguration {
@@ -34,7 +37,10 @@ final class LTLogStore: @unchecked Sendable {
             subsystem: configuration.subsystem,
             minimumLevel: minimumLevel,
             environment: configuration.environment,
-            sinks: configuration.sinks
+            sinks: configuration.sinks,
+            breadcrumbConfiguration: configuration.breadcrumbConfiguration,
+            samplingPolicy: configuration.samplingPolicy,
+            rateLimitPolicy: configuration.rateLimitPolicy
         )
     }
 
@@ -45,7 +51,10 @@ final class LTLogStore: @unchecked Sendable {
             subsystem: configuration.subsystem,
             minimumLevel: configuration.minimumLevel,
             environment: configuration.environment,
-            sinks: configuration.sinks + [sink]
+            sinks: configuration.sinks + [sink],
+            breadcrumbConfiguration: configuration.breadcrumbConfiguration,
+            samplingPolicy: configuration.samplingPolicy,
+            rateLimitPolicy: configuration.rateLimitPolicy
         )
     }
 
@@ -56,7 +65,10 @@ final class LTLogStore: @unchecked Sendable {
             subsystem: configuration.subsystem,
             minimumLevel: configuration.minimumLevel,
             environment: configuration.environment,
-            sinks: []
+            sinks: [],
+            breadcrumbConfiguration: configuration.breadcrumbConfiguration,
+            samplingPolicy: configuration.samplingPolicy,
+            rateLimitPolicy: configuration.rateLimitPolicy
         )
     }
 
@@ -70,11 +82,19 @@ final class LTLogStore: @unchecked Sendable {
         level: LTLogLevel,
         subsystem: String,
         category: String,
+        message: String? = nil,
+        metadata: LTLogMetadata = [:],
         file: StaticString,
         function: StaticString,
         line: UInt
     ) {
-        let snapshot: (environment: LTLogEnvironment, sinks: [any LTLogSink])? = {
+        let snapshot: (
+            environment: LTLogEnvironment,
+            sinks: [any LTLogSink],
+            breadcrumbConfiguration: LTBreadcrumbConfiguration,
+            samplingPolicy: LTLogSamplingPolicy,
+            rateLimiter: LTLogRateLimiter
+        )? = {
             lock.lock()
             defer { lock.unlock() }
 
@@ -82,10 +102,16 @@ final class LTLogStore: @unchecked Sendable {
                 return nil
             }
 
-            return (configuration.environment, configuration.sinks)
+            return (
+                configuration.environment,
+                configuration.sinks,
+                configuration.breadcrumbConfiguration,
+                configuration.samplingPolicy,
+                rateLimiter
+            )
         }()
 
-        guard let snapshot, snapshot.sinks.isEmpty == false else {
+        guard let snapshot else {
             return
         }
 
@@ -94,13 +120,32 @@ final class LTLogStore: @unchecked Sendable {
             subsystem: subsystem,
             category: category,
             environment: snapshot.environment,
+            message: message,
+            metadata: metadata,
             file: file.description,
             function: function.description,
             line: line
         )
 
+        if snapshot.breadcrumbConfiguration.shouldRecord(level: level) {
+            LTBreadcrumbStore.shared.record(event)
+        }
+
+        guard snapshot.sinks.isEmpty == false,
+              snapshot.samplingPolicy.shouldRecord(level: level),
+              snapshot.rateLimiter.allow(event.timestamp)
+        else {
+            return
+        }
+
         snapshot.sinks.forEach { sink in
             sink.log(event)
         }
+    }
+
+    func fileLogSinks() -> [LTFileLogSink] {
+        lock.lock()
+        defer { lock.unlock() }
+        return configuration.sinks.compactMap { $0 as? LTFileLogSink }
     }
 }

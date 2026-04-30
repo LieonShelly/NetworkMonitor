@@ -7,12 +7,16 @@
 
 import Foundation
 
-public struct LTLogEvent: Sendable, Equatable {
+public typealias LTLogMetadata = [String: String]
+
+public struct LTLogEvent: Codable, Sendable, Equatable {
     public let level: LTLogLevel
     public let subsystem: String
     public let category: String
     public let environment: LTLogEnvironment
     public let timestamp: Date
+    public let message: String?
+    public let metadata: LTLogMetadata
     public let file: String
     public let function: String
     public let line: UInt
@@ -23,6 +27,8 @@ public struct LTLogEvent: Sendable, Equatable {
         category: String,
         environment: LTLogEnvironment,
         timestamp: Date = Date(),
+        message: String? = nil,
+        metadata: LTLogMetadata = [:],
         file: String,
         function: String,
         line: UInt
@@ -32,6 +38,8 @@ public struct LTLogEvent: Sendable, Equatable {
         self.category = category
         self.environment = environment
         self.timestamp = timestamp
+        self.message = message
+        self.metadata = metadata
         self.file = file
         self.function = function
         self.line = line

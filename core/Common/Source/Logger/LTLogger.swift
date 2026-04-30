@@ -15,7 +15,7 @@ public struct LTLogger: Sendable {
     let logger: @Sendable (LTLogLevel) -> Logger
 
     @usableFromInline
-    let record: @Sendable (LTLogLevel, StaticString, StaticString, UInt) -> Void
+    let record: @Sendable (LTLogLevel, String?, LTLogMetadata, StaticString, StaticString, UInt) -> Void
 
     init(subsystem: String, category: String) {
         self.subsystem = subsystem
@@ -25,11 +25,13 @@ public struct LTLogger: Sendable {
         self.logger = { level in
             LTLogStore.shared.isEnabled(level) ? osLogger : .disabled
         }
-        self.record = { level, file, function, line in
+        self.record = { level, message, metadata, file, function, line in
             LTLogStore.shared.record(
                 level: level,
                 subsystem: subsystem,
                 category: category,
+                message: message,
+                metadata: metadata,
                 file: file,
                 function: function,
                 line: line
@@ -44,7 +46,7 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
-        record(.trace, file, function, line)
+        record(.trace, nil, [:], file, function, line)
         logger(.trace).trace(message)
     }
 
@@ -55,7 +57,7 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
-        record(.debug, file, function, line)
+        record(.debug, nil, [:], file, function, line)
         logger(.debug).debug(message)
     }
 
@@ -66,7 +68,7 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
-        record(.info, file, function, line)
+        record(.info, nil, [:], file, function, line)
         logger(.info).info(message)
     }
 
@@ -77,7 +79,7 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
-        record(.notice, file, function, line)
+        record(.notice, nil, [:], file, function, line)
         logger(.notice).notice(message)
     }
 
@@ -88,7 +90,7 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
-        record(.warning, file, function, line)
+        record(.warning, nil, [:], file, function, line)
         logger(.warning).warning(message)
     }
 
@@ -99,7 +101,7 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
-        record(.error, file, function, line)
+        record(.error, nil, [:], file, function, line)
         logger(.error).error(message)
     }
 
@@ -110,7 +112,93 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
-        record(.fault, file, function, line)
+        record(.fault, nil, [:], file, function, line)
         logger(.fault).fault(message)
+    }
+
+    public func trace(
+        exportable message: @autoclosure () -> String,
+        metadata: LTLogMetadata = [:],
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logExportable(level: .trace, message: message(), metadata: metadata, file: file, function: function, line: line)
+    }
+
+    public func debug(
+        exportable message: @autoclosure () -> String,
+        metadata: LTLogMetadata = [:],
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logExportable(level: .debug, message: message(), metadata: metadata, file: file, function: function, line: line)
+    }
+
+    public func info(
+        exportable message: @autoclosure () -> String,
+        metadata: LTLogMetadata = [:],
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logExportable(level: .info, message: message(), metadata: metadata, file: file, function: function, line: line)
+    }
+
+    public func notice(
+        exportable message: @autoclosure () -> String,
+        metadata: LTLogMetadata = [:],
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logExportable(level: .notice, message: message(), metadata: metadata, file: file, function: function, line: line)
+    }
+
+    public func warning(
+        exportable message: @autoclosure () -> String,
+        metadata: LTLogMetadata = [:],
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logExportable(level: .warning, message: message(), metadata: metadata, file: file, function: function, line: line)
+    }
+
+    public func error(
+        exportable message: @autoclosure () -> String,
+        metadata: LTLogMetadata = [:],
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logExportable(level: .error, message: message(), metadata: metadata, file: file, function: function, line: line)
+    }
+
+    public func fault(
+        exportable message: @autoclosure () -> String,
+        metadata: LTLogMetadata = [:],
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        logExportable(level: .fault, message: message(), metadata: metadata, file: file, function: function, line: line)
+    }
+
+    private func logExportable(
+        level: LTLogLevel,
+        message: String,
+        metadata: LTLogMetadata,
+        file: StaticString,
+        function: StaticString,
+        line: UInt
+    ) {
+        guard LTLogStore.shared.isEnabled(level) else {
+            return
+        }
+
+        logger(level).log(level: level.osLogType, "\(message, privacy: .public)")
+        record(level, message, metadata, file, function, line)
     }
 }

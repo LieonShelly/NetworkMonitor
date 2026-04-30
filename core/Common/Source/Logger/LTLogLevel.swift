@@ -7,7 +7,7 @@
 
 import OSLog
 
-public enum LTLogLevel: Int, CaseIterable, Comparable, Sendable {
+public enum LTLogLevel: Int, CaseIterable, Codable, Comparable, Hashable, Sendable {
     case trace = 0
     case debug
     case info
@@ -22,6 +22,25 @@ public enum LTLogLevel: Int, CaseIterable, Comparable, Sendable {
 }
 
 extension LTLogLevel {
+    public var name: String {
+        switch self {
+        case .trace:
+            return "trace"
+        case .debug:
+            return "debug"
+        case .info:
+            return "info"
+        case .notice:
+            return "notice"
+        case .warning:
+            return "warning"
+        case .error:
+            return "error"
+        case .fault:
+            return "fault"
+        }
+    }
+
     var osLogType: OSLogType {
         switch self {
         case .trace, .debug:

@@ -5,6 +5,8 @@
 //  Created by Renjun Li on 2026/4/29.
 //
 
+import Foundation
+
 public enum LTLog {
     public static func configure(_ configuration: LTLogConfiguration) {
         LTLogStore.shared.configure(configuration)
@@ -31,5 +33,45 @@ public enum LTLog {
 
     public static func removeAllSinks() {
         LTLogStore.shared.removeAllSinks()
+    }
+
+    public static var breadcrumbs: [LTBreadcrumb] {
+        LTBreadcrumbStore.shared.breadcrumbs
+    }
+
+    public static func addBreadcrumb(
+        _ message: String,
+        category: String = "manual",
+        metadata: LTLogMetadata = [:],
+        file: StaticString = #fileID,
+        function: StaticString = #function,
+        line: UInt = #line
+    ) {
+        let configuration = LTLogStore.shared.currentConfiguration()
+        let event = LTLogEvent(
+            level: .info,
+            subsystem: configuration.subsystem,
+            category: category,
+            environment: configuration.environment,
+            message: message,
+            metadata: metadata,
+            file: file.description,
+            function: function.description,
+            line: line
+        )
+        LTBreadcrumbStore.shared.record(event)
+    }
+
+    public static func removeAllBreadcrumbs() {
+        LTBreadcrumbStore.shared.removeAll()
+    }
+
+    public static func exportFeedbackLogs(
+        includeBreadcrumbs: Bool = true
+    ) throws -> URL {
+        try LTLogFeedbackExporter.export(
+            fileLogSinks: LTLogStore.shared.fileLogSinks(),
+            breadcrumbs: includeBreadcrumbs ? LTBreadcrumbStore.shared.breadcrumbs : []
+        )
     }
 }
