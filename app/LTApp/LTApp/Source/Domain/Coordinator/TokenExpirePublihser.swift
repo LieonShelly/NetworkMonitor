@@ -37,6 +37,5 @@ class RootViewProvider: RootViewProviding {
                 self?.root.value = .preHome
             }
             .store(in: &cancellables)
-        AppLog.logger.notice(public: "adsfasdf")
     }
 }
