@@ -253,6 +253,77 @@ let fileSink = LTFileLogSink(configuration: .init(
 - App 进入后台、即将终止、用户反馈导出前会强制 flush。
 - 文件 sink 持有当前日志文件的 `FileHandle`，rotation 使用累计写入字节数判断，避免每条日志查询文件属性。
 
+### 内部逻辑流程
+
+```plantuml
+@startuml
+skinparam activity {
+    BackgroundColor White
+    BorderColor #333333
+    ArrowColor #666666
+}
+
+title LTFileLogSink 核心逻辑流程图
+
+start
+
+:**log(event)**;
+if (等级 >= minimumLevel?) then (是)
+    :派发到私有串行队列 (**queue.async**);
+    partition "enqueue(event)" {
+        :JSON 编码 + 拼接换行符;
+        if (单条数据 > maxBufferedBytes?) then (是)
+            :**flushOnQueue()**;
+            :直接写入文件 **write(record)**;
+        else (否)
+            :进入 buffer 数组;
+            :执行容量限制 **enforceBufferLimits()**;
+            note right: 根据策略丢弃最旧/最新
+            if (满足 flush 阈值?) then (是)
+                note left: 数量或字节数达到配置阈值
+                :执行异步落盘 **flushOnQueue()**;
+            endif
+        endif
+    }
+else (否)
+    stop
+endif
+
+partition "flushOnQueue()" {
+    if (buffer 不为空?) then (是)
+        :聚合 buffer 为连续 Data 对象;
+        :清空 buffer 并重置计数;
+        :调用 **write(data)**;
+    endif
+}
+
+partition "write(data)" {
+    if (写入后大小 > maximumFileSize?) then (是)
+        :执行文件轮转 **rotateIfNeeded()**;
+        note right: 关闭旧句柄，生成新 URL
+    endif
+    :获取或打开当前文件句柄;
+    :写入 Data 到文件末尾;
+    :更新已写入字节计数;
+    if (已触发轮转?) then (是)
+        :清理旧文件 **purgeOldFiles()**;
+        note right: 保持文件总数在 maximumFileCount 以内
+    endif
+}
+
+stop
+
+legend right
+  **其它触发 flush 的路径:**
+  * 定时器触发: 基于 flushInterval 定期执行
+  * 生命周期触发: App 进入后台或即将终止时强制同步
+  * 手动触发: 显式调用 flush() 或 flushAndWait()
+endlegend
+
+@enduml
+```
+
+
 `includeNonExportableEvents` 设为 `true` 时，普通 `OSLogMessage` 入口也会生成文件事件，但这类事件没有 `message` 文本，只包含等级、category、环境、文件名、函数名、行号等元信息。
 
 手动 flush：
