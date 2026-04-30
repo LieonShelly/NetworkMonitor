@@ -45,6 +45,11 @@ final class CalendarViewModel: ObservableObject, @unchecked Sendable {
         guard let head = questions.first else { return [] }
        return [head] + questions[1 ..< count]
     }
+
+    @MainActor
+    func refreshTodayQuestionVisibility() {
+        showTodayQuestion = service.todayQuestionVisibilityUseCase.refreshTodayQuestionVisibility()
+    }
 }
 
 extension CalendarViewModel {
@@ -108,6 +113,7 @@ extension CalendarViewModel {
     func fetchDataTodayQuestions() async throws {
         let questions = try await service.fetchTodayQuestionsUseCase.execute()
         await MainActor.run {
+            self.refreshTodayQuestionVisibility()
             self.todayQuestions = questions
         }
     }

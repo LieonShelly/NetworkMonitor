@@ -17,6 +17,7 @@ public protocol AppDataWithAuthorizationServiceful {
     var pinQuestionUseCase: any PinQuestionUseCaseType { get }
     var fetchHistoryAnswersUseCase: any FetchHistoryAnswersUseCaseType { get }
     var fetchTodayQuestionsUseCase: any FetchTodayQuestionsUseCaseType { get }
+    var todayQuestionVisibilityUseCase: any TodayQuestionVisibilityUseCaseType { get }
     var onboardingAccessUseCase: any OnboardingAccessUseCaseType { get }
     var queryIconStatusUseCase: any QueryIconGeneratingStatusUseCaseType { get }
     var userManagementService: any UserManagementServiceful { get }
@@ -113,6 +114,10 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var fetchTodayQuestionsUseCase: any FetchTodayQuestionsUseCaseType = {
         FetchTodayQuestionsUseCase(repository: reflectionRepository)
+    }()
+
+    public lazy var todayQuestionVisibilityUseCase: any TodayQuestionVisibilityUseCaseType = {
+        TodayQuestionVisibilityUseCase(storage: storage)
     }()
     
     public lazy var onboardingAccessUseCase: any OnboardingAccessUseCaseType = {

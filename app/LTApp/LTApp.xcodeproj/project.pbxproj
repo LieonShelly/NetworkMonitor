@@ -191,6 +191,7 @@
 		D46AB011DB264AC1D42B50C4 /* AnswerParam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575A255E890DA1E6270CCD9A /* AnswerParam.swift */; };
 		D4761D6684B9E33CA3614E62 /* IconImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE8664092EAD79EF6A4EFFA /* IconImageView.swift */; };
 		D6553CA92EF7F5086C2D3652 /* AppTabbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E48DDA96EDFC46D378411CE /* AppTabbarItem.swift */; };
+		D71F0030FEDF4EA73E4844CC /* TodayQuestionVisibilityUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FA0B04F6438A3D9E3868B2 /* TodayQuestionVisibilityUseCase.swift */; };
 		D85E2BC7EBA68FECD95EBFF8 /* PreHomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED41B5AE0A376AB5D6F84CD /* PreHomeCoordinator.swift */; };
 		D87BFEEB41C7D3016139D66B /* LTNetwork.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5D96C3730B143EA703C64DC /* LTNetwork.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D918588F2AAB41006E7A4A3E /* JoyStickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DA1BAF31F7DD29FDF67F77B /* JoyStickView.swift */; };
@@ -390,7 +391,7 @@
 		9946673DA279A5A3F74BF4AE /* QuestionOfTodaySettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingItem.swift; sourceTree = "<group>"; };
 		9993DF6E3A941EE9D1FAF266 /* QuestionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionCardView.swift; sourceTree = "<group>"; };
 		99E2E2F27C12616A29FDF44F /* LTAppFeatureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTAppFeatureConfig.swift; sourceTree = "<group>"; };
-		9A58C1EE3894B3BD3A320141 /* lock-tapped.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = "lock-tapped.riv"; sourceTree = "<group>"; };
+		9A58C1EE3894B3BD3A320141 /* lock-tapped.riv */ = {isa = PBXFileReference; path = "lock-tapped.riv"; sourceTree = "<group>"; };
 		9BDAB7457AD38C219D4125D1 /* SaveTimezoneUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTimezoneUseCase.swift; sourceTree = "<group>"; };
 		9CC182739AAD226C77247794 /* WeeklyReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReport.swift; sourceTree = "<group>"; };
 		9E48DDA96EDFC46D378411CE /* AppTabbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabbarItem.swift; sourceTree = "<group>"; };
@@ -401,7 +402,7 @@
 		A2AC3ECD67EDD0DA13A5CABC /* CalendarReflectionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarReflectionsUseCase.swift; sourceTree = "<group>"; };
 		A3B88EEE2F5FACEDC61CF29D /* TodayAnswerSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayAnswerSubmittedViewModel.swift; sourceTree = "<group>"; };
 		A5653DA3D1F0BE41202F5A93 /* CalendarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarItemView.swift; sourceTree = "<group>"; };
-		A59545BAF995479B0ADA444F /* lock-animated.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = "lock-animated.riv"; sourceTree = "<group>"; };
+		A59545BAF995479B0ADA444F /* lock-animated.riv */ = {isa = PBXFileReference; path = "lock-animated.riv"; sourceTree = "<group>"; };
 		A87A82B08CA8CCAEF901BBD1 /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		A894E354041CCC836695890E /* AppHomeRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHomeRootView.swift; sourceTree = "<group>"; };
 		A8B5043EEA7BC29B1EF9543D /* ReadyToPrintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyToPrintView.swift; sourceTree = "<group>"; };
@@ -413,6 +414,7 @@
 		AE697395CF50B193B3F45555 /* InsightsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsViewModel.swift; sourceTree = "<group>"; };
 		B206C9175BC9D806D4F87D53 /* AuthUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
 		B3EE196B98113A30CD3BBCF9 /* ReportRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRequest.swift; sourceTree = "<group>"; };
+		B3FA0B04F6438A3D9E3868B2 /* TodayQuestionVisibilityUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayQuestionVisibilityUseCase.swift; sourceTree = "<group>"; };
 		B4A5BD5D2EDC6B45F32E858F /* Answer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Answer.swift; sourceTree = "<group>"; };
 		B4CFB249F63977293DBBDD53 /* FetchWeeklyReportUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchWeeklyReportUseCase.swift; sourceTree = "<group>"; };
 		B5099ADE80109C2CA0C22A47 /* ReportedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportedView.swift; sourceTree = "<group>"; };
@@ -989,6 +991,7 @@
 				FCCEDD7C0D9E4209FD9A015A /* PinQuestionUseCase.swift */,
 				33E52843DEB4C03A13818665 /* PostNotificationUseCase.swift */,
 				40FA1164BA74B596155811F0 /* SubmitAnswerUseCase.swift */,
+				B3FA0B04F6438A3D9E3868B2 /* TodayQuestionVisibilityUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -1410,6 +1413,7 @@
 				6E58F4B35CD407F2CCBAB9BE /* TodayAnswerView.swift in Sources */,
 				802864344F92B6BB3B5776A8 /* TodayAnswerViewModel.swift in Sources */,
 				5D35DA84CED5B9A02D005E6E /* TodayQuestionView.swift in Sources */,
+				D71F0030FEDF4EA73E4844CC /* TodayQuestionVisibilityUseCase.swift in Sources */,
 				8ADB12EF5FDC90351BED6EF5 /* TokenExpirePublihser.swift in Sources */,
 				589FB7DD74717F936712B9AA /* TokenProvider.swift in Sources */,
 				F88E5FFE060A4CDAD0021795 /* UniversalResponse.swift in Sources */,

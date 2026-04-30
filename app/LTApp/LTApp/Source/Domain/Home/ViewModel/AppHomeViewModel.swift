@@ -111,7 +111,7 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
             let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
                 Task {
                     self?.queryCurrenntIconStatus(iconId)
-                    self?.contentViewModel.calendarViewModel.showTodayQuestion = false
+                    self?.contentViewModel.calendarViewModel.refreshTodayQuestionVisibility()
                 }
                 
             })
@@ -120,6 +120,7 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
             let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
                 Task {
                     self?.queryCurrenntIconStatus(iconId)
+                    await self?.contentViewModel.calendarViewModel.refreshTodayQuestionVisibility()
                 }
                 
             })

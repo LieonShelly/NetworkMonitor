@@ -81,6 +81,7 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
                 createdAt: AppDateFormatter.ymdhsm.string(from: createAt)
             )
         )
+        service.todayQuestionVisibilityUseCase.markTodayQuestionAnswered()
         submittedAction?(answer.icon?.iconId ?? "")
         submittedViewModel = .init(answer: answer, question: question, service: service)
         let didOpenNotification = await service.notificationFlagUseCase.fetch()
