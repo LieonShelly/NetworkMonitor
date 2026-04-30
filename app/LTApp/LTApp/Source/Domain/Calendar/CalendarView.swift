@@ -201,12 +201,19 @@ struct CalendarView: View {
         }
     }
     
-    @ViewBuilder
     func footerView(momth: CalendarMonth) -> some View {
-        let text =  momth.date.isSameMonth(Date()) ?
-        "\(momth.iconCount) stamps collected so far \n take your time with the  \(momth.moreDaysTogo) days ahead" :
-        "\(momth.iconCount) stamps collected this month"
-        Text(text)
+        let today = Date()
+        let text: String
+        if momth.date.isSameMonth(today) {
+            if today.isSameDay(today.endOfMonth()) {
+                text = "\(momth.iconCount) stamps collected so far \n take your time today"
+            } else {
+                text = "\(momth.iconCount) stamps collected so far \n take your time with the  \(momth.moreDaysTogo) days ahead"
+            }
+        } else {
+            text = "\(momth.iconCount) stamps collected this month"
+        }
+        return Text(text)
             .multilineTextAlignment(.center)
             .textStyle(font: .section, color: AppColor.black)
             .padding(.bottom, 50)
