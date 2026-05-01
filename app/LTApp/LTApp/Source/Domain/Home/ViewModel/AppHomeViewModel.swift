@@ -67,7 +67,7 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
         }
         tabbarViewModel.didTap = { [weak self] index in
             guard let self else { return }
-            self.contentViewModel.scrollTo(index)
+            self.selected(index)
         }
        
     }
@@ -84,8 +84,9 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
                     guard let iconNotification = try? JSONDecoder().decode(IconNotificationData.self, from: idData) else { return }
                     guard let answer = try? await calendarViewModel.searchAnswer(iconNotification.answerId) else { return }
                     guard let viewModel = calendarViewModel.generateAnswerDetailViewModel(answer) else { return }
-                    self.selected(0)
+               
                     route(.answerDetail(viewModel))
+                    self.selected(0)
                 }
             case .todayQuestion:
                 Task {
@@ -138,8 +139,31 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
     
     @MainActor func selected(_ index: Int) {
         contentViewModel.scrollTo(index)
+        Task.detached {
+            await self.refreshSelectedTab(index)
+        }
     }
     
+    @MainActor
+    private func refreshSelectedTab(_ index: Int) async {
+        switch index {
+        case 0:
+            try? await contentViewModel.calendarViewModel.fetchData()
+        case 1:
+            if contentViewModel.threadViewModel.categories.isEmpty {
+                try? await contentViewModel.threadViewModel.fetchCategories()
+            }
+            try? await contentViewModel.threadViewModel.fetchDataInCurrentCategory()
+        case 2:
+            try? await contentViewModel.insightsViewModel.fetchHistoryHeaderCurrentWeekIcons()
+            try? await contentViewModel.insightsViewModel.fetchHistory()
+            await contentViewModel.insightsViewModel.refreshArcadeState()
+        case 3:
+            try? await contentViewModel.userViewModel.fetchUserInfo()
+        default:
+            break
+        }
+    }
     
     func queryCurrenntIconStatus(_ iconId: String) {
         Task.detached {
