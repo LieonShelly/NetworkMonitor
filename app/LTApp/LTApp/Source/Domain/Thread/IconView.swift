@@ -81,11 +81,17 @@ struct IconView: View {
                           } else {
                               if let url = icon.url {
                                   ThumbnailIconImageView(url: url) { }
+                                      .onTapGesture {
+                                          onTap?()
+                                      }
                               }
                           }
                     } else {
                         if let url = icon.url {
                             ThumbnailIconImageView(url: url) { }
+                                .onTapGesture {
+                                    onTap?()
+                                }
                         }
                     }
                

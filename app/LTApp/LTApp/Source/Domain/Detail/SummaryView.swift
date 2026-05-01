@@ -89,7 +89,7 @@ struct SummaryView: View {
                 .foregroundStyle(AppColor.greyMedium)
                 .font(AppFont.body.font)
             
-            + Text("\(summary.totalAnswers) times \n\n")
+            + Text(" \(summary.totalAnswers) times \n\n")
                 .foregroundStyle(AppColor.greyMedium)
                 .font(AppFont.bodyBold.font)
             

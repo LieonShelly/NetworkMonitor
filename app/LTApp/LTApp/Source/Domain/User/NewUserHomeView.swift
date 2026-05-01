@@ -41,7 +41,7 @@ struct NewUserHomeView: View {
                     
                     // Inspire me with
                     NewUserRow(
-                        icon: Image(.libraryOutlet),
+                        icon:  Image(.library),
                         title: "Inspire me with...",
                         subtitle: "Browse and pin your favorite sparks"
                     )
