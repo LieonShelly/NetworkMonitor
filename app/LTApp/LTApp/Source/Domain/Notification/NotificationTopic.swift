@@ -23,5 +23,6 @@ struct NotificationPayload: Codable {
 protocol NotificationHandlingType: Sendable {
     var payload: AnyPublisher<NotificationPayload, Never> { get }
     
+    func appDidBecomeActive()
     func didRecieveNotification(_ userInfo: [String: any Sendable]) async
 }

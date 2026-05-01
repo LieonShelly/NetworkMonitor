@@ -22,6 +22,12 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         return true
     }
     
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        Task { @MainActor in
+            appCoordinator.notificationHandler.appDidBecomeActive()
+        }
+    }
+    
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound, .badge])
     }
@@ -47,15 +53,13 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
             formatter.formatOptions = [.withInternetDateTime]
             formatter.timeZone = .current
             let timestamp = formatter.string(from: Date())
-            try? await appCoordinator.appDataService.saveTimezoneUseCase.execute(timestamp: timestamp)
+            _ = try? await appCoordinator.appDataService.saveTimezoneUseCase.execute(timestamp: timestamp)
         }
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {
         print("注册远程通知失败: \(error)")
     }
-    
-    
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         var handled: Bool
