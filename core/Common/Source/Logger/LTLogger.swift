@@ -12,18 +12,22 @@ public struct LTLogger: Sendable {
     public let category: String
 
     @usableFromInline
-    let logger: @Sendable (LTLogLevel) -> Logger
+    let logger: Logger
 
     @usableFromInline
     let record: @Sendable (LTLogLevel, String?, LTLogMetadata, StaticString, StaticString, UInt) -> Void
+
+    @usableFromInline
+    let isEnabled: @Sendable (LTLogLevel) -> Bool
 
     init(subsystem: String, category: String) {
         self.subsystem = subsystem
         self.category = category
 
         let osLogger = Logger(subsystem: subsystem, category: category)
-        self.logger = { level in
-            LTLogStore.shared.isEnabled(level) ? osLogger : .disabled
+        self.logger = osLogger
+        self.isEnabled = { level in
+            LTLogStore.shared.isEnabled(level)
         }
         self.record = { level, message, metadata, file, function, line in
             LTLogStore.shared.record(
@@ -46,8 +50,12 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
+        guard isEnabled(.trace) else {
+            return
+        }
+
         record(.trace, nil, [:], file, function, line)
-        logger(.trace).trace(message)
+        logger.trace(message)
     }
 
     @_transparent @_optimize(none) @_semantics("oslog.requires_constant_arguments")
@@ -57,8 +65,12 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
+        guard isEnabled(.debug) else {
+            return
+        }
+
         record(.debug, nil, [:], file, function, line)
-        logger(.debug).debug(message)
+        logger.debug(message)
     }
 
     @_transparent @_optimize(none) @_semantics("oslog.requires_constant_arguments")
@@ -68,8 +80,12 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
+        guard isEnabled(.info) else {
+            return
+        }
+
         record(.info, nil, [:], file, function, line)
-        logger(.info).info(message)
+        logger.info(message)
     }
 
     @_transparent @_optimize(none) @_semantics("oslog.requires_constant_arguments")
@@ -79,8 +95,12 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
+        guard isEnabled(.notice) else {
+            return
+        }
+
         record(.notice, nil, [:], file, function, line)
-        logger(.notice).notice(message)
+        logger.notice(message)
     }
 
     @_transparent @_optimize(none) @_semantics("oslog.requires_constant_arguments")
@@ -90,8 +110,12 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
+        guard isEnabled(.warning) else {
+            return
+        }
+
         record(.warning, nil, [:], file, function, line)
-        logger(.warning).warning(message)
+        logger.warning(message)
     }
 
     @_transparent @_optimize(none) @_semantics("oslog.requires_constant_arguments")
@@ -101,8 +125,12 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
+        guard isEnabled(.error) else {
+            return
+        }
+
         record(.error, nil, [:], file, function, line)
-        logger(.error).error(message)
+        logger.error(message)
     }
 
     @_transparent @_optimize(none) @_semantics("oslog.requires_constant_arguments")
@@ -112,8 +140,12 @@ public struct LTLogger: Sendable {
         function: StaticString = #function,
         line: UInt = #line
     ) {
+        guard isEnabled(.fault) else {
+            return
+        }
+
         record(.fault, nil, [:], file, function, line)
-        logger(.fault).fault(message)
+        logger.fault(message)
     }
 
     public func trace(
@@ -261,7 +293,7 @@ public struct LTLogger: Sendable {
         }
 
         let publicMessage = message()
-        logger(level).log(level: level.osLogType, "\(publicMessage, privacy: .public)")
+        logger.log(level: level.osLogType, "\(publicMessage, privacy: .public)")
         record(level, nil, [:], file, function, line)
     }
 
@@ -277,7 +309,7 @@ public struct LTLogger: Sendable {
             return
         }
 
-        logger(level).log(level: level.osLogType, "\(message, privacy: .public)")
+        logger.log(level: level.osLogType, "\(message, privacy: .public)")
         record(level, message, metadata, file, function, line)
     }
 }

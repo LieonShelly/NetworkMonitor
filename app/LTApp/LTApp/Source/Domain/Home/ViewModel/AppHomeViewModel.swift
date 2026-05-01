@@ -100,6 +100,14 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
                     self.selected(2)
                     contentViewModel.insightsViewModel.router?.popToRoot()
                 }
+            case .thread:
+                Task {
+                    self.selected(1)
+                }
+            case .calendar:
+                Task {
+                    self.selected(0)
+                }
             }
         }
         .store(in: &cancellables)
@@ -120,7 +128,7 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
             let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
                 Task {
                     self?.queryCurrenntIconStatus(iconId)
-                    await self?.contentViewModel.calendarViewModel.refreshTodayQuestionVisibility()
+                    self?.contentViewModel.calendarViewModel.refreshTodayQuestionVisibility()
                 }
                 
             })
