@@ -114,43 +114,41 @@ struct CalendarItemView: View {
     @ViewBuilder
     func twoIcon(_ answers: [Answer], proxy: GeometryProxy) -> some View {
         let top: CGFloat = 23
-        let bottom: CGFloat = 8
-        let vspacing: CGFloat = 10
-     
-        let iconH: CGFloat = 20
-        let iconW: CGFloat = 20
-        let overlayW: CGFloat = 4
-        let iconTotalW = iconW * 2 - overlayW * 2
-        let hPadding: CGFloat = (proxy.size.width - iconTotalW) * 0.5
-        VStack(spacing: vspacing) {
-            if let answer = answers.first {
-                HStack {
-                    Spacer()
-                    iconView(answer, size: .init(width: iconW, height: iconH))
-                        .padding(.trailing, hPadding)
+        let horizontalPadding: CGFloat = 6
+        let bottom: CGFloat = 6
+        let contentWidth = max(proxy.size.width - horizontalPadding * 2, 0)
+        let contentHeight = max(proxy.size.height - top - bottom, 0)
+        let iconSize = max(min(contentWidth * 0.64, contentHeight * 0.49), 16)
+        let vspacing = max(contentHeight * 0.04, 2)
+        let xOffset = min(contentWidth * 0.16, iconSize * 0.45)
+        
+        VStack {
+            VStack(spacing: vspacing) {
+                if let answer = answers.first {
+                    iconView(answer, size: .init(width: iconSize, height: iconSize))
+                        .offset(x: xOffset)
+                        .onTapGesture {
+                            if answer.icon?.readAt != nil {
+                                didTapIcon(answer)
+                            }
+                        }
                 }
-                .onTapGesture {
-                    if answer.icon?.readAt != nil {
-                        didTapIcon(answer)
-                    }
-                }
-                
-            }
-            if let answer = answers.last {
-                HStack {
-                    iconView(answer, size: .init(width: iconW, height: iconH))
-                        .padding(.leading, hPadding)
-                    Spacer()
-                }
-                .onTapGesture {
-                    if answer.icon?.readAt != nil {
-                        didTapIcon(answer)
-                    }
+                if let answer = answers.last {
+                    iconView(answer, size: .init(width: iconSize, height: iconSize))
+                        .offset(x: -xOffset)
+                        .onTapGesture {
+                            if answer.icon?.readAt != nil {
+                                didTapIcon(answer)
+                            }
+                        }
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         }
         .padding(.top, top)
+        .padding(.horizontal, horizontalPadding)
         .padding(.bottom, bottom)
+        .frame(width: proxy.size.width, height: proxy.size.height, alignment: .top)
     }
     
     @ViewBuilder
