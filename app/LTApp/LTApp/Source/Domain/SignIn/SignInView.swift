@@ -61,15 +61,15 @@ struct SignInView: View {
             guard validateTermsAcceptance() else {
                 return
             }
-            Task {
-                try? await viewModel.loginWithApple(authorizationCode: "c762776f256aa40b3a523a0d9b58e9ddc.0.rrxxu.Z1eRjhHxHDdgg_Q7pcFApg", identityToken: "eyJraWQiOiI1aXEzM2xKQllqIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmxpdHRsZS50aGluZ3MiLCJleHAiOjE3Nzc2OTQyOTYsImlhdCI6MTc3NzYwNzg5Niwic3ViIjoiMDAxNzc0LmZiNmI2MWIyOTkyZTQ2ODM4YmVlMzRlNzgxYTZhMTE0LjEwMjEiLCJjX2hhc2giOiJhUWF3a29xZjU4dktubGZ2dm5ySXlBIiwiZW1haWwiOiJieGJiZGR4eW40QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc19wcml2YXRlX2VtYWlsIjp0cnVlLCJhdXRoX3RpbWUiOjE3Nzc2MDc4OTYsIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.gEvJn_JhgQXfhJAY1XU8Jg4iXayE7SfXILYlqjsCZG0DWXXzW74pFWTEgBONPebLwQhsKOgYE4toHlDCU0cUBd0JagvHZRUqBidc3sD_QS4kxIq4H6mjHqZBYnd_pzYYC0ms8OpcRLj_Q4HLi3eAbVIIf2XOlho4uY5QKVgsLttx_sGusvbFkVh_PHc2-li1bnHiSqyIbHKsPOP5XSvb36dWBiG6mR2YN1BVf-JCjQhsA5T6PFKY-5W54p_5rSoTWoPeBYxvqvnYVBLqPPW9A94dSr9dlG1LrJELNuQpuULifC5aTdDXpdW1Zrh9ajXLFj9BCN-UrG7TGOI9fLzIjg")
-            }
+//            Task {
+//                try? await viewModel.loginWithApple(authorizationCode: "", identityToken: "")
+//            }
             let provider = ASAuthorizationAppleIDProvider()
             let request = provider.createRequest()
             request.requestedScopes = [.fullName, .email]
             let controller = ASAuthorizationController(authorizationRequests: [request])
             controller.delegate = viewModel
-//            controller.performRequests()
+            controller.performRequests()
         } label: {
             HStack(spacing: 5) {
                 Image(systemName: "apple.logo")
