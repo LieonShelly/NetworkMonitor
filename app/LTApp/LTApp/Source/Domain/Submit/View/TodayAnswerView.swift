@@ -38,6 +38,7 @@ struct TodayAnswerView: View {
                 NotificationView(viewModel: .init(appService: viewModel.service),
                                  opacity: $opacity) {
                     presented.toggle()
+                    viewModel.dismissedAction?()
                 }
             }
         }
@@ -62,6 +63,7 @@ struct TodayAnswerView: View {
             } completion: {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
                     presented.toggle()
+                    viewModel.dismissedAction?()
                 })
             }
         }
@@ -98,6 +100,7 @@ struct TodayAnswerView: View {
                 opacity: $opacity,
                 dismissed: {
                     presented.toggle()
+                    self.viewModel.dismissedAction?()
                 }
             )
             .padding(.top, 44)

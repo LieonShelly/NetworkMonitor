@@ -22,15 +22,21 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
     var submittedViewModel: TodayAnswerSubmittedViewModel?
     var submitted: Bool = false
     private var submittedAction: ((_ iconId: String) -> Void)?
+    var dismissedAction: (() -> Void)?
+    
     let title: String
     let service: any AppDataWithAuthorizationServiceful
     private let inputQuestions: [Question]
     
-    init(service: any AppDataWithAuthorizationServiceful, questions: [Question], submitted: ((_ iconId: String) -> Void)?)  {
+    init(service: any AppDataWithAuthorizationServiceful,
+         questions: [Question],
+         submitted: ((_ iconId: String) -> Void)?,
+         dismissedAction: (() -> Void)?)  {
         self.service = service
         self.inputQuestions = questions
         self.title = Date().monthDayDesc
         self.submittedAction = submitted
+        self.dismissedAction = dismissedAction
         for index in 0 ..< inputQuestions.count {
             let viewModel = QuestionCardViewModel(
                 question: inputQuestions[index],
@@ -81,7 +87,6 @@ final class TodayAnswerViewModel: ObservableObject, @unchecked Sendable {
                 createdAt: AppDateFormatter.ymdhsm.string(from: createAt)
             )
         )
-        service.todayQuestionVisibilityUseCase.markTodayQuestionAnswered()
         submittedAction?(answer.icon?.iconId ?? "")
         submittedViewModel = .init(answer: answer, question: question, service: service)
         let didOpenNotification = await service.notificationFlagUseCase.fetch()

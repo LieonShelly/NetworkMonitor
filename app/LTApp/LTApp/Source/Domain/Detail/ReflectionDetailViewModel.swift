@@ -47,6 +47,10 @@ final class ReflectionDetailViewModel: @preconcurrency BaseViewModelType, Observ
         let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
             self?.queryCurrenntIconStatus(iconId)
             
+        }, dismissedAction: { [weak self] in
+            Task.detached {
+                try? await self?.fetchData()
+            }
         })
         return todayAnswerViewModel
     }

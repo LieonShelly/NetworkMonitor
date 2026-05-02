@@ -117,22 +117,37 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
     @MainActor func pushToAddTodayAnsnwer(_ questions: [Question]) {
         guard !questions.isEmpty else { return }
         if questions.count > 1 {
-            let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
-                Task {
-                    self?.queryCurrenntIconStatus(iconId)
-                    self?.contentViewModel.calendarViewModel.refreshTodayQuestionVisibility()
-                }
-                
-            })
+            let todayAnswerViewModel = TodayAnswerViewModel(
+                service: service,
+                questions: questions,
+                submitted: {[weak self] iconId in
+                    Task {
+                        self?.queryCurrenntIconStatus(iconId)
+                        self?.service.todayQuestionVisibilityUseCase.markTodayQuestionAnswered()
+                        self?.contentViewModel.calendarViewModel.refreshTodayQuestionVisibility()
+                    }
+                },
+                dismissedAction: {
+                    Task {
+                        await self.refreshTabs()
+                    }
+                })
             route(.todayAnswer(todayAnswerViewModel))
         } else {
-            let todayAnswerViewModel = TodayAnswerViewModel(service: service, questions: questions, submitted: {[weak self] iconId in
-                Task {
-                    self?.queryCurrenntIconStatus(iconId)
-                    self?.contentViewModel.calendarViewModel.refreshTodayQuestionVisibility()
-                }
-                
-            })
+            let todayAnswerViewModel = TodayAnswerViewModel(
+                service: service,
+                questions: questions,
+                submitted: {[weak self] iconId in
+                    Task {
+                        self?.queryCurrenntIconStatus(iconId)
+                        self?.contentViewModel.calendarViewModel.refreshTodayQuestionVisibility()
+                    }
+                },
+                dismissedAction: {
+                    Task {
+                        await self.refreshTabs()
+                    }
+                })
             route(.addSingleAnswer(todayAnswerViewModel))
         }
     }
@@ -142,6 +157,13 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
         Task.detached {
             await self.refreshSelectedTab(index)
         }
+    }
+    
+    
+    @MainActor func refreshTabs() async {
+        try? await contentViewModel.calendarViewModel.fetchData()
+        try? await contentViewModel.threadViewModel.fetchDataInCurrentCategory()
+        try? await contentViewModel.insightsViewModel.fetchHistoryHeaderCurrentWeekIcons()
     }
     
     @MainActor

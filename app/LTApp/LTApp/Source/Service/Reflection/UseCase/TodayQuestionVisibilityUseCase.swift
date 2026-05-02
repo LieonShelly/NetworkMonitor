@@ -18,17 +18,19 @@ public final class TodayQuestionVisibilityUseCase: TodayQuestionVisibilityUseCas
         static let answeredTodayQuestionDate = "calendar.answeredTodayQuestionDate"
     }
 
-    private let storage: any KeyValueStorageType
+    private let storage: any KeyDataStorageType
     private var answeredDateInMemory: String?
 
-    public init(storage: any KeyValueStorageType) {
+    public init(storage: any KeyDataStorageType) {
         self.storage = storage
     }
 
     public func markTodayQuestionAnswered() {
         let today = Date().yyyymmdd
         answeredDateInMemory = today
-        try? storage.save(value: today, key: StorageKey.answeredTodayQuestionDate)
+        if let data = today.data(using: .utf8) {
+            try? storage.save(value: data, key: StorageKey.answeredTodayQuestionDate)
+        }
     }
 
     public func refreshTodayQuestionVisibility() -> Bool {
@@ -37,7 +39,10 @@ public final class TodayQuestionVisibilityUseCase: TodayQuestionVisibilityUseCas
             return false
         }
 
-        let answeredDate = storage.read(StorageKey.answeredTodayQuestionDate)
+        guard let answeredDateData = storage.read(StorageKey.answeredTodayQuestionDate) else {
+            return true
+        }
+        let answeredDate = String(data: answeredDateData, encoding: .utf8)
         answeredDateInMemory = answeredDate
         return answeredDate != Date().yyyymmdd
     }

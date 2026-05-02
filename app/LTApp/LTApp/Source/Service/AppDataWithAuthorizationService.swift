@@ -117,7 +117,7 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     }()
 
     public lazy var todayQuestionVisibilityUseCase: any TodayQuestionVisibilityUseCaseType = {
-        TodayQuestionVisibilityUseCase(storage: storage)
+        TodayQuestionVisibilityUseCase(storage: keyDataStorage)
     }()
     
     public lazy var onboardingAccessUseCase: any OnboardingAccessUseCaseType = {
