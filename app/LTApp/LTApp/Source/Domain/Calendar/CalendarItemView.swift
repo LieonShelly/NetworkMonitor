@@ -201,41 +201,20 @@ struct CalendarItemView: View {
     @ViewBuilder
     func fourIcon(_ answers: [Answer], proxy: GeometryProxy) -> some View {
         let top: CGFloat = 23
-        let bottom: CGFloat = 8
-        let vspacing: CGFloat = 4
-        let hPadding: CGFloat = 2
-        let iconH = (proxy.size.height - top - bottom - vspacing * 2) / 3
-        let iconW: CGFloat = proxy.size.width * 0.5
-        let textRP: CGFloat = hPadding * 4
-        VStack(spacing: vspacing) {
-            if let answer = answers.first {
-                HStack {
-                    iconView(answer, size: .init(width: iconW, height: iconH))
-                        .padding(.leading, hPadding)
-                    Spacer()
-                }
-                .onTapGesture {
-                    if answer.icon?.readAt != nil {
-                        didTapIcon(answer)
-                    }
-                }
-                
-            }
-            HStack {
-                Spacer()
-                iconView(answers[1], size: .init(width: iconW, height: iconH))
-                    .padding(.trailing, hPadding)
-               
-            }
-            .onTapGesture {
-                if answers[1].icon?.readAt != nil {
-                    didTapIcon(answers[1])
-                }
-            }
-            if let answer = answers.last {
-                ZStack(alignment: .trailing) {
+        let horizontalPadding: CGFloat = 6
+        let bottom: CGFloat = 6
+        let contentWidth = max(proxy.size.width - horizontalPadding * 2, 0)
+        let contentHeight = max(proxy.size.height - top - bottom, 0)
+        let vspacing = max(contentHeight * 0.04, 2)
+        let iconSize = min(contentWidth * 0.52, max((contentHeight - vspacing * 2) / 3, 0))
+        let hPadding = max((contentWidth - iconSize * 2) * 0.5, 0)
+        let textRP = 0.0
+        
+        VStack {
+            VStack(spacing: vspacing) {
+                if let answer = answers.first {
                     HStack {
-                        iconView(answer, size: .init(width: iconW, height: iconH))
+                        iconView(answer, size: .init(width: iconSize, height: iconSize))
                             .padding(.leading, hPadding)
                         Spacer()
                     }
@@ -244,16 +223,42 @@ struct CalendarItemView: View {
                             didTapIcon(answer)
                         }
                     }
-                    
-                    Text("\(answers.count - 3)+")
-                        .textStyle(size: 8, color: AppColor.color(hex: 0x000000), fontFamily: .poppinsMediumItalic)
-                        .padding(.trailing, textRP)
                 }
-            
+                HStack {
+                    Spacer()
+                    iconView(answers[1], size: .init(width: iconSize, height: iconSize))
+                        .padding(.trailing, hPadding)
+                }
+                .onTapGesture {
+                    if answers[1].icon?.readAt != nil {
+                        didTapIcon(answers[1])
+                    }
+                }
+                if let answer = answers.last {
+                    ZStack(alignment: .trailing) {
+                        HStack {
+                            iconView(answer, size: .init(width: iconSize, height: iconSize))
+                                .padding(.leading, hPadding)
+                            Spacer()
+                        }
+                        .onTapGesture {
+                            if answer.icon?.readAt != nil {
+                                didTapIcon(answer)
+                            }
+                        }
+                        
+                        Text("\(answers.count - 3)+")
+                            .textStyle(size: 8, color: AppColor.color(hex: 0x000000), fontFamily: .poppinsMediumItalic)
+                            .padding(.trailing, textRP)
+                    }
+                }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         }
         .padding(.top, top)
+        .padding(.horizontal, horizontalPadding)
         .padding(.bottom, bottom)
+        .frame(width: proxy.size.width, height: proxy.size.height, alignment: .top)
     }
     
     @ViewBuilder
