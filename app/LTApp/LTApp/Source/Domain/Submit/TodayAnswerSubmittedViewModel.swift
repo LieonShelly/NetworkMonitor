@@ -33,9 +33,14 @@ final class TodayAnswerSubmittedViewModel: ObservableObject, @unchecked Sendable
             let streams = self.service.queryIconStatusUseCase.execute(iconId)
             for try await stream in streams {
                 if stream.status == .generated {
+                    let icon = stream.toDomain()
                     await MainActor.run {
-                        self.answer.icon = stream.toDomain()
+                        var oldIcon = self.answer.icon
+                        oldIcon?.url = icon.url
+                        oldIcon?.status = .generated
+                        self.answer.icon = oldIcon
                     }
+                    await self.markIconAsRead(icon)
                 }
             }
         }

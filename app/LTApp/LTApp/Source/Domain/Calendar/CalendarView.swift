@@ -163,7 +163,7 @@ struct CalendarView: View {
         let columnW: CGFloat = parentWith / CGFloat(columns)
         let columnsG = (0 ..< columns).map { _ in GridItem(.fixed(columnW), spacing: .zero, alignment: .center)}
         let rowCount = CGFloat(max(1, (month.days.count + 6) / 7))
-        let itemH: CGFloat = innerContainerH / rowCount
+        let itemH: CGFloat = max(innerContainerH / rowCount, 1)
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: columnsG, alignment: .center, spacing: .zero) {
                 ForEach(month.days, id: \.id) { day in
