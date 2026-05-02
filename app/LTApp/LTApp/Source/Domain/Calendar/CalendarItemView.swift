@@ -154,50 +154,48 @@ struct CalendarItemView: View {
     @ViewBuilder
     func threeIcon(_ answers: [Answer], proxy: GeometryProxy) -> some View {
         let top: CGFloat = 23
-        let bottom: CGFloat = 8
-        let vspacing: CGFloat = 4
-        let hPadding: CGFloat = 2
-        let iconH = (proxy.size.height - top - bottom - vspacing * 2) / 3
-        let iconW: CGFloat = proxy.size.width * 0.5
-        VStack(spacing: vspacing) {
-            if let answer = answers.first {
-                HStack {
-                    Spacer()
-                    iconView(answer, size: .init(width: iconW, height: iconH))
-                        .padding(.trailing, hPadding)
+        let horizontalPadding: CGFloat = 6
+        let bottom: CGFloat = 6
+        let contentWidth = max(proxy.size.width - horizontalPadding * 2, 0)
+        let contentHeight = max(proxy.size.height - top - bottom, 0)
+        let vspacing = max(contentHeight * 0.04, 2)
+        let iconSize = max(min(contentWidth * 0.62, (contentHeight - vspacing * 2) / 3), 14)
+        let xOffset = min(contentWidth * 0.16, iconSize * 0.45)
+        
+        VStack {
+            VStack(spacing: vspacing) {
+                if let answer = answers.first {
+                    iconView(answer, size: .init(width: iconSize, height: iconSize))
+                        .offset(x: xOffset)
+                        .onTapGesture {
+                            if answer.icon?.readAt != nil {
+                                didTapIcon(answer)
+                            }
+                        }
                 }
-                .onTapGesture {
-                    if answer.icon?.readAt != nil {
-                        didTapIcon(answer)
+                iconView(answers[1], size: .init(width: iconSize, height: iconSize))
+                    .offset(x: -xOffset)
+                    .onTapGesture {
+                        if answers[1].icon?.readAt != nil {
+                            didTapIcon(answers[1])
+                        }
                     }
-                }
-                
-            }
-            HStack {
-                iconView(answers[1], size: .init(width: iconW, height: iconH))
-                    .padding(.leading, hPadding)
-                Spacer()
-            }
-            .onTapGesture {
-                if answers[1].icon?.readAt != nil {
-                    didTapIcon(answers[1])
+                if let answer = answers.last {
+                    iconView(answer, size: .init(width: iconSize, height: iconSize))
+                        .offset(x: xOffset)
+                        .onTapGesture {
+                            if answer.icon?.readAt != nil {
+                                didTapIcon(answer)
+                            }
+                        }
                 }
             }
-            if let answer = answers.last {
-                HStack {
-                    Spacer()
-                    iconView(answer, size: .init(width: iconW, height: iconH))
-                        .padding(.trailing, hPadding)
-                }
-                .onTapGesture {
-                    if answer.icon?.readAt != nil {
-                        didTapIcon(answer)
-                    }
-                }
-            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         }
         .padding(.top, top)
+        .padding(.horizontal, horizontalPadding)
         .padding(.bottom, bottom)
+        .frame(width: proxy.size.width, height: proxy.size.height, alignment: .top)
     }
     
     @ViewBuilder
