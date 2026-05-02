@@ -25,4 +25,19 @@ final class TodayAnswerSubmittedViewModel: ObservableObject, @unchecked Sendable
         guard let iconId = icon.iconId else { return }
         let _ = try? await service.markIconReadUseCase.execute(iconId)
     }
+    
+    func queryCurrenntIconStatus() {
+        Task.detached {
+            guard self.answer.icon?.status == .pending else { return }
+            guard let iconId = self.answer.icon?.iconId else { return }
+            let streams = self.service.queryIconStatusUseCase.execute(iconId)
+            for try await stream in streams {
+                if stream.status == .generated {
+                    await MainActor.run {
+                        self.answer.icon = stream.toDomain()
+                    }
+                }
+            }
+        }
+    }
 }

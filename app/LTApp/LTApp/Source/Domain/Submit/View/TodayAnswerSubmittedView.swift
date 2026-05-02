@@ -29,6 +29,9 @@ struct TodayAnswerSubmittedView: View {
                 imageAnswerView
             } else {
                 loadingAnswerView
+                    .onAppear {
+                        viewModel.queryCurrenntIconStatus()
+                    }
             }
             Spacer()
             closeBtn
