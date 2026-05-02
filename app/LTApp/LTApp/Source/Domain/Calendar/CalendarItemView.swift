@@ -118,8 +118,8 @@ struct CalendarItemView: View {
         let bottom: CGFloat = 6
         let contentWidth = max(proxy.size.width - horizontalPadding * 2, 0)
         let contentHeight = max(proxy.size.height - top - bottom, 0)
-        let iconSize = max(min(contentWidth * 0.64, contentHeight * 0.49), 16)
         let vspacing = max(contentHeight * 0.04, 2)
+        let iconSize = min(contentWidth * 0.64, max((contentHeight - vspacing) / 2, 0))
         let xOffset = min(contentWidth * 0.16, iconSize * 0.45)
         
         VStack {
@@ -159,7 +159,7 @@ struct CalendarItemView: View {
         let contentWidth = max(proxy.size.width - horizontalPadding * 2, 0)
         let contentHeight = max(proxy.size.height - top - bottom, 0)
         let vspacing = max(contentHeight * 0.04, 2)
-        let iconSize = max(min(contentWidth * 0.62, (contentHeight - vspacing * 2) / 3), 14)
+        let iconSize = min(contentWidth * 0.62, max((contentHeight - vspacing * 2) / 3, 0))
         let xOffset = min(contentWidth * 0.16, iconSize * 0.45)
         
         VStack {
