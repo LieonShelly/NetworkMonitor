@@ -48,6 +48,7 @@ struct PrinterView: View {
         }
         .onDisappear {
             Task.detached {
+                await viewModel.readCurrentReport()
                 try? await viewModel.fetchHistoryHeaderWeekIcons()
                 try? await viewModel.fetchHistory()
                 await viewModel.refreshArcadeState()

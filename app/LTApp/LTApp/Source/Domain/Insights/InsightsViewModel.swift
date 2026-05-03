@@ -18,6 +18,8 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     @MainActor @Published var readHisotrys: [WeeklyReportSummary] = []
     @MainActor @Published var reportsPaginator: Paginator<WeeklyReportSummary>!
     @Published var arcadeState: ArcadeViewState = .unFull
+    @Published var startedReadyToPrint: Bool = false
+    
     weak var router: InsightsRouter?
     var isFull: Bool {
         guard let currentIcons else { return false }
@@ -51,9 +53,12 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
     }
     
     func fetchHistoryHeaderWeekIcons() async throws {
-        let currentIcons: WeeklyReportCurrentIcons
-        if Date.isWeekDay {
+        var currentIcons: WeeklyReportCurrentIcons
+        if Date.isWeekDay, self.currentIcons?.readAt == nil {
             currentIcons = try await dataService.fetchWeeklyReportPrevIconsUseCase.execute()
+            if currentIcons.readAt != nil {
+                currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
+            }
         } else {
             currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
         }
@@ -136,6 +141,10 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         goToQoTFlow?()
     }
     
+    func readCurrentReport() async {
+        guard let weeklyReport else { return }
+        _ = try? await dataService.markWeeklyReportReadUseCase.execute(week: weeklyReport.week)
+    }
     
     @MainActor
     func refreshArcadeState() async {
@@ -147,6 +156,7 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
             && currentIcons.minAnswersToGenerateReport != 0
         if Date.isWeekDay {
             if isFull {
+                startedReadyToPrint = false
                 arcadeState = .readyToPrint
             } else {
                 arcadeState = .unFull

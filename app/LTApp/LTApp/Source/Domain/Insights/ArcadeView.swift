@@ -15,7 +15,6 @@ struct ArcadeView: View, ImageCacheKeyType {
     private let processorId = "metal.icon.processor.v3_thickness_2"
     @State private var scene: CoinScene?
     @State private var sceneSize: CGSize = .zero
-    @State private var started: Bool = false
     @State private var joystickAngle: Double = 0
     @State private var tickerPressed: [Bool] = [false, false, false]
     @State private var contentWidth: CGFloat = 0
@@ -276,10 +275,10 @@ struct ArcadeView: View, ImageCacheKeyType {
                         ZStack {
                             if let scene = scene {
                                 iconLoadingView(scene: scene)
-                                    .opacity(started ? 1 : 0)
+                                    .opacity(viewModel.startedReadyToPrint ? 1 : 0)
                                     .frame(height: geo.size.height)
                             }
-                            if !started {
+                            if !viewModel.startedReadyToPrint {
                                 rpIdleView
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                                     .frame(height: geo.size.height)
@@ -287,7 +286,7 @@ struct ArcadeView: View, ImageCacheKeyType {
                         }
                         .frame(height: geo.size.height)
                         .padding(.horizontal, 40)
-                        .animation(.easeInOut, value: started)
+                        .animation(.easeInOut, value: viewModel.startedReadyToPrint)
                     case .unread:
                         unReadCountView
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -320,6 +319,9 @@ struct ArcadeView: View, ImageCacheKeyType {
                 newScene.scaleMode = .aspectFit
                 newScene.backgroundColor = .clear
                 scene = newScene
+            }
+            .onChange(of: viewModel.startedReadyToPrint) { oldValue, newValue in
+                scene?.removeAllChildren()
             }
         }
     }
@@ -366,7 +368,7 @@ struct ArcadeView: View, ImageCacheKeyType {
                         try? await viewModel.generateReport()
                     }
                 }
-                started = true
+                viewModel.startedReadyToPrint = true
             } label: {
                 RoundedRectangle(cornerRadius: 16)
                     .fill(AppColor.black)
