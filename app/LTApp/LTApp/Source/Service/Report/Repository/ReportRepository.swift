@@ -8,6 +8,7 @@ import LTNetwork
 public protocol ReportRepositoryType {
     func fetchWeeklyReport(week: String?) async throws -> WeeklyReport
     func fetchWeeklyReportCurrentIcons() async throws -> WeeklyReportCurrentIcons
+    func fetchWeeklyReportPrevIcons() async throws -> WeeklyReportCurrentIcons
     func fetchWeeklyReportsList(limit: Int?, cursor: String?, isRead: Bool?) async throws -> WeeklyReportsList
     func markWeeklyReportRead(week: String) async throws -> WeeklyReportReadResult
 }
@@ -28,6 +29,13 @@ public final class ReportRepository: ReportRepositoryType {
     
     public func fetchWeeklyReportCurrentIcons() async throws -> WeeklyReportCurrentIcons {
         let request = ReportRequest.weeklyReportCurrentIcons
+        let response = try await apiClient.sendRequest(request)
+        let dto: UniversalResponse<WeeklyReportCurrentIconsDTO> = try response.parseJson()
+        return dto.data.toDomain()
+    }
+    
+    public func fetchWeeklyReportPrevIcons() async throws -> WeeklyReportCurrentIcons {
+        let request = ReportRequest.weeklyReportPrevIcons
         let response = try await apiClient.sendRequest(request)
         let dto: UniversalResponse<WeeklyReportCurrentIconsDTO> = try response.parseJson()
         return dto.data.toDomain()

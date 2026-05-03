@@ -50,8 +50,13 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
         }
     }
     
-    func fetchHistoryHeaderCurrentWeekIcons() async throws {
-        let currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
+    func fetchHistoryHeaderWeekIcons() async throws {
+        let currentIcons: WeeklyReportCurrentIcons
+        if Date.isWeekDay {
+            currentIcons = try await dataService.fetchWeeklyReportPrevIconsUseCase.execute()
+        } else {
+            currentIcons = try await dataService.fetchWeeklyReportCurrentIconsUseCase.execute()
+        }
         await MainActor.run {
             self.currentIcons = currentIcons
             self.weeklyIcons = currentIcons.icons.map { .normal($0)}
@@ -138,7 +143,6 @@ final class InsightsViewModel: ObservableObject, @unchecked Sendable {
             arcadeState = .unFull
             return
         }
-        
         let isFull = currentIcons.minAnswersToGenerateReport <= currentIcons.icons.count
             && currentIcons.minAnswersToGenerateReport != 0
         if Date.isWeekDay {

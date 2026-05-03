@@ -29,6 +29,7 @@ public protocol AppDataWithAuthorizationServiceful {
     var fetchQodStrategyOptionsUseCase: any FetchQodStrategyOptionsUseCaseType { get }
     var fetchWeeklyReportUseCase: any FetchWeeklyReportUseCaseType { get }
     var fetchWeeklyReportCurrentIconsUseCase: any FetchWeeklyReportCurrentIconsUseCaseType { get }
+    var fetchWeeklyReportPrevIconsUseCase: any FetchWeeklyReportPrevIconsUseCaseType { get }
     var fetchWeeklyReportsListUseCase: any FetchWeeklyReportsListUseCaseType { get }
     var fetchReadWeeklyReportsUseCase: any FetchReadWeeklyReportsUseCaseType { get }
     var fetchUnreadWeeklyReportsUseCase: any FetchUnreadWeeklyReportsUseCaseType { get }
@@ -154,6 +155,10 @@ public final class AppDataWithAuthorizationService: AppDataWithAuthorizationServ
     
     public lazy var fetchWeeklyReportCurrentIconsUseCase: any FetchWeeklyReportCurrentIconsUseCaseType = {
         return FetchWeeklyReportCurrentIconsUseCase(repository: reportRepository)
+    }()
+    
+    public lazy var fetchWeeklyReportPrevIconsUseCase: any FetchWeeklyReportPrevIconsUseCaseType = {
+        return FetchWeeklyReportPrevIconsUseCase(repository: reportRepository)
     }()
     
     public lazy var fetchWeeklyReportsListUseCase: any FetchWeeklyReportsListUseCaseType = {

@@ -163,7 +163,7 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
     @MainActor func refreshTabs() async {
         try? await contentViewModel.calendarViewModel.fetchData()
         try? await contentViewModel.threadViewModel.fetchDataInCurrentCategory()
-        try? await contentViewModel.insightsViewModel.fetchHistoryHeaderCurrentWeekIcons()
+        try? await contentViewModel.insightsViewModel.fetchHistoryHeaderWeekIcons()
     }
     
     @MainActor
@@ -177,7 +177,7 @@ final class AppHomeViewModel: @preconcurrency BaseViewModelType, ObservableObjec
             }
             try? await contentViewModel.threadViewModel.fetchDataInCurrentCategory()
         case 2:
-            try? await contentViewModel.insightsViewModel.fetchHistoryHeaderCurrentWeekIcons()
+            try? await contentViewModel.insightsViewModel.fetchHistoryHeaderWeekIcons()
             try? await contentViewModel.insightsViewModel.fetchHistory()
             await contentViewModel.insightsViewModel.refreshArcadeState()
         case 3:

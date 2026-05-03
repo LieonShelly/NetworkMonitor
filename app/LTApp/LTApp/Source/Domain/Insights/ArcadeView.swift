@@ -32,7 +32,7 @@ struct ArcadeView: View, ImageCacheKeyType {
         }
         .onAppear {
             Task.detached {
-                try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
+                try? await viewModel.fetchHistoryHeaderWeekIcons()
                 try? await viewModel.fetchHistory()
                 await viewModel.refreshArcadeState()
             }
@@ -325,7 +325,7 @@ struct ArcadeView: View, ImageCacheKeyType {
     }
     
     func refresh() async {
-        try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
+        try? await viewModel.fetchHistoryHeaderWeekIcons()
         try? await viewModel.fetchHistory()
         await viewModel.refreshArcadeState()
     }

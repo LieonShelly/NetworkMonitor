@@ -10,6 +10,7 @@
 		00938F0472BAF610B5EF12C4 /* CalendarGridLines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21933E5AB34751B6690F42AB /* CalendarGridLines.swift */; };
 		02DFB99B8F0DD07DCCA3CDDA /* CoinScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F213C83E854E916649627A /* CoinScene.swift */; };
 		037E10658862B045E4C55AB2 /* FetchWeeklyReportCurrentIconsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6206D7647900765F3A35C54 /* FetchWeeklyReportCurrentIconsUseCase.swift */; };
+		12FA87687AB94A4DB1B118B8 /* FetchWeeklyReportPrevIconsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997323E9FA8140CA8A577EF1 /* FetchWeeklyReportPrevIconsUseCase.swift */; };
 		0502978C996784E0EC786992 /* ReadyToPrintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B5043EEA7BC29B1EF9543D /* ReadyToPrintView.swift */; };
 		050E2E3DD9B3C85C91D82F48 /* AppHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9149F460DAEC51F5F86DE569 /* AppHomeView.swift */; };
 		05DD2C7618678988A64D9086 /* NewHistoryUnReadItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E01E4F64E4051FF6D023563 /* NewHistoryUnReadItemRow.swift */; };
@@ -435,6 +436,7 @@
 		C3E96850B39DC5BE3C36C45A /* MTKViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTKViewRepresentable.swift; sourceTree = "<group>"; };
 		C56F13ED4F3FC17089C4011A /* UserFlowRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFlowRequest.swift; sourceTree = "<group>"; };
 		C6206D7647900765F3A35C54 /* FetchWeeklyReportCurrentIconsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchWeeklyReportCurrentIconsUseCase.swift; sourceTree = "<group>"; };
+		997323E9FA8140CA8A577EF1 /* FetchWeeklyReportPrevIconsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchWeeklyReportPrevIconsUseCase.swift; sourceTree = "<group>"; };
 		C664A1E4B27BEB98DB64E04F /* NewUserRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserRow.swift; sourceTree = "<group>"; };
 		CB972AAE73176282219A3C92 /* UpdateStrategyUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStrategyUseCase.swift; sourceTree = "<group>"; };
 		CE817C60707A10F2069E3CCD /* DayReflectionsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayReflectionsDTO.swift; sourceTree = "<group>"; };
@@ -1095,6 +1097,7 @@
 			isa = PBXGroup;
 			children = (
 				C6206D7647900765F3A35C54 /* FetchWeeklyReportCurrentIconsUseCase.swift */,
+				997323E9FA8140CA8A577EF1 /* FetchWeeklyReportPrevIconsUseCase.swift */,
 				94A2B3463D38000A4713442B /* FetchWeeklyReportsListUseCase.swift */,
 				B4CFB249F63977293DBBDD53 /* FetchWeeklyReportUseCase.swift */,
 				3A314A541A189CC43CFCA1E6 /* MarkWeeklyReportReadUseCase.swift */,
@@ -1299,6 +1302,7 @@
 				2A7D622E3B2DF60EAA8B40AA /* FetchThreadQuestionsUseCase.swift in Sources */,
 				3BAC2EF102159C39527C4A9B /* FetchTodayQuestionsUseCase.swift in Sources */,
 				037E10658862B045E4C55AB2 /* FetchWeeklyReportCurrentIconsUseCase.swift in Sources */,
+				12FA87687AB94A4DB1B118B8 /* FetchWeeklyReportPrevIconsUseCase.swift in Sources */,
 				E1A8627B327C011B7EB81D06 /* FetchWeeklyReportUseCase.swift in Sources */,
 				4439EEFC959E6D96FE0B355D /* FetchWeeklyReportsListUseCase.swift in Sources */,
 				4A61DBBA35C61856E1DC4882 /* FirstQuestionView.swift in Sources */,

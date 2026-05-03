@@ -8,6 +8,7 @@ import LTNetwork
 enum ReportRequest: Request, @unchecked Sendable {
     case weeklyReport(week: String?)
     case weeklyReportCurrentIcons
+    case weeklyReportPrevIcons
     case weeklyReportsList(limit: Int?, cursor: String?, isRead: Bool?)
     case markWeeklyReportRead(week: String)
     
@@ -18,6 +19,8 @@ enum ReportRequest: Request, @unchecked Sendable {
             path += "/weekly-report"
         case .weeklyReportCurrentIcons:
             path += "/weekly-report/current"
+        case .weeklyReportPrevIcons:
+            path += "/weekly-report/prev"
         case .weeklyReportsList:
             path += "/weekly-reports"
         case .markWeeklyReportRead:
@@ -28,7 +31,7 @@ enum ReportRequest: Request, @unchecked Sendable {
     
     var method: HttpMethod {
         switch self {
-        case .weeklyReport, .weeklyReportCurrentIcons, .weeklyReportsList:
+        case .weeklyReport, .weeklyReportCurrentIcons, .weeklyReportPrevIcons, .weeklyReportsList:
             return .get
         case .markWeeklyReportRead:
             return .post
@@ -42,7 +45,7 @@ enum ReportRequest: Request, @unchecked Sendable {
                 return .urlEncoding([("week", week)])
             }
             return .empty
-        case .weeklyReportCurrentIcons:
+        case .weeklyReportCurrentIcons, .weeklyReportPrevIcons:
             return .empty
         case let .weeklyReportsList(limit, cursor, isRead):
             var params: [(String, String)] = []

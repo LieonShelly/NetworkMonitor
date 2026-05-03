@@ -391,3 +391,84 @@
 - **错误响应**:
   - icon 不存在：返回 `404 Not Found`
   - 无权限（icon 不属于当前用户）：返回 `403 Forbidden`
+
+
+#### 6.3 获取当周已生成图标
+
+- **URL**: `GET /api/weekly-report/current`
+- **描述**: 获取当前用户本周已生成完成（`GENERATED`）的 icon 列表
+- **认证**: 需要
+- **响应示例**:
+  ```json
+  {
+    "minAnswersToGenerateReport": 6,
+    "icons": [
+      {
+        "id": "cludicon123456789",
+        "answer_id": "cludanswer123456789",
+        "created_ymd": "2026-03-16",
+        "url": "https://your-oss-bucket.oss-region.aliyuncs.com/icons/cludicon123456789-1234567890.webp?Expires=1234567890&OSSAccessKeyId=xxx&Signature=xxx",
+        "read_at": null
+      },
+      {
+        "id": "cludicon987654321",
+        "answer_id": "cludanswer987654321",
+        "created_ymd": "2026-03-17",
+        "url": "https://your-oss-bucket.oss-region.aliyuncs.com/icons/cludicon987654321-1234567890.webp?Expires=1234567890&OSSAccessKeyId=xxx&Signature=xxx",
+        "read_at": null
+      }
+    ]
+  }
+  ```
+- **说明**:
+  - `minAnswersToGenerateReport`：生成周报所需的最少 answer 数（当前为 6）
+  - 仅返回状态为 `GENERATED` 的 icon
+  - 仅统计当前用户、且 answer 未软删除（`deleted_at = null`）
+  - 仅返回当前周范围内（基于 answer 的 `created_ymd`）的数据
+  - 返回结果按 icon 的 `created_at` 升序（最早生成在前）
+  - `url` 为签名后的可访问地址
+  - `read_at`：`null` 表示未读；非 `null` 表示已读时间（ISO 8601）
+  - 无数据时返回 `{ "minAnswersToGenerateReport": 6, "icons": [] }`
+
+
+
+
+#### 6.4 获取上周已生成图标
+
+- **URL**: `GET /api/weekly-report/prev`
+- **描述**: 获取当前用户上周已生成完成（`GENERATED`）的 icon 列表
+- **认证**: 需要
+- **响应示例**:
+  ```json
+  {
+    "minAnswersToGenerateReport":6,
+    "period_start":"2026-04-26",
+    "period_end":"2026-05-02",
+    "read_at":null,
+    "icons": [
+      {
+        "id": "cludicon123456789",
+        "answer_id": "cludanswer123456789",
+        "created_ymd": "2026-03-16",
+        "url": "https://your-oss-bucket.oss-region.aliyuncs.com/icons/cludicon123456789-1234567890.webp?Expires=1234567890&OSSAccessKeyId=xxx&Signature=xxx",
+        "read_at": null
+      },
+      {
+        "id": "cludicon987654321",
+        "answer_id": "cludanswer987654321",
+        "created_ymd": "2026-03-17",
+        "url": "https://your-oss-bucket.oss-region.aliyuncs.com/icons/cludicon987654321-1234567890.webp?Expires=1234567890&OSSAccessKeyId=xxx&Signature=xxx",
+        "read_at": null
+      }
+    ]
+  }
+  ```
+- **说明**:
+  - `minAnswersToGenerateReport`：生成周报所需的最少 answer 数（当前为 6）
+  - 仅返回状态为 `GENERATED` 的 icon
+  - 仅统计当前用户、且 answer 未软删除（`deleted_at = null`）
+  - 仅返回当前周范围内（基于 answer 的 `created_ymd`）的数据
+  - 返回结果按 icon 的 `created_at` 升序（最早生成在前）
+  - `url` 为签名后的可访问地址
+  - `read_at`：`null` 表示未读；非 `null` 表示已读时间（ISO 8601）
+  - 无数据时返回 `{ "minAnswersToGenerateReport": 6, "icons": [] }`

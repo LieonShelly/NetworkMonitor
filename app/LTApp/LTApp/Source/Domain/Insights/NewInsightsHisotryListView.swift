@@ -21,12 +21,12 @@ struct NewInsightsHistoryListView: View {
         }
         .refreshable {
             try? await viewModel.fetchHistory()
-            try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
+            try? await viewModel.fetchHistoryHeaderWeekIcons()
         }
         .onFirstAppear {
             Task.detached {
                 try? await viewModel.fetchHistory()
-                try? await viewModel.fetchHistoryHeaderCurrentWeekIcons()
+                try? await viewModel.fetchHistoryHeaderWeekIcons()
             }
         }
     }
