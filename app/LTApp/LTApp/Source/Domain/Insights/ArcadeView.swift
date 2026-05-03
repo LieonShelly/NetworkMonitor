@@ -379,8 +379,9 @@ struct ArcadeView: View, ImageCacheKeyType {
                             .frame(width: 95, height: 32)
                     }
                     .background {
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(AppColor.black, lineWidth: 1)
+                        Image(.rectangle52)
+                            .resizable()
+                            .frame(width: 157, height: 60)
                             .offset(x: 3, y: 6)
                     }
             }
