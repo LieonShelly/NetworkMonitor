@@ -31,7 +31,7 @@
 
 static char g_report_directory[LTBUGLY_MAX_PATH_LENGTH];
 static char g_context_json[LTBUGLY_MAX_CONTEXT_LENGTH];
-static atomic_bool g_context_initialized = false;
+static volatile sig_atomic_t g_context_initialized = 0;
 
 static void ltbugly_signal_handler(int signal_type);
 static const char *ltbugly_signal_name(int signal_type);
@@ -41,7 +41,6 @@ static void ltbugly_write_json_escaped_string(int fd, const char *value);
 static void ltbugly_write_cstring(int fd, const char *value);
 static void ltbugly_write_uint64(int fd, uint64_t value);
 static void ltbugly_write_backtrace_json(int fd);
-static void ltbugly_write_binary_images_json(int fd);
 
 void ltbugly_install_signal_handlers(const char *directory_path) {
     if (directory_path == NULL) {
@@ -51,28 +50,33 @@ void ltbugly_install_signal_handlers(const char *directory_path) {
     memset(g_report_directory, 0, sizeof(g_report_directory));
     strncpy(g_report_directory, directory_path, sizeof(g_report_directory) - 1);
 
-    signal(SIGABRT, ltbugly_signal_handler);
-    signal(SIGSEGV, ltbugly_signal_handler);
-    signal(SIGBUS, ltbugly_signal_handler);
-    signal(SIGILL, ltbugly_signal_handler);
-    signal(SIGFPE, ltbugly_signal_handler);
+    struct sigaction action;
+    memset(&action, 0, sizeof(action));
+    sigemptyset(&action.sa_mask);
+    action.sa_handler = ltbugly_signal_handler;
+    action.sa_flags = SA_RESETHAND;
+
+    sigaction(SIGABRT, &action, NULL);
+    sigaction(SIGSEGV, &action, NULL);
+    sigaction(SIGBUS, &action, NULL);
+    sigaction(SIGILL, &action, NULL);
+    sigaction(SIGFPE, &action, NULL);
 }
 
 void ltbugly_update_signal_report_context(const char *context_json) {
     if (context_json == NULL) {
-        atomic_store(&g_context_initialized, false);
+        g_context_initialized = 0;
         memset(g_context_json, 0, sizeof(g_context_json));
         return;
     }
 
     memset(g_context_json, 0, sizeof(g_context_json));
     strncpy(g_context_json, context_json, sizeof(g_context_json) - 1);
-    atomic_store(&g_context_initialized, true);
+    g_context_initialized = 1;
 }
 
 static void ltbugly_signal_handler(int signal_type) {
     ltbugly_write_signal_report(signal_type);
-    signal(signal_type, SIG_DFL);
     raise(signal_type);
 }
 
@@ -99,14 +103,13 @@ static void ltbugly_write_signal_report(int signal_type) {
         return;
     }
 
-    if (atomic_load(&g_context_initialized) && g_context_json[0] != '\0') {
+    if (g_context_initialized && g_context_json[0] != '\0') {
         ltbugly_write_cstring(fd, g_context_json);
     } else {
         ltbugly_write_cstring(fd, "{");
     }
 
-    off_t end = lseek(fd, -1, SEEK_END);
-    if (end < 0) {
+    if (lseek(fd, -1, SEEK_END) < 0) {
         close(fd);
         return;
     }
@@ -137,8 +140,6 @@ static void ltbugly_write_signal_report(int signal_type) {
     ltbugly_write_backtrace_json(fd);
     ltbugly_write_cstring(fd, "}]");
 
-    ltbugly_write_cstring(fd, ",\"binary_images\":");
-    ltbugly_write_binary_images_json(fd);
     ltbugly_write_cstring(fd, "}");
 
     close(fd);
@@ -176,49 +177,6 @@ static void ltbugly_write_backtrace_json(int fd) {
         }
         ltbugly_write_cstring(fd, "}");
     }
-    ltbugly_write_cstring(fd, "]");
-}
-
-static void ltbugly_write_binary_images_json(int fd) {
-    uint32_t count = _dyld_image_count();
-    ltbugly_write_cstring(fd, "[");
-
-    for (uint32_t i = 0; i < count; i++) {
-        if (i > 0) {
-            ltbugly_write_cstring(fd, ",");
-        }
-
-        const char *path = _dyld_get_image_name(i);
-        const struct mach_header *header = _dyld_get_image_header(i);
-        intptr_t slide = _dyld_get_image_vmaddr_slide(i);
-
-        ltbugly_write_cstring(fd, "{\"name\":");
-        if (path != NULL) {
-            const char *name = strrchr(path, '/');
-            ltbugly_write_json_escaped_string(fd, name == NULL ? path : name + 1);
-        } else {
-            ltbugly_write_cstring(fd, "\"unknown\"");
-        }
-
-        ltbugly_write_cstring(fd, ",\"uuid\":null");
-
-        ltbugly_write_cstring(fd, ",\"base_address\":");
-        char address[32];
-        snprintf(address, sizeof(address), "\"0x%016llx\"", (unsigned long long)slide);
-        ltbugly_write_cstring(fd, address);
-
-        ltbugly_write_cstring(fd, ",\"size\":null");
-        ltbugly_write_cstring(fd, ",\"path\":");
-        if (path != NULL) {
-            ltbugly_write_json_escaped_string(fd, path);
-        } else {
-            ltbugly_write_cstring(fd, "\"unknown\"");
-        }
-        ltbugly_write_cstring(fd, "}");
-
-        (void)header;
-    }
-
     ltbugly_write_cstring(fd, "]");
 }
 

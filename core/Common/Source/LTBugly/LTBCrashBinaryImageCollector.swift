@@ -35,6 +35,18 @@ enum LTBCrashBinaryImageCollector {
         }
     }
 
+    static func collectLegacyImageDetails() -> [(name: String, uuid: String?, baseAddress: String, size: UInt64?, path: String)] {
+        collect().map {
+            (
+                name: $0.name,
+                uuid: $0.uuid,
+                baseAddress: $0.baseAddress,
+                size: $0.size,
+                path: $0.path
+            )
+        }
+    }
+
     private static func uuid(for header: UnsafePointer<mach_header>) -> String? {
         var cursor = UnsafeRawPointer(header).advanced(by: MemoryLayout<mach_header_64>.size)
 
@@ -81,4 +93,3 @@ enum LTBCrashBinaryImageCollector {
         return size == 0 ? nil : size
     }
 }
-

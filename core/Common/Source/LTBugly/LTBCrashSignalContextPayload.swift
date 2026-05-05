@@ -12,12 +12,13 @@ struct LTBCrashSignalContextPayload: Codable, Sendable, Equatable {
     let app: LTBCrashReport.App
     let device: LTBCrashReport.Device
     let context: LTBCrashReport.Context
+    let binaryImages: [LTBCrashReport.BinaryImage]
 
     enum CodingKeys: String, CodingKey {
         case crashID = "crash_id"
         case app
         case device
         case context
+        case binaryImages = "binary_images"
     }
 }
-

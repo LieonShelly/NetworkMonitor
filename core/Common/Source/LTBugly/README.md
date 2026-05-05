@@ -1,38 +1,44 @@
 # LTBugly
 
-`LTBugly` 是 `Common` 模块下的自研 Crash 上报组件，当前已经完成 iOS 端增强版 MVP：不仅能做 Crash 捕获、本地落盘、下次启动补偿上传，还补齐了 signal 路径下沉、多线程栈采集、`binary_images`、诊断上下文，以及基础上传策略。
+`LTBugly` 是 `Common` 模块下的自研稳定性组件，当前已完成客户端增强版实现：支持 `NSException` / POSIX Signal 崩溃采集、本地落盘、下次启动补偿上传、signal 路径最小化处理、多线程栈能力、`binary_images`、上下文持久化、字段脱敏、稳定性事件采集，以及 dSYM 上传契约。
 
-本文档只描述当前仓库里已经落地的实现，并在最后单独列出仍然存在的技术边界与后续规划。
+这份文档只描述当前仓库里已经落地的客户端能力。服务端 symbol worker、UUID 索引和重新符号化能力不在本轮实现范围内，后续单独推进。
 
 ## 当前能力
 
-当前已经落地的入口与核心文件：
+核心文件：
 
 - 对外入口：[CrashReporter.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/CrashReporter.swift>)
 - Crash 捕获安装：[LTBCrashCapture.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashCapture.swift>)
 - Signal C 层处理器：[LTBCrashSignalHandler.m](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashSignalHandler.m>)
-- Signal Swift Bridge：[LTBCrashSignalBridge.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashSignalBridge.swift>)
+- Signal Bridge：[LTBCrashSignalBridge.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashSignalBridge.swift>)
 - Crash Report 模型：[LTBCrashReport.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashReport.swift>)
+- 稳定性事件模型：[LTBCrashEvent.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashEvent.swift>)
+- Symbolication 元数据：[LTBCrashSymbolicationMetadata.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashSymbolicationMetadata.swift>)
 - Report Builder：[LTBCrashReportBuilder.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashReportBuilder.swift>)
 - 线程栈采集：[LTBCrashThreadCollector.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashThreadCollector.swift>)
 - Binary Images 采集：[LTBCrashBinaryImageCollector.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashBinaryImageCollector.swift>)
 - 运行时上下文：[LTBCrashContext.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashContext.swift>)
 - 业务上下文存储：[LTBCrashContextStore.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashContextStore.swift>)
+- 字段脱敏：[LTBCrashRedactor.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashRedactor.swift>)
+- 稳定性监控：[LTBCrashStabilityMonitor.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashStabilityMonitor.swift>)
 - 本地文件存储：[LTBCrashReportStore.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashReportStore.swift>)
-- 上传协议与默认上传器：[LTBCrashUploader.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashUploader.swift>)
+- 上传器：[LTBCrashUploader.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashUploader.swift>)
 - 配置项：[LTBCrashReporterConfiguration.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashReporterConfiguration.swift>)
+- dSYM 上传脚本：[scripts/ltbugly_upload_dsym.sh](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/scripts/ltbugly_upload_dsym.sh>)
+- Fastlane lane：[fastlane/Fastfile](/Users/renjun.li/Desktop/LittleThings/LittleThingsApp/fastlane/Fastfile)
 
 ## 已实现功能
 
 ### 1. 初始化
 
-组件统一入口仍然是：
+入口：
 
 ```swift
 CrashReporter.start()
 ```
 
-也支持传入完整配置：
+完整配置示例：
 
 ```swift
 CrashReporter.start(
@@ -40,87 +46,96 @@ CrashReporter.start(
         endpointURL: URL(string: "https://your-api.com/api/crashes"),
         headers: ["Authorization": "Bearer <token>"],
         maximumReportCount: 10,
-        contextConfiguration: .init(breadcrumbCapacity: 50),
+        contextConfiguration: .init(
+            breadcrumbCapacity: 50,
+            persistenceConfiguration: .init(
+                debounceInterval: 1,
+                breadcrumbFileCount: 3,
+                maximumBreadcrumbsPerFile: 50
+            )
+        ),
         uploadConfiguration: .init(
             maximumRetryCount: 2,
             retryBaseDelay: 2,
             enablesCompression: true
-        )
+        ),
+        redactionPolicy: .default
     )
 )
 ```
 
-`start()` 当前会完成这些事情：
+`start()` 当前会完成：
 
 - 准备 `CrashReports` 目录
 - 清理超过上限的历史 report
-- 配置 crash context store
-- 同步 `LTLog` breadcrumbs 到 crash context
+- 配置并恢复 crash context
+- 同步 `LTLog` breadcrumbs
 - 生成 signal 用的上下文模板
 - 安装 `NSException` handler
-- 安装 C 层 POSIX signal handler
+- 安装 C 层 signal handler
+- 启动稳定性事件监控
 - 扫描本地未上传文件并尝试上传
 
-### 2. 异常捕获
+### 2. 崩溃捕获
 
-当前已接入两类崩溃捕获：
+当前已接入：
 
 - `NSException`
-- POSIX Signal：
+- POSIX Signal
   - `SIGABRT`
   - `SIGSEGV`
   - `SIGBUS`
   - `SIGILL`
   - `SIGFPE`
 
-两条路径现在的策略不同：
+两条路径的策略不同：
 
-- `NSException` 路径：
-  - 走 Swift Builder，生成完整 `LTBCrashReport`
-  - 采集 App / Device / Context / Threads / Binary Images
+- `NSException` 路径
+  - 走 Swift Builder 生成完整 `LTBCrashReport`
+  - 采集 App / Device / Context / Threads / Binary Images / Symbolication Metadata
   - 写入本地 JSON 文件
 
-- `signal` 路径：
-  - handler 已下沉到 `C / Objective-C`
-  - 当场只做最小必要工作：从预先同步好的上下文模板出发，补写 signal 异常信息、当前线程 backtrace、binary images
+- `signal` 路径
+  - handler 下沉到 `C / Objective-C`
+  - 现场只补 signal 异常信息和当前线程 backtrace
+  - `binary_images`、上下文、symbolication metadata 提前准备进 signal 模板
   - 直接使用底层文件 API 落盘
-  - 恢复默认 handler 并重新 `raise`
+  - 使用 `sigaction(..., SA_RESETHAND, ...)`，随后 `raise(signal)`
 
-这一版的核心变化是：signal 崩溃现场不再进入 Swift 组装完整 report，减少了异常现场的高层逻辑。
+这轮继续收紧了 signal 现场逻辑，尽量把复杂工作前移。
 
 ### 3. 存储与补偿上传
 
-当前本地存储策略：
+本地存储策略：
 
 - Crash 文件目录默认位于 `Library/Caches/LTBugly/CrashReports`
 - 每个 crash report 存为一个独立 `.json` 文件
+- 稳定性事件存为 `event-*.json`
 - signal 使用额外的 `signal-context.json` 缓存上下文模板
-- 下次启动时扫描所有待上传 crash 文件
+- context 持久化使用 `context.json`
+- breadcrumb 轮转持久化使用 `breadcrumbs-0.json`、`breadcrumbs-1.json` 等
+- 下次启动时扫描所有待上传文件
 - 上传成功后立即删除
 - 上传失败则保留，等待后续重试
 - 最多保留最近 `N` 条，默认 `10` 条
 
-当前 `LTBCrashReportStore` 会自动忽略 `signal-context.json`，它不会被当成 crash event 上传。
-
 ### 4. 多线程 backtrace
 
-这一轮已经补上线程采集能力：
+当前线程采集能力：
 
-- `NSException` 路径：
+- `NSException` 路径
   - 通过 Mach API 遍历当前进程线程
   - 标记 crashed thread
   - 当前线程通过 `backtrace`
   - 其他线程通过寄存器和 frame pointer 尝试回溯
 
-- `signal` 路径：
+- `signal` 路径
   - 当前只稳定记录崩溃线程 backtrace
-  - 这是为了控制 signal handler 现场复杂度
+  - 继续优先保证 signal handler 的现场复杂度可控
 
-也就是说，“多线程 backtrace 能力”已经具备，但完整多线程采集目前主要覆盖 `NSException` 路径。
+### 5. Binary Images 与符号化元数据
 
-### 5. Binary Images
-
-`binary_images` 已经补齐基础采集，当前包含：
+`binary_images` 当前包含：
 
 - `name`
 - `uuid`
@@ -128,24 +143,32 @@ CrashReporter.start(
 - `size`
 - `path`
 
-Swift 路径下会通过 `MachO` / `_dyld_*` API 读取 image 列表，并解析 `LC_UUID`。
+Swift 路径通过 `MachO` / `_dyld_*` API 读取 image 列表，并解析 `LC_UUID` 与 image size。
 
-signal 路径下也会写出 image 列表，但当前为了降低 handler 复杂度：
+signal 路径不再在 crash 现场动态遍历 `binary_images`，而是提前把完整 image 信息放入 signal 模板，因此当前 signal report 也能带出：
 
-- `uuid` 暂时写 `null`
-- `size` 暂时写 `null`
-- `base_address` 和 `path` 已有
+- `uuid`
+- `size`
+- `base_address`
+- `path`
 
-这已经足够为后续 dSYM 符号化打下基础，但 signal 路径的 binary image 细节还可以继续增强。
+report 里还额外增加了 `symbolication` 字段：
+
+- `bundle_id`
+- `version`
+- `build`
+- `binary_image_uuids`
+
+这部分用于后续服务端 dSYM UUID 匹配。
 
 ### 6. Breadcrumb / 用户 / Session 上下文
 
-这一轮已经增加 crash context 能力，支持：
+当前已支持：
 
 - `user_id`
 - `session_id`
 - `device_id`
-- 自定义 `custom` 字段
+- 自定义 `custom`
 - `breadcrumbs`
 
 对外 API：
@@ -159,100 +182,121 @@ CrashReporter.addBreadcrumb("enter payment page", category: "navigation")
 CrashReporter.syncBreadcrumbsFromLogger()
 ```
 
-其中 breadcrumb 有两条来源：
+breadcrumb 来源：
 
 - 手动通过 `CrashReporter.addBreadcrumb(...)` 注入
 - 从现有 `LTLog.breadcrumbs` 同步
 
-当前 `CrashReporter.start()` 启动时会先同步一次 `LTLog` breadcrumb；如果业务在运行时持续记录 `LTLog` breadcrumb，希望 crash context 始终跟上，建议在关键节点主动调用一次：
+这些上下文不仅存在内存中，还会持久化到本地文件，作为 signal 模板的基础数据来源。
 
-```swift
-CrashReporter.syncBreadcrumbsFromLogger()
-```
+### 7. Context 持久化策略优化
 
-### 7. 上传重试、压缩、限流和网络策略
+当前 context 持久化已经做了两层优化：
 
-默认上传器 `LTURLSessionCrashUploader` 这轮已经增强：
+- debounce 刷盘
+  - 不再每次字段变更都立即写盘
+  - 合并短时间内的多次修改
 
-- 支持 gzip 风格压缩思路的基础压缩实现
-  - 当前使用 `NSData.compressed(using: .zlib)`，HTTP Header 为 `Content-Encoding: deflate`
-- 支持失败重试
+- breadcrumb 文件轮转
+  - 将 breadcrumbs 拆分成多个文件块持久化
+  - 限制单文件条数和总文件数
+
+相关配置在 `LTBCrashPersistenceConfiguration`：
+
+- `debounceInterval`
+- `breadcrumbFileCount`
+- `maximumBreadcrumbsPerFile`
+
+### 8. 字段脱敏
+
+当前已经加入基础脱敏策略，作用范围包括：
+
+- `user_id`
+- `session_id`
+- `device_id`
+- `custom`
+- breadcrumb 的 `message`
+- breadcrumb 的 `metadata`
+
+默认策略会处理：
+
+- 常见敏感 key，如 `token`、`password`、`authorization`、`cookie`、`email`、`phone`
+- email 文本模式
+- 电话号码文本模式
+
+同时已经支持字段级白名单 / 黑名单模式：
+
+- `keyMode: .blacklist`
+- `keyMode: .whitelist`
+
+入口在 `LTBCrashRedactionPolicy`，可以通过 `CrashReporter.start(configuration:)` 自定义。
+
+### 9. 稳定性事件扩展
+
+除了 crash report，这轮补了一组客户端稳定性事件骨架：
+
+- `memory_pressure`
+  - 监听 `UIApplication.didReceiveMemoryWarningNotification`
+- `app_hang_risk`
+  - watchdog 定时 ping 主线程，记录明显主线程卡顿风险
+- `watchdog_risk`
+  - 通过前后台驻留时间粗略记录 watchdog 风险
+
+这些事件会以 `LTBCrashEvent` 的形式落到本地，和 crash report 走同一套补偿上传链路。
+
+说明：
+
+- 这是客户端侧的基础监控骨架，不等价于“已经完整实现系统级 OOM / 真正 watchdog / ANR 检测”
+- `abnormal_termination` 事件模型已预留，但这轮没有继续做更深的系统归因
+
+### 10. 上传重试、压缩、限流和网络策略
+
+默认上传器 `LTURLSessionCrashUploader` 已支持：
+
+- 基础压缩
+  - 当前使用 `NSData.compressed(using: .zlib)`
+  - `Content-Encoding: deflate`
+- 失败重试
   - 默认指数退避
   - 可配置最大重试次数和起始 delay
-- 支持上传限流
+- 上传限流
   - 复用 `LTLogRateLimitPolicy`
-- 支持网络策略
+- 网络策略
   - `allowsCellularAccess`
   - `allowsExpensiveNetworkAccess`
   - `allowsConstrainedNetworkAccess`
   - `waitsForConnectivity`
 
-配置入口在 `LTBCrashUploadConfiguration`。
+### 11. dSYM 上传与 UUID 匹配契约
 
-## 当前 Report 结构
+客户端这边已经补齐两部分：
 
-当前 report 已升级为更完整的结构：
+- crash report 中的 `binary_images.uuid`
+- `symbolication.binary_image_uuids`
 
-```json
-{
-  "crash_id": "uuid",
-  "timestamp": 1777900000,
-  "source": "signal",
-  "app": {
-    "bundle_id": "com.company.app",
-    "version": "1.0.0",
-    "build": "100"
-  },
-  "device": {
-    "model": "iPhone15,3",
-    "os": "iOS Version 18.4 (Build ...)"
-  },
-  "exception": {
-    "type": "SIGSEGV",
-    "name": "SIGSEGV",
-    "reason": "invalid memory access"
-  },
-  "context": {
-    "user_id": "user-123",
-    "session_id": "session-456",
-    "device_id": "device-789",
-    "custom": {
-      "region": "cn"
-    },
-    "breadcrumbs": []
-  },
-  "threads": [
-    {
-      "number": 12345,
-      "name": "main",
-      "crashed": true,
-      "frames": [
-        {
-          "instruction_address": "0x0000000101234567",
-          "symbol": "closure #1 in ...",
-          "image_name": "LittleThingsApp"
-        }
-      ]
-    }
-  ],
-  "binary_images": [
-    {
-      "name": "LittleThingsApp",
-      "uuid": "AABBCCDD-....",
-      "base_address": "0x0000000100000000",
-      "size": 123456,
-      "path": "/var/containers/Bundle/Application/..."
-    }
-  ]
-}
+工程侧补了一个基础 dSYM 上传脚本：
+
+- [scripts/ltbugly_upload_dsym.sh](/Users/renjun.li/Desktop/LittleThings/LittleThingsApp/scripts/ltbugly_upload_dsym.sh)
+
+以及一个 Fastlane lane：
+
+```ruby
+fastlane ios upload_ltb_dsym \
+  dsym_path:"/path/to/App.app.dSYM" \
+  upload_url:"https://your-api.com/api/symbols/dsym" \
+  bundle_id:"com.little.things" \
+  version:"1.0.0" \
+  build:"100"
 ```
 
-字段说明：
+脚本会：
 
-- `source`：区分 `ns_exception` 和 `signal`
-- `context`：承载用户态诊断信息
-- `threads`：现在是结构化 frame，而不是单纯字符串栈
-- `binary_images`：现在已经包含后续符号化需要的基础字段
+- 用 `dwarfdump --uuid` 读取 dSYM UUID
+- 打包 `.dSYM`
+- 以 multipart form 上传
+- 附带 `uuids`、`bundle_id`、`version`、`build`
+
+注意：真正的服务端 symbol worker、UUID 索引和重新符号化能力这轮没有实现，当前只是把客户端和构建侧契约补齐。
 
 ## 当前技术实现
 
@@ -262,22 +306,29 @@ CrashReporter.syncBreadcrumbsFromLogger()
 App 启动
   -> CrashReporter.start()
   -> 准备目录 / 清理旧文件
-  -> 同步 breadcrumb + context 模板
+  -> 恢复 context 持久化数据
+  -> 同步 breadcrumb + signal 模板
   -> 安装 NSException / signal handler
-  -> 扫描本地未上传 report
+  -> 启动稳定性监控
+  -> 扫描本地未上传 report / event
   -> 尝试上传
   -> 成功删除，失败保留
 
 NSException 发生
   -> Swift Builder 组装完整 report
-  -> 采集多线程栈 + binary images + context
+  -> 采集多线程栈 + binary images + context + symbolication metadata
   -> JSON 落盘
 
 Signal Crash 发生
-  -> C 层 signal handler 读取预先同步的 context 模板
-  -> 补写 signal 异常 / 当前线程 backtrace / binary images
+  -> C 层 signal handler 读取预先同步的 signal 模板
+  -> 补写 signal 异常 / 当前线程 backtrace
   -> 底层文件 API 落盘
-  -> 恢复默认 signal 并重新抛出
+  -> 恢复默认 signal 行为并重新抛出
+
+稳定性风险发生
+  -> 生成 LTBCrashEvent
+  -> 本地落盘
+  -> 下次启动或当前会话补偿上传
 ```
 
 ### 模块职责
@@ -292,11 +343,13 @@ Signal Crash 发生
 
 - `LTBCrashSignalHandler`
   - 在 signal 现场做最小落盘
+  - 现场不再动态采集 `binary_images`
   - 避免在异常现场进入大量 Swift 逻辑
 
 - `LTBCrashReportBuilder`
-  - 负责构造完整 report
-  - 同时负责 signal 上下文模板
+  - 构造完整 report
+  - 负责 signal 上下文模板
+  - 负责 symbolication metadata
 
 - `LTBCrashThreadCollector`
   - 负责多线程回溯采集
@@ -307,9 +360,18 @@ Signal Crash 发生
 - `LTBCrashContextStore`
   - 保存用户态上下文
   - 保存 breadcrumbs / user_id / session_id / custom
+  - 将上下文持久化到本地
+  - 使用 debounce + 文件轮转优化刷盘
+
+- `LTBCrashRedactor`
+  - 负责敏感字段和文本模式脱敏
+  - 支持字段级白名单 / 黑名单策略
+
+- `LTBCrashStabilityMonitor`
+  - 负责 memory pressure / hang risk / watchdog risk 的客户端监控
 
 - `LTBCrashReportStore`
-  - 负责目录、落盘、扫描、清理
+  - 负责 crash report / stability event 的目录、落盘、扫描、清理
 
 - `LTBCrashUploader`
   - 负责上传策略
@@ -324,17 +386,25 @@ CrashReporter.start(
     configuration: .init(
         endpointURL: URL(string: "https://your-api.com/api/crashes"),
         maximumReportCount: 10,
-        contextConfiguration: .init(breadcrumbCapacity: 50),
+        contextConfiguration: .init(
+            breadcrumbCapacity: 50,
+            persistenceConfiguration: .init(
+                debounceInterval: 1,
+                breadcrumbFileCount: 3,
+                maximumBreadcrumbsPerFile: 50
+            )
+        ),
         uploadConfiguration: .init(
             maximumRetryCount: 2,
             retryBaseDelay: 2,
             enablesCompression: true
-        )
+        ),
+        redactionPolicy: .default
     )
 )
 ```
 
-如果你们已经在使用 `LTLog`，建议同时在用户切换、会话切换、关键页面进入或关键请求前后同步上下文，例如：
+如果你们已经在使用 `LTLog`，建议在用户切换、会话切换、关键页面进入或关键请求前后同步上下文，例如：
 
 ```swift
 CrashReporter.setUserID(userID)
@@ -347,23 +417,24 @@ CrashReporter.syncBreadcrumbsFromLogger()
 
 这一版已经比最初 MVP 稳很多，但还没有到“完整生产级 crash SDK”的终点，当前仍有这些边界：
 
-- signal 路径虽然已经下沉到 C 层，但还没有做到完全严格的 async-signal-safe 审计级实现。
-- signal 路径当前只稳定记录崩溃线程，不做完整多线程采集。
-- signal 路径的 `binary_images` 还没有补 `uuid` 和 `size`。
-- 当前 breadcrumb 与 `LTLog` 是“同步快照”关系，不是自动实时双向联动。
-- 上传压缩当前使用 `deflate`，如果服务端严格要求 `gzip`，还需要对齐协议。
-- 还没有做脱敏、持久化 breadcrumb ring buffer、OOM / watchdog / ANR 等扩展事件。
+- signal 路径虽然已经继续收紧，但依然没有做到“所有调用点都经过严格 async-signal-safe 白名单证明”的审计级实现
+- signal 路径当前只稳定记录崩溃线程，不做完整多线程采集
+- 当前的上下文持久化已经做了 debounce 和轮转，但依然属于轻量级 snapshot/ring buffer
+- 当前 breadcrumb 与 `LTLog` 还是“同步快照”关系，不是自动实时联动
+- 上传压缩当前使用 `deflate`，如果服务端严格要求 `gzip`，还需要对齐协议
+- 服务端 symbol worker、UUID 索引和重新符号化能力这轮未实现，后续单独推进
+- 当前稳定性事件更多是“风险信号”，还不是完整的系统级 OOM / watchdog / ANR 诊断
 
 ## 后续规划
 
 下一阶段建议优先继续做这几件事：
 
-1. 继续收紧 signal handler 的实现，审查所有调用点的 signal-safety。
-2. 把 signal 路径的 `binary_images.uuid` 和 `size` 也补齐。
-3. 增加持久化 breadcrumb ring buffer，避免崩溃前最后阶段的上下文只存在内存里。
-4. 增加字段脱敏策略。
-5. 为服务端符号化补齐 dSYM 上传与 UUID 匹配链路。
+1. 继续把 signal handler 收敛到更严格的 async-signal-safe 子集
+2. 进一步优化 context 持久化的刷盘策略和轮转策略
+3. 单独推进服务端 symbol worker、UUID 索引和重新符号化能力
+4. 增加更细粒度的字段级白名单 / 黑名单脱敏规则
+5. 扩展 OOM / watchdog / ANR / 卡死等稳定性事件的系统级诊断能力
 
 ## 一句话总结
 
-当前 `LTBugly` 已经从最初的闭环 MVP 进化成了增强版采集链路：`NSException 完整采集 + signal C 层最小落盘 + 多线程栈能力 + binary_images + context + 上传重试/压缩/限流/网络策略`。
+当前 `LTBugly` 已经从最初的闭环 MVP 进化成了增强版客户端稳定性链路：`NSException 完整采集 + signal C 层最小落盘 + 多线程栈能力 + binary_images/UUID + context 持久化 + 字段脱敏 + 稳定性事件骨架 + 上传重试/压缩/限流/网络策略 + dSYM 上传契约`。

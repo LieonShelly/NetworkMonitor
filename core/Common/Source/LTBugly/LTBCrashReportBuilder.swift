@@ -56,7 +56,8 @@ enum LTBCrashReportBuilder {
             crashID: UUID().uuidString,
             app: runtime.app,
             device: runtime.device,
-            context: LTBCrashContextStore.shared.snapshot()
+            context: LTBCrashContextStore.shared.snapshot(),
+            binaryImages: LTBCrashBinaryImageCollector.collect()
         )
     }
 

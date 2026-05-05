@@ -48,6 +48,18 @@ final class LTBCrashReportStore: @unchecked Sendable {
         }
     }
 
+    func save(_ event: LTBCrashEvent) {
+        do {
+            try prepareDirectory()
+            let fileURL = directoryURL.appendingPathComponent("event-\(event.id).json")
+            let data = try encoder.encode(event)
+            try data.write(to: fileURL, options: .atomic)
+            trimReportsIfNeeded()
+        } catch {
+            assertionFailure("Failed to persist crash event: \(error)")
+        }
+    }
+
     func pendingReports() -> [URL] {
         guard let files = try? fileManager.contentsOfDirectory(
             at: directoryURL,

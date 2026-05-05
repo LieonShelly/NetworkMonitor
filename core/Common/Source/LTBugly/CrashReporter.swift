@@ -31,7 +31,10 @@ public enum CrashReporter {
             )
             store = reportStore
             reportDirectoryURL = configuration.reportDirectoryURL
-            LTBCrashContextStore.shared.configure(configuration.contextConfiguration)
+            LTBCrashContextStore.shared.configure(
+                configuration.contextConfiguration,
+                redactionPolicy: configuration.redactionPolicy
+            )
             self.uploader = uploader ?? configuration.endpointURL.map {
                 LTURLSessionCrashUploader(
                     endpointURL: $0,
@@ -45,6 +48,7 @@ public enum CrashReporter {
             syncBreadcrumbsFromLogger()
             syncSignalContextTemplate()
             LTBCrashCapture.install(store: reportStore)
+            LTBCrashStabilityMonitor.shared.start(store: reportStore)
             isStarted = true
         }
 
