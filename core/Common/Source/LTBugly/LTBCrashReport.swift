@@ -15,6 +15,7 @@ public struct LTBCrashReport: Codable, Sendable, Equatable {
     public let device: Device
     public let exception: Exception
     public let context: Context
+    public let symbolication: LTBCrashSymbolicationMetadata
     public let threads: [ThreadInfo]
     public let binaryImages: [BinaryImage]
 
@@ -26,6 +27,7 @@ public struct LTBCrashReport: Codable, Sendable, Equatable {
         case device
         case exception
         case context
+        case symbolication
         case threads
         case binaryImages = "binary_images"
     }

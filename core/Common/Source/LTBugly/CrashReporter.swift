@@ -47,12 +47,14 @@ public enum CrashReporter {
             reportStore.trimReportsIfNeeded()
             syncBreadcrumbsFromLogger()
             syncSignalContextTemplate()
+            LTBCrashAppStateTracker.shared.start(directoryURL: configuration.reportDirectoryURL)
             LTBCrashCapture.install(store: reportStore)
             LTBCrashStabilityMonitor.shared.start(store: reportStore)
             isStarted = true
         }
 
         uploadPendingReports()
+        recordPreviousAbnormalTerminationIfNeeded()
     }
 
     public static func uploadPendingReports() {
@@ -138,5 +140,16 @@ public enum CrashReporter {
             try? data.write(to: fileURL, options: .atomic)
         }
         LTBCrashSignalBridge.updateContext(payload)
+    }
+
+    private static func recordPreviousAbnormalTerminationIfNeeded() {
+        queue.async {
+            guard let store,
+                  let event = LTBCrashAppStateTracker.shared.consumePreviousAbnormalTermination()
+            else {
+                return
+            }
+            store.save(event)
+        }
     }
 }

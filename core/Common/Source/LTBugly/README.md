@@ -22,6 +22,7 @@
 - 业务上下文存储：[LTBCrashContextStore.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashContextStore.swift>)
 - 字段脱敏：[LTBCrashRedactor.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashRedactor.swift>)
 - 稳定性监控：[LTBCrashStabilityMonitor.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashStabilityMonitor.swift>)
+- App 状态追踪：[LTBCrashAppStateTracker.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashAppStateTracker.swift>)
 - 本地文件存储：[LTBCrashReportStore.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashReportStore.swift>)
 - 上传器：[LTBCrashUploader.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashUploader.swift>)
 - 配置项：[LTBCrashReporterConfiguration.swift](</Users/renjun.li/Desktop/LittleThings/LittleThingsApp/core/Common/Source/LTBugly/LTBCrashReporterConfiguration.swift>)
@@ -73,6 +74,7 @@ CrashReporter.start(
 - 生成 signal 用的上下文模板
 - 安装 `NSException` handler
 - 安装 C 层 signal handler
+- 启动 app state tracker
 - 启动稳定性事件监控
 - 扫描本地未上传文件并尝试上传
 
@@ -97,12 +99,23 @@ CrashReporter.start(
 
 - `signal` 路径
   - handler 下沉到 `C / Objective-C`
-  - 现场只补 signal 异常信息和当前线程 backtrace
+  - 现场只补 signal 异常信息、线程号和当前线程原始地址 backtrace
   - `binary_images`、上下文、symbolication metadata 提前准备进 signal 模板
   - 直接使用底层文件 API 落盘
   - 使用 `sigaction(..., SA_RESETHAND, ...)`，随后 `raise(signal)`
 
-这轮继续收紧了 signal 现场逻辑，尽量把复杂工作前移。
+这一轮 signal handler 继续收紧了调用面，现场已经进一步去掉了：
+
+- `dladdr` 符号解析
+- 线程名读取
+- 通用 JSON 转义型字符串拼接
+
+也就是说，signal 现场现在更偏向：
+
+- 读取预先准备好的模板
+- 写固定字段
+- 写时间戳 / 线程号
+- 写原始地址 backtrace
 
 ### 3. 存储与补偿上传
 
@@ -130,7 +143,7 @@ CrashReporter.start(
   - 其他线程通过寄存器和 frame pointer 尝试回溯
 
 - `signal` 路径
-  - 当前只稳定记录崩溃线程 backtrace
+  - 当前只稳定记录崩溃线程原始地址 backtrace
   - 继续优先保证 signal handler 的现场复杂度可控
 
 ### 5. Binary Images 与符号化元数据
@@ -241,13 +254,15 @@ breadcrumb 来源：
   - watchdog 定时 ping 主线程，记录明显主线程卡顿风险
 - `watchdog_risk`
   - 通过前后台驻留时间粗略记录 watchdog 风险
+- `abnormal_termination`
+  - 基于 app state 持久化，在下次启动时识别上次非正常退出痕迹
 
 这些事件会以 `LTBCrashEvent` 的形式落到本地，和 crash report 走同一套补偿上传链路。
 
 说明：
 
 - 这是客户端侧的基础监控骨架，不等价于“已经完整实现系统级 OOM / 真正 watchdog / ANR 检测”
-- `abnormal_termination` 事件模型已预留，但这轮没有继续做更深的系统归因
+- `abnormal_termination` 目前仍然是客户端侧线索，还不是系统级 OOM / Jetsam 的精确归因
 
 ### 10. 上传重试、压缩、限流和网络策略
 
@@ -308,9 +323,11 @@ App 启动
   -> 准备目录 / 清理旧文件
   -> 恢复 context 持久化数据
   -> 同步 breadcrumb + signal 模板
+  -> 启动 app state tracker
   -> 安装 NSException / signal handler
   -> 启动稳定性监控
   -> 扫描本地未上传 report / event
+  -> 检查上次是否异常退出
   -> 尝试上传
   -> 成功删除，失败保留
 
@@ -321,7 +338,7 @@ NSException 发生
 
 Signal Crash 发生
   -> C 层 signal handler 读取预先同步的 signal 模板
-  -> 补写 signal 异常 / 当前线程 backtrace
+  -> 补写 signal 异常 / 当前线程号 / 当前线程原始地址 backtrace
   -> 底层文件 API 落盘
   -> 恢复默认 signal 行为并重新抛出
 
@@ -344,6 +361,7 @@ Signal Crash 发生
 - `LTBCrashSignalHandler`
   - 在 signal 现场做最小落盘
   - 现场不再动态采集 `binary_images`
+  - 不再做 `dladdr` 符号解析和线程名读取
   - 避免在异常现场进入大量 Swift 逻辑
 
 - `LTBCrashReportBuilder`
@@ -369,6 +387,10 @@ Signal Crash 发生
 
 - `LTBCrashStabilityMonitor`
   - 负责 memory pressure / hang risk / watchdog risk 的客户端监控
+
+- `LTBCrashAppStateTracker`
+  - 负责持久化 app state
+  - 在下次启动时生成 abnormal termination 线索事件
 
 - `LTBCrashReportStore`
   - 负责 crash report / stability event 的目录、落盘、扫描、清理
@@ -417,13 +439,14 @@ CrashReporter.syncBreadcrumbsFromLogger()
 
 这一版已经比最初 MVP 稳很多，但还没有到“完整生产级 crash SDK”的终点，当前仍有这些边界：
 
-- signal 路径虽然已经继续收紧，但依然没有做到“所有调用点都经过严格 async-signal-safe 白名单证明”的审计级实现
-- signal 路径当前只稳定记录崩溃线程，不做完整多线程采集
+- signal 路径虽然已经继续收紧，并显著减少了现场动态调用，但依然没有做到“所有调用点都经过严格 async-signal-safe 白名单证明”的审计级实现
+- signal 路径当前只稳定记录崩溃线程原始地址 backtrace，不做完整多线程采集
+- signal 路径为了安全性牺牲了现场符号信息，符号名和 image name 主要依赖后续离线符号化
 - 当前的上下文持久化已经做了 debounce 和轮转，但依然属于轻量级 snapshot/ring buffer
 - 当前 breadcrumb 与 `LTLog` 还是“同步快照”关系，不是自动实时联动
 - 上传压缩当前使用 `deflate`，如果服务端严格要求 `gzip`，还需要对齐协议
 - 服务端 symbol worker、UUID 索引和重新符号化能力这轮未实现，后续单独推进
-- 当前稳定性事件更多是“风险信号”，还不是完整的系统级 OOM / watchdog / ANR 诊断
+- 当前稳定性事件更多是“风险信号 + 异常终止线索”，还不是完整的系统级 OOM / watchdog / ANR / Jetsam 诊断
 
 ## 后续规划
 

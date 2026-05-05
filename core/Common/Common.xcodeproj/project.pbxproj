@@ -37,6 +37,7 @@
 		9B7273DA512F22584ACD01B3 /* LTBCrashSignalContextPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDBF6D80E758FF6D5B8FF52 /* LTBCrashSignalContextPayload.swift */; };
 		9F5D9FAC7BF46A22FA1063DD /* FetureConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE189BBA4F4EEB903EB8053 /* FetureConfig.swift */; };
 		A1D40DE2A41964505A039683 /* FeatureToggling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 091093EAE7C72DD6AB605489 /* FeatureToggling.swift */; };
+		AFD8482F95A92841A46C4312 /* LTBCrashAppStateTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3667401E583AFBD36264CC3C /* LTBCrashAppStateTracker.swift */; };
 		B0BA691847D30212CE2B7920 /* Injected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8425DD95260652BF849FE448 /* Injected.swift */; };
 		B7D62A33FDAAE4727B97F436 /* LTLogFeedbackExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDC01950A44FDC469BB76DD /* LTLogFeedbackExporter.swift */; };
 		BC76CD6753C1AEF4093D953C /* LTBCrashRedactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0F293EFA0F451D943FFABB /* LTBCrashRedactor.swift */; };
@@ -46,6 +47,7 @@
 		C763C7B2E95371A26BAF5307 /* LTBCrashReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C75654D0C2368D8353A3B2 /* LTBCrashReport.swift */; };
 		CBAEC433E51B4D7FDEE6D702 /* DylibProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F863FBEE27A749E502F2A72B /* DylibProbe.swift */; };
 		D198F47C592CCB9CA9F4E299 /* LTRemoteLogSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8EE6DC48AF957B95F58DD48 /* LTRemoteLogSink.swift */; };
+		D855A519C8DACCFBAADFE58E /* LTBCrashSymbolicationMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E2FE4C4095624CD5951152 /* LTBCrashSymbolicationMetadata.swift */; };
 		DF6D6DA4AF55D46EBC07CFCE /* AntiDebug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023CDA746C22A12E53E39A93 /* AntiDebug.swift */; };
 		E2E6058CC7CDE4D8E6CB8FB9 /* AppVariantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F263B2F2B184FDB2EB43AE7F /* AppVariantType.swift */; };
 		E85F0BB0F2CCA95E9B1248E5 /* planning.md in Resources */ = {isa = PBXBuildFile; fileRef = B836BBF84BF7429B1980CEA1 /* planning.md */; };
@@ -69,6 +71,7 @@
 		270BF56487A0294D49CB35FA /* CrashReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashReporter.swift; sourceTree = "<group>"; };
 		31DAEED5F97682D655674933 /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3505F8BD3FA79A71AE76EFFC /* LTLogStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogStore.swift; sourceTree = "<group>"; };
+		3667401E583AFBD36264CC3C /* LTBCrashAppStateTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashAppStateTracker.swift; sourceTree = "<group>"; };
 		36B18415FAFFBD1918510DEE /* LTFileLogSink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTFileLogSink.swift; sourceTree = "<group>"; };
 		36BA215C52772A5F88EFCD40 /* EnvironmentConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentConfig.swift; sourceTree = "<group>"; };
 		3F8BBEDF47A50D5D6E0314EB /* InjectionValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectionValues.swift; sourceTree = "<group>"; };
@@ -98,6 +101,7 @@
 		B836BBF84BF7429B1980CEA1 /* planning.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = planning.md; sourceTree = "<group>"; };
 		BA4FA0BBAABA787914410AFF /* LTBCrashSignalHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTBCrashSignalHandler.h; sourceTree = "<group>"; };
 		C349CA3397C5B75E700C5BED /* LTBCrashReporterConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashReporterConfiguration.swift; sourceTree = "<group>"; };
+		C4E2FE4C4095624CD5951152 /* LTBCrashSymbolicationMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashSymbolicationMetadata.swift; sourceTree = "<group>"; };
 		C8EE6DC48AF957B95F58DD48 /* LTRemoteLogSink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTRemoteLogSink.swift; sourceTree = "<group>"; };
 		CFE189BBA4F4EEB903EB8053 /* FetureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetureConfig.swift; sourceTree = "<group>"; };
 		D014FC01F6E85E536DAA182F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -113,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				270BF56487A0294D49CB35FA /* CrashReporter.swift */,
+				3667401E583AFBD36264CC3C /* LTBCrashAppStateTracker.swift */,
 				8DE629BB9E3626F3D403D39D /* LTBCrashBinaryImageCollector.swift */,
 				13E9E885D0084E92BCBCDA09 /* LTBCrashCapture.swift */,
 				092103D2AAD429B68EF93704 /* LTBCrashContext.swift */,
@@ -128,6 +133,7 @@
 				BA4FA0BBAABA787914410AFF /* LTBCrashSignalHandler.h */,
 				A51C378EEACAB26CC7AC3261 /* LTBCrashSignalHandler.m */,
 				9C231C1844F3A734F7EE1DD5 /* LTBCrashStabilityMonitor.swift */,
+				C4E2FE4C4095624CD5951152 /* LTBCrashSymbolicationMetadata.swift */,
 				B64731FE13DDE6EE536CADE3 /* LTBCrashThreadCollector.swift */,
 				85254492960807B4612FDB30 /* LTBCrashUploader.swift */,
 				B836BBF84BF7429B1980CEA1 /* planning.md */,
@@ -319,6 +325,7 @@
 				B0BA691847D30212CE2B7920 /* Injected.swift in Sources */,
 				58BDEECFB73166E698023F1B /* InjectionKey.swift in Sources */,
 				EA8984ADC138702F32ADB97A /* InjectionValues.swift in Sources */,
+				AFD8482F95A92841A46C4312 /* LTBCrashAppStateTracker.swift in Sources */,
 				772FEFE7B9F7D2690D4C334E /* LTBCrashBinaryImageCollector.swift in Sources */,
 				508F4E2D7EB3096EA6D2AA8A /* LTBCrashCapture.swift in Sources */,
 				642470FC653F03EF9A2FE877 /* LTBCrashContext.swift in Sources */,
@@ -333,6 +340,7 @@
 				9B7273DA512F22584ACD01B3 /* LTBCrashSignalContextPayload.swift in Sources */,
 				73BCFF88C30E137797966D23 /* LTBCrashSignalHandler.m in Sources */,
 				40337926787D6CA4F9D67169 /* LTBCrashStabilityMonitor.swift in Sources */,
+				D855A519C8DACCFBAADFE58E /* LTBCrashSymbolicationMetadata.swift in Sources */,
 				5BC182A39B7780D8595C8EE2 /* LTBCrashThreadCollector.swift in Sources */,
 				599B4767446F4E7AB36329FD /* LTBCrashUploader.swift in Sources */,
 				C4E183CD42AD982B5FC71FD1 /* LTBreadcrumb.swift in Sources */,

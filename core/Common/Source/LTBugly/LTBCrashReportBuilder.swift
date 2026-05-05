@@ -17,6 +17,7 @@ enum LTBCrashReportBuilder {
         let threads = LTBCrashThreadCollector.collectAllThreads()
         let binaryImages = LTBCrashBinaryImageCollector.collect()
         let context = LTBCrashContextStore.shared.snapshot()
+        let symbolication = makeSymbolicationMetadata(app: runtime.app, binaryImages: binaryImages)
 
         return LTBCrashReport(
             crashID: UUID().uuidString,
@@ -30,6 +31,7 @@ enum LTBCrashReportBuilder {
                 reason: reason
             ),
             context: context,
+            symbolication: symbolication,
             threads: mergePrimaryCallStackIfNeeded(callStackSymbols, into: threads),
             binaryImages: binaryImages
         )
@@ -45,6 +47,7 @@ enum LTBCrashReportBuilder {
             device: runtime.device,
             exception: .init(type: "signal", name: "signal", reason: "signal"),
             context: LTBCrashContextStore.shared.snapshot(),
+            symbolication: makeSymbolicationMetadata(app: runtime.app, binaryImages: LTBCrashBinaryImageCollector.collect()),
             threads: [],
             binaryImages: LTBCrashBinaryImageCollector.collect()
         )
@@ -57,7 +60,20 @@ enum LTBCrashReportBuilder {
             app: runtime.app,
             device: runtime.device,
             context: LTBCrashContextStore.shared.snapshot(),
+            symbolication: makeSymbolicationMetadata(app: runtime.app, binaryImages: LTBCrashBinaryImageCollector.collect()),
             binaryImages: LTBCrashBinaryImageCollector.collect()
+        )
+    }
+
+    private static func makeSymbolicationMetadata(
+        app: LTBCrashReport.App,
+        binaryImages: [LTBCrashReport.BinaryImage]
+    ) -> LTBCrashSymbolicationMetadata {
+        .init(
+            bundleID: app.bundleID,
+            version: app.version,
+            build: app.build,
+            binaryImageUUIDs: binaryImages.compactMap(\.uuid)
         )
     }
 

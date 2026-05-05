@@ -16,6 +16,7 @@ final class LTBCrashStabilityMonitor: @unchecked Sendable {
     private var watchdogTimer: DispatchSourceTimer?
     private var lastForegroundDate: Date?
     private let watchdogQueue = DispatchQueue(label: "com.littlethings.ltbugly.watchdog")
+    private var sampledFrameTimeouts = 0
 
     private init() { }
 
@@ -45,7 +46,7 @@ final class LTBCrashStabilityMonitor: @unchecked Sendable {
 
         guard watchdogTimer == nil else { return }
         let timer = DispatchSource.makeTimerSource(queue: watchdogQueue)
-        timer.schedule(deadline: .now() + 5, repeating: 5)
+        timer.schedule(deadline: .now() + 2, repeating: 2)
         timer.setEventHandler { [weak self] in
             self?.pingMainThread()
         }
@@ -81,9 +82,13 @@ final class LTBCrashStabilityMonitor: @unchecked Sendable {
             guard let self else { return }
             let duration = Date().timeIntervalSince(sentAt)
             if duration > 0.4 {
+                sampledFrameTimeouts += 1
                 self.recordEvent(
                     kind: .appHangRisk,
-                    details: ["main_thread_delay": String(format: "%.3f", duration)]
+                    details: [
+                        "main_thread_delay": String(format: "%.3f", duration),
+                        "sampled_hang_count": "\(sampledFrameTimeouts)"
+                    ]
                 )
             }
         }
