@@ -8,15 +8,13 @@
 import Foundation
 
 enum LTBCrashContext {
-    static func makeReport(
-        exceptionType: String,
-        name: String,
-        reason: String,
-        callStackSymbols: [String] = Thread.callStackSymbols
-    ) -> LTBCrashReport {
-        LTBCrashReport(
-            crashID: UUID().uuidString,
-            timestamp: Date().timeIntervalSince1970,
+    struct RuntimeSnapshot {
+        let app: LTBCrashReport.App
+        let device: LTBCrashReport.Device
+    }
+
+    static func runtime() -> RuntimeSnapshot {
+        .init(
             app: .init(
                 bundleID: Bundle.main.bundleIdentifier ?? "unknown",
                 version: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown",
@@ -25,16 +23,7 @@ enum LTBCrashContext {
             device: .init(
                 model: deviceModel(),
                 os: "iOS \(ProcessInfo.processInfo.operatingSystemVersionString)"
-            ),
-            exception: .init(
-                type: exceptionType,
-                name: name,
-                reason: reason
-            ),
-            threads: [
-                .init(crashed: true, frames: callStackSymbols)
-            ],
-            binaryImages: []
+            )
         )
     }
 

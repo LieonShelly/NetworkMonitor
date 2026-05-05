@@ -25,6 +25,10 @@ final class LTBCrashReportStore: @unchecked Sendable {
         self.encoder.outputFormatting = [.sortedKeys]
     }
 
+    var directoryPath: String {
+        directoryURL.path
+    }
+
     func prepareDirectory() throws {
         try fileManager.createDirectory(
             at: directoryURL,
@@ -54,7 +58,7 @@ final class LTBCrashReportStore: @unchecked Sendable {
         }
 
         return files
-            .filter { $0.pathExtension == "json" }
+            .filter { $0.pathExtension == "json" && $0.lastPathComponent != "signal-context.json" }
             .sortedByModificationDate()
     }
 
@@ -85,4 +89,3 @@ private extension URL {
         ((try? resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate) ?? .distantPast
     }
 }
-
