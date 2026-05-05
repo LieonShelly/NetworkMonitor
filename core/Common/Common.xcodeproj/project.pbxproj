@@ -8,18 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		0DB99392B36CBCB04C5F43AA /* LTLogConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F3D8780031CC88482B482E /* LTLogConfiguration.swift */; };
+		12FB4F27090E15D27C1214DF /* LTBCrashReportStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B4A449C5B5C1DB210CDF34 /* LTBCrashReportStore.swift */; };
 		1BDF30A0A2D03BB11DFC38EF /* URLSchemeProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A83F04B4FBE2608F40BCA1 /* URLSchemeProbe.swift */; };
 		33F352E97DFA403C3B7A5A06 /* FeatureRolloutStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF1944D74D70ACF52E4FF8A /* FeatureRolloutStage.swift */; };
 		4022D186417704D81F10AD5C /* LTTestLogSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1628351B6BADBD75F4427707 /* LTTestLogSink.swift */; };
 		435C3F452EAE3853946946AB /* XORCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D6C89A555CBE9EDBC1ED377 /* XORCipher.swift */; };
 		46F7022FE81E1BA5BFA958A7 /* PathProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E4A8573DF600EE7BEA15DF /* PathProbe.swift */; };
 		4B176663E1D72D9582627B9E /* LTLogPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465418924FEEF173F521D5D /* LTLogPolicy.swift */; };
+		508F4E2D7EB3096EA6D2AA8A /* LTBCrashCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E9E885D0084E92BCBCDA09 /* LTBCrashCapture.swift */; };
 		57C02CCFA249296866FCA947 /* LTLogEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB07425B3B2DE1EA9B83DBE0 /* LTLogEvent.swift */; };
 		58BDEECFB73166E698023F1B /* InjectionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4290BA6E9796B1368D01E546 /* InjectionKey.swift */; };
+		599B4767446F4E7AB36329FD /* LTBCrashUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85254492960807B4612FDB30 /* LTBCrashUploader.swift */; };
 		5AE8508F856B5C856A963D2D /* LTLogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3505F8BD3FA79A71AE76EFFC /* LTLogStore.swift */; };
+		642470FC653F03EF9A2FE877 /* LTBCrashContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092103D2AAD429B68EF93704 /* LTBCrashContext.swift */; };
 		6B0B9030899760C4C6AF65CB /* LTLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA840EE08F371B19D64C00C /* LTLogger.swift */; };
+		6E17FDCC79CE75F89AED1667 /* CrashReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270BF56487A0294D49CB35FA /* CrashReporter.swift */; };
 		7414B8F9AE7B0B2C01E0D063 /* EnvironmentConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36BA215C52772A5F88EFCD40 /* EnvironmentConfig.swift */; };
 		8A4EDB8C7BF762D1242C4938 /* FeatureToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958161FBD9C0E970D1BFC379 /* FeatureToggle.swift */; };
+		944B4BDB198E24857C3B8CFC /* LTBCrashReporterConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C349CA3397C5B75E700C5BED /* LTBCrashReporterConfiguration.swift */; };
 		9F5D9FAC7BF46A22FA1063DD /* FetureConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE189BBA4F4EEB903EB8053 /* FetureConfig.swift */; };
 		A1D40DE2A41964505A039683 /* FeatureToggling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 091093EAE7C72DD6AB605489 /* FeatureToggling.swift */; };
 		B0BA691847D30212CE2B7920 /* Injected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8425DD95260652BF849FE448 /* Injected.swift */; };
@@ -27,6 +33,7 @@
 		BCA688B150D6E12B1C472ECC /* LTFileLogSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B18415FAFFBD1918510DEE /* LTFileLogSink.swift */; };
 		C4E183CD42AD982B5FC71FD1 /* LTBreadcrumb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC00C736ADF6F857D040773 /* LTBreadcrumb.swift */; };
 		C6A0E1234EF969594B771FA1 /* LTLogLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A127491110927A814AEF87D /* LTLogLevel.swift */; };
+		C763C7B2E95371A26BAF5307 /* LTBCrashReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C75654D0C2368D8353A3B2 /* LTBCrashReport.swift */; };
 		CBAEC433E51B4D7FDEE6D702 /* DylibProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F863FBEE27A749E502F2A72B /* DylibProbe.swift */; };
 		D198F47C592CCB9CA9F4E299 /* LTRemoteLogSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8EE6DC48AF957B95F58DD48 /* LTRemoteLogSink.swift */; };
 		DF6D6DA4AF55D46EBC07CFCE /* AntiDebug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023CDA746C22A12E53E39A93 /* AntiDebug.swift */; };
@@ -40,37 +47,58 @@
 /* Begin PBXFileReference section */
 		023CDA746C22A12E53E39A93 /* AntiDebug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AntiDebug.swift; sourceTree = "<group>"; };
 		091093EAE7C72DD6AB605489 /* FeatureToggling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureToggling.swift; sourceTree = "<group>"; };
+		092103D2AAD429B68EF93704 /* LTBCrashContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashContext.swift; sourceTree = "<group>"; };
 		09A83F04B4FBE2608F40BCA1 /* URLSchemeProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeProbe.swift; sourceTree = "<group>"; };
+		13E9E885D0084E92BCBCDA09 /* LTBCrashCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashCapture.swift; sourceTree = "<group>"; };
 		1628351B6BADBD75F4427707 /* LTTestLogSink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTTestLogSink.swift; sourceTree = "<group>"; };
 		1A127491110927A814AEF87D /* LTLogLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogLevel.swift; sourceTree = "<group>"; };
 		1A9764DAFC469915F615A5F1 /* LTLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLog.swift; sourceTree = "<group>"; };
+		270BF56487A0294D49CB35FA /* CrashReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashReporter.swift; sourceTree = "<group>"; };
 		31DAEED5F97682D655674933 /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3505F8BD3FA79A71AE76EFFC /* LTLogStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogStore.swift; sourceTree = "<group>"; };
 		36B18415FAFFBD1918510DEE /* LTFileLogSink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTFileLogSink.swift; sourceTree = "<group>"; };
 		36BA215C52772A5F88EFCD40 /* EnvironmentConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentConfig.swift; sourceTree = "<group>"; };
 		3F8BBEDF47A50D5D6E0314EB /* InjectionValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectionValues.swift; sourceTree = "<group>"; };
 		4290BA6E9796B1368D01E546 /* InjectionKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectionKey.swift; sourceTree = "<group>"; };
+		46B4A449C5B5C1DB210CDF34 /* LTBCrashReportStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashReportStore.swift; sourceTree = "<group>"; };
 		5FA840EE08F371B19D64C00C /* LTLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogger.swift; sourceTree = "<group>"; };
 		6DDC01950A44FDC469BB76DD /* LTLogFeedbackExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogFeedbackExporter.swift; sourceTree = "<group>"; };
 		7829E17E93702326D5CA7DD1 /* LTLogSink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogSink.swift; sourceTree = "<group>"; };
 		80F3D8780031CC88482B482E /* LTLogConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogConfiguration.swift; sourceTree = "<group>"; };
 		8425DD95260652BF849FE448 /* Injected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injected.swift; sourceTree = "<group>"; };
+		85254492960807B4612FDB30 /* LTBCrashUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashUploader.swift; sourceTree = "<group>"; };
 		8D6C89A555CBE9EDBC1ED377 /* XORCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XORCipher.swift; sourceTree = "<group>"; };
 		958161FBD9C0E970D1BFC379 /* FeatureToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureToggle.swift; sourceTree = "<group>"; };
 		9FC00C736ADF6F857D040773 /* LTBreadcrumb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBreadcrumb.swift; sourceTree = "<group>"; };
 		9FF1944D74D70ACF52E4FF8A /* FeatureRolloutStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureRolloutStage.swift; sourceTree = "<group>"; };
 		AB9E713F49C1A3AAF97729B3 /* SandboxProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxProbe.swift; sourceTree = "<group>"; };
 		B4E4A8573DF600EE7BEA15DF /* PathProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathProbe.swift; sourceTree = "<group>"; };
+		C349CA3397C5B75E700C5BED /* LTBCrashReporterConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashReporterConfiguration.swift; sourceTree = "<group>"; };
 		C8EE6DC48AF957B95F58DD48 /* LTRemoteLogSink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTRemoteLogSink.swift; sourceTree = "<group>"; };
 		CFE189BBA4F4EEB903EB8053 /* FetureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetureConfig.swift; sourceTree = "<group>"; };
 		D014FC01F6E85E536DAA182F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D465418924FEEF173F521D5D /* LTLogPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogPolicy.swift; sourceTree = "<group>"; };
+		E9C75654D0C2368D8353A3B2 /* LTBCrashReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashReport.swift; sourceTree = "<group>"; };
 		EB07425B3B2DE1EA9B83DBE0 /* LTLogEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogEvent.swift; sourceTree = "<group>"; };
 		F263B2F2B184FDB2EB43AE7F /* AppVariantType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVariantType.swift; sourceTree = "<group>"; };
 		F863FBEE27A749E502F2A72B /* DylibProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DylibProbe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		09901663F7E9E0132DF21E32 /* LTBugly */ = {
+			isa = PBXGroup;
+			children = (
+				270BF56487A0294D49CB35FA /* CrashReporter.swift */,
+				13E9E885D0084E92BCBCDA09 /* LTBCrashCapture.swift */,
+				092103D2AAD429B68EF93704 /* LTBCrashContext.swift */,
+				E9C75654D0C2368D8353A3B2 /* LTBCrashReport.swift */,
+				C349CA3397C5B75E700C5BED /* LTBCrashReporterConfiguration.swift */,
+				46B4A449C5B5C1DB210CDF34 /* LTBCrashReportStore.swift */,
+				85254492960807B4612FDB30 /* LTBCrashUploader.swift */,
+			);
+			path = LTBugly;
+			sourceTree = "<group>";
+		};
 		0D24FEDCCFD50067958979FA /* Injection */ = {
 			isa = PBXGroup;
 			children = (
@@ -159,6 +187,7 @@
 				0D24FEDCCFD50067958979FA /* Injection */,
 				2BA2E904E49DCBDE6C89E3BA /* JailBreakChecker */,
 				3B338E058DBB3B87B9DEE9EE /* Logger */,
+				09901663F7E9E0132DF21E32 /* LTBugly */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -220,6 +249,7 @@
 			files = (
 				DF6D6DA4AF55D46EBC07CFCE /* AntiDebug.swift in Sources */,
 				E2E6058CC7CDE4D8E6CB8FB9 /* AppVariantType.swift in Sources */,
+				6E17FDCC79CE75F89AED1667 /* CrashReporter.swift in Sources */,
 				CBAEC433E51B4D7FDEE6D702 /* DylibProbe.swift in Sources */,
 				7414B8F9AE7B0B2C01E0D063 /* EnvironmentConfig.swift in Sources */,
 				33F352E97DFA403C3B7A5A06 /* FeatureRolloutStage.swift in Sources */,
@@ -229,6 +259,12 @@
 				B0BA691847D30212CE2B7920 /* Injected.swift in Sources */,
 				58BDEECFB73166E698023F1B /* InjectionKey.swift in Sources */,
 				EA8984ADC138702F32ADB97A /* InjectionValues.swift in Sources */,
+				508F4E2D7EB3096EA6D2AA8A /* LTBCrashCapture.swift in Sources */,
+				642470FC653F03EF9A2FE877 /* LTBCrashContext.swift in Sources */,
+				C763C7B2E95371A26BAF5307 /* LTBCrashReport.swift in Sources */,
+				12FB4F27090E15D27C1214DF /* LTBCrashReportStore.swift in Sources */,
+				944B4BDB198E24857C3B8CFC /* LTBCrashReporterConfiguration.swift in Sources */,
+				599B4767446F4E7AB36329FD /* LTBCrashUploader.swift in Sources */,
 				C4E183CD42AD982B5FC71FD1 /* LTBreadcrumb.swift in Sources */,
 				BCA688B150D6E12B1C472ECC /* LTFileLogSink.swift in Sources */,
 				F7192B179319FF0018A36E6F /* LTLog.swift in Sources */,
