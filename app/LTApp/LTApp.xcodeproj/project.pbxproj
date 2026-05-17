@@ -152,6 +152,7 @@
 		A13CDA159177BA2E7B607491 /* TabbarVisibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E854716F7B6DD2F2C304015D /* TabbarVisibility.swift */; };
 		A458F89A532CF1EDA3B17DDB /* SSLPinningValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA5AF2B6E43A81DE0931168 /* SSLPinningValidator.swift */; };
 		A53173906931B98B4452965C /* NaviBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A7A62CA7B7572887BB56ED /* NaviBar.swift */; };
+		A5AB3C7F993FA72941F670E0 /* LTNetworkMonitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98CB29F1A27D967DB36520D3 /* LTNetworkMonitor.framework */; };
 		A6EB36637512487DF865A126 /* FetchWeeklyReportPrevIconsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D32423AB0F727DFA0473AE9 /* FetchWeeklyReportPrevIconsUseCase.swift */; };
 		A9A0644E8593A152539FDEBE /* AppScrollContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B82584E79E2C64FF9A63AF /* AppScrollContentViewModel.swift */; };
 		A9B79EE3CD10B6E24E24E0AE /* UpdateReportPersonaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FF6294E008B97DE0281FDB /* UpdateReportPersonaUseCase.swift */; };
@@ -186,6 +187,7 @@
 		C97C53E650D8F804D8029AF6 /* FixedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71F4E07126A48D5B3F8972A /* FixedHeader.swift */; };
 		CB1B46F08EF7F66F6094004B /* TodayAnswerSubmittedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B88EEE2F5FACEDC61CF29D /* TodayAnswerSubmittedViewModel.swift */; };
 		CE099D470FE88544D7A470A1 /* QuestionLibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844E440256A3DAF7505A9E4E /* QuestionLibView.swift */; };
+		CE39DD29AEFFB01E1389A55A /* LTNetworkMonitor.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 98CB29F1A27D967DB36520D3 /* LTNetworkMonitor.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D309A5646CE4A1BF1EB6F9CF /* ReflectionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC921C66811B73642A86CE1A /* ReflectionDetailView.swift */; };
 		D44714238B00562078E69A75 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6007CD797B9E222C8486A1 /* SummaryView.swift */; };
 		D46AB011DB264AC1D42B50C4 /* AnswerParam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575A255E890DA1E6270CCD9A /* AnswerParam.swift */; };
@@ -256,6 +258,7 @@
 				E5F8328463EFF76CF5E46E9D /* Persistence.framework in Embed Frameworks */,
 				2018A23F8EF9883556D1BDFF /* UIComponent.framework in Embed Frameworks */,
 				FEF6C816FB8361C4082CF8DD /* Common.framework in Embed Frameworks */,
+				CE39DD29AEFFB01E1389A55A /* LTNetworkMonitor.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,6 +392,7 @@
 		9529B781D315E8E5BEB50893 /* AppTabbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabbar.swift; sourceTree = "<group>"; };
 		9672AE194F136D1F59D8A485 /* ReminderSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSettingViewModel.swift; sourceTree = "<group>"; };
 		98286A86F0EAF1F53A5F42AA /* ThreadCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadCategoryView.swift; sourceTree = "<group>"; };
+		98CB29F1A27D967DB36520D3 /* LTNetworkMonitor.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LTNetworkMonitor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9946673DA279A5A3F74BF4AE /* QuestionOfTodaySettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingItem.swift; sourceTree = "<group>"; };
 		9993DF6E3A941EE9D1FAF266 /* QuestionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionCardView.swift; sourceTree = "<group>"; };
 		99E2E2F27C12616A29FDF44F /* LTAppFeatureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTAppFeatureConfig.swift; sourceTree = "<group>"; };
@@ -500,6 +504,7 @@
 				89904D6029B5AB3D488D6000 /* Persistence.framework in Frameworks */,
 				30DADA89529C20B4B71D5352 /* UIComponent.framework in Frameworks */,
 				1535A88A79488941C3DA6E41 /* Common.framework in Frameworks */,
+				A5AB3C7F993FA72941F670E0 /* LTNetworkMonitor.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -741,6 +746,7 @@
 			children = (
 				771806489426BED1EE1F96E4 /* Common.framework */,
 				D5D96C3730B143EA703C64DC /* LTNetwork.framework */,
+				98CB29F1A27D967DB36520D3 /* LTNetworkMonitor.framework */,
 				43D54F84E08AA8FC5FBA83ED /* Persistence.framework */,
 				2A88B483E3D66499FDB5A75D /* UIComponent.framework */,
 			);

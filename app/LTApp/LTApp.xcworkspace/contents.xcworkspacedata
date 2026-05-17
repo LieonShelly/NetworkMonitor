@@ -19,5 +19,8 @@
        <FileRef
          location = "group:../../core/Common/Common.xcodeproj">
       </FileRef>
+       <FileRef
+         location = "group:../../core/NetworkMonitor/NetworkMonitor.xcodeproj">
+      </FileRef>
    </Group>
 </Workspace>

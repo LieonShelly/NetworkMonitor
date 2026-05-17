@@ -89,6 +89,8 @@ targets:
         implicit: true
       - framework: Common.framework
         implicit: true
+      - framework: LTNetworkMonitor.framework
+        implicit: true
 
   LTAppTests:
     type: bundle.unit-test
