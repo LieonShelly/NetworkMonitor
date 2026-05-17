@@ -1,0 +1,25 @@
+---
+include: 
+  - ../../fastlane/project/settings.yml
+
+name: NetworkMonitor
+
+settings:
+  groups:
+    - BaseProjectSetting
+
+targets:
+  LTNetworkMonitor:
+    type: framework
+    platform: iOS
+    sources:
+      - Source
+    settings:
+      groups:
+        - BaseTargetSetting
+
+schemes:
+  LTNetworkMonitor:
+    build:
+      targets:
+        LTNetworkMonitor: all
