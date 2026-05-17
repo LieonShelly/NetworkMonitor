@@ -2,10 +2,6 @@
 //  Created by lieon on 2026/05/17.
 //  This code is protected by intellectual property rights.
 //
-//
-//  AboutMeViewModel.swift
-//  LTApp
-//
 
 import SwiftUI
 import Combine
