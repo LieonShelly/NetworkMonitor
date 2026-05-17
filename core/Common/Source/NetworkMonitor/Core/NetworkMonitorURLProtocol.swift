@@ -9,7 +9,6 @@ import Foundation
 
 /// A passive URLProtocol that monitors all HTTP/HTTPS requests.
 /// Uses ephemeral sessions internally to avoid recursion.
-
 public class NetworkMonitorURLProtocol: URLProtocol, @unchecked Sendable, URLSessionDataDelegate {
     private var entry: NetworkMonitorEntry?
     private var session: URLSession?
@@ -53,13 +52,16 @@ public class NetworkMonitorURLProtocol: URLProtocol, @unchecked Sendable, URLSes
         let mutableRequest = (request as NSURLRequest).mutableCopy() as! NSMutableURLRequest
         URLProtocol.setProperty(true, forKey: Self.propertyKey, in: mutableRequest)
 
+        // Capture request body - check both httpBody and httpBodyStream
+        let requestBody = captureRequestBody(from: request)
+
         let headers = extractHeaders(from: request)
         entry = NetworkMonitorEntry(
             id: UUID(),
             url: url,
             method: request.httpMethod ?? "GET",
             requestHeaders: headers,
-            requestBody: request.httpBody,
+            requestBody: requestBody,
             startTime: Date()
         )
 
@@ -100,15 +102,11 @@ public class NetworkMonitorURLProtocol: URLProtocol, @unchecked Sendable, URLSes
         didReceiveResponse = true
         let headers = extractHeaders(from: httpResponse)
         let statusCode = httpResponse.statusCode
-        let capturedData = responseData
         guard let entryId = self.entry?.id else { return }
         Task { @MainActor in
-        
             NetworkMonitorStore.shared.updateEntry(id: entryId) { updated in
                 updated.responseHeaders = headers
                 updated.statusCode = statusCode
-                updated.endTime = Date()
-                updated.responseBody = capturedData
             }
         }
 
@@ -117,10 +115,10 @@ public class NetworkMonitorURLProtocol: URLProtocol, @unchecked Sendable, URLSes
     }
 
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        guard let entryId = self.entry?.id else { return }
+
         if let error {
-            guard let entryId = self.entry?.id else { return }
             Task { @MainActor in
-                
                 NetworkMonitorStore.shared.updateEntry(id: entryId) { updated in
                     updated.error = error
                     updated.endTime = Date()
@@ -128,13 +126,11 @@ public class NetworkMonitorURLProtocol: URLProtocol, @unchecked Sendable, URLSes
             }
             client?.urlProtocol(self, didFailWithError: error)
         } else {
-            guard let entryId = self.entry?.id else { return }
-            if !didReceiveResponse {
-                Task { @MainActor in
-               
-                    NetworkMonitorStore.shared.updateEntry(id: entryId) { updated in
-                        updated.endTime = Date()
-                    }
+            let finalResponseData = self.responseData
+            Task { @MainActor in
+                NetworkMonitorStore.shared.updateEntry(id: entryId) { updated in
+                    updated.responseBody = finalResponseData
+                    updated.endTime = Date()
                 }
             }
             client?.urlProtocolDidFinishLoading(self)
@@ -142,6 +138,36 @@ public class NetworkMonitorURLProtocol: URLProtocol, @unchecked Sendable, URLSes
     }
 
     // MARK: - Helpers
+
+    private func captureRequestBody(from request: URLRequest) -> Data? {
+        if let httpBody = request.httpBody {
+            return httpBody
+        }
+        if let httpBodyStream = request.httpBodyStream {
+            return readStream(httpBodyStream)
+        }
+        return nil
+    }
+
+    private func readStream(_ stream: InputStream) -> Data? {
+        var data = Data()
+        stream.open()
+        let bufferSize = 4096
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+        defer {
+            stream.close()
+            buffer.deallocate()
+        }
+        while stream.hasBytesAvailable {
+            let bytesRead = stream.read(buffer, maxLength: bufferSize)
+            if bytesRead > 0 {
+                data.append(buffer, count: bytesRead)
+            } else if bytesRead < 0 {
+                return nil
+            }
+        }
+        return data
+    }
 
     private func extractHeaders(from request: URLRequest) -> [String: String] {
         var headers: [String: String] = [:]
