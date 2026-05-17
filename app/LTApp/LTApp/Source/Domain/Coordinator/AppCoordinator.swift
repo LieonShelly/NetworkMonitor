@@ -18,7 +18,6 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
     private var cancellables: Set<AnyCancellable> = .init()
     
     init(environment: AppEnvironment = .release) {
-        // Start network monitor early so all subsequent URLSessions are monitored
         #if DEBUG
         NetworkMonitorModule.start()
         #endif
