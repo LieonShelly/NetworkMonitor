@@ -907,3 +907,64 @@ app/LTApp/
 - 触发实际 API 请求验证捕获功能
 - 验证详情面板显示完整信息
 - 验证清空和关闭功能
+- 验证单条日志导出功能
+- 验证长按复制功能
+
+---
+
+## 10. 新增功能 (v1.1)
+
+### 10.1 单条日志导出功能
+
+#### 功能描述
+用户可以导出单条网络请求的完整信息，包括请求/响应的 headers、body、状态码、耗时等。
+
+#### 使用方式
+在请求详情面板顶部，点击 **Export** 按钮，会弹出系统分享面板，支持：
+- 复制到剪贴板
+- 发送邮件
+- 保存到文件
+- 通过 AirDrop 分享
+- 其他支持文本分享的应用
+
+#### 导出内容格式
+导出的文本包含以下部分：
+- 基本信息：URL、Method、Status、Duration、时间
+- 请求 Headers
+- 请求 Body（JSON 自动格式化）
+- 响应 Headers
+- 响应 Body（JSON 自动格式化）
+- 错误信息（如有）
+
+### 10.2 长按复制功能
+
+#### 功能描述
+在请求列表中，长按任意请求行可快速复制该请求的核心信息。
+
+#### 使用方式
+1. 在请求列表中，长按任意请求行（约 0.5 秒）
+2. 请求核心信息会被复制到剪贴板
+3. 屏幕底部显示 "Copied to clipboard" 提示
+4. 提示会在 1.5 秒后自动消失
+
+#### 复制内容格式
+复制的文本包含：
+- HTTP 方法和完整 URL
+- 状态码（如有）
+- 请求耗时
+- 请求 Body（精简格式）
+- 响应 Body（精简格式）
+
+### 10.3 新增文件
+
+| 文件路径 | 说明 |
+|----------|------|
+| `core/Common/Source/NetworkMonitor/UI/ShareSheet.swift` | 系统分享面板 UIKit 包装器 |
+
+### 10.4 修改文件
+
+| 文件路径 | 修改内容 |
+|----------|----------|
+| `core/Common/Source/NetworkMonitor/Model/NetworkMonitorEntry.swift` | 新增 `formattedExportText` 和 `formattedCopyText` 属性 |
+| `core/Common/Source/NetworkMonitor/UI/RequestDetailView.swift` | 新增 Export 按钮和分享功能 |
+| `core/Common/Source/NetworkMonitor/UI/RequestRowView.swift` | 新增长按复制功能和复制成功提示 |

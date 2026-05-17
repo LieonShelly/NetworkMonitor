@@ -101,6 +101,131 @@ public struct NetworkMonitorEntry: Identifiable, Sendable {
         return prettyPrintJSON(data: data)
     }
 
+    public var formattedExportText: String {
+        var lines: [String] = []
+
+        lines.append("═══════════════════════════════════════")
+        lines.append("  Network Request Export")
+        lines.append("═══════════════════════════════════════")
+        lines.append("")
+
+        lines.append("【Basic Info】")
+        lines.append("URL: \(url.absoluteString)")
+        lines.append("Method: \(method)")
+        lines.append("Status: \(statusCode.map { "\($0)" } ?? "N/A")")
+        lines.append("Duration: \(formattedDuration)")
+        lines.append("Start Time: \(formatDate(startTime))")
+        if let endTime {
+            lines.append("End Time: \(formatDate(endTime))")
+        }
+        lines.append("")
+
+        lines.append("【Request Headers】")
+        if requestHeaders.isEmpty {
+            lines.append("(No headers)")
+        } else {
+            for (key, value) in requestHeaders.sorted(by: { $0.key < $1.key }) {
+                lines.append("\(key): \(value)")
+            }
+        }
+        lines.append("")
+
+        lines.append("【Request Body】")
+        if let body = prettyPrintedRequestBody ?? requestBodyString {
+            lines.append(body)
+        } else {
+            lines.append("(No body)")
+        }
+        lines.append("")
+
+        lines.append("【Response Headers】")
+        if let headers = responseHeaders, !headers.isEmpty {
+            for (key, value) in headers.sorted(by: { $0.key < $1.key }) {
+                lines.append("\(key): \(value)")
+            }
+        } else {
+            lines.append("(No headers)")
+        }
+        lines.append("")
+
+        lines.append("【Response Body】")
+        if let body = prettyPrintedResponseBody ?? responseBodyString {
+            lines.append(body)
+        } else {
+            lines.append("(No body)")
+        }
+
+        if let error {
+            lines.append("")
+            lines.append("【Error】")
+            lines.append("\(error.localizedDescription)")
+        }
+
+        lines.append("")
+        lines.append("═══════════════════════════════════════")
+        lines.append("Exported by Network Monitor")
+
+        return lines.joined(separator: "\n")
+    }
+
+    public var formattedCopyText: String {
+        var lines: [String] = []
+
+        lines.append("【Basic Info】")
+        lines.append("URL: \(url.absoluteString)")
+        lines.append("Method: \(method)")
+        lines.append("Status: \(statusCode.map { "\($0)" } ?? "N/A")")
+        lines.append("Duration: \(formattedDuration)")
+        lines.append("Start Time: \(formatDate(startTime))")
+        if let endTime {
+            lines.append("End Time: \(formatDate(endTime))")
+        }
+        lines.append("")
+
+        lines.append("【Request Headers】")
+        if requestHeaders.isEmpty {
+            lines.append("(No headers)")
+        } else {
+            for (key, value) in requestHeaders.sorted(by: { $0.key < $1.key }) {
+                lines.append("\(key): \(value)")
+            }
+        }
+        lines.append("")
+
+        lines.append("【Request Body】")
+        if let body = prettyPrintedRequestBody ?? requestBodyString {
+            lines.append(body)
+        } else {
+            lines.append("(No body)")
+        }
+        lines.append("")
+
+        lines.append("【Response Headers】")
+        if let headers = responseHeaders, !headers.isEmpty {
+            for (key, value) in headers.sorted(by: { $0.key < $1.key }) {
+                lines.append("\(key): \(value)")
+            }
+        } else {
+            lines.append("(No headers)")
+        }
+        lines.append("")
+
+        lines.append("【Response Body】")
+        if let body = prettyPrintedResponseBody ?? responseBodyString {
+            lines.append(body)
+        } else {
+            lines.append("(No body)")
+        }
+
+        if let error {
+            lines.append("")
+            lines.append("【Error】")
+            lines.append("\(error.localizedDescription)")
+        }
+
+        return lines.joined(separator: "\n")
+    }
+
     private func prettyPrintJSON(data: Data) -> String? {
         guard let object = try? JSONSerialization.jsonObject(with: data, options: []),
               let prettyData = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted, .sortedKeys]),
@@ -108,5 +233,11 @@ public struct NetworkMonitorEntry: Identifiable, Sendable {
             return String(data: data, encoding: .utf8)
         }
         return prettyString
+    }
+
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+        return formatter.string(from: date)
     }
 }

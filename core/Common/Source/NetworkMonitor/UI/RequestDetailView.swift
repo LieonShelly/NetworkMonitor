@@ -14,15 +14,42 @@ public struct RequestDetailView: View {
     @State private var responseExpanded = true
     @State private var requestHeadersExpanded = false
     @State private var responseHeadersExpanded = false
+    @State private var showingShareSheet = false
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            detailHeader
             requestSection
             Divider().padding(.horizontal, 16)
             responseSection
         }
         .padding(.vertical, 8)
         .background(Color(.secondarySystemBackground))
+        .sheet(isPresented: $showingShareSheet) {
+            ShareTextSheet(text: entry.formattedExportText)
+        }
+    }
+
+    private var detailHeader: some View {
+        HStack {
+            Button(action: { showingShareSheet = true }) {
+                HStack(spacing: 4) {
+                    Image(systemName: "square.and.arrow.up")
+                        .font(.system(size: 12, weight: .medium))
+                    Text("Export")
+                        .font(.system(size: 12, weight: .medium))
+                }
+                .foregroundStyle(Color.accentColor)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(Color.accentColor.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+            }
+
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+        .padding(.bottom, 8)
     }
 
     private var requestSection: some View {

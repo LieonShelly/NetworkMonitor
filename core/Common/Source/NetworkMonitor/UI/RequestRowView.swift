@@ -11,7 +11,30 @@ public struct RequestRowView: View {
     let entry: NetworkMonitorEntry
     let isSelected: Bool
 
+    @State private var showingCopiedToast = false
+
     public var body: some View {
+        ZStack {
+            contentView
+
+            if showingCopiedToast {
+                VStack {
+                    Spacer()
+                    copiedToast
+                }
+                .transition(.opacity.combined(with: .move(edge: .bottom)))
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(isSelected ? Color.accentColor.opacity(0.08) : Color.clear)
+        .contentShape(Rectangle())
+        .onLongPressGesture(minimumDuration: 0.5) {
+            copyToClipboard()
+        }
+    }
+
+    private var contentView: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
                 methodBadge
@@ -32,10 +55,43 @@ public struct RequestRowView: View {
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
                 .truncationMode(.head)
+
+            Text("Long press to copy")
+                .font(.system(size: 9))
+                .foregroundStyle(.tertiary)
+                .padding(.top, 2)
+        }
+    }
+
+    private var copiedToast: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 14))
+                .foregroundStyle(.green)
+            Text("Copied to clipboard")
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(.primary)
         }
         .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .background(isSelected ? Color.accentColor.opacity(0.08) : Color.clear)
+        .padding(.vertical, 10)
+        .background(.ultraThinMaterial)
+        .clipShape(Capsule())
+        .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
+        .padding(.bottom, 60)
+    }
+
+    private func copyToClipboard() {
+        UIPasteboard.general.string = entry.formattedCopyText
+
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+            showingCopiedToast = true
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            withAnimation(.easeOut(duration: 0.2)) {
+                showingCopiedToast = false
+            }
+        }
     }
 
     private var pathComponent: String {
