@@ -20,7 +20,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
     init(environment: AppEnvironment = .release) {
         // Start network monitor early so all subsequent URLSessions are monitored
         #if DEBUG
-        NetworkMonitorStore.shared.start()
+        NetworkMonitorModule.start()
         #endif
 
         let enviroment = environment
