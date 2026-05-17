@@ -1,3 +1,6 @@
 [submodule "core/Network"]
 	path = core/Network
 	url = git@github.com:LieonShelly/LTNetwork.git
+[submodule "core/NetworkMonitor"]
+	path = core/NetworkMonitor
+	url = git@github.com:LieonShelly/NetworkMonitor.git
