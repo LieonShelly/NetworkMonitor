@@ -1,160 +1,236 @@
-# The Little Things
+# Network Monitor
 
-一款 iOS 日记/反思应用。用户每天回答引导性问题（"反思"），应用会基于 AI 生成每周洞察报告，包含结构化摘要、分析概览和个性化图标。
+A lightweight, passive network traffic monitoring tool for iOS/macOS development. Built with SwiftUI and URLProtocol, it captures and displays all HTTP/HTTPS requests made by your app without modifying existing network code.
 
-## 产品概述
+## Features
 
-### 核心功能
+- **Passive Monitoring**: Captures all URLSession requests without affecting normal network behavior
+- **Floating Ball UI**: Draggable, non-intrusive floating button with expandable request list
+- **Request Details**: View complete request/response headers, body (with JSON pretty-printing), status codes, and timing
+- **Export & Copy**: Export individual request logs or long-press to copy details to clipboard
+- **Performance Optimized**: Limits stored entries and body sizes to prevent memory issues
+- **Thread-Safe**: Uses modern Swift concurrency with `@Observable` and `@MainActor`
 
-- **每日反思**：每天推送一道引导性问题（Question of the Day），用户撰写回答后生成专属图标
-- **问题线程（Threads）**：按分类浏览问题，支持置顶收藏，查看历史回答和图标时间线
-- **问题库（Question Library）**：按分类探索更多问题
-- **日历视图**：按日期回顾过往反思记录
-- **AI 周报（Insights）**：每周自动生成洞察报告，包含：
-  - 周度摘要（Summary）
-  - 精华片段（Gem）：场景、证据、洞察
-  - 分析概览（Analytical Overview）：多维度主题分析
-- **周报历史**：分页浏览历史周报，支持已读/未读筛选
-- **引导式入门（Onboarding）**：动画引导 → 选择分类 → 回答第一个问题
-- **Apple 登录**：通过 Sign in with Apple 进行身份认证
-- **推送通知**：提醒用户每日反思
-
-### 用户流程
+## Architecture
 
 ```
-Apple 登录 → Splash 动画引导 → 选择分类 → 回答第一个问题 → 进入主页
-主页包含：Threads（问题线程）| Calendar（日历）| Insights（周报）| User（个人）
+┌─────────────────────────────────────────────────────────┐
+│                      App Layer                          │
+│                   (Your Application)                    │
+└─────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│                   NetworkMonitorModule                  │
+│         Public API for start/stop/clear               │
+└─────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│                   NetworkMonitorStore                  │
+│              @Observable - Thread-safe state            │
+└─────────────────────────────────────────────────────────┘
+          │                                   │
+          ▼                                   ▼
+┌─────────────────────┐            ┌─────────────────────┐
+│  NetworkMonitorCore │            │  FloatingBallView   │
+│  URLProtocol reg    │            │  (SwiftUI UI)       │
+└─────────────────────┘            └─────────────────────┘
+          │                                   │
+          ▼                                   ▼
+┌─────────────────────────────────────────────────────────┐
+│              NetworkMonitorURLProtocol                  │
+│            Intercepts & records HTTP requests           │
+└─────────────────────────────────────────────────────────┘
 ```
 
----
-
-## 技术文档
-
-### 技术栈
-
-| 项目 | 说明 |
-|---|---|
-| 平台 | iOS 18+ |
-| 语言 | Swift 6+ |
-| UI 框架 | SwiftUI |
-| 响应式 | Combine |
-| 并发 | Swift Concurrency（async/await, Actor） |
-| 动画 | Lottie 4.5.1 |
-| 构建工具 | XcodeGen（项目生成）、Fastlane（CI/CD） |
-| 包管理 | Swift Package Manager |
-| 认证 | Sign in with Apple（AuthenticationServices） |
-| 存储 | KeyChain + UserDefaults |
-
-### 项目结构
+## File Structure
 
 ```
-├── app/LTApp/LTApp/
-│   ├── Source/
-│   │   ├── App/                # 应用入口、AppDelegate、功能配置、Feature Toggle
-│   │   ├── Common/             # 通用组件（Paginator, LoadMoreFooter, FixedHeader）
-│   │   ├── Domain/             # 功能模块（每个功能包含 View + ViewModel）
-│   │   │   ├── Coordinator/    # 导航协调器（AppCoordinator, HomeCoordinator, PreHomeCoordinator）
-│   │   │   ├── Calendar/       # 日历视图
-│   │   │   ├── Detail/         # 反思详情、摘要
-│   │   │   ├── Home/           # 主页
-│   │   │   ├── Insights/       # AI 周报
-│   │   │   ├── Notification/   # 通知
-│   │   │   ├── Onboarding/     # 引导流程
-│   │   │   ├── QuestionLib/    # 问题库
-│   │   │   ├── SignIn/         # Apple 登录
-│   │   │   ├── Splash/         # 启动动画
-│   │   │   ├── Submit/         # 每日回答提交
-│   │   │   ├── Thread/         # 问题线程
-│   │   │   └── User/           # 用户
-│   │   ├── Extensions/         # Swift 类型扩展
-│   │   └── Service/            # 数据层
-│   │       ├── Auth/           # 认证
-│   │       ├── DTO/            # 数据传输对象
-│   │       ├── Icon/           # 图标
-│   │       ├── Interceptor/    # 网络拦截器（Auth, RefreshToken, Logout）
-│   │       ├── Reflection/     # 反思
-│   │       ├── Report/         # 周报（Model/ Repository/ Request/ UseCase
-│   │       └── User/           # 用户
-│   ├── Resource/               # Assets.xcassets、图片资源
-│   └── API/                    # API 文档（api.md）
-│
-├── core/                       # 可复用框架模块
-│   ├── Network/                # LTNetwork — HTTP 客户端、拦截器链、请求/响
-│   ├── Common/                 # LTCommon — Feature Toggle、依赖注入
-│
-├── certs/                      # 签名证书和描述文件
-└── fastlane/                   # Fastlane 配置、XcodeGen 项目设置
+core/Common/Source/NetworkMonitor/
+├── Model/
+│   ├── NetworkMonitorEntry.swift        # Data model for a single request
+│   └── NetworkMonitorConfiguration.swift # Configuration options
+├── Core/
+│   ├── NetworkMonitorCore.swift          # URLProtocol registration
+│   └── NetworkMonitorURLProtocol.swift   # Request interception & forwarding
+├── Store/
+│   └── NetworkMonitorStore.swift        # @Observable state management
+├── UI/
+│   ├── FloatingBallView.swift            # Draggable floating button
+│   ├── NetworkMonitorPanelView.swift     # Main panel with request list
+│   ├── RequestRowView.swift             # Individual request row
+│   ├── RequestDetailView.swift          # Expandable request details
+│   └── ShareSheet.swift                 # iOS share sheet wrapper
+└── NetworkMonitorModule.swift           # Public module entry point
 ```
 
-### 架构模式
+## Requirements
 
-#### MVVM + Coordinator
+- **iOS 17.0+** / **macOS 14.0+**
+- Swift 5.9+
+- SwiftUI
 
-- 每个功能模块在 `Domain/` 下包含 `View/`（SwiftUI 视图）和 `ViewModel/`（业务逻辑）
-- ViewModel 为 `ObservableObject` 类，通过 `@StateObject` 或 `@EnvironmentObject` 注入
-- 三个 Coordinator 管理导航：
-  - `AppCoordinator`：根导航，管理 preHome / home 切换
-  - `PreHomeCoordinator`：登录前流程（登录 → Splash → Onboarding → 首次回答）
-  - `HomeCoordinator`：主页内导航
+## Installation
 
-#### Clean Architecture 服务层
+The module is part of the `Common` framework. Ensure `core/Common` is included in your project build.
 
-每个服务领域（如 `Report/`）遵循以下结构：
+## Quick Start
 
-```
-Service/{Domain}/
-├── Model/        # 领域模型（纯 Swift 结构体）
-├── DTO/          # Decodable API 响应类型，包含 toDomain() 映射方法
-├── Request/      # API 请求定义，遵循 Request 协议（枚举实现）
-├── Repository/   # 协议 + 实现，调用 ApiClient 并将 DTO 映射为领域模型
-└── UseCase/      # 协议 + 实现，单一职责的业务操作
+### 1. Start Monitoring
+
+In your app entry point (`AppDelegate` or `LTAppApp`):
+
+```swift
+#if DEBUG
+NetworkMonitorModule.start()
+#endif
 ```
 
-#### 依赖注入
+### 2. Add Floating Ball to UI
 
-- `AppCoordinator` 在启动时构建完整依赖图
-- `AppDataWithAuthorizationService` 作为服务定位器，通过 lazy 属性暴露所有 UseCase
-- UseCase 通过协议类型属性访问（如 `any FetchWeeklyReportsListUseCaseType`）
+In your root view hierarchy:
 
-#### 网络层
-
-- `ApiClient` 处理请求执行，支持拦截器链和重试逻辑（最大重试 2 次）
-- 拦截器链：`AuthInterceptor`（附加 Token）→ `RefreshTokenInterceptor`（刷新过期 Token）→ `LogoutInterceptor`（处理强制登出）
-- 请求为枚举类型，遵循 `Request` 协议，定义 `endPoint`、`method`、`payload`
-- API 响应统一包装在 `UniversalResponse<T>` 中
-- 支持 SSE 流式请求（`sendSSERequest`）
-
-#### Feature Toggle
-
-- 通过 `LTAppFeatureConfig` 枚举定义功能开关
-- 支持三个阶段：`underDevelopment` → `internal` → `release`
-- 通过 `InjectionValues` 依赖注入系统全局访问
-
-### 后端 API
-
-- 基础 URL：`https://things.dvacode.tech`
-- 认证方式：Bearer Token（Authorization header）
-- API 文档：`app/LTApp/API/api.md`
-- 所有路径以 `/api` 开头
-
-### 常用命令
-
-```bash
-# 生成 Xcode 项目（通过 XcodeGen）
-bundle exec fastlane generate_project
-
-# 构建并上传到 TestFlight
-bundle exec fastlane internal_test
-
-# 运行 Network 模块测试（SPM）
-cd core/Network && swift test
+```swift
+@main
+struct MyApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+            
+            #if DEBUG
+            NetworkMonitorModule.floatingBall
+            #endif
+        }
+    }
+}
 ```
 
-### Core 模块说明
+### 3. Done
 
-| 模块 | 产物名称 | 用途 |
-|---|---|---|
-| Network | LTNetwork | HTTP 客户端、拦截器、请求/响应管道（SPM + XcodeGen 双构建） |
-| Common | LTCommon | Feature Toggle、依赖注入容器 |
-| Persistence | Persistence | KeyChain 和 UserDefaults 存储抽象 |
-| UIComponent | UIComponent | 共享 UI 组件（按钮、文字样式、圆角、Lottie 动画、颜色系统） |
+The floating ball will appear in the bottom-right corner. Tap to open the request list.
+
+## Usage
+
+### Basic Operations
+
+```swift
+// Start monitoring (typically in app launch)
+NetworkMonitorModule.start()
+
+// Stop monitoring
+NetworkMonitorModule.stop()
+
+// Clear all captured entries
+NetworkMonitorModule.clear()
+
+// Access the store directly if needed
+let entries = NetworkMonitorStore.shared.entries
+let isExpanded = NetworkMonitorStore.shared.isExpanded
+```
+
+### Configuration
+
+```swift
+let config = NetworkMonitorConfiguration(
+    maxEntries: 100,     // Maximum entries to store (default: 100)
+    maxBodySize: 1_048_576  // Max body size in bytes (default: 1MB)
+)
+
+// Pass configuration when creating store
+let store = NetworkMonitorStore(configuration: config)
+```
+
+## UI Components
+
+### Floating Ball
+- Draggable button in bottom-right corner
+- Shows badge with request count
+- Tap to expand/collapse panel
+
+### Request List
+- Displays all captured requests in reverse chronological order
+- Shows method badge (color-coded), URL path, status, and duration
+- Tap to expand details, long-press to copy
+
+### Request Details
+- **Export Button**: Share complete request info via system share sheet
+- **Request Section**: Headers + Body (JSON pretty-printed)
+- **Response Section**: Status, Duration, Headers + Body
+- Expandable/collapsible sections
+
+## How It Works
+
+### URLProtocol Interception
+
+`NetworkMonitorURLProtocol` is registered to `URLSessionConfiguration.default.protocolClasses`. It works by:
+
+1. **Intercepting**: The protocol's `canInit(with:)` determines which requests to capture
+2. **Recording**: Captures request metadata (URL, method, headers, body)
+3. **Forwarding**: Creates an ephemeral session to forward the actual request
+4. **Recording Response**: Captures response data as it streams back
+5. **Storing**: Saves complete request/response to `NetworkMonitorStore`
+
+### Thread Safety
+
+- `@Observable` provides automatic thread-safe state management
+- `@MainActor` ensures UI updates happen on the main thread
+- `NetworkMonitorCore` uses `NSLock` for safe registration/unregistration
+
+## Limitations
+
+1. **Post-Registration Only**: Only captures requests made after `start()` is called
+2. **URLSession Only**: Does not capture requests made via other networking libraries unless they use URLSession internally
+3. **Debug Builds Only**: Should be wrapped in `#if DEBUG` for release builds
+
+## Data Model
+
+### NetworkMonitorEntry
+
+```swift
+public struct NetworkMonitorEntry: Identifiable, Sendable {
+    public let id: UUID
+    public let url: URL
+    public let method: String
+    public let requestHeaders: [String: String]
+    public let requestBody: Data?
+    public var responseHeaders: [String: String]?
+    public var responseBody: Data?
+    public var statusCode: Int?
+    public var error: Error?
+    public let startTime: Date
+    public var endTime: Date?
+}
+```
+
+### Computed Properties
+
+```swift
+entry.duration              // TimeInterval?
+entry.state                 // .loading, .success, .failed
+entry.formattedDuration     // "123ms" or "1.23s"
+entry.prettyPrintedRequestBody  // JSON formatted
+entry.prettyPrintedResponseBody  // JSON formatted
+entry.formattedExportText    // Full export format
+entry.formattedCopyText     // Copy-friendly format
+```
+
+## Best Practices
+
+1. **Start Early**: Call `start()` as early as possible in app lifecycle to capture initialization requests
+2. **Use Debug Guards**: Always wrap monitoring code in `#if DEBUG`
+3. **Large Bodies**: Be aware of body size limits for very large responses
+4. **Memory Management**: The store automatically limits entries, but very large bodies may still consume memory
+
+## Contributing
+
+When adding features:
+
+1. Update this README with new functionality
+2. Update `docs/network_monitor_design.md` with design details
+3. Ensure thread safety with `@MainActor` and proper locking
+4. Add appropriate `@Observable` conformance
+
+## License
+
+Internal use - LittleThings
