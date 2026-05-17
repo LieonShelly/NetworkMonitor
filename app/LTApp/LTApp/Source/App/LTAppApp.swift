@@ -5,6 +5,7 @@
 import SwiftUI
 import UIComponent
 import Common
+import LTNetworkMonitor
 
 @main
 struct LTAppApp: App {

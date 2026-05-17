@@ -7,6 +7,7 @@ import LTNetwork
 import Persistence
 import Combine
 import Common
+import LTNetworkMonitor
 
 @MainActor
 final class AppCoordinator: ObservableObject, @unchecked Sendable {

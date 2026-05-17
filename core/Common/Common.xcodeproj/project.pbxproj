@@ -14,7 +14,6 @@
 		33F352E97DFA403C3B7A5A06 /* FeatureRolloutStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF1944D74D70ACF52E4FF8A /* FeatureRolloutStage.swift */; };
 		4022D186417704D81F10AD5C /* LTTestLogSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1628351B6BADBD75F4427707 /* LTTestLogSink.swift */; };
 		40337926787D6CA4F9D67169 /* LTBCrashStabilityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C231C1844F3A734F7EE1DD5 /* LTBCrashStabilityMonitor.swift */; };
-		4054C078E126471DB82F51F5 /* NetworkMonitorModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833CB1D664BF36B86A935D60 /* NetworkMonitorModule.swift */; };
 		435C3F452EAE3853946946AB /* XORCipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D6C89A555CBE9EDBC1ED377 /* XORCipher.swift */; };
 		46F7022FE81E1BA5BFA958A7 /* PathProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E4A8573DF600EE7BEA15DF /* PathProbe.swift */; };
 		4863B73B8669A246D535091E /* LTBCrashSignalBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3384C4B0AF3EA814D8F70B9 /* LTBCrashSignalBridge.swift */; };
@@ -23,29 +22,23 @@
 		57C02CCFA249296866FCA947 /* LTLogEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB07425B3B2DE1EA9B83DBE0 /* LTLogEvent.swift */; };
 		58BDEECFB73166E698023F1B /* InjectionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4290BA6E9796B1368D01E546 /* InjectionKey.swift */; };
 		599B4767446F4E7AB36329FD /* LTBCrashUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85254492960807B4612FDB30 /* LTBCrashUploader.swift */; };
-		59AB3B4F9A5A02919A39E4C6 /* NetworkMonitorURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD0C0A4B2F7DCEB18D708F /* NetworkMonitorURLProtocol.swift */; };
-		5A27F93D740524A6913FBC79 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DAC476C7B1E29345C295CA /* ShareSheet.swift */; };
 		5AE8508F856B5C856A963D2D /* LTLogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3505F8BD3FA79A71AE76EFFC /* LTLogStore.swift */; };
 		5BC182A39B7780D8595C8EE2 /* LTBCrashThreadCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64731FE13DDE6EE536CADE3 /* LTBCrashThreadCollector.swift */; };
 		642470FC653F03EF9A2FE877 /* LTBCrashContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092103D2AAD429B68EF93704 /* LTBCrashContext.swift */; };
 		6B0B9030899760C4C6AF65CB /* LTLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA840EE08F371B19D64C00C /* LTLogger.swift */; };
 		6E17FDCC79CE75F89AED1667 /* CrashReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270BF56487A0294D49CB35FA /* CrashReporter.swift */; };
-		72616C5FCD7B5A99F39C4F24 /* NetworkMonitorConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36950C2AE0AFDFBDBE8E68B9 /* NetworkMonitorConfiguration.swift */; };
 		73BCFF88C30E137797966D23 /* LTBCrashSignalHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A51C378EEACAB26CC7AC3261 /* LTBCrashSignalHandler.m */; };
 		7414B8F9AE7B0B2C01E0D063 /* EnvironmentConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36BA215C52772A5F88EFCD40 /* EnvironmentConfig.swift */; };
 		772FEFE7B9F7D2690D4C334E /* LTBCrashBinaryImageCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE629BB9E3626F3D403D39D /* LTBCrashBinaryImageCollector.swift */; };
 		7FFD351A9B43315FE2CF3586 /* LTBCrashSignalHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = BA4FA0BBAABA787914410AFF /* LTBCrashSignalHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		89F7258676356D986986281F /* LTBCrashContextStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3FC5D519E6E0C8E65B9078 /* LTBCrashContextStore.swift */; };
 		8A4EDB8C7BF762D1242C4938 /* FeatureToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958161FBD9C0E970D1BFC379 /* FeatureToggle.swift */; };
-		8B603EBA4B3E69FC834D0B32 /* RequestRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB286059FE53F5A176FDCE1 /* RequestRowView.swift */; };
 		944B4BDB198E24857C3B8CFC /* LTBCrashReporterConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C349CA3397C5B75E700C5BED /* LTBCrashReporterConfiguration.swift */; };
 		9B7273DA512F22584ACD01B3 /* LTBCrashSignalContextPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDBF6D80E758FF6D5B8FF52 /* LTBCrashSignalContextPayload.swift */; };
 		9F5D9FAC7BF46A22FA1063DD /* FetureConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE189BBA4F4EEB903EB8053 /* FetureConfig.swift */; };
 		A1D40DE2A41964505A039683 /* FeatureToggling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 091093EAE7C72DD6AB605489 /* FeatureToggling.swift */; };
 		AFD8482F95A92841A46C4312 /* LTBCrashAppStateTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3667401E583AFBD36264CC3C /* LTBCrashAppStateTracker.swift */; };
 		B0BA691847D30212CE2B7920 /* Injected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8425DD95260652BF849FE448 /* Injected.swift */; };
-		B316E4120C8B06C86480F340 /* RequestDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F73EBA38F1D0A9403D31CCC /* RequestDetailView.swift */; };
-		B73A368300739334F1A32B4A /* NetworkMonitorCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B395C95E65C02EF113F9DAF9 /* NetworkMonitorCore.swift */; };
 		B7D62A33FDAAE4727B97F436 /* LTLogFeedbackExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDC01950A44FDC469BB76DD /* LTLogFeedbackExporter.swift */; };
 		BC76CD6753C1AEF4093D953C /* LTBCrashRedactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0F293EFA0F451D943FFABB /* LTBCrashRedactor.swift */; };
 		BCA688B150D6E12B1C472ECC /* LTFileLogSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B18415FAFFBD1918510DEE /* LTFileLogSink.swift */; };
@@ -55,18 +48,14 @@
 		CBAEC433E51B4D7FDEE6D702 /* DylibProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = F863FBEE27A749E502F2A72B /* DylibProbe.swift */; };
 		D198F47C592CCB9CA9F4E299 /* LTRemoteLogSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8EE6DC48AF957B95F58DD48 /* LTRemoteLogSink.swift */; };
 		D855A519C8DACCFBAADFE58E /* LTBCrashSymbolicationMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E2FE4C4095624CD5951152 /* LTBCrashSymbolicationMetadata.swift */; };
-		D9546A6FF1CE6B1A09AFBB80 /* FloatingBallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D68A7E53FD8DBAAFE80392 /* FloatingBallView.swift */; };
-		D9F65E43A6B9EA0AC94E74B7 /* NetworkMonitorPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102888C8C9300F25C3DF23C0 /* NetworkMonitorPanelView.swift */; };
 		DF6D6DA4AF55D46EBC07CFCE /* AntiDebug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023CDA746C22A12E53E39A93 /* AntiDebug.swift */; };
 		E2E6058CC7CDE4D8E6CB8FB9 /* AppVariantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F263B2F2B184FDB2EB43AE7F /* AppVariantType.swift */; };
 		E85F0BB0F2CCA95E9B1248E5 /* planning.md in Resources */ = {isa = PBXBuildFile; fileRef = B836BBF84BF7429B1980CEA1 /* planning.md */; };
 		EA8984ADC138702F32ADB97A /* InjectionValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8BBEDF47A50D5D6E0314EB /* InjectionValues.swift */; };
-		F385DC7B04D8A9989F355BBB /* NetworkMonitorEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5501BCAD32978551D4F383D /* NetworkMonitorEntry.swift */; };
 		F38DD329087E03E57951AC30 /* SandboxProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9E713F49C1A3AAF97729B3 /* SandboxProbe.swift */; };
 		F3B83A62ADFFC45AC98A0087 /* LTBCrashEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9467CACEB9EE3DBB5D8E3D /* LTBCrashEvent.swift */; };
 		F7192B179319FF0018A36E6F /* LTLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9764DAFC469915F615A5F1 /* LTLog.swift */; };
 		F7FA92D9283E05F30C80DE40 /* LTLogSink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7829E17E93702326D5CA7DD1 /* LTLogSink.swift */; };
-		F93773899135B45ECEAD8F71 /* NetworkMonitorStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112DB63D44511824E2CBE7CD /* NetworkMonitorStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,11 +64,7 @@
 		092103D2AAD429B68EF93704 /* LTBCrashContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashContext.swift; sourceTree = "<group>"; };
 		09A83F04B4FBE2608F40BCA1 /* URLSchemeProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeProbe.swift; sourceTree = "<group>"; };
 		0D3FC5D519E6E0C8E65B9078 /* LTBCrashContextStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashContextStore.swift; sourceTree = "<group>"; };
-		0F73EBA38F1D0A9403D31CCC /* RequestDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestDetailView.swift; sourceTree = "<group>"; };
-		102888C8C9300F25C3DF23C0 /* NetworkMonitorPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorPanelView.swift; sourceTree = "<group>"; };
-		112DB63D44511824E2CBE7CD /* NetworkMonitorStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorStore.swift; sourceTree = "<group>"; };
 		13E9E885D0084E92BCBCDA09 /* LTBCrashCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashCapture.swift; sourceTree = "<group>"; };
-		15D68A7E53FD8DBAAFE80392 /* FloatingBallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBallView.swift; sourceTree = "<group>"; };
 		1628351B6BADBD75F4427707 /* LTTestLogSink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTTestLogSink.swift; sourceTree = "<group>"; };
 		1A127491110927A814AEF87D /* LTLogLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogLevel.swift; sourceTree = "<group>"; };
 		1A9764DAFC469915F615A5F1 /* LTLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLog.swift; sourceTree = "<group>"; };
@@ -87,7 +72,6 @@
 		31DAEED5F97682D655674933 /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3505F8BD3FA79A71AE76EFFC /* LTLogStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogStore.swift; sourceTree = "<group>"; };
 		3667401E583AFBD36264CC3C /* LTBCrashAppStateTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashAppStateTracker.swift; sourceTree = "<group>"; };
-		36950C2AE0AFDFBDBE8E68B9 /* NetworkMonitorConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorConfiguration.swift; sourceTree = "<group>"; };
 		36B18415FAFFBD1918510DEE /* LTFileLogSink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTFileLogSink.swift; sourceTree = "<group>"; };
 		36BA215C52772A5F88EFCD40 /* EnvironmentConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentConfig.swift; sourceTree = "<group>"; };
 		3F8BBEDF47A50D5D6E0314EB /* InjectionValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectionValues.swift; sourceTree = "<group>"; };
@@ -96,11 +80,9 @@
 		5F0F293EFA0F451D943FFABB /* LTBCrashRedactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashRedactor.swift; sourceTree = "<group>"; };
 		5FA840EE08F371B19D64C00C /* LTLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogger.swift; sourceTree = "<group>"; };
 		6DDC01950A44FDC469BB76DD /* LTLogFeedbackExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogFeedbackExporter.swift; sourceTree = "<group>"; };
-		70DAC476C7B1E29345C295CA /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
 		7829E17E93702326D5CA7DD1 /* LTLogSink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogSink.swift; sourceTree = "<group>"; };
 		80F3D8780031CC88482B482E /* LTLogConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogConfiguration.swift; sourceTree = "<group>"; };
 		80F8524D8F5527846E6F0CF7 /* LTBCrashReportBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashReportBuilder.swift; sourceTree = "<group>"; };
-		833CB1D664BF36B86A935D60 /* NetworkMonitorModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorModule.swift; sourceTree = "<group>"; };
 		8425DD95260652BF849FE448 /* Injected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injected.swift; sourceTree = "<group>"; };
 		85254492960807B4612FDB30 /* LTBCrashUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashUploader.swift; sourceTree = "<group>"; };
 		8D6C89A555CBE9EDBC1ED377 /* XORCipher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XORCipher.swift; sourceTree = "<group>"; };
@@ -112,10 +94,8 @@
 		9FF1944D74D70ACF52E4FF8A /* FeatureRolloutStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureRolloutStage.swift; sourceTree = "<group>"; };
 		A51C378EEACAB26CC7AC3261 /* LTBCrashSignalHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LTBCrashSignalHandler.m; sourceTree = "<group>"; };
 		AB9E713F49C1A3AAF97729B3 /* SandboxProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxProbe.swift; sourceTree = "<group>"; };
-		AEB286059FE53F5A176FDCE1 /* RequestRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestRowView.swift; sourceTree = "<group>"; };
 		AF9467CACEB9EE3DBB5D8E3D /* LTBCrashEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashEvent.swift; sourceTree = "<group>"; };
 		B3384C4B0AF3EA814D8F70B9 /* LTBCrashSignalBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashSignalBridge.swift; sourceTree = "<group>"; };
-		B395C95E65C02EF113F9DAF9 /* NetworkMonitorCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorCore.swift; sourceTree = "<group>"; };
 		B4E4A8573DF600EE7BEA15DF /* PathProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathProbe.swift; sourceTree = "<group>"; };
 		B64731FE13DDE6EE536CADE3 /* LTBCrashThreadCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashThreadCollector.swift; sourceTree = "<group>"; };
 		B836BBF84BF7429B1980CEA1 /* planning.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = planning.md; sourceTree = "<group>"; };
@@ -126,10 +106,8 @@
 		CFE189BBA4F4EEB903EB8053 /* FetureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetureConfig.swift; sourceTree = "<group>"; };
 		D014FC01F6E85E536DAA182F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D465418924FEEF173F521D5D /* LTLogPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogPolicy.swift; sourceTree = "<group>"; };
-		E5501BCAD32978551D4F383D /* NetworkMonitorEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorEntry.swift; sourceTree = "<group>"; };
 		E9C75654D0C2368D8353A3B2 /* LTBCrashReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTBCrashReport.swift; sourceTree = "<group>"; };
 		EB07425B3B2DE1EA9B83DBE0 /* LTLogEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTLogEvent.swift; sourceTree = "<group>"; };
-		ECAD0C0A4B2F7DCEB18D708F /* NetworkMonitorURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorURLProtocol.swift; sourceTree = "<group>"; };
 		F263B2F2B184FDB2EB43AE7F /* AppVariantType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVariantType.swift; sourceTree = "<group>"; };
 		F863FBEE27A749E502F2A72B /* DylibProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DylibProbe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -214,18 +192,6 @@
 			path = Logger;
 			sourceTree = "<group>";
 		};
-		43AC4C23DFC8FEE3680F4A0C /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				15D68A7E53FD8DBAAFE80392 /* FloatingBallView.swift */,
-				102888C8C9300F25C3DF23C0 /* NetworkMonitorPanelView.swift */,
-				0F73EBA38F1D0A9403D31CCC /* RequestDetailView.swift */,
-				AEB286059FE53F5A176FDCE1 /* RequestRowView.swift */,
-				70DAC476C7B1E29345C295CA /* ShareSheet.swift */,
-			);
-			path = UI;
-			sourceTree = "<group>";
-		};
 		4B518D5EE2B36E7A845CCD68 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
@@ -255,27 +221,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A9A72BBC94BEC4B40B8C06D0 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				36950C2AE0AFDFBDBE8E68B9 /* NetworkMonitorConfiguration.swift */,
-				E5501BCAD32978551D4F383D /* NetworkMonitorEntry.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		B4D970785BEE9D3F86FB7892 /* NetworkMonitor */ = {
-			isa = PBXGroup;
-			children = (
-				833CB1D664BF36B86A935D60 /* NetworkMonitorModule.swift */,
-				DD8A52952EB72DDF406D7133 /* Core */,
-				A9A72BBC94BEC4B40B8C06D0 /* Model */,
-				FAAF729E7B28DA2962002782 /* Store */,
-				43AC4C23DFC8FEE3680F4A0C /* UI */,
-			);
-			path = NetworkMonitor;
-			sourceTree = "<group>";
-		};
 		C3DE815D8AD5862F60AE7646 /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -285,26 +230,8 @@
 				2BA2E904E49DCBDE6C89E3BA /* JailBreakChecker */,
 				3B338E058DBB3B87B9DEE9EE /* Logger */,
 				09901663F7E9E0132DF21E32 /* LTBugly */,
-				B4D970785BEE9D3F86FB7892 /* NetworkMonitor */,
 			);
 			path = Source;
-			sourceTree = "<group>";
-		};
-		DD8A52952EB72DDF406D7133 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				B395C95E65C02EF113F9DAF9 /* NetworkMonitorCore.swift */,
-				ECAD0C0A4B2F7DCEB18D708F /* NetworkMonitorURLProtocol.swift */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
-		FAAF729E7B28DA2962002782 /* Store */ = {
-			isa = PBXGroup;
-			children = (
-				112DB63D44511824E2CBE7CD /* NetworkMonitorStore.swift */,
-			);
-			path = Store;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -395,7 +322,6 @@
 				8A4EDB8C7BF762D1242C4938 /* FeatureToggle.swift in Sources */,
 				A1D40DE2A41964505A039683 /* FeatureToggling.swift in Sources */,
 				9F5D9FAC7BF46A22FA1063DD /* FetureConfig.swift in Sources */,
-				D9546A6FF1CE6B1A09AFBB80 /* FloatingBallView.swift in Sources */,
 				B0BA691847D30212CE2B7920 /* Injected.swift in Sources */,
 				58BDEECFB73166E698023F1B /* InjectionKey.swift in Sources */,
 				EA8984ADC138702F32ADB97A /* InjectionValues.swift in Sources */,
@@ -430,18 +356,8 @@
 				6B0B9030899760C4C6AF65CB /* LTLogger.swift in Sources */,
 				D198F47C592CCB9CA9F4E299 /* LTRemoteLogSink.swift in Sources */,
 				4022D186417704D81F10AD5C /* LTTestLogSink.swift in Sources */,
-				72616C5FCD7B5A99F39C4F24 /* NetworkMonitorConfiguration.swift in Sources */,
-				B73A368300739334F1A32B4A /* NetworkMonitorCore.swift in Sources */,
-				F385DC7B04D8A9989F355BBB /* NetworkMonitorEntry.swift in Sources */,
-				4054C078E126471DB82F51F5 /* NetworkMonitorModule.swift in Sources */,
-				D9F65E43A6B9EA0AC94E74B7 /* NetworkMonitorPanelView.swift in Sources */,
-				F93773899135B45ECEAD8F71 /* NetworkMonitorStore.swift in Sources */,
-				59AB3B4F9A5A02919A39E4C6 /* NetworkMonitorURLProtocol.swift in Sources */,
 				46F7022FE81E1BA5BFA958A7 /* PathProbe.swift in Sources */,
-				B316E4120C8B06C86480F340 /* RequestDetailView.swift in Sources */,
-				8B603EBA4B3E69FC834D0B32 /* RequestRowView.swift in Sources */,
 				F38DD329087E03E57951AC30 /* SandboxProbe.swift in Sources */,
-				5A27F93D740524A6913FBC79 /* ShareSheet.swift in Sources */,
 				1BDF30A0A2D03BB11DFC38EF /* URLSchemeProbe.swift in Sources */,
 				435C3F452EAE3853946946AB /* XORCipher.swift in Sources */,
 			);
