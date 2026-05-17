@@ -25,15 +25,11 @@ public final class NetworkMonitorStore {
 
     public func start() {
         guard !isEnabled else { return }
-        
-        // Register URLProtocol for capturing general network requests
         NetworkMonitorCore.shared.register()
         
         isEnabled = true
     }
-
-    /// Returns the registered configuration with NetworkMonitorURLProtocol.
-    /// Use this configuration when creating URLSessions to ensure monitoring works.
+    
     public func registeredConfiguration() -> URLSessionConfiguration? {
         return NetworkMonitorCore.shared.registeredConfiguration
     }
