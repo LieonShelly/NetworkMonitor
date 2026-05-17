@@ -1,5 +1,6 @@
 //
-//  LTApp, This code is protected by intellectual property rights.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Foundation
@@ -20,5 +21,3 @@ public class SubmitAnswerUseCase: SubmitAnswerUseCaseType, @unchecked Sendable {
         try await repository.submitAnswer(param)
     }
 }
-
-

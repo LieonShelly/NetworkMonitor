@@ -1,5 +1,6 @@
 //
-//  LTApp, This code is protected by intellectual property rights.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import SwiftUI
@@ -61,9 +62,6 @@ struct SignInView: View {
             guard validateTermsAcceptance() else {
                 return
             }
-//            Task {
-//                try? await viewModel.loginWithApple(authorizationCode: "", identityToken: "")
-//            }
             let provider = ASAuthorizationAppleIDProvider()
             let request = provider.createRequest()
             request.requestedScopes = [.fullName, .email]

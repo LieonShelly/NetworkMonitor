@@ -1,5 +1,6 @@
 //
-//  LTApp, This code is protected by intellectual property rights.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import SwiftUI
@@ -56,4 +57,3 @@ struct QuestionLibView: View {
         .padding(.leading, 42)
     }
 }
-

@@ -1,27 +1,18 @@
 //
-//  AntiDebug.swift
-//  LTCommon
-//
-//  Created by Renjun Li on 2026/4/28.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Darwin
 
-// MARK: - Anti-Debugging
 
-/// 反调试模块：
-///   1. Release 模式下调用 ptrace(PT_DENY_ATTACH) 拒绝调试器附加
-///   2. 通过 sysctl 检测 P_TRACED 标志位，若被跟踪累加 50 分
 @inline(__always)
 func installAntiDebugAndEvaluate() -> Int {
     denyDebuggerAttach()
     return detectTracerPresence()
 }
 
-// MARK: - ptrace: Deny Attach
 
-/// 调用 ptrace(PT_DENY_ATTACH) 使调试器无法附加到当前进程。
-/// Debug 构建下跳过，避免开发时崩溃。
 @inline(__always)
 private func denyDebuggerAttach() {
 #if !DEBUG
@@ -36,10 +27,7 @@ private func denyDebuggerAttach() {
 #endif
 }
 
-// MARK: - sysctl: Detect P_TRACED
 
-/// 读取当前进程的 kinfo_proc 结构，检查 P_TRACED 标志位。
-/// P_TRACED 被置位表示进程正处于调试器跟踪状态。
 @inline(__always)
 private func detectTracerPresence() -> Int {
     var mib: [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid()]

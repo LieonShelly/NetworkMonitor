@@ -1,8 +1,6 @@
 //
-//  UserRowItem.swift
-//  LTApp
-//
-//  Created by Renjun Li on 2025/10/30.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Foundation
@@ -14,5 +12,3 @@ struct UserRowItem: Identifiable {
     let title: String
     let subTitle: String
 }
-
-

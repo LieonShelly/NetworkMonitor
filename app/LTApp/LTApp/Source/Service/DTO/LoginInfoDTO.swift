@@ -1,5 +1,6 @@
 //
-//  LTApp, This code is protected by intellectual property rights.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Foundation
@@ -13,4 +14,3 @@ public struct LoginInfoDTO: Decodable {
         case refreshToken = "refresh_token"
     }
 }
-

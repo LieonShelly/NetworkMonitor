@@ -1,8 +1,6 @@
 //
-//  LTLogFeedbackExporter.swift
-//  LTCommon
-//
-//  Created by Renjun Li on 2026/4/30.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Foundation
@@ -41,7 +39,8 @@ public enum LTLogFeedbackExporter {
             for breadcrumb in breadcrumbs {
                 let record = LTFeedbackLogRecord(type: "breadcrumb", breadcrumb: breadcrumb)
                 let data = try encoder.encode(record)
-                try handle.write(contentsOf: data + Data("\n".utf8))
+                try handle.write(contentsOf: data + Data("
+".utf8))
             }
         }
 

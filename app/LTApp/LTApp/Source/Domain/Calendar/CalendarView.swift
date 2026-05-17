@@ -1,5 +1,6 @@
 //
-//  LTApp, This code is protected by intellectual property rights.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import SwiftUI
@@ -206,9 +207,11 @@ struct CalendarView: View {
         let text: String
         if momth.date.isSameMonth(today) {
             if today.isSameDay(today.endOfMonth()) {
-                text = "\(momth.iconCount) stamps collected so far \n take your time today"
+                text = "\(momth.iconCount) stamps collected so far 
+ take your time today"
             } else {
-                text = "\(momth.iconCount) stamps collected so far \n take your time with the  \(momth.moreDaysTogo) days ahead"
+                text = "\(momth.iconCount) stamps collected so far 
+ take your time with the  \(momth.moreDaysTogo) days ahead"
             }
         } else {
             text = "\(momth.iconCount) stamps collected this month"
@@ -281,7 +284,8 @@ struct CalendarView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 42, height: 42)
             
-            Text("The best is \n yet to come")
+            Text("The best is 
+ yet to come")
                 .textStyle(
                     font: .title,
                     color: AppColor.black

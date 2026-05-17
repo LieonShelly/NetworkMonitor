@@ -1,5 +1,6 @@
 //
-//  LTApp, This code is protected by intellectual property rights.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Foundation
@@ -26,4 +27,3 @@ public struct Category: Sendable, Identifiable, Equatable, Hashable {
         hasher.combine(name)
     }
 }
-

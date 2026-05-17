@@ -1,16 +1,11 @@
 //
-//  DylibProbe.swift
-//  LTCommon
-//
-//  Created by Renjun Li on 2026/4/28.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import MachO
 
-// MARK: - Injected Dylib Detection
 
-/// 遍历当前进程加载的所有动态库，检测是否存在越狱注入插件。
-/// 每命中一个可疑库累加 20 分。
 @inline(__always)
 func evaluateDylibRisk() -> Int {
     var score = 0

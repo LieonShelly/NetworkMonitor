@@ -1,5 +1,6 @@
 //
-//  LTApp, This code is protected by intellectual property rights.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import SwiftUI
@@ -40,4 +41,3 @@ public extension Color {
         Color(red: Double.random(in: 0 ... 255) / 255.0, green: Double.random(in: 0 ... 255) / 255.0, blue: Double.random(in: 0 ... 255) / 255.0)
     }
 }
-

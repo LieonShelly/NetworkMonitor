@@ -1,15 +1,10 @@
 //
-//  SandboxProbe.swift
-//  LTCommon
-//
-//  Created by Renjun Li on 2026/4/28.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Darwin
 
-/// 沙盒逃逸与越权检测：
-///   1. 尝试向系统受限目录写入临时文件（+30 分）
-///   2. 检查 /Applications 是否被篡改为软链接（+25 分）
 @inline(__always)
 func evaluateSandboxRisk() -> Int {
     var score = 0
@@ -19,8 +14,6 @@ func evaluateSandboxRisk() -> Int {
 }
 
 
-/// 尝试在 /private/ 下创建临时文件。
-/// 正常沙盒环境中此操作必定失败；若成功则说明沙盒被攻破。
 @inline(__always)
 private func probeWriteAccess() -> Int {
     // 探针文件路径："/private/lt_env_probe"
@@ -42,8 +35,6 @@ private func probeWriteAccess() -> Int {
     return result
 }
 
-/// 使用 lstat() 检测 /Applications 是否为软链接。
-/// 越狱设备上该目录常被重定向至越狱应用安装目录。
 @inline(__always)
 private func probeSymbolicLink() -> Int {
     // "/Applications" XOR(0x42)

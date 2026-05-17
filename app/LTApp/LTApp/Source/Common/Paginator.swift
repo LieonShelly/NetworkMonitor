@@ -1,17 +1,16 @@
 //
-//  LTApp, This code is protected by intellectual property rights.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Foundation
 
-/// 分页加载状态
 enum PaginationState: Equatable {
     case idle
     case loading
     case error(String)
 }
 
-/// 加载更多 Footer 的显示状态
 enum LoadMoreState: Equatable {
     case idle
     case loading

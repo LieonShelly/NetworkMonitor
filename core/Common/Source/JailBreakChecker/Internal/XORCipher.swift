@@ -1,8 +1,6 @@
 //
-//  XORCipher.swift
-//  LTCommon
-//
-//  Created by Renjun Li on 2026/4/28.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Darwin
@@ -23,7 +21,6 @@ func eraseString(_ str: inout String) {
     str = ""
 }
 
-/// 混淆生成器：在开发阶段使用，运行后拷贝控制台打印的结果即可
 func generateObfuscatedBytes(for plainText: String, key: UInt8 = 0x42) {
     let bytes = plainText.utf8.map { $0 ^ key }
     let byteStrings = bytes.map { String(format: "0x%02X", $0) }
@@ -33,7 +30,6 @@ func generateObfuscatedBytes(for plainText: String, key: UInt8 = 0x42) {
     print("]")
 }
 
-// MARK: - XOR Key
 let kXORKey: UInt8 = 0x42
 
 enum ObfuscatedPath {
@@ -86,7 +82,6 @@ enum ObfuscatedPath {
     }
 }
 
-// MARK: - Obfuscated Dylib Keywords
 
 enum ObfuscatedDylibKeyword {
 
@@ -120,7 +115,6 @@ enum ObfuscatedDylibKeyword {
     }
 }
 
-// MARK: - Obfuscated URL Schemes
 enum ObfuscatedURLScheme {
 
     /// "cydia://"

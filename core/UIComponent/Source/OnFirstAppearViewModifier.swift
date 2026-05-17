@@ -1,8 +1,6 @@
 //
-//  OnFirstAppearViewModifier.swift
-//  UIComponent
-//
-//  Created by Renjun Li on 2025/12/4.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import SwiftUI

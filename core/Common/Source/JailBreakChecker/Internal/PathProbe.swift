@@ -1,18 +1,12 @@
 //
-//  PathProbe.swift
-//  LTCommon
-//
-//  Created by Renjun Li on 2026/4/28.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Darwin
 import MachO
 
-// MARK: - Jailbreak Path Detection
 
-/// 使用底层 C API（stat / access）嗅探越狱特征路径。
-/// 严禁使用 FileManager 等高级 Foundation API。
-/// 每命中一条路径累加 15 分。
 @inline(__always)
 func evaluateFileSystemRisk() -> Int {
     var score = 0

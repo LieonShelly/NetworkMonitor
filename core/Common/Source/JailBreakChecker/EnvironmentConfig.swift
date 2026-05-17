@@ -1,35 +1,12 @@
 //
-//  EnvironmentConfig.swift
-//  LTCommon
-//
-//  Created by Renjun Li on 2026/4/28.
-//
-//  ⚠️ 安全说明：此文件是越狱检测框架的唯一对外接口。
-//     对外命名刻意去特征化，严禁在接口层出现 jailbreak / jail 等字眼。
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Darwin
 import UIKit
 
-// MARK: - EnvironmentConfig (Public Entry Point)
 
-/// 设备运行环境完整性评估器。
-///
-/// **使用方式**
-/// 1. 在 App 启动早期调用一次 `checkDeviceIntegrity()`，完成全量检测并生成暗记号。
-/// 2. 业务层（NetworkManager 等）在发起核心请求前读取 `deviceIntegrityToken`，
-///    将其附加到 HTTP Header 中，交由服务端进行风险拦截。
-///
-/// ```swift
-/// // AppDelegate / SceneDelegate 启动时
-/// EnvironmentConfig.checkDeviceIntegrity()
-///
-/// // NetworkManager 构建请求时
-/// request.setValue(
-///     EnvironmentConfig.deviceIntegrityToken,
-///     forHTTPHeaderField: "X-Device-Signature"
-/// )
-/// ```
 
 public final class EnvironmentConfig {
 
@@ -114,7 +91,6 @@ public final class EnvironmentConfig {
     }
 }
 
-// MARK: - Token Parsing Helper (Internal Use Only)
 
 extension EnvironmentConfig {
 

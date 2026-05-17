@@ -1,8 +1,6 @@
 //
-//  CrashReporter.swift
-//  LTCommon
-//
-//  Created by Codex on 2026/5/5.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Foundation

@@ -1,8 +1,6 @@
 //
-//  LTFileLogSink.swift
-//  LTCommon
-//
-//  Created by Renjun Li on 2026/4/30.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Foundation
@@ -71,7 +69,8 @@ public final class LTFileLogSink: LTLogSink, @unchecked Sendable {
 
     private let queue = DispatchQueue(label: "com.littlethings.ltlog.file-sink")
     private let encoder: JSONEncoder
-    private let newlineData = Data("\n".utf8)
+    private let newlineData = Data("
+".utf8)
 
     private var currentFileURL: URL
     private var currentFileSize = 0

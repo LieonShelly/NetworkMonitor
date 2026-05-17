@@ -1,5 +1,6 @@
 //
-//  LTApp, This code is protected by intellectual property rights.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import SwiftUI
@@ -89,7 +90,9 @@ struct SummaryView: View {
                 .foregroundStyle(AppColor.greyMedium)
                 .font(AppFont.body.font)
             
-            + Text(" \(summary.totalAnswers) times \n\n")
+            + Text(" \(summary.totalAnswers) times 
+
+")
                 .foregroundStyle(AppColor.greyMedium)
                 .font(AppFont.bodyBold.font)
             
@@ -115,6 +118,3 @@ struct SummaryView: View {
         .padding(.bottom, 45)
     }
 }
-
-
-

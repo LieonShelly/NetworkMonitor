@@ -1,8 +1,6 @@
 //
-//  NewUserRow.swift
-//  LTApp
-//
-//  Created by 李仁军 on 2026/4/20.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import SwiftUI
@@ -40,4 +38,3 @@ struct NewUserRow: View {
         .contentShape(.rect)
     }
 }
-

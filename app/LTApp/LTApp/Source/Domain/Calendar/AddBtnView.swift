@@ -1,8 +1,6 @@
 //
-//  AddBtnView.swift
-//  LTApp
-//
-//  Created by 李仁军 on 2026/4/28.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import UIComponent

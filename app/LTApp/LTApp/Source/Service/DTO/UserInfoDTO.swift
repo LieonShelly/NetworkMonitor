@@ -1,5 +1,6 @@
 //
-//  LTApp, This code is protected by intellectual property rights.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Foundation
@@ -47,7 +48,6 @@ extension UserInfoDTO {
     }
 }
 
-// MARK: - 更新昵称响应
 struct UpdateNicknameDTO: Decodable {
     let nickname: String?
 }
@@ -58,7 +58,6 @@ extension UpdateNicknameDTO {
     }
 }
 
-// MARK: - 提醒时段响应
 struct ReminderDTO: Decodable {
     let slot: String?
 }
@@ -69,7 +68,6 @@ extension ReminderDTO {
     }
 }
 
-// MARK: - QoD Strategy Options (保持不变)
 struct QodStrategyOptions: Decodable {
     let value: String
     let label: String
