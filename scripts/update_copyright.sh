@@ -15,7 +15,6 @@ AUTHOR="lieon"
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DRY_RUN=false
 VERBOSE=false
-BACKUP=true
 
 # 目标文件扩展名
 FILE_EXTENSIONS="swift h m"
@@ -42,8 +41,9 @@ show_help() {
     -a, --author <名称>     指定作者名称 (默认: lieon)
     -d, --dry-run          预览模式，不实际修改文件
     -v, --verbose          显示详细信息
-    -b, --backup           备份原文件 (*.bak) (默认开启)
     -h, --help             显示帮助信息
+
+    注: 备份文件 (*.bak) 会在执行完成后自动清理
 
 版权声明格式:
     //
@@ -71,10 +71,6 @@ while [[ $# -gt 0 ]]; do
             ;;
         -v|--verbose)
             VERBOSE=true
-            shift
-            ;;
-        -b|--backup)
-            BACKUP=true
             shift
             ;;
         -h|--help)
@@ -206,9 +202,7 @@ replace_copyright() {
 //  This code is protected by intellectual property rights.
 //"
     
-    if $BACKUP && ! $DRY_RUN; then
-        cp "$file" "${file}.bak"
-    fi
+    cp "$file" "${file}.bak"
     
     # 清理现有版权声明并添加新的
     local cleaned
@@ -231,9 +225,7 @@ add_copyright() {
 //  This code is protected by intellectual property rights.
 //"
     
-    if $BACKUP && ! $DRY_RUN; then
-        cp "$file" "${file}.bak"
-    fi
+    cp "$file" "${file}.bak"
     
     if ! $DRY_RUN; then
         # 在文件开头添加版权声明
@@ -274,9 +266,6 @@ generate_report() {
     echo "统计:"
     echo -e "  ${GREEN}已替换:${NC}  $replaced"
     echo -e "  ${GREEN}已添加:${NC}  $added"
-    if $BACKUP && ! $DRY_RUN; then
-        echo -e "  ${BLUE}备份文件:${NC}  已创建 .bak 文件"
-    fi
     echo "  ----------------------------------------"
     echo -e "  ${BLUE}总计:${NC}      $total"
     echo "=============================================="
@@ -286,6 +275,21 @@ generate_report() {
         echo -e "${YELLOW}[预览模式] 以上为预计变更，未实际修改文件${NC}"
         echo ""
         echo "去掉 --dry-run 参数以执行实际修改"
+    fi
+}
+
+# ==================== 清理备份文件 ====================
+cleanup_backups() {
+    if $DRY_RUN; then
+        return
+    fi
+    
+    local bak_count
+    bak_count=$(find "$PROJECT_ROOT" -name "*.bak" -type f 2>/dev/null | wc -l | tr -d ' ')
+    
+    if [[ $bak_count -gt 0 ]]; then
+        find "$PROJECT_ROOT" -name "*.bak" -type f -delete 2>/dev/null
+        log_info "已清理 $bak_count 个备份文件"
     fi
 }
 
@@ -354,6 +358,9 @@ main() {
     
     # 生成报告
     generate_report "$total" "$replaced" "$added" "0"
+    
+    # 清理备份文件
+    cleanup_backups
     
     echo ""
     log_success "完成!"
