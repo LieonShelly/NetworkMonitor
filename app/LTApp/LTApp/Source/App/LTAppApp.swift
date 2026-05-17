@@ -4,6 +4,7 @@
 
 import SwiftUI
 import UIComponent
+import Common
 
 @main
 struct LTAppApp: App {
@@ -28,7 +29,12 @@ struct LTAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            coordinator.rootView()
+            ZStack {
+                coordinator.rootView()
+#if DEBUG
+                FloatingBallView()
+#endif
+            }
         }
         .environmentObject(homeCoordinator)
         .environmentObject(coordinator)

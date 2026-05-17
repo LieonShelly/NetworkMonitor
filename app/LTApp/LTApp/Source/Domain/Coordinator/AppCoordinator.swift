@@ -17,11 +17,28 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
     private var cancellables: Set<AnyCancellable> = .init()
     
     init(environment: AppEnvironment = .release) {
+        // Start network monitor early so all subsequent URLSessions are monitored
+        #if DEBUG
+        NetworkMonitorStore.shared.start()
+        #endif
+
         let enviroment = environment
         let sslPinningValidator = SSLPinningValidator(
             environment: enviroment
         )
+        let configuration: URLSessionConfiguration
+        #if DEBUG
+        // Use the registered configuration that includes NetworkMonitorURLProtocol
+        if let registeredConfig = NetworkMonitorStore.shared.registeredConfiguration() {
+            configuration = registeredConfig
+        } else {
+            configuration = .default
+        }
+        #else
+        configuration = .default
+        #endif
         let interceptorClient = ApiClient(
+            configuration: configuration,
             environment: enviroment,
             interceptors: [],
             sslPinningValidator: sslPinningValidator
@@ -41,7 +58,32 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
             tokenProvider: sessionManager,
             service: appDataWithoutAuthorizationService)
         let logoutInterceptor = LogoutInterceptor(tokenProvider: sessionManager)
-        let apiClient = ApiClient(
+        let apiClient: ApiClient
+        #if DEBUG
+        if let registeredConfig = NetworkMonitorStore.shared.registeredConfiguration() {
+            apiClient = ApiClient(
+                configuration: registeredConfig,
+                environment: enviroment,
+                interceptors: [
+                    tokenInterceptor,
+                    refreshTokenInterceptor,
+                    logoutInterceptor,
+                ],
+                sslPinningValidator: sslPinningValidator
+            )
+        } else {
+            apiClient = ApiClient(
+                environment: enviroment,
+                interceptors: [
+                    tokenInterceptor,
+                    refreshTokenInterceptor,
+                    logoutInterceptor,
+                ],
+                sslPinningValidator: sslPinningValidator
+            )
+        }
+        #else
+        apiClient = ApiClient(
             environment: enviroment,
             interceptors: [
                 tokenInterceptor,
@@ -50,6 +92,7 @@ final class AppCoordinator: ObservableObject, @unchecked Sendable {
             ],
             sslPinningValidator: sslPinningValidator
         )
+        #endif
         let authRepository = AuthRepository(
             apiClient: apiClient,
             authTokenProvider: sessionManager

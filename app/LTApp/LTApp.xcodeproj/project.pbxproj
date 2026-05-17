@@ -21,7 +21,6 @@
 		104D7AAC7350FCA5BBA95E54 /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C8B11C8617399E62B8C3C3 /* AuthInterceptor.swift */; };
 		105A63A4AE63E5337A8A7FFF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C2DA9A554FCF41FD1FE297F /* LaunchScreen.storyboard */; };
 		123243A5151540C725BDC2BA /* AnswerDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1F88B0511D44095E2B4950 /* AnswerDTO.swift */; };
-		12FA87687AB94A4DB1B118B8 /* FetchWeeklyReportPrevIconsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997323E9FA8140CA8A577EF1 /* FetchWeeklyReportPrevIconsUseCase.swift */; };
 		14C5414FF087BB915FE3FEA1 /* Answer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4A5BD5D2EDC6B45F32E858F /* Answer.swift */; };
 		14FE11BA867A13723A27260E /* WeeklyReportCurrentIconsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6975B3DABAF5B7A4896DFB /* WeeklyReportCurrentIconsDTO.swift */; };
 		1535A88A79488941C3DA6E41 /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 771806489426BED1EE1F96E4 /* Common.framework */; };
@@ -153,6 +152,7 @@
 		A13CDA159177BA2E7B607491 /* TabbarVisibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E854716F7B6DD2F2C304015D /* TabbarVisibility.swift */; };
 		A458F89A532CF1EDA3B17DDB /* SSLPinningValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA5AF2B6E43A81DE0931168 /* SSLPinningValidator.swift */; };
 		A53173906931B98B4452965C /* NaviBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A7A62CA7B7572887BB56ED /* NaviBar.swift */; };
+		A6EB36637512487DF865A126 /* FetchWeeklyReportPrevIconsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D32423AB0F727DFA0473AE9 /* FetchWeeklyReportPrevIconsUseCase.swift */; };
 		A9A0644E8593A152539FDEBE /* AppScrollContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B82584E79E2C64FF9A63AF /* AppScrollContentViewModel.swift */; };
 		A9B79EE3CD10B6E24E24E0AE /* UpdateReportPersonaUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FF6294E008B97DE0281FDB /* UpdateReportPersonaUseCase.swift */; };
 		AA7B20F9190E4426B0A077F8 /* CalendarSlashLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA33299B7834C16ED6AFB662 /* CalendarSlashLine.swift */; };
@@ -349,6 +349,7 @@
 		69F213C83E854E916649627A /* CoinScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinScene.swift; sourceTree = "<group>"; };
 		6C73B50298BF20B069EA0DED /* FetchOnboardingSentenceUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchOnboardingSentenceUseCase.swift; sourceTree = "<group>"; };
 		6CE67C5A5A425EF5EBC47A94 /* AnswerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerDetailView.swift; sourceTree = "<group>"; };
+		6D32423AB0F727DFA0473AE9 /* FetchWeeklyReportPrevIconsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchWeeklyReportPrevIconsUseCase.swift; sourceTree = "<group>"; };
 		70EB438E858C66EA1BC504AF /* Paginator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paginator.swift; sourceTree = "<group>"; };
 		717ADB6461381216CE8A7111 /* ThreadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadView.swift; sourceTree = "<group>"; };
 		720D34B624D4284E08047075 /* DetailAnswerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailAnswerRow.swift; sourceTree = "<group>"; };
@@ -389,10 +390,9 @@
 		9672AE194F136D1F59D8A485 /* ReminderSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSettingViewModel.swift; sourceTree = "<group>"; };
 		98286A86F0EAF1F53A5F42AA /* ThreadCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadCategoryView.swift; sourceTree = "<group>"; };
 		9946673DA279A5A3F74BF4AE /* QuestionOfTodaySettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionOfTodaySettingItem.swift; sourceTree = "<group>"; };
-		997323E9FA8140CA8A577EF1 /* FetchWeeklyReportPrevIconsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchWeeklyReportPrevIconsUseCase.swift; sourceTree = "<group>"; };
 		9993DF6E3A941EE9D1FAF266 /* QuestionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionCardView.swift; sourceTree = "<group>"; };
 		99E2E2F27C12616A29FDF44F /* LTAppFeatureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTAppFeatureConfig.swift; sourceTree = "<group>"; };
-		9A58C1EE3894B3BD3A320141 /* lock-tapped.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = "lock-tapped.riv"; sourceTree = "<group>"; };
+		9A58C1EE3894B3BD3A320141 /* lock-tapped.riv */ = {isa = PBXFileReference; path = "lock-tapped.riv"; sourceTree = "<group>"; };
 		9BDAB7457AD38C219D4125D1 /* SaveTimezoneUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTimezoneUseCase.swift; sourceTree = "<group>"; };
 		9CC182739AAD226C77247794 /* WeeklyReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReport.swift; sourceTree = "<group>"; };
 		9E48DDA96EDFC46D378411CE /* AppTabbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabbarItem.swift; sourceTree = "<group>"; };
@@ -403,7 +403,7 @@
 		A2AC3ECD67EDD0DA13A5CABC /* CalendarReflectionsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarReflectionsUseCase.swift; sourceTree = "<group>"; };
 		A3B88EEE2F5FACEDC61CF29D /* TodayAnswerSubmittedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayAnswerSubmittedViewModel.swift; sourceTree = "<group>"; };
 		A5653DA3D1F0BE41202F5A93 /* CalendarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarItemView.swift; sourceTree = "<group>"; };
-		A59545BAF995479B0ADA444F /* lock-animated.riv */ = {isa = PBXFileReference; lastKnownFileType = file; path = "lock-animated.riv"; sourceTree = "<group>"; };
+		A59545BAF995479B0ADA444F /* lock-animated.riv */ = {isa = PBXFileReference; path = "lock-animated.riv"; sourceTree = "<group>"; };
 		A87A82B08CA8CCAEF901BBD1 /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		A894E354041CCC836695890E /* AppHomeRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHomeRootView.swift; sourceTree = "<group>"; };
 		A939D5ABAB79841D64999BE7 /* UnreadReportHistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadReportHistoryRow.swift; sourceTree = "<group>"; };
@@ -1094,7 +1094,7 @@
 			isa = PBXGroup;
 			children = (
 				C6206D7647900765F3A35C54 /* FetchWeeklyReportCurrentIconsUseCase.swift */,
-				997323E9FA8140CA8A577EF1 /* FetchWeeklyReportPrevIconsUseCase.swift */,
+				6D32423AB0F727DFA0473AE9 /* FetchWeeklyReportPrevIconsUseCase.swift */,
 				94A2B3463D38000A4713442B /* FetchWeeklyReportsListUseCase.swift */,
 				B4CFB249F63977293DBBDD53 /* FetchWeeklyReportUseCase.swift */,
 				3A314A541A189CC43CFCA1E6 /* MarkWeeklyReportReadUseCase.swift */,
@@ -1299,7 +1299,7 @@
 				2A7D622E3B2DF60EAA8B40AA /* FetchThreadQuestionsUseCase.swift in Sources */,
 				3BAC2EF102159C39527C4A9B /* FetchTodayQuestionsUseCase.swift in Sources */,
 				037E10658862B045E4C55AB2 /* FetchWeeklyReportCurrentIconsUseCase.swift in Sources */,
-				12FA87687AB94A4DB1B118B8 /* FetchWeeklyReportPrevIconsUseCase.swift in Sources */,
+				A6EB36637512487DF865A126 /* FetchWeeklyReportPrevIconsUseCase.swift in Sources */,
 				E1A8627B327C011B7EB81D06 /* FetchWeeklyReportUseCase.swift in Sources */,
 				4439EEFC959E6D96FE0B355D /* FetchWeeklyReportsListUseCase.swift in Sources */,
 				4A61DBBA35C61856E1DC4882 /* FirstQuestionView.swift in Sources */,
