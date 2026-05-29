@@ -1,14 +1,10 @@
 //
-//  NetworkMonitorURLProtocol.swift
-//  Common
-//
-//  Created by LittleThings AI on 2026/05/17.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Foundation
 
-/// A passive URLProtocol that monitors all HTTP/HTTPS requests.
-/// Uses ephemeral sessions internally to avoid recursion.
 public class NetworkMonitorURLProtocol: URLProtocol, @unchecked Sendable, URLSessionDataDelegate {
     private var entry: NetworkMonitorEntry?
     private var session: URLSession?

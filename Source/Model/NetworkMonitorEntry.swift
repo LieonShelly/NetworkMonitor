@@ -1,8 +1,6 @@
 //
-//  NetworkMonitorEntry.swift
-//  Common
-//
-//  Created by LittleThings AI on 2026/05/17.
+//  Created by lieon on 2026/05/17.
+//  This code is protected by intellectual property rights.
 //
 
 import Foundation
@@ -165,7 +163,7 @@ public struct NetworkMonitorEntry: Identifiable, Sendable {
         lines.append("═══════════════════════════════════════")
         lines.append("Exported by Network Monitor")
 
-        return lines.joined(separator: "\n")
+        return lines.joined(separator: "")
     }
 
     public var formattedCopyText: String {
@@ -223,7 +221,7 @@ public struct NetworkMonitorEntry: Identifiable, Sendable {
             lines.append("\(error.localizedDescription)")
         }
 
-        return lines.joined(separator: "\n")
+        return lines.joined(separator: "")
     }
 
     private func prettyPrintJSON(data: Data) -> String? {
